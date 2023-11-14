@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="patient_registration_form" model="ir.ui.view">
+            <field name="name">patient.registration.form</field>
+            <field name="model">patient.registration</field>
+            <field name="arch" type="xml">
+                <form string="Patient Registration">
+                    <sheet>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="address"/>
+                        </group>
+                        <group>
+                            <field name="age"/>
+                            <field name="phone_number" widget="phone"/>
+                        </group>
+                        <group>
+                            <field name="symptoms"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="patient_registration_tree" model="ir.ui.view">
+            <field name="name">patient.registration.tree</field>
+            <field name="model">patient.registration</field>
+            <field name="arch" type="xml">
+                <tree string="Patient Registration">
+                    <field name="patient_id"/>
+                    <field name="address"/>
+                    <field name="age"/>
+                    <field name="phone_number"/>
+                    <field name="symptoms"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_patient_registration" model="ir.actions.act_window">
+            <field name="name">Patient Registration</field>
+            <field name="res_model">patient.registration</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="patient_registration_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create new patient
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_patient_reg"
+                  name="Patient Registration"
+                  parent="menu_patient_main"
+                  action="action_patient_registration"
+                  sequence="0"/>
+    </data>
+</odoo>
+
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem
+            id="menu_homeo_root"
+            name="HOMEO"
+            sequence="0"/>
+
+        <menuitem
+            id="menu_patient_main"
+            name="Patient"
+            parent="menu_homeo_root"
+            sequence="0"/>
+
+        <menuitem
+            id="menu_stock_main"
+            name="Stock"
+            parent="menu_homeo_root"
+            sequence="1"/>
+    </data>
+</odoo>

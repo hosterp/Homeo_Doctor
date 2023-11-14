@@ -9,6 +9,9 @@
 
     'depends': [],
     'data': [
+        "views/patient_reg.xml",
+        "views/menu.xml",
+        "views/medicine_entry.xml",
 
     ],
     'demo': [

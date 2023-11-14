@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_patient_registration,patient.registration,model_patient_registration, ,1,1,1,1
+access_medicine_entry,medicine.entry,model_medicine_entry, ,1,1,1,1
+access_stock_entry_lines,stock.entry.lines,model_stock_entry_lines, ,1,1,1,1
