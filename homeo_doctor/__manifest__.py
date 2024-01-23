@@ -7,11 +7,14 @@
     'category': 'Sales/Sales',
     'summary': 'Hospital Management Software',
 
-    'depends': [],
+    'depends': [
+        'product'
+    ],
     'data': [
         "views/patient_reg.xml",
         "views/menu.xml",
         "views/medicine_entry.xml",
+        "views/product_product_inherit.xml",
 
     ],
     'demo': [

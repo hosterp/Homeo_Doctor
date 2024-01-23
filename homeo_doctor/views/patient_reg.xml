@@ -5,18 +5,42 @@
             <field name="name">patient.registration.form</field>
             <field name="model">patient.registration</field>
             <field name="arch" type="xml">
-                <form string="Patient Registration">
+                <form string="Patient Details">
                     <sheet>
+                        <h1 class="oe_left">
+                            <field name="reference_no" readonly="1"/>
+                        </h1>
+                        <h3 class="oe_right">
+                            <field name="formatted_date" readonly="1" string="Date"/>
+                        </h3>
                         <group>
-                            <field name="patient_id"/>
-                            <field name="address"/>
+                            <group col="3">
+                                <field name="patient_id"/>
+                                <field name="address"/>
+                            </group>
+                            <group col="3">
+                                <field name="age"/>
+                                <field name="phone_number" widget="phone"/>
+                            </group>
+                            <group col="3">
+                                <field name="symptoms"/>
+                            </group>
                         </group>
                         <group>
-                            <field name="age"/>
-                            <field name="phone_number" widget="phone"/>
+                            <field name="med_ids" nolabel="1">
+                                <tree editable="bottom" col="13">
+                                    <field name="prescription_line_id" invisible="1"/>
+                                    <field name="product_id" colspan="2"/>
+                                    <field name="total_med" colspan="2"/>
+                                    <field name="per_ped" colspan="2"/>
+                                    <field name="morn" colspan="2"/>
+                                    <field name="noon" colspan="2"/>
+                                    <field name="night" colspan="2"/>
+                                </tree>
+                            </field>
                         </group>
-                        <group>
-                            <field name="symptoms"/>
+                        <group col="3">
+                            <field name="remark"/>
                         </group>
                     </sheet>
                 </form>
@@ -26,18 +50,18 @@
             <field name="name">patient.registration.tree</field>
             <field name="model">patient.registration</field>
             <field name="arch" type="xml">
-                <tree string="Patient Registration">
+                <tree string="Patient Details">
+                    <field name="reference_no" string="NO"/>
                     <field name="patient_id"/>
-                    <field name="address"/>
+                    <field name="formatted_date"  string="Date"/>
                     <field name="age"/>
                     <field name="phone_number"/>
-                    <field name="symptoms"/>
                 </tree>
             </field>
         </record>
 
         <record id="action_patient_registration" model="ir.actions.act_window">
-            <field name="name">Patient Registration</field>
+            <field name="name">Patient Details</field>
             <field name="res_model">patient.registration</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="patient_registration_tree"/>
@@ -47,11 +71,6 @@
                 </p>
             </field>
         </record>
-        <menuitem id="menu_patient_reg"
-                  name="Patient Registration"
-                  parent="menu_patient_main"
-                  action="action_patient_registration"
-                  sequence="0"/>
     </data>
 </odoo>
 

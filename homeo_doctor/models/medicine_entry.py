@@ -2,7 +2,6 @@ from odoo import api, fields, models, tools
 import odoo.addons
 from datetime import datetime, date
 
-
 class MedicineEntry(models.Model):
     _name = 'medicine.entry'
     _description = 'Medicine Entry'

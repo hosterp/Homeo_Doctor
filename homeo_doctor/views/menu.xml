@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="sequence_for_patient_reg" model="ir.sequence">
+            <field name="name">Patient Registrartion</field>
+            <field name="code">patient.registrartion.group</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+        </record>
         <menuitem
-            id="menu_homeo_root"
-            name="HOMEO"
-            sequence="0"/>
-
+                id="menu_homeo_head"
+                name="HOMEO"
+                sequence="0"/>
         <menuitem
-            id="menu_patient_main"
-            name="Patient"
-            parent="menu_homeo_root"
-            sequence="0"/>
-
+                id="menu_patient_root"
+                name="Patient"
+                parent="menu_homeo_head"
+                sequence="0"/>
         <menuitem
-            id="menu_stock_main"
-            name="Stock"
-            parent="menu_homeo_root"
-            sequence="1"/>
+                id="menu_patient_reg"
+                name="Patient Registration"
+                parent="menu_patient_root"
+                action="action_patient_registration"
+                sequence="1"/>
+        <menuitem
+                id="menu_stock_root"
+                name="Stock"
+                parent="menu_homeo_head"
+                sequence="1"/>
     </data>
 </odoo>

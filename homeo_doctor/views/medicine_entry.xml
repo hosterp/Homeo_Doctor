@@ -16,7 +16,7 @@
                         <group>
                             <field name="stock_id" string="Medicine">
                                 <tree editable="bottom">
-                                    <field name="stock_line_id"/>
+                                    <field name="stock_line_id" invisible="1"/>
                                     <field name="product_id"/>
                                     <field name="stock"/>
                                 </tree>
@@ -26,20 +26,6 @@
                 </form>
             </field>
         </record>
-        <!--        <record id="patient_registration_tree" model="ir.ui.view">-->
-        <!--            <field name="name">patient.registration.tree</field>-->
-        <!--            <field name="model">patient.registration</field>-->
-        <!--            <field name="arch" type="xml">-->
-        <!--                <tree string="Patient Registration">-->
-        <!--                    <field name="patient_id"/>-->
-        <!--                    <field name="address"/>-->
-        <!--                    <field name="age"/>-->
-        <!--                    <field name="phone_number"/>-->
-        <!--                    <field name="symptoms"/>-->
-        <!--                </tree>-->
-        <!--            </field>-->
-        <!--        </record>-->
-
         <record id="action_medicine_entry" model="ir.actions.act_window">
             <field name="name">medicine entry</field>
             <field name="res_model">medicine.entry</field>
@@ -52,8 +38,8 @@
             </field>
         </record>
         <menuitem id="menu_medicine_reg"
-                  name="Patient Registration"
-                  parent="menu_stock_main"
+                  name="Stock Entry"
+                  parent="menu_stock_root"
                   action="action_medicine_entry"
                   sequence="0"/>
     </data>
