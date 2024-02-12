@@ -15,17 +15,15 @@
                 id="menu_patient_root"
                 name="Patient"
                 parent="menu_homeo_head"
-                sequence="0"/>
-        <menuitem
-                id="menu_patient_reg"
-                name="Patient Registration"
-                parent="menu_patient_root"
-                action="action_patient_registration"
                 sequence="1"/>
         <menuitem
                 id="menu_stock_root"
                 name="Stock"
                 parent="menu_homeo_head"
-                sequence="1"/>
+                sequence="2"/>
+        <menuitem id="menu_my_product_template_root"
+                name="Medicine Create"
+                parent="menu_homeo_head"
+                sequence="3"/>
     </data>
 </odoo>

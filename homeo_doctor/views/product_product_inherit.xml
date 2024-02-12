@@ -27,8 +27,8 @@
         </record>
 
         <menuitem id="menu_my_product_template"
-                  name="Medicine Create"
-                  parent="menu_stock_root"
+                  name="Medicine"
+                  parent="menu_my_product_template_root"
                   action="action_my_product_template"
                   sequence="1"/>
     </data>

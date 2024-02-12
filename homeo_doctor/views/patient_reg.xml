@@ -53,7 +53,7 @@
                 <tree string="Patient Details">
                     <field name="reference_no" string="NO"/>
                     <field name="patient_id"/>
-                    <field name="formatted_date"  string="Date"/>
+                    <field name="formatted_date" string="Date"/>
                     <field name="age"/>
                     <field name="phone_number"/>
                 </tree>
@@ -71,6 +71,12 @@
                 </p>
             </field>
         </record>
+        <menuitem
+                id="menu_patient_reg"
+                name="Patient Registration"
+                parent="menu_patient_root"
+                action="action_patient_registration"
+                sequence="2"/>
     </data>
 </odoo>
 
