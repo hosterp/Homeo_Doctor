@@ -26,10 +26,6 @@
             <field name="act_window_id" ref="action_my_product_template"/>
         </record>
 
-        <menuitem id="menu_my_product_template"
-                  name="Medicine"
-                  parent="menu_my_product_template_root"
-                  action="action_my_product_template"
-                  sequence="1"/>
+
     </data>
 </odoo>

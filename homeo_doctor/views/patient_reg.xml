@@ -71,12 +71,7 @@
                 </p>
             </field>
         </record>
-        <menuitem
-                id="menu_patient_reg"
-                name="Patient Registration"
-                parent="menu_patient_root"
-                action="action_patient_registration"
-                sequence="2"/>
+
     </data>
 </odoo>
 
