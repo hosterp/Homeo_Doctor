@@ -28,20 +28,11 @@
                 name="Stock"
                 parent="menu_homeo_head"
                 sequence="1"/>
-        <menuitem id="menu_medicine_reg"
-                  name="Stock Entry"
-                  parent="menu_stock_root"
-                  action="action_medicine_entry"
-                  sequence="0"/>
 
         <menuitem id="menu_my_product_template_root"
                 name="Medicine Create"
                 parent="menu_homeo_head"
                 sequence="2"/>
-        <menuitem id="menu_my_product_template"
-                  name="Medicine"
-                  parent="menu_my_product_template_root"
-                  action="action_my_product_template"
-                  sequence="0"/>
+
     </data>
 </odoo>
