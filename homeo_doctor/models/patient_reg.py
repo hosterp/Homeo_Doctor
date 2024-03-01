@@ -18,6 +18,7 @@ class PatientRegistration(models.Model):
     phone_number = fields.Char(string="Phone No:",size=12)
     symptoms = fields.Text(required=True, string="Sick")
     remark = fields.Text(string="Remark")
+    checkup_reports=fields.Text(string='Checkup Details')
     med_ids = fields.One2many("prescription.entry.lines", 'prescription_line_id', string="Prescription Entry Lines")
 
     @api.model
@@ -48,3 +49,11 @@ class PrescriptionEntryLine(models.Model):
     morn = fields.Boolean("Morn")
     noon = fields.Boolean("Noon")
     night = fields.Boolean("Night")
+
+
+    # @api.onchange('product_id')
+    # def product_stock_total(self):
+    #     if self.product_id:
+    #         stock_records = self.env['stock.entry.lines'].search([('product_id', '=', self.product_id.id)])
+    #         print(stock_records.stock,'stock................')
+    #         self.total_med=stock_records.stock

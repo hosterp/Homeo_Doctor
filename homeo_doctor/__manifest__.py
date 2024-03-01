@@ -15,6 +15,7 @@
         "views/menu.xml",
         "views/medicine_entry.xml",
         "views/product_product_inherit.xml",
+        "report/patient_report.xml",
 
     ],
     'demo': [

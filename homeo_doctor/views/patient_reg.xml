@@ -21,9 +21,11 @@
                             <group col="3">
                                 <field name="age"/>
                                 <field name="phone_number" widget="phone"/>
+                                  <field name="checkup_reports"/>
                             </group>
                             <group col="3">
                                 <field name="symptoms"/>
+
                             </group>
                         </group>
                         <group>
@@ -32,7 +34,7 @@
                                     <field name="prescription_line_id" invisible="1"/>
                                     <field name="product_id" colspan="2"/>
                                     <field name="total_med" colspan="2"/>
-                                    <field name="per_ped" colspan="2"/>
+                                    <field name="per_ped" colspan="2" invisible="True"/>
                                     <field name="morn" colspan="2"/>
                                     <field name="noon" colspan="2"/>
                                     <field name="night" colspan="2"/>
