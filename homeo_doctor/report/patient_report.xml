@@ -8,7 +8,9 @@
                             <div class="row mt32 mb32">
                                 <div class="col-10">
                                     <strong>Patient ID:</strong>
-                                  <strong><p  class="d-inline" t-field="o.reference_no" style="font-size: 20px;"/></strong>
+                                    <strong>
+                                        <p class="d-inline" t-field="o.reference_no" style="font-size: 20px;"/>
+                                    </strong>
                                 </div>
                                 <div class="col-4">
                                     <strong>Date:</strong>
@@ -17,23 +19,26 @@
                             </div>
                             <br></br>
                             <div class="row mt32 mb32">
-                                <div class="col-3">
+                                <div class="col-6">
                                     <strong>Name:</strong>
                                     <p class="d-inline" t-field="o.patient_id"/>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-6  text-right">
                                     <strong>Age:</strong>
                                     <span t-field="o.age"/>
                                 </div>
-                                <div class="col-3">
+                            </div>
+                            <div class="row mt32 mb32">
+                                <div class="col-6">
                                     <strong>Address:</strong>
                                     <span t-field="o.address"/>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-6  text-right">
                                     <strong>Ph:</strong>
                                     <span t-field="o.phone_number"/>
                                 </div>
                             </div>
+
                             <br></br>
                             <table class="table">
                                 <thead>
