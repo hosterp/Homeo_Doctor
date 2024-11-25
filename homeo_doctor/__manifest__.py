@@ -14,7 +14,11 @@
         "views/patient_reg.xml",
         "views/menu.xml",
         "views/medicine_entry.xml",
+        "views/patient.xml",
+        "views/doctor_profile_views.xml",
+        "views/doctor_lab_report_views.xml",
         "views/product_product_inherit.xml",
+        "views/pharmacy.xml",
         "report/patient_report.xml",
 
     ],

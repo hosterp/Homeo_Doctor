@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+        <record id="view_pharmacy_description_form" model="ir.ui.view">
+            <field name="name">pharmacy.description.form</field>
+            <field name="model">pharmacy.description</field>
+            <field name="arch" type="xml">
+                <form string="Pharmacy Description">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="patient_id"/>
+                                <field name="name"/>
+                                <field name="phone_number"/>
+                            </group>
+                            <group>
+                                <field name="bill_amount"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Prescriptions">
+                                <field name="prescription_line_ids">
+                                    <tree>
+                                        <field name="product_id"/>
+                                        <field name="total_med"/>
+                                        <field name="per_ped"/>
+                                        <field name="morn"/>
+                                        <field name="noon"/>
+                                        <field name="night"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_pharmacy_description" model="ir.actions.act_window">
+            <field name="name">Pharmacy Description</field>
+            <field name="res_model">pharmacy.description</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No pharmacy descriptions yet.
+                </p>
+                <p>
+                    Create your first pharmacy description by clicking on the "Create" button.
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_pharmacy_root" name="Pharmacy" sequence="10" parent="menu_homeo_head"/>
+
+        <menuitem id="menu_pharmacy_description"
+                  name="Pharmacy Description"
+                  parent="menu_pharmacy_root"
+                  action="action_pharmacy_description"
+                  sequence="10"/>
+
+
+    </data>
+</odoo>
