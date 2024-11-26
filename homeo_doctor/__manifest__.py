@@ -20,6 +20,8 @@
         "views/product_product_inherit.xml",
         "views/pharmacy.xml",
         "views/admitted_patient_details.xml",
+        "views/ot_management.xml",
+        "views/patient_insurance.xml",
         "report/patient_report.xml",
 
     ],
