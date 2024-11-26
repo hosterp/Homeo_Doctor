@@ -18,7 +18,7 @@ class PatientRegistration(models.Model):
     age = fields.Integer( string='Age',required=True,related='user_id.age')
     phone_number = fields.Char( string='Phone No',size=12,related='user_id.phone_number')
     gender = fields.Selection( string='Gender',related='user_id.gender')
-    symptoms = fields.Text(string="Sick")
+    symptoms = fields.Text(string="Symptoms")
     remark = fields.Text(string="Remark")
     checkup_reports=fields.Text(string='Checkup Details')
     med_ids = fields.One2many("prescription.entry.lines", 'prescription_line_id', string="Prescription Entry Lines")
