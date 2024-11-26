@@ -5,3 +5,4 @@ from . import patient_registration
 from .import doctor_cretion
 from .import doctor_lab_report
 from .import Pharmacy
+from .import admitted_patient_details

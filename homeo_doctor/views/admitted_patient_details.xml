@@ -1,0 +1,82 @@
+<odoo>
+    <data>
+        <record id="view_admitted_patient_tree" model="ir.ui.view">
+            <field name="name">admitted.patient.tree</field>
+            <field name="model">hospital.admitted.patient</field>
+            <field name="arch" type="xml">
+                <tree string="Admitted Patients">
+                    <field name="patient_id"/>
+                    <field name="admission_date"/>
+                    <field name="room_number"/>
+                    <field name="bed_number"/>
+                    <field name="admitting_department"/>
+                    <field name="attending_doctor"/>
+                    <field name="admission_status"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_admitted_patient_form" model="ir.ui.view">
+            <field name="name">admitted.patient.form</field>
+            <field name="model">hospital.admitted.patient</field>
+            <field name="arch" type="xml">
+                <form string="Admitted Patient Details">
+                    <sheet>
+                        <group>
+                            <field name="patient_id"/>
+                            <field name="admission_date"/>
+                            <field name="room_number"/>
+                            <field name="bed_number"/>
+                            <field name="admitting_department"/>
+                            <field name="attending_doctor"/>
+                        </group>
+                        <group>
+                            <field name="reason_for_admission"/>
+                            <field name="admission_status"/>
+                        </group>
+                        <notebook>
+                            <page string="Medical History">
+                                <field name="previous_conditions"/>
+                                <field name="current_diagnosis"/>
+                                <field name="medications_prescribed"/>
+                                <field name="allergies"/>
+                                <field name="test_results"/>
+                            </page>
+                            <page string="Treatment Plan">
+                                <field name="procedures_scheduled"/>
+                                <field name="treatment_description"/>
+                                <field name="daily_progress_notes"/>
+                                <field name="consultation_notes"/>
+                            </page>
+                            <page string="Billing Information">
+                                <field name="insurance_provider"/>
+                                <field name="insurance_policy_number"/>
+                                <field name="advance_payment"/>
+                                <field name="billing_summary"/>
+                            </page>
+                            <page string="Discharge Details">
+                                <field name="discharge_date"/>
+                                <field name="final_diagnosis"/>
+                                <field name="discharge_prescriptions"/>
+                                <field name="follow_up_instructions"/>
+                                <field name="summary_report"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_admitted_patient" model="ir.actions.act_window">
+            <field name="name">Admitted Patients</field>
+            <field name="res_model">hospital.admitted.patient</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_hospital_root" name="Hospital Management" sequence="8"/>
+
+        <menuitem id="menu_admitted_patient"
+                  name="Admitted Patients"
+                  parent="menu_hospital_root"
+                  action="action_admitted_patient"
+                  sequence="1"/>
+
+    </data>
+</odoo>

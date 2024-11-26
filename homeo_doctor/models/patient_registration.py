@@ -20,6 +20,7 @@ class PatientRegistration(models.Model):
     doc_name=fields.Many2one('doctor.profile',string='Doctor')
     registration_fee = fields.Float(string="Registration Fee", required=True, default=50.0)
     remark = fields.Text(string="Remark")
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender", required=True)
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
 
     def _compute_lab_report_count(self):

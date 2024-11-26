@@ -11,7 +11,7 @@ class DoctorLabReport(models.Model):
     doctor_id = fields.Many2one('doctor.profile', string="Doctor", required=True)
     patient_id = fields.Many2one('patient.reg', string="Patient", required=True)
     report_details = fields.Text(string="Report Details")
-    attachment = fields.Binary(string="Attachment")
+    attachment = fields.Binary(string="Result")
     attachment_name = fields.Char(string="Result")
     bill_amount=fields.Integer('Bill Amount')
 

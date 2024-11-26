@@ -24,6 +24,7 @@
                         <group>
                             <group col="3">
                                 <field name="patient_id"/>
+                                 <field name="gender"/>
                                 <field name="address"/>
                             </group>
                             <group col="3">

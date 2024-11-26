@@ -19,6 +19,7 @@
         "views/doctor_lab_report_views.xml",
         "views/product_product_inherit.xml",
         "views/pharmacy.xml",
+        "views/admitted_patient_details.xml",
         "report/patient_report.xml",
 
     ],

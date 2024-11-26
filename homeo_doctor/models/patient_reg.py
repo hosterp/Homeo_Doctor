@@ -17,6 +17,7 @@ class PatientRegistration(models.Model):
     address = fields.Text(string='Address',required=True,related='user_id.address')
     age = fields.Integer( string='Age',required=True,related='user_id.age')
     phone_number = fields.Char( string='Phone No',size=12,related='user_id.phone_number')
+    gender = fields.Selection( string='Gender',related='user_id.gender')
     symptoms = fields.Text(string="Sick")
     remark = fields.Text(string="Remark")
     checkup_reports=fields.Text(string='Checkup Details')
