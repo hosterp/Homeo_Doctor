@@ -16,13 +16,13 @@ class PatientRegistration(models.Model):
     address = fields.Text(required=True, string="Address")
     age = fields.Integer(required=True, string="Age")
     phone_number = fields.Char(string="Phone No",size=12)
-    email = fields.Char(string="Email ID",size=12)
+    email = fields.Char(string="Email ID")
     doc_name=fields.Many2one('doctor.profile',string='Doctor')
     registration_fee = fields.Float(string="Registration Fee", required=True, default=50.0)
     remark = fields.Text(string="Remark")
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender", required=True)
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
-
+    time=fields.Datetime(string="Time")
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
@@ -45,8 +45,6 @@ class PatientRegistration(models.Model):
                 'patient.reg.group') or _('New')
         record = super(PatientRegistration, self).create(vals)
 
-
-
         self.env['patient.registration'].create({
             'user_id': record.id,
             'patient_id': record.patient_id,
@@ -65,3 +63,6 @@ class PatientRegistration(models.Model):
             else:
                 record.formatted_date = ''
 
+    @api.model
+    def search_patient_by_phone(self, phone_number):
+        return self.search([('phone_number', 'ilike', phone_number)])

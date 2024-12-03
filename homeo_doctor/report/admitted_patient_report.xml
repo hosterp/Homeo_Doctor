@@ -1,0 +1,170 @@
+<odoo>
+    <data>
+        <template id="report_admitted_patient_details_pdf">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+                        <h2 style="text-align: center;">Patient Case Sheet</h2>
+                         <!-- Patient Information Section -->
+                        <h3>Patient Information</h3>
+                        <table class="table">
+                            <tr>
+                                <td><strong>Patient ID:</strong></td>
+                                <td><span t-field="doc.patient_id"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Name:</strong></td>
+                                <td><span t-field="doc.name"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Age:</strong></td>
+                                <td><span t-field="doc.age"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender:</strong></td>
+                                <td><span t-field="doc.gender"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date of Birth:</strong></td>
+                                <td><span t-field="doc.dob"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Contact:</strong></td>
+                                <td><span t-field="doc.phone_number"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Admission Details Section -->
+                        <h3>Admission Details</h3>
+                        <table class="table">
+                            <tr>
+                                <td><strong>Admission Date:</strong></td>
+                                <td><span t-field="doc.admission_date"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Room Number:</strong></td>
+                                <td><span t-field="doc.room_number"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bed Number:</strong></td>
+                                <td><span t-field="doc.bed_number"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Admitting Doctor:</strong></td>
+                                <td><span t-field="doc.attending_doctor"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Attending Doctor:</strong></td>
+                                <td><span t-field="doc.attending_doctor"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reason for Admission:</strong></td>
+                                <td><span t-field="doc.reason_for_admission"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Medical History Section -->
+                        <h3>Medical History</h3>
+                        <table class="table">
+                            <tr>
+                                <td><strong>Previous Conditions:</strong></td>
+                                <td><span t-field="doc.previous_conditions"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Current Diagnosis:</strong></td>
+                                <td><span t-field="doc.current_diagnosis"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Medications Prescribed:</strong></td>
+                                <td><span t-field="doc.medications_prescribed"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Allergies:</strong></td>
+                                <td><span t-field="doc.allergies"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Test Results:</strong></td>
+                                <td><span t-field="doc.test_results"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Treatment Plan Section -->
+                        <h3>Treatment Plan</h3>
+                        <table class="table">
+                            <tr>
+                                <td><strong>Scheduled Procedures:</strong></td>
+                                <td><span t-field="doc.procedures_scheduled"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Treatment Description:</strong></td>
+                                <td><span t-field="doc.treatment_description"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Daily Progress Notes:</strong></td>
+                                <td><span t-field="doc.daily_progress_notes"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Consultation Notes:</strong></td>
+                                <td><span t-field="doc.consultation_notes"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Billing Information Section -->
+                        <h3>Billing Information</h3>
+                        <table class="table">
+                            <tr>
+                                <td><strong>Insurance Provider:</strong></td>
+                                <td><span t-field="doc.insurance_provider"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Insurance Policy Number:</strong></td>
+                                <td><span t-field="doc.insurance_policy_number"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Advance Payment:</strong></td>
+                                <td><span t-field="doc.advance_payment"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Billing Summary:</strong></td>
+                                <td><span t-field="doc.billing_summary"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Discharge Details Section -->
+                        <h3>Discharge Details</h3>
+                        <table class="table">
+                            <tr>
+                                <td><strong>Discharge Date:</strong></td>
+                                <td><span t-field="doc.discharge_date"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Final Diagnosis:</strong></td>
+                                <td><span t-field="doc.final_diagnosis"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Discharge Prescriptions:</strong></td>
+                                <td><span t-field="doc.discharge_prescriptions"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Follow-up Instructions:</strong></td>
+                                <td><span t-field="doc.follow_up_instructions"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Summary Report:</strong></td>
+                                <td><span t-field="doc.summary_report"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+        <record id="action_admitted_patient_report" model="ir.actions.report">
+            <field name="name">Admitted Patient Details</field>
+            <field name="model">hospital.admitted.patient</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">homeo_doctor.report_admitted_patient_details_pdf</field>
+            <field name="report_file">homeo_doctor.report_admitted_patient_details_pdf</field>
+            <field name="print_report_name">'Admitted Patient Details'</field>
+        </record>
+    </data>
+</odoo>

@@ -20,9 +20,14 @@
             <field name="model">hospital.admitted.patient</field>
             <field name="arch" type="xml">
                 <form string="Admitted Patient Details">
+                    <header>
+                        <button name="action_print_patient_report" type="object" string="Print Patient Case Sheet" class="btn-primary" target="new"/>
+                    </header>
                     <sheet>
                         <group>
                             <field name="patient_id"/>
+                            <field name="name"/>
+                            <field name="dob"/>
                             <field name="admission_date"/>
                             <field name="room_number"/>
                             <field name="bed_number"/>
@@ -36,10 +41,19 @@
                         <notebook>
                             <page string="Medical History">
                                 <field name="previous_conditions"/>
+<!--                                <field name="current_diagnosis"/>-->
+<!--                                <field name="medications_prescribed"/>-->
+<!--                                <field name="allergies"/>-->
+<!--                                <field name="test_results"/>-->
+                            </page>
+                            <page string="Current Diagnosis">
                                 <field name="current_diagnosis"/>
+                            </page>
+                            <page string="Medicines Prescribed">
                                 <field name="medications_prescribed"/>
+                            </page>
+                            <page string="Allergies">
                                 <field name="allergies"/>
-                                <field name="test_results"/>
                             </page>
                             <page string="Treatment Plan">
                                 <field name="procedures_scheduled"/>

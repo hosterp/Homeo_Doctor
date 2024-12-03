@@ -7,12 +7,14 @@ class AdmittedPatient(models.Model):
     _order = 'admission_date desc'
 
     patient_id = fields.Many2one('patient.reg', string="Patient", required=True)
+    name = fields.Char(related='patient_id.patient_id', string="Patient Name", required=True)
     age = fields.Integer(related='patient_id.age', string="Age", readonly=True)
     gender = fields.Selection(related='patient_id.gender', string="Gender", readonly=True)
     phone_number = fields.Char(related='patient_id.phone_number', string="Phone Number", readonly=True)
     email = fields.Char(related='patient_id.email', string="Email", readonly=True)
     address = fields.Text(related='patient_id.address', string="Address", readonly=True)
-
+    medical_records=fields.Many2one('hospital.ot')
+    dob=fields.Date('Date of Birth')
 
     emergency_contact_name = fields.Char(string="Emergency Contact Name")
     emergency_contact_phone = fields.Char(string="Emergency Contact Phone")
@@ -61,3 +63,7 @@ class AdmittedPatient(models.Model):
     discharge_prescriptions = fields.Text(string="Discharge Prescriptions")
     follow_up_instructions = fields.Text(string="Follow-Up Instructions")
     summary_report = fields.Text(string="Summary Report")
+
+    def action_print_patient_report(self):
+        # This will trigger the report action
+        return self.env.ref('homeo_doctor.action_admitted_patient_report').report_action(self)

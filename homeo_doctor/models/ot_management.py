@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields, api
+
 
 class OTManagement(models.Model):
     _name = 'hospital.ot'
@@ -17,3 +18,18 @@ class OTManagement(models.Model):
         ('cancelled', 'Cancelled')],
         string='Status', default='scheduled')
     remarks = fields.Text(string='Remarks')
+    medical_record_ids = fields.One2many('hospital.admitted.patient', 'medical_records', string="Medical Records")
+
+    @api.onchange('patient_id')
+    def _onchange_patient_id(self):
+        if self.patient_id:
+
+            medical_records = self.env['hospital.admitted.patient'].search([('patient_id', '=', self.patient_id.id)])
+
+            self.medical_record_ids = [(0, 0, {
+                'previous_conditions': record.previous_conditions,
+                'current_diagnosis': record.current_diagnosis,
+                'test_results': record.test_results,
+                'patient_id': record.patient_id.id,
+                'medical_records': self.id
+            }) for record in medical_records]

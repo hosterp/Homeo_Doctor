@@ -14,6 +14,17 @@
                             <field name="status"/>
                             <field name="remarks"/>
                         </group>
+                        <notebook>
+                            <page string="Medical Records">
+                                <field name="medical_record_ids">
+                                    <tree>
+                                        <field name="previous_conditions"/>
+<!--                                        <field name="current_diagnosis"/>-->
+<!--                                        <field name="test_results"/>-->
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>

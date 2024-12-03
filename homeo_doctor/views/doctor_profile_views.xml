@@ -12,21 +12,25 @@
                             <field name="doctor_id" required="1"/>
                             <field name="name" required="1"/>
                             <field name="specialization"/>
+                            <field name="available_hours"/>
                         </group>
                         <group>
                             <field name="phone" widget="phone" required="1"/>
                             <field name="email" widget="email"/>
+                            <field name="experience_years"/>
                         </group>
                         <group>
                             <field name="qualification"/>
                             <field name="joining_date"/>
+                            <field name="available_days"/>
+                            <field name="bio"/>
                         </group>
                     </sheet>
                 </form>
             </field>
         </record>
 
-        <!-- Tree View -->
+
         <record id="view_doctor_profile_tree" model="ir.ui.view">
             <field name="name">doctor.profile.tree</field>
             <field name="model">doctor.profile</field>
@@ -42,7 +46,7 @@
             </field>
         </record>
 
-        <!-- Action -->
+
         <record id="action_doctor_profile" model="ir.actions.act_window">
             <field name="name">Doctor Profiles</field>
             <field name="res_model">doctor.profile</field>

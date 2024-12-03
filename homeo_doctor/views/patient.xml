@@ -11,7 +11,8 @@
                                 class="oe_stat_button">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
-
+                        <button name="%(action_patient_registration_report)d" string="Print" type="action"
+                                class="btn-primary"/>
                     </header>
                     <sheet>
                         <h1 class="oe_left">
@@ -32,6 +33,7 @@
                                 <field name="gender"/>
                                 <field name="phone_number" widget="phone"/>
                                 <field name="doc_name"/>
+                                <field name="time"/>
                             </group>
                             <group col="3">
                                 <!--                                <field name="symptoms"/>-->
@@ -61,12 +63,30 @@
                 </tree>
             </field>
         </record>
+        <record id="patient_reg_search" model="ir.ui.view">
+            <field name="name">patient.reg.search</field>
+            <field name="model">patient.reg</field>
+            <field name="arch" type="xml">
+                <search string="Search Patient">
+                    <field name="phone_number" string="Phone Number"/>
+                    <field name="reference_no" string="Reference Number"/>
+                    <filter string="Phone Number"
+                            name="phone_number_filter"
+                            domain="[('phone_number', 'ilike', self)]"/>
+                    <filter string="Reference Number"
+                            name="reference_number_filter"
+                            domain="[('reference_no', 'ilike', self)]"/>
+                </search>
+            </field>
+        </record>
+
 
         <record id="action_patient_reg" model="ir.actions.act_window">
             <field name="name">Patient Details form</field>
             <field name="res_model">patient.reg</field>
             <field name="view_mode">tree,form</field>
-            <!--            <field name="view_id" ref="patient_reg_tree"/>-->
+            <field name="search_view_id" ref="patient_reg_search"/>
+            <field name="view_id" ref="patient_reg_tree"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create new patient
