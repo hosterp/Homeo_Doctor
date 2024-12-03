@@ -23,7 +23,7 @@ class PatientRegistration(models.Model):
     checkup_reports=fields.Text(string='Checkup Details')
     med_ids = fields.One2many("prescription.entry.lines", 'prescription_line_id', string="Prescription Entry Lines")
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
-
+    move_to_pharmacy_clicked = fields.Boolean(string="Move to Pharmacy Clicked", default=False)
 
     def _compute_lab_report_count(self):
         for record in self:
@@ -56,6 +56,7 @@ class PatientRegistration(models.Model):
                 record.formatted_date = ''
 
     def action_move_to_pharmacy(self):
+        self.move_to_pharmacy_clicked = True
         pharmacy_vals = {
             'name': self.patient_id,
             'patient_id': self.reference_no,

@@ -12,7 +12,8 @@
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
                         <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object"
-                                class="btn-primary"/>
+                                class="btn-primary" context="{'hide_button': True}"
+                                attrs="{'invisible': [('move_to_pharmacy_clicked', '=', True)]}"/>
                     </header>
                     <sheet>
                         <h1 class="oe_left">
@@ -24,7 +25,7 @@
                         <group>
                             <group col="3">
                                 <field name="patient_id"/>
-                                 <field name="gender"/>
+                                <field name="gender"/>
                                 <field name="address"/>
                             </group>
                             <group col="3">
@@ -52,6 +53,7 @@
                         </group>
                         <group col="3">
                             <field name="remark"/>
+                            <field name="move_to_pharmacy_clicked" invisible="1"/>
                         </group>
                     </sheet>
                 </form>

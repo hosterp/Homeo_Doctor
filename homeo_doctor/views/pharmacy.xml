@@ -36,7 +36,17 @@
             </field>
         </record>
 
-
+        <record id="pharmacy_tree" model="ir.ui.view">
+            <field name="name">pharmacy.tree</field>
+            <field name="model">pharmacy.description</field>
+            <field name="arch" type="xml">
+                <tree string="Patient Details">
+                    <field name="patient_id" string='Patient ID'/>
+                    <field name="name"/>
+                    <field name="phone_number"/>
+                </tree>
+            </field>
+        </record>
         <record id="action_pharmacy_description" model="ir.actions.act_window">
             <field name="name">Pharmacy Description</field>
             <field name="res_model">pharmacy.description</field>
