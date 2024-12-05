@@ -8,3 +8,4 @@ from .import Pharmacy
 from .import admitted_patient_details
 from .import ot_management
 from .import patient_insurance
+from .import hr_module_custom

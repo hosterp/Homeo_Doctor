@@ -27,7 +27,7 @@
         </record>
         <menuitem
                 id="menu_homeo_head"
-                name="HOMEO"
+                name="HOSPITAL"
                 sequence="0"/>
         <menuitem
                 id="menu_patient_root"

@@ -11,8 +11,8 @@
                                 class="oe_stat_button">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
-                        <button name="%(action_patient_registration_report)d" string="Print" type="action"
-                                class="btn-primary"/>
+<!--                        <button name="%(action_patient_registration_report)d" string="Print" type="action"-->
+<!--                                class="btn-primary"/>-->
                     </header>
                     <sheet>
                         <h1 class="oe_left">
