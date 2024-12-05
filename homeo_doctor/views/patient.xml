@@ -11,8 +11,8 @@
                                 class="oe_stat_button">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
-<!--                        <button name="%(action_patient_registration_report)d" string="Print" type="action"-->
-<!--                                class="btn-primary"/>-->
+                        <button name="action_create_appointment" type="object" string="Create Appointment"/>
+
                     </header>
                     <sheet>
                         <h1 class="oe_left">
@@ -27,11 +27,12 @@
                                 <field name="address"/>
                                 <field name="email"/>
                                 <field name="registration_fee"/>
+                                <field name="phone_number" widget="phone"/>
                             </group>
                             <group col="3">
                                 <field name="age"/>
                                 <field name="gender"/>
-                                <field name="phone_number" widget="phone"/>
+                                <field name="department_id"/>
                                 <field name="doc_name"/>
                                 <field name="time"/>
                             </group>

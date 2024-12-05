@@ -1,0 +1,48 @@
+<odoo>
+    <record id="view_patient_appointment_tree" model="ir.ui.view">
+        <field name="name">patient.appointment.tree</field>
+        <field name="model">patient.appointment</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="appointment_reference"/>
+                <field name="patient_id"/>
+                <field name="appointment_date"/>
+                <field name="doctor_id"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_patient_appointment_form" model="ir.ui.view">
+        <field name="name">patient.appointment.form</field>
+        <field name="model">patient.appointment</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="appointment_reference"/>
+                        <field name="patient_id"/>
+                        <field name="appointment_date"/>
+                        <field name="doctor_id"/>
+                        <field name="reason"/>
+<!--                        <field name="status"/>-->
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_patient_appointments" model="ir.actions.act_window">
+        <field name="name">Patient Appointments</field>
+        <field name="res_model">patient.appointment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_patient_appointments" name="Appointments" action="action_patient_appointments" parent="menu_my_patient_template_root"/>
+</odoo>

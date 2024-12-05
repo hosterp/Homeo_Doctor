@@ -17,6 +17,7 @@
                         <group>
                             <field name="phone" widget="phone" required="1"/>
                             <field name="email" widget="email"/>
+                            <field name="department_id"/>
                             <field name="experience_years"/>
                         </group>
                         <group>

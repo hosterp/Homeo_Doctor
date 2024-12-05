@@ -17,12 +17,14 @@ class PatientRegistration(models.Model):
     age = fields.Integer(required=True, string="Age")
     phone_number = fields.Char(string="Phone No",size=12)
     email = fields.Char(string="Email ID")
+    department_id=fields.Many2one('doctor.department',string='Department',required=True)
     doc_name=fields.Many2one('doctor.profile',string='Doctor')
     registration_fee = fields.Float(string="Registration Fee", required=True, default=50.0)
     remark = fields.Text(string="Remark")
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender", required=True)
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     time=fields.Datetime(string="Time")
+
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
@@ -66,3 +68,20 @@ class PatientRegistration(models.Model):
     @api.model
     def search_patient_by_phone(self, phone_number):
         return self.search([('phone_number', 'ilike', phone_number)])
+
+    def action_create_appointment(self):
+        appointment_vals = {
+            'patient_id': self.id,
+            'appointment_date': fields.Datetime.now(),  # Default to current time
+            'doctor_id': self.doc_name.id,  # Assuming doc_name is the doctor assigned
+            'status': 'draft',
+        }
+        appointment = self.env['patient.appointment'].create(appointment_vals)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Patient Appointment',
+            'res_model': 'patient.appointment',
+            'view_mode': 'form',
+            'res_id': appointment.id,
+            'target': 'current',
+        }

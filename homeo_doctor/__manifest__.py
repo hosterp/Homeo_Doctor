@@ -22,6 +22,8 @@
         "views/admitted_patient_details.xml",
         "views/ot_management.xml",
         "views/patient_insurance.xml",
+        "views/patient_appointments.xml",
+        "views/doctor_department.xml",
         # "views/hr_module_custom.xml",
         "report/patient_report.xml",
         "report/patient_registion_report.xml",
