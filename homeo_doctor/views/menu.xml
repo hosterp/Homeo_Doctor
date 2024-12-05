@@ -13,16 +13,22 @@
             <field name="padding">5</field>
             <field name="number_increment">1</field>
         </record>
-          <record id="seq_doctor_lab_report" model="ir.sequence">
+        <record id="seq_doctor_lab_report" model="ir.sequence">
             <field name="name">Doctor Lab Report</field>
             <field name="code">doctor.lab.report</field>
             <field name="padding">5</field>
             <field name="number_increment">1</field>
         </record>
-         <record id="doctor_profile_sequence" model="ir.sequence">
+        <record id="doctor_profile_sequence" model="ir.sequence">
             <field name="name">Doctor Profile</field>
             <field name="code">doctor.profile</field>
             <field name="padding">3</field>
+            <field name="number_increment">1</field>
+        </record>
+        <record id="patient_appointment_sequence" model="ir.sequence">
+            <field name="name">Patient Appointment</field>
+            <field name="code">patient.appointment.sequence</field>
+            <field name="padding">4</field>
             <field name="number_increment">1</field>
         </record>
         <menuitem
@@ -51,7 +57,7 @@
                   name="Medicine Create"
                   parent="menu_homeo_head"
                   sequence="2"/>
-      <menuitem id="menu_my_patient_template_root" name="Patient Registration" parent="menu_homeo_head" sequence="0"/>
+        <menuitem id="menu_my_patient_template_root" name="Patient Registration" parent="menu_homeo_head" sequence="0"/>
 
 
     </data>

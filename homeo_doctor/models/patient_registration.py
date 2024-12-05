@@ -66,3 +66,20 @@ class PatientRegistration(models.Model):
     @api.model
     def search_patient_by_phone(self, phone_number):
         return self.search([('phone_number', 'ilike', phone_number)])
+
+    def action_create_appointment(self):
+        appointment_vals = {
+            'patient_id': self.id,
+            'appointment_date': fields.Datetime.now(),  # Default to current time
+            'doctor_id': self.doc_name.id,  # Assuming doc_name is the doctor assigned
+            'status': 'draft',
+        }
+        appointment = self.env['patient.appointment'].create(appointment_vals)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Patient Appointment',
+            'res_model': 'patient.appointment',
+            'view_mode': 'form',
+            'res_id': appointment.id,
+            'target': 'current',
+        }

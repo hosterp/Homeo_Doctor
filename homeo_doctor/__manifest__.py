@@ -26,6 +26,9 @@
         "report/patient_report.xml",
         "report/patient_registion_report.xml",
         "report/admitted_patient_report.xml",
+        "views/patient.xml",
+        "views/ct_scan.xml",
+        "views/patient_appointments.xml",
 
     ],
     'assets': {
