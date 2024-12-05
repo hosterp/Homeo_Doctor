@@ -1,10 +1,10 @@
 <odoo>
     <data>
-        <record id="view_scanning_ct_tree" model="ir.ui.view">
-            <field name="name">scanning.ct.tree</field>
-            <field name="model">scanning.ct</field>
+        <record id="view_scanning_mri_tree" model="ir.ui.view">
+            <field name="name">scanning.mri.tree</field>
+            <field name="model">scanning.mri</field>
             <field name="arch" type="xml">
-                <tree string="CT Scan">
+                <tree string="MRI Scan">
                     <field name="patient_id"/>
                     <field name="age"/>
                     <field name="gender"/>
@@ -14,10 +14,10 @@
         </record>
 
 
-        <!-- CT Scan Form View -->
-        <record id="view_scanning_ct_form" model="ir.ui.view">
-            <field name="name">scanning.ct.form</field>
-            <field name="model">scanning.ct</field>
+        <!-- MRI Scan Form View -->
+        <record id="view_scanning_mri_form" model="ir.ui.view">
+            <field name="name">scanning.mri.form</field>
+            <field name="model">scanning.mri</field>
             <field name="arch" type="xml">
                 <form string="CT Scan">
                     <sheet>
@@ -32,8 +32,7 @@
                                 <field name="scan_report_date"/>
                             </group>
                             <group>
-                                <field name="scan_registered_date"/>
-                                <field name="scan_report_date"/>
+                                <field name="file_report" filename="file_report_name"/>
                                 <field name="investigation"/>
                                 <field name="details"/>
                                 <field name="impression"/>
@@ -44,16 +43,16 @@
             </field>
         </record>
 
-        <!-- CT Scan Action -->
-        <record id="action_ct_scan" model="ir.actions.act_window">
-            <field name="name">CT Scan</field>
-            <field name="res_model">scanning.ct</field>
+        <!-- MRI Scan Action -->
+        <record id="action_mri_scan" model="ir.actions.act_window">
+            <field name="name">MRI Scan</field>
+            <field name="res_model">scanning.mri</field>
             <field name="view_mode">tree,form</field>
         </record>
 
         <!-- Menu Item -->
         <menuitem id="menu_scanning_root" name="Scanning" parent="menu_hospital_root" sequence="7"/>
-        <menuitem id="menu_scanning_ct" name="CT Scan" parent="menu_scanning_root" action="action_ct_scan"
-                  sequence="1"/>
+        <menuitem id="menu_scanning_mri" name="MRI Scan" parent="menu_scanning_root" action="action_mri_scan"
+                  sequence="2"/>
     </data>
 </odoo>

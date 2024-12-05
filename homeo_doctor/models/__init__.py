@@ -11,3 +11,5 @@ from .import patient_insurance
 from .import hr_module_custom
 from .import ct_scan
 from .import patient_appointments
+from .import mri_scan
+from .import x_ray_scan

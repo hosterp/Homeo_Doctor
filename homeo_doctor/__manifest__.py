@@ -28,6 +28,8 @@
         "report/admitted_patient_report.xml",
         "views/patient.xml",
         "views/ct_scan.xml",
+        "views/mri_scan.xml",
+        "views/x_ray_scan.xml",
         "views/patient_appointments.xml",
 
     ],

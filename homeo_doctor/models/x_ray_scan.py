@@ -1,7 +1,7 @@
 from odoo import api, fields, models, _
 
-class CT_Scan(models.Model):
-    _name = 'scanning.ct'
+class X_RAY_Scan(models.Model):
+    _name = 'scanning.x.ray'
     _rec_name = 'patient_id'
 
     patient_id = fields.Many2one('patient.reg', string="Patient", required=True)
@@ -10,6 +10,8 @@ class CT_Scan(models.Model):
     doctor_id = fields.Many2one('doctor.profile', string="Doctor", required=True)
     scan_registered_date = fields.Date(string="Registered Date")
     scan_report_date = fields.Date(string="Report Date")
+    file_report = fields.Binary(string="Result")
+    file_report_name = fields.Char(string="Result")
     investigation = fields.Text(string="Investigation")
     details = fields.Text(string="Details")
     impression = fields.Text(string="Impression")
