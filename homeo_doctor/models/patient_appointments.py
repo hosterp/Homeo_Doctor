@@ -28,5 +28,9 @@ class PatientAppointment(models.Model):
 
     @api.model
     def search_appointments_by_patient(self, patient_id):
+
+        return self.search([('patient_id', '=', patient_id)])
+
+
         return self.search([('patient_id', '=', patient_id)])
 

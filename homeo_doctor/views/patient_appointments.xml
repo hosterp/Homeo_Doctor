@@ -45,4 +45,7 @@
     </record>
 
     <menuitem id="menu_patient_appointments" name="Appointments" action="action_patient_appointments" parent="menu_my_patient_template_root"/>
+
 </odoo>
+
+
