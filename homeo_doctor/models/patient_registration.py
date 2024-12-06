@@ -25,7 +25,7 @@ class PatientRegistration(models.Model):
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     time=fields.Datetime(string="Time")
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
-
+    ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
