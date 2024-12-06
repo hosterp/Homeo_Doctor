@@ -24,6 +24,7 @@ class PatientRegistration(models.Model):
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender", required=True)
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     time=fields.Datetime(string="Time")
+    mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
 
     def _compute_lab_report_count(self):
         for record in self:
@@ -53,6 +54,7 @@ class PatientRegistration(models.Model):
             'address': record.address,
             'age': record.age,
             'phone_number': record.phone_number,
+            'doctor_id': record.doc_name,
         })
 
         return record

@@ -1,6 +1,9 @@
 import dateutil.utils
 from odoo import api, fields, models, tools,_
 import odoo.addons
+from odoo.exceptions import UserError
+
+
 # from datetime import datetime, date
 # default=date.today()
 class PatientRegistration(models.Model):
@@ -14,6 +17,7 @@ class PatientRegistration(models.Model):
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     user_id = fields.Many2one('patient.reg', string='Name',required=True)
     patient_id = fields.Char(string='Name',required=True,related='user_id.patient_id')
+    doctor_id=fields.Many2one(string='Doctor name',related='user_id.doc_name')
     address = fields.Text(string='Address',required=True,related='user_id.address')
     age = fields.Integer( string='Age',required=True,related='user_id.age')
     phone_number = fields.Char( string='Phone No',size=12,related='user_id.phone_number')
@@ -25,6 +29,10 @@ class PatientRegistration(models.Model):
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     move_to_pharmacy_clicked = fields.Boolean(string="Move to Pharmacy Clicked", default=False)
 
+    mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
+
+    # ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
+    # xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
@@ -85,6 +93,35 @@ class PatientRegistration(models.Model):
         # }
 
 
+    def action_create_referral_ct(self):
+        return self._create_referral(scan_type='ct')
+
+
+    def action_create_referral_mri(self):
+
+        return self._create_referral(scan_type='mri')
+
+
+    def action_create_referral_xray(self):
+        return self._create_referral(scan_type='xray')
+
+    def _create_referral(self, scan_type):
+        for consultation in self:
+            if not consultation.patient_id:
+                raise UserError("Patient not selected.")
+
+
+            referral = self.env['doctor.referral'].create({
+                'doctor_id': consultation.doctor_id.id,
+                'patient_id': consultation.id,
+                'referral_type': 'scanning',
+                'details': f'Refer for {scan_type.replace("_", " ").title()}',
+                'scan_type': scan_type,
+            })
+
+        return True
+
+
 class PrescriptionEntryLine(models.Model):
     _name = 'prescription.entry.lines'
     _description = 'Prescription Entry Line'
@@ -97,10 +134,28 @@ class PrescriptionEntryLine(models.Model):
     noon = fields.Boolean("Noon")
     night = fields.Boolean("Night")
 
+class DoctorReferral(models.Model):
+    _name = 'doctor.referral'
+    _rec_name = 'reference_no'
 
-    # @api.onchange('product_id')
-    # def product_stock_total(self):
-    #     if self.product_id:
-    #         stock_records = self.env['stock.entry.lines'].search([('product_id', '=', self.product_id.id)])
-    #         print(stock_records.stock,'stock................')
-    #         self.total_med=stock_records.stock
+    reference_no = fields.Char(string="Reference",readonly=True)
+    doctor_id = fields.Many2one('doctor.profile', string="Doctor")
+    patient_id = fields.Many2one('patient.reg', string="Patient")
+    referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation')],
+                                     default='scanning')
+    details = fields.Text(string="Referral Details")
+    scan_type = fields.Selection([('mri', 'MRI'), ('ct', 'CT Scan'), ('xray', 'X-Ray')], string="Scan Type")
+
+
+    mri_report_id = fields.Many2one('scanning.mri', string="MRI Report")
+    ct_report_id = fields.Many2one('scanning.ct', string="CT Report")
+    xray_report_id = fields.Many2one('scanning.x.ray', string="X-Ray Report")
+
+
+    @api.model
+    def create(self, vals):
+        if vals.get('reference_no', _('New')) == _('New'):
+            vals['reference_no'] = self.env['ir.sequence'].next_by_code(
+                'doctor.referral.group') or _('New')
+        res = super(DoctorReferral, self).create(vals)
+        return res

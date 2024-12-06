@@ -7,6 +7,12 @@
             <field name="padding">5</field>
             <field name="number_increment">1</field>
         </record>
+          <record id="sequence_for_doctor_referral" model="ir.sequence">
+            <field name="name">Doctor Referral</field>
+            <field name="code">doctor.referral.group</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+        </record>
         <record id="patient_appointment_sequence" model="ir.sequence">
             <field name="name">Patient Appointment</field>
             <field name="code">patient.appointment.sequence</field>
