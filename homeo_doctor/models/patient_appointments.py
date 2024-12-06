@@ -12,6 +12,7 @@ class PatientAppointment(models.Model):
     patient_id = fields.Many2one('patient.reg', string='Patient', required=True)
     appointment_date = fields.Datetime(string="Appointment Date", required=True)
     doctor_id = fields.Many2one('doctor.profile', string='Doctor', required=True)
+    department=fields.Many2one('doctor.department',string='Department',required=True)
     reason = fields.Text(string="Reason for Appointment")
     status = fields.Selection(
         [('draft', 'Draft'), ('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')],
@@ -28,4 +29,8 @@ class PatientAppointment(models.Model):
 
     @api.model
     def search_appointments_by_patient(self, patient_id):
+
         return self.search([('patient_id', '=', patient_id)])
+
+        return self.search([('patient_id', '=', patient_id)])
+

@@ -17,12 +17,14 @@ class PatientRegistration(models.Model):
     age = fields.Integer(required=True, string="Age")
     phone_number = fields.Char(string="Phone No",size=12)
     email = fields.Char(string="Email ID")
+    department_id=fields.Many2one('doctor.department',string='Department',required=True)
     doc_name=fields.Many2one('doctor.profile',string='Doctor')
     registration_fee = fields.Float(string="Registration Fee", required=True, default=50.0)
     remark = fields.Text(string="Remark")
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender", required=True)
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     time=fields.Datetime(string="Time")
+
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
