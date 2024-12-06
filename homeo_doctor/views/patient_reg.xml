@@ -5,7 +5,7 @@
             <field name="name">patient.registration.form</field>
             <field name="model">patient.registration</field>
             <field name="arch" type="xml">
-                <form string="Patient Details">
+                <form string="Consultation Details">
                     <header>
                         <button name="action_view_lab_reports" type="object" string="Lab Reports"
                                 class="oe_stat_button">
@@ -63,7 +63,7 @@
             <field name="name">patient.registration.tree</field>
             <field name="model">patient.registration</field>
             <field name="arch" type="xml">
-                <tree string="Patient Details">
+                <tree string="Consultation Details">
                     <field name="reference_no" string="NO"/>
                     <field name="patient_id"/>
                     <field name="formatted_date" string="Date"/>
@@ -74,7 +74,7 @@
         </record>
 
         <record id="action_patient_registration" model="ir.actions.act_window">
-            <field name="name">Patient Details</field>
+            <field name="name">Consultation Details</field>
             <field name="res_model">patient.registration</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="patient_registration_tree"/>
