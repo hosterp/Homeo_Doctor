@@ -18,7 +18,7 @@ class PatientRegistration(models.Model):
     phone_number = fields.Char(string="Phone No",size=12)
     email = fields.Char(string="Email ID")
     department_id=fields.Many2one('doctor.department',string='Department',required=True)
-    doc_name=fields.Many2one('doctor.profile',string='Doctor')
+    doc_name=fields.Many2one('doctor.profile',string='Doctor',required=True)
     registration_fee = fields.Float(string="Registration Fee", required=True, default=50.0)
     remark = fields.Text(string="Remark")
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender", required=True)
