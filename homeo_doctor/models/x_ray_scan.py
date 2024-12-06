@@ -15,3 +15,19 @@ class X_RAY_Scan(models.Model):
     investigation = fields.Text(string="Investigation")
     details = fields.Text(string="Details")
     impression = fields.Text(string="Impression")
+    referral_id = fields.Many2one('doctor.referral', string="Referral ID")
+    report_details = fields.Text(string="X-RAY Report Details")
+
+    def action_add_report(self, report_details):
+        for scan in self:
+            report = self.env['scanning.x.ray'].create({
+                'referral_id': scan.referral_id.id,
+                'patient_id': scan.patient_id.id,
+                'report_details': report_details,
+            })
+
+            scan.referral_id.write({
+                'mri_report_id': report.id
+            })
+
+        return True

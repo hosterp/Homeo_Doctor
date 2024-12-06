@@ -32,7 +32,7 @@ class PatientRegistration(models.Model):
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
 
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
-    # xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
+    xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient

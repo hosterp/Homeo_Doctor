@@ -20,6 +20,8 @@
                                 class="btn-primary"/>
                         <button name="action_create_referral_ct" type="object" string="Refer for CT"
                                 class="btn-primary"/>
+                        <button name="action_create_referral_xray" type="object" string="Refer for X-RAY"
+                                class="btn-primary"/>
 
                     </header>
                     <sheet>
@@ -74,6 +76,15 @@
                         </group>
                         <group>
                             <field name="ct_report_ids">
+                                <tree>
+                                    <field name="report_details"/>
+                                    <field name="scan_report_date"/>
+                                </tree>
+                            </field>
+
+                        </group>
+                        <group>
+                            <field name="xray_report_ids">
                                 <tree>
                                     <field name="report_details"/>
                                     <field name="scan_report_date"/>
