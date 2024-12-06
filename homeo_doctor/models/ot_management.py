@@ -23,13 +23,6 @@ class OTManagement(models.Model):
     @api.onchange('patient_id')
     def _onchange_patient_id(self):
         if self.patient_id:
-
             medical_records = self.env['hospital.admitted.patient'].search([('patient_id', '=', self.patient_id.id)])
+            self.medical_record_ids = [(6, 0, medical_records.ids)]
 
-            self.medical_record_ids = [(0, 0, {
-                'previous_conditions': record.previous_conditions,
-                'current_diagnosis': record.current_diagnosis,
-                'test_results': record.test_results,
-                'patient_id': record.patient_id.id,
-                'medical_records': self.id
-            }) for record in medical_records]
