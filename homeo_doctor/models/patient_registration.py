@@ -72,8 +72,9 @@ class PatientRegistration(models.Model):
     def action_create_appointment(self):
         appointment_vals = {
             'patient_id': self.id,
-            'appointment_date': fields.Datetime.now(),  # Default to current time
-            'doctor_id': self.doc_name.id,  # Assuming doc_name is the doctor assigned
+            'appointment_date': fields.Datetime.now(),
+            'doctor_id': self.doc_name.id,
+            'department': self.department_id.id,
             'status': 'draft',
         }
         appointment = self.env['patient.appointment'].create(appointment_vals)
