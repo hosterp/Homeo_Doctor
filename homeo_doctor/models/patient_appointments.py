@@ -8,7 +8,7 @@ class PatientAppointment(models.Model):
     _rec_name = 'appointment_reference'
     _order = 'appointment_date desc'
 
-    appointment_reference = fields.Char(string="Appointment Reference")
+    appointment_reference = fields.Char(string="Appointment No", readonly=True)
     patient_id = fields.Many2one('patient.reg', string='Patient', required=True)
     appointment_date = fields.Datetime(string="Appointment Date", required=True)
     doctor_id = fields.Many2one('doctor.profile', string='Doctor', required=True)
@@ -22,15 +22,16 @@ class PatientAppointment(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals.get('appointment_reference', _('New')) == _('New'):
-            vals['appointment_reference'] = self.env['ir.sequence'].next_by_code('patient.appointment.sequence') or _(
-                'New')
+        if vals.get('appointment_reference', 'New') == 'New':
+            appointment_ref = self.env['ir.sequence'].next_by_code('patient.appointment.sequence')
+            vals['appointment_reference'] = appointment_ref or 'New'
         return super(PatientAppointment, self).create(vals)
+
 
     @api.model
     def search_appointments_by_patient(self, patient_id):
 
         return self.search([('patient_id', '=', patient_id)])
 
-        return self.search([('patient_id', '=', patient_id)])
+
 

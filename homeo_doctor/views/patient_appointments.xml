@@ -9,7 +9,6 @@
                 <field name="appointment_date"/>
                 <field name="department"/>
                 <field name="doctor_id"/>
-                <field name="status"/>
             </tree>
         </field>
     </record>
