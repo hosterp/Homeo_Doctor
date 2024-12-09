@@ -3,3 +3,7 @@
     padding: 20px 40px;
     border-radius: 8px;
 }
+.patient_reg_form .o_form_sheet_bg > .o_form_sheet {
+    max-width: 97% !important;
+}
+
