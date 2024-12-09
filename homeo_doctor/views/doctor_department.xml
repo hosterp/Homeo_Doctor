@@ -19,10 +19,16 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card">
-                            <strong>
-                                <field name="department"/>
-                            </strong>
-                             <button name="action_show_doctors" type="object" string="View Doctors" class="btn btn-primary btn-lg" />
+                            <div style="text-align: center; margin-top: 10px;">
+                                <strong>
+                                    <field name="department"/>
+                                </strong>
+                            </div>
+                            <div style="text-align: center; margin-top: 10px;">
+                                <button name="action_show_doctors" type="object" string="View Doctors"
+                                        class="btn btn-primary">View Doctors
+                                </button>
+                            </div>
                         </div>
                     </t>
                 </templates>
@@ -45,7 +51,7 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="target">current</field>
     </record>
-     <record id="action_show_doctors" model="ir.actions.act_window">
+    <record id="action_show_doctors" model="ir.actions.act_window">
         <field name="name">Doctors</field>
         <field name="res_model">doctor.profile</field>
         <field name="view_mode">tree,form</field>
