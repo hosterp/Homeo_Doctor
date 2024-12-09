@@ -12,7 +12,7 @@ class DoctorProfile(models.Model):
     email = fields.Char(string='Email')
     qualification = fields.Char(string='Qualification')
     joining_date = fields.Date(string='Joining Date', default=fields.Date.context_today)
-    department_id=fields.Many2one('doctor.department',string='Department',required=True)
+    department_id = fields.Many2one('doctor.department', string='Department', required=True)
     doctor_id = fields.Char(string="Doctor ID", readonly=True, copy=False, default="New")
     user_id = fields.Many2one('res.users', string="Assigned User", ondelete='set null')  # Changed ondelete to set null
     experience_years = fields.Integer(string='Years of Experience')
@@ -53,3 +53,15 @@ class DoctorDepartment(models.Model):
     _description = 'Doctor Department'
     _rec_name = 'department'
     department = fields.Char(string='Department Name', required=True)
+    doctor_ids = fields.One2many('doctor.profile', 'department_id', string="Doctors")
+
+
+    def action_show_doctors(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Doctors',
+            'res_model': 'doctor.profile',
+            'view_mode': 'tree,form',
+            'domain': [('department_id', '=', self.id)],
+            'target': 'current',
+        }
