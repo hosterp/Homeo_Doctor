@@ -10,9 +10,9 @@
                             <group>
                                 <field name="patient_id"/>
                                 <field name="name"/>
-                                <field name="phone_number"/>
                             </group>
                             <group>
+                                 <field name="phone_number"/>
                                 <field name="bill_amount"/>
                             </group>
                         </group>
