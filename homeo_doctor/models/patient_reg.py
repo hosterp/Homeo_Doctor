@@ -119,8 +119,15 @@ class PatientRegistration(models.Model):
                 'scan_type': scan_type,
             })
 
-        return True
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Referral',
+            'res_model': 'doctor.referral',
+            'view_mode': 'form',
+            'res_id': referral.id,
+            'target': 'new',
 
+        }
 
 class PrescriptionEntryLine(models.Model):
     _name = 'prescription.entry.lines'
@@ -139,17 +146,17 @@ class DoctorReferral(models.Model):
     _rec_name = 'reference_no'
 
     reference_no = fields.Char(string="Reference",readonly=True)
-    doctor_id = fields.Many2one('doctor.profile', string="Doctor")
-    patient_id = fields.Many2one('patient.reg', string="Patient")
+    doctor_id = fields.Many2one('doctor.profile', string="Doctor",readonly=True)
+    patient_id = fields.Many2one('patient.reg', string="Patient",readonly=True)
     referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation')],
                                      default='scanning')
     details = fields.Text(string="Referral Details")
-    scan_type = fields.Selection([('mri', 'MRI'), ('ct', 'CT Scan'), ('xray', 'X-Ray')], string="Scan Type")
+    scan_type = fields.Selection([('mri', 'MRI'), ('ct', 'CT Scan'), ('xray', 'X-Ray')], string="Scan Type",readonly=True)
 
 
-    mri_report_id = fields.Many2one('scanning.mri', string="MRI Report")
-    ct_report_id = fields.Many2one('scanning.ct', string="CT Report")
-    xray_report_id = fields.Many2one('scanning.x.ray', string="X-Ray Report")
+    mri_report_id = fields.Many2one('scanning.mri', string="MRI Report",readonly=True)
+    ct_report_id = fields.Many2one('scanning.ct', string="CT Report",readonly=True)
+    xray_report_id = fields.Many2one('scanning.x.ray', string="X-Ray Report",readonly=True)
 
 
     @api.model
