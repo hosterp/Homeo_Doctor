@@ -6,6 +6,7 @@
             <tree>
                 <field name="appointment_reference"/>
                 <field name="patient_id"/>
+                <field name="name"/>
                 <field name="appointment_date"/>
                 <field name="department"/>
                 <field name="doctor_id"/>
@@ -26,7 +27,7 @@
                         <field name="department"/>
                         <field name="doctor_id"/>
                         <field name="reason"/>
-<!--                        <field name="status"/>-->
+                        <!--                        <field name="status"/>-->
                     </group>
                     <notebook>
                         <page string="Notes">
@@ -37,15 +38,29 @@
             </form>
         </field>
     </record>
+        <record id="view_patient_appointment_calendar" model="ir.ui.view">
+        <field name="name">patient.appointment.calendar</field>
+        <field name="model">patient.appointment</field>
+        <field name="arch" type="xml">
+            <calendar string="Appointments" date_start="appointment_date">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="department"/>
+                <field name="doctor_id"/>
+            </calendar>
+        </field>
+    </record>
 
     <record id="action_patient_appointments" model="ir.actions.act_window">
         <field name="name">Patient Appointments</field>
         <field name="res_model">patient.appointment</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">calendar,tree,form</field>
         <field name="target">current</field>
     </record>
 
-    <menuitem id="menu_patient_appointments" name="Appointments" action="action_patient_appointments" parent="menu_my_patient_template_root"/>
+
+    <menuitem id="menu_patient_appointments" name="Appointments" action="action_patient_appointments"
+              parent="menu_my_patient_template_root"/>
 
 </odoo>
 

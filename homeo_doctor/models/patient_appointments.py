@@ -19,7 +19,7 @@ class PatientAppointment(models.Model):
         default='draft', string="Status")
     notes = fields.Text(string="Appointment Notes")
     created_date = fields.Datetime(default=fields.Datetime.now, readonly=True)
-
+    name = fields.Char(string='Appointment Subject', required=True)
     @api.model
     def create(self, vals):
         if vals.get('appointment_reference', 'New') == 'New':
