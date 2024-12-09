@@ -36,3 +36,14 @@ class MRI_Scan(models.Model):
         return True
 
 
+
+    @api.onchange('patient_id')
+    def _onchange_patient_id(self):
+        if self.patient_id:
+
+            latest_referral = self.env['doctor.referral'].search(
+                [('patient_id', '=', self.patient_id.id),('scan_type','=','mri')],
+                order='create_date desc', 
+                limit=1
+            )
+            self.referral_id = latest_referral.id if latest_referral else False

@@ -29,9 +29,18 @@ class CT_Scan(models.Model):
 
 
             scan.referral_id.write({
-                'mri_report_id': report.id
+                'ct_report_id': report.id
             })
 
         return True
 
+    @api.onchange('patient_id')
+    def _onchange_patient_id(self):
+        if self.patient_id:
+            latest_referral = self.env['doctor.referral'].search(
+                [('patient_id', '=', self.patient_id.id),('scan_type','=','ct')],
+                order='create_date desc',
+                limit=1
+            )
+            self.referral_id = latest_referral.id if latest_referral else False
 
