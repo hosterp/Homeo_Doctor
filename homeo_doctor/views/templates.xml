@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="custom_template" inherit_id="web.layout">
+        <xpath expr="//head" position="inside">
+            <link rel="stylesheet" href="/homeo_doctor/static/src/css/styles.css"/>
+            <script type="text/javascript" src="/homeo_doctor/static/src/js/custom_filter.js"></script>
+        </xpath>
+    </template>
+</odoo>

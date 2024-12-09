@@ -5,7 +5,7 @@
             <field name="name">patient.reg.form</field>
             <field name="model">patient.reg</field>
             <field name="arch" type="xml">
-                <form string="Patient Details">
+                <form string="Patient Details" class="patient_reg_form">
                     <header>
                         <button name="action_view_lab_reports" type="object" string="Lab Reports"
                                 class="oe_stat_button">
