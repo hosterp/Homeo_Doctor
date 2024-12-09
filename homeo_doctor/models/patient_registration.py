@@ -27,6 +27,21 @@ class PatientRegistration(models.Model):
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
+
+    @api.onchange('department_id')
+    def _onchange_department_id(self):
+        if self.department_id:
+            return {
+                'domain': {
+                    'doc_name': [('department_id', '=', self.department_id.id)],
+                }
+            }
+        return {
+            'domain': {
+                'doc_name': []
+            }
+        }
+
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
