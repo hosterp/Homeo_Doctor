@@ -20,6 +20,19 @@ class PatientAppointment(models.Model):
     notes = fields.Text(string="Appointment Notes")
     created_date = fields.Datetime(default=fields.Datetime.now, readonly=True)
 
+    @api.onchange('department')
+    def _onchange_department_id(self):
+        if self.department:
+            return {
+                'domain': {
+                    'doctor_id': [('department_id', '=', self.department.id)],
+                }
+            }
+        return {
+            'domain': {
+                'doctor_id': []
+            }
+        }
     @api.model
     def create(self, vals):
         if vals.get('appointment_reference', 'New') == 'New':
