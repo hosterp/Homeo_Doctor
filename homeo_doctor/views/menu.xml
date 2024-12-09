@@ -61,7 +61,7 @@
                 name="Stock"
                 parent="menu_homeo_head"
                 sequence="6"/>
-        
+
         <menuitem id="menu_my_patient_template_root" name="Patient Registration" parent="menu_homeo_head" sequence="0"/>
 
 
