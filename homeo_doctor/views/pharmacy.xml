@@ -60,7 +60,7 @@
                 </p>
             </field>
         </record>
-        <menuitem id="menu_pharmacy_root" name="Pharmacy" sequence="10" parent="menu_homeo_head"/>
+        <menuitem id="menu_pharmacy_root" name="Pharmacy" sequence="5" parent="menu_homeo_head"/>
 
         <menuitem id="menu_pharmacy_description"
                   name="Pharmacy Description"

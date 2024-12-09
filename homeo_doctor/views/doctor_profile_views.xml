@@ -58,7 +58,7 @@
         <menuitem id="menu_doctor_management_root"
                   name="Doctor Management"
                    parent="menu_homeo_head"
-                  sequence="5"/>
+                  sequence="4"/>
 
         <menuitem id="menu_doctor_profile"
                   name="Doctors"

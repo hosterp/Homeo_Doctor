@@ -28,8 +28,8 @@
 
         <menuitem id="menu_my_product_template"
                   name="Medicine"
-                  parent="menu_my_product_template_root"
+                  parent="menu_pharmacy_root"
                   action="action_my_product_template"
-                  sequence="0"/>
+                  sequence="1"/>
     </data>
 </odoo>
