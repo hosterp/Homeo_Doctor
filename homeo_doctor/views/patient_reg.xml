@@ -7,8 +7,8 @@
             <field name="arch" type="xml">
                 <form string="Consultation Details">
                     <header>
-                        <button name="action_view_lab_reports" type="object" string="Lab Reports"
-                                class="oe_stat_button">
+                        <button name="action_view_lab_reports" type="object" string="Lab Result"
+                                class="btn-primary">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
                         <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object"
@@ -62,7 +62,6 @@
                             </field>
                         </group>
                         <group col="3">
-                            <field name="remark"/>
                             <field name="move_to_pharmacy_clicked" invisible="1"/>
                         </group>
                         <group>
@@ -91,6 +90,9 @@
                                 </tree>
                             </field>
 
+                        </group>
+                        <group>
+                            <field name="remark"/>
                         </group>
                     </sheet>
                 </form>

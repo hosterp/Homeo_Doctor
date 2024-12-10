@@ -29,10 +29,10 @@ class PatientRegistration(models.Model):
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     move_to_pharmacy_clicked = fields.Boolean(string="Move to Pharmacy Clicked", default=False)
 
-    mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
+    mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI")
 
-    ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
-    xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
+    ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT")
+    xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray")
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
