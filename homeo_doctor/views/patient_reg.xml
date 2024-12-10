@@ -22,6 +22,8 @@
                                 class="btn-primary"/>
                         <button name="action_create_referral_xray" type="object" string="Refer for X-RAY"
                                 class="btn-primary"/>
+                        <button name="action_create_referral_lab" type="object" string="Refer for Lab"
+                                class="btn-primary"/>
 
                     </header>
                     <sheet>
@@ -36,11 +38,14 @@
                                 <field name="patient_id"/>
                                 <field name="gender"/>
                                 <field name="address"/>
+                                <field name="checkup_reports"/>
                             </group>
                             <group col="3">
                                 <field name="age"/>
                                 <field name="phone_number" widget="phone"/>
-                                <field name="checkup_reports"/>
+                                <field name="blood_pressure"/>
+                                <field name="sugar_level"/>
+                                <field name="weight"/>
                                 <field name="doctor_id" invisible="1"/>
                             </group>
                             <group col="3">
@@ -66,7 +71,12 @@
                         </group>
                         <notebook>
                             <page string="Lab Result">
-
+                                <field name="lab_report_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="date"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="MRI">
                                 <field name="mri_report_ids">

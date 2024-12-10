@@ -14,6 +14,10 @@ class DoctorLabReport(models.Model):
     attachment = fields.Binary(string="Result")
     attachment_name = fields.Char(string="Result")
     bill_amount=fields.Integer('Bill Amount')
+    referral_id = fields.Many2one('lab.referral', string="Referral ID")
+    referral_details = fields.Text(string="Referral Details")
+    report_details = fields.Text(string="Lab Report Details")
+    lab_reference_no=fields.Many2one('lab.referral','Reference No')
 
     @api.model
     def create(self, vals):
@@ -31,3 +35,29 @@ class DoctorLabReport(models.Model):
                 domain = [('doctor_id', '=', doc_id.id)]
                 res['arch'] = res['arch'].replace('<tree', f'<tree domain="{domain}"')
         return res
+
+    def action_add_report(self, report_details):
+
+        for scan in self:
+            report = self.env['doctor.lab.report'].create({
+                'referral_id': scan.referral_id.id,
+                'patient_id': scan.patient_id.id,
+                'report_details': report_details,
+            })
+
+            scan.referral_id.write({
+                'lab_report_id': report.id
+            })
+
+        return True
+
+    @api.onchange('patient_id')
+    def _onchange_patient_id(self):
+        if self.patient_id:
+            latest_referral = self.env['lab.referral'].search(
+                [('patient_id', '=', self.patient_id.id)],
+                order='create_date desc',
+                limit=1
+            )
+            self.lab_reference_no = latest_referral.id if latest_referral else False
+            self.referral_details=latest_referral.details if latest_referral else False

@@ -28,11 +28,13 @@ class PatientRegistration(models.Model):
     med_ids = fields.One2many("prescription.entry.lines", 'prescription_line_id', string="Prescription Entry Lines")
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     move_to_pharmacy_clicked = fields.Boolean(string="Move to Pharmacy Clicked", default=False)
-
+    blood_pressure = fields.Char(string='Blood Pressure')
+    sugar_level = fields.Float(string='Sugar Level (mg/dl)')
+    weight = fields.Float(string='Weight (kg)')
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI")
-
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray")
+    lab_report_ids = fields.One2many('doctor.lab.report', 'patient_id', string="Lab")
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
@@ -93,6 +95,9 @@ class PatientRegistration(models.Model):
         # }
 
 
+    def action_create_referral_lab(self):
+        return self._create_referral_lab()
+
     def action_create_referral_ct(self):
         return self._create_referral(scan_type='ct')
 
@@ -128,6 +133,30 @@ class PatientRegistration(models.Model):
             'target': 'new',
 
         }
+
+    def _create_referral_lab(self):
+        for consultation in self:
+            if not consultation.patient_id:
+                raise UserError("Patient not selected.")
+
+            # Create a lab referral record
+            referral = self.env['lab.referral'].create({
+                'doctor': consultation.doctor_id.id,
+                'patient_id': consultation.id,
+                'referral_type': 'lab',
+                'details': 'Referred for lab tests.',
+            })
+            print(referral,'referral...................................')
+
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Lab Referral',
+                'res_model': 'lab.referral',
+                'view_mode': 'form',
+                'res_id': referral.id,
+                'target': 'new',
+            }
+
 
 class PrescriptionEntryLine(models.Model):
     _name = 'prescription.entry.lines'
@@ -166,3 +195,22 @@ class DoctorReferral(models.Model):
                 'doctor.referral.group') or _('New')
         res = super(DoctorReferral, self).create(vals)
         return res
+
+class LabReferral(models.Model):
+    _name = 'lab.referral'
+    _rec_name = 'reference_no'
+
+    reference_no = fields.Char(string="Reference", readonly=True)
+    doctor=fields.Many2one('doctor.profile',string='Doctor')
+    patient_id=fields.Many2one('patient.registration',string='Patient')
+    referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation'),('lab','LAB')],
+                                     default='lab')
+    details = fields.Text(string="Referral Details")
+
+    mri_report_id = fields.Many2one('doctor.lab.report', string="Lab Report", readonly=True)
+
+    @api.model
+    def create(self, vals):
+        if vals.get('reference_no', _('New')) == _('New'):
+            vals['reference_no'] = self.env['ir.sequence'].next_by_code('lab.referral') or _('New')
+        return super(LabReferral, self).create(vals)
