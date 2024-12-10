@@ -96,6 +96,16 @@ class PatientRegistration(models.Model):
             'status': 'draft',
         }
         appointment = self.env['patient.appointment'].create(appointment_vals)
+        registration_vals = {
+            'user_id': self.id,
+            'patient_id': self.patient_id,
+            'address': self.address,
+            'age': self.age,
+            'phone_number': self.phone_number,
+            'doctor_id': self.doc_name,
+        }
+
+        patient_registration = self.env['patient.registration'].create(registration_vals)
         return {
             'type': 'ir.actions.act_window',
             'name': 'Patient Appointment',
@@ -104,3 +114,5 @@ class PatientRegistration(models.Model):
             'res_id': appointment.id,
             'target': 'current',
         }
+
+
