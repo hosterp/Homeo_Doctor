@@ -83,7 +83,16 @@ class PatientRegistration(models.Model):
 
 
         pharmacy_record = self.env['pharmacy.description'].create(pharmacy_vals)
-
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Success',
+                'message': 'Pharmacy record sent successfully!',
+                'sticky': False,
+                'warning': False,
+            }
+        }
         #
         # return {
         #     'type': 'ir.actions.act_window',
@@ -146,7 +155,7 @@ class PatientRegistration(models.Model):
                 'referral_type': 'lab',
                 'details': 'Referred for lab tests.',
             })
-            print(referral,'referral...................................')
+
 
             return {
                 'type': 'ir.actions.act_window',

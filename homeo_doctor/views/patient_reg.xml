@@ -11,10 +11,6 @@
                                 class="btn-primary">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
-                        <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object"
-                                class="btn-primary" context="{'hide_button': True}"
-                                attrs="{'invisible': [('move_to_pharmacy_clicked', '=', True)]}"/>
-
 
                         <button name="action_create_referral_mri" type="object" string="Refer for MRI"
                                 class="btn-primary"/>
@@ -23,6 +19,8 @@
                         <button name="action_create_referral_xray" type="object" string="Refer for X-RAY"
                                 class="btn-primary"/>
                         <button name="action_create_referral_lab" type="object" string="Refer for Lab"
+                                class="btn-primary"/>
+                        <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object"
                                 class="btn-primary"/>
 
                     </header>
