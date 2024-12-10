@@ -41,3 +41,4 @@ class X_RAY_Scan(models.Model):
                 limit=1
             )
             self.referral_id = latest_referral.id if latest_referral else False
+            self.details = latest_referral.details if latest_referral else False
