@@ -127,7 +127,7 @@ class PatientRegistration(models.Model):
 
             referral = self.env['doctor.referral'].create({
                 'doctor_id': consultation.doctor_id.id,
-                'patient_id': consultation.id,
+                'patient_id': consultation.user_id.id,
                 'referral_type': 'scanning',
                 'details': f'Refer for {scan_type.replace("_", " ").title()}',
                 'scan_type': scan_type,
