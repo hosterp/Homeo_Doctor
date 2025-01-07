@@ -8,8 +8,8 @@
                 <form string="Consultation Details">
                     <header>
                         <button name="action_view_lab_reports" type="object" string="Lab Result"
-                                class="btn-primary">
-                            <field name="lab_report_count" widget="statinfo"/>
+                                class="btn-primary" invisible="1">
+                            <field name="lab_report_count" widget="statinfo" />
                         </button>
 
                         <button name="action_create_referral_mri" type="object" string="Refer for MRI"

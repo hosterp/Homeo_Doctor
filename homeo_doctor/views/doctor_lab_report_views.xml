@@ -5,10 +5,10 @@
             <field name="model">doctor.lab.report</field>
             <field name="arch" type="xml">
                 <tree string="Doctor Lab Reports">
-                    <field name="report_reference"/>
+                    <field name="patient_id"/>
+                    <field name="report_reference" invisible="1"/>
                     <field name="date"/>
                     <field name="doctor_id"/>
-                    <field name="patient_id"/>
                 </tree>
             </field>
         </record>

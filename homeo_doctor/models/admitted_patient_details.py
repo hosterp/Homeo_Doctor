@@ -63,7 +63,17 @@ class AdmittedPatient(models.Model):
     discharge_prescriptions = fields.Text(string="Discharge Prescriptions")
     follow_up_instructions = fields.Text(string="Follow-Up Instructions")
     summary_report = fields.Text(string="Summary Report")
+    room_category = fields.Many2one('room.category', string='Room Category')
+    advance_amount = fields.Integer(string='Advance Amount')
 
+    @api.onchange('room_category')
+    def onchange_advance_amount(self):
+        for i in self:
+            if i.room_category:
+                i.advance_amount = i.room_category.advance_amount
+                i.advance_payment=  i.advance_amount
+            else:
+                pass
     def action_print_patient_report(self):
         # This will trigger the report action
         return self.env.ref('homeo_doctor.action_admitted_patient_report').report_action(self)

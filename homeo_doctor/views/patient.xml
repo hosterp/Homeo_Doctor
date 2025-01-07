@@ -8,7 +8,7 @@
                 <form string="Patient Details" class="patient_reg_form">
                     <header>
                         <button name="action_view_lab_reports" type="object" string="Lab Reports"
-                                class="oe_stat_button">
+                                class="oe_stat_button" invisible="1">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
                         <button name="action_create_appointment" type="object" string="Create Appointment"/>
@@ -28,6 +28,7 @@
                                 <field name="email"/>
                                 <field name="registration_fee"/>
                                 <field name="phone_number" widget="phone"/>
+
                             </group>
                             <group col="3">
                                 <field name="age"/>
@@ -35,6 +36,7 @@
                                 <field name="department_id"/>
                                 <field name="doc_name"/>
                                 <field name="time"/>
+
                             </group>
                             <group col="3">
                                 <!--                                <field name="symptoms"/>-->

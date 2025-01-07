@@ -15,7 +15,7 @@ class PatientRegistration(models.Model):
     patient_id = fields.Char(required=True, string="Name")
     address = fields.Text(required=True, string="Address")
     age = fields.Integer(required=True, string="Age")
-    phone_number = fields.Char(string="Phone No",size=12)
+    phone_number = fields.Char(string="Mobile No",size=12)
     email = fields.Char(string="Email ID")
     department_id=fields.Many2one('doctor.department',string='Department',required=True)
     doc_name=fields.Many2one('doctor.profile',string='Doctor',required=True)
@@ -27,6 +27,7 @@ class PatientRegistration(models.Model):
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
+
 
     @api.onchange('department_id')
     def _onchange_department_id(self):
@@ -116,3 +117,9 @@ class PatientRegistration(models.Model):
         }
 
 
+class RoomCategory(models.Model):
+    _name = 'room.category'
+    _rec_name = 'room_category'
+
+    room_category=fields.Char(string='Room Category')
+    advance_amount=fields.Integer(string='Advance Amount')
