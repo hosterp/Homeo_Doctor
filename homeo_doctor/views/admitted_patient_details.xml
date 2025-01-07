@@ -25,20 +25,28 @@
                     </header>
                     <sheet>
                         <group>
+                            <group>
                             <field name="patient_id"/>
                             <field name="name"/>
                             <field name="dob"/>
                             <field name="admission_date"/>
                             <field name="room_number"/>
+                            </group>
+                            <group>
                             <field name="bed_number"/>
                             <field name="room_category"/>
                             <field name="advance_amount"/>
                             <field name="admitting_department"/>
                             <field name="attending_doctor"/>
+                            </group>
                         </group>
                         <group>
+                            <group>
                             <field name="reason_for_admission"/>
+                            </group>
+                            <group>
                             <field name="admission_status"/>
+                            </group>    
                         </group>
                         <notebook>
                             <page string="Medical History">
