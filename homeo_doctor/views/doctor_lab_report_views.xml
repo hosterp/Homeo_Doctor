@@ -62,7 +62,7 @@
         </record>
 
         <!-- Menu Item -->
-        <menuitem id="menu_lab_reports_root" name="Lab Reports" parent="menu_homeo_head" sequence="2"/>
+        <menuitem id="menu_lab_reports_root" name="Lab" parent="menu_homeo_head" sequence="2"/>
         <menuitem id="menu_lab_reports" name="Lab Reports" parent="menu_lab_reports_root" action="action_lab_report"
                   sequence="1"/>
     </data>
