@@ -10,4 +10,6 @@
 html .o_web_client > .o_action_manager {
     color: #181717 !important;
 }
-
+.o_form_view .o_group {
+	padding: 0px 45px 0px 45px !important;
+}
