@@ -7,3 +7,7 @@
     max-width: 97% !important;
 }
 
+html .o_web_client > .o_action_manager {
+    color: #181717 !important;
+}
+
