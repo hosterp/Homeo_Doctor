@@ -13,3 +13,11 @@ html .o_web_client > .o_action_manager {
 .o_form_view .o_group {
 	padding: 0px 45px 0px 45px !important;
 }
+
+.ot_management div{
+    width: 35% !important;
+}
+
+.ot_management select{
+    width: 35% !important;
+}
