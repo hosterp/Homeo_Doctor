@@ -27,6 +27,8 @@ class PatientRegistration(models.Model):
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
+    audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
+
 
 
     @api.onchange('department_id')

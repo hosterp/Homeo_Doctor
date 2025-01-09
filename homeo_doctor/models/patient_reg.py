@@ -236,7 +236,7 @@ class DoctorReferral(models.Model):
     mri_report_id = fields.Many2one('scanning.mri', string="MRI Report",readonly=True)
     ct_report_id = fields.Many2one('scanning.ct', string="CT Report",readonly=True)
     xray_report_id = fields.Many2one('scanning.x.ray', string="X-Ray Report",readonly=True)
-    audiology_report_id = fields.Many2one('scanning.x.ray', string="X-Ray Report",readonly=True)
+    audiology_report_id = fields.Many2one('audiology.ref', string="Audiology Report",readonly=True)
 
 
     @api.model
