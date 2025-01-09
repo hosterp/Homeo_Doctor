@@ -6,7 +6,7 @@
             <field name="arch" type="xml">
                 <form string="Patient Insurance">
                     <sheet>
-                        <group>
+                        <group class="insurance-form">
                             <field name="patient_id"/>
                             <field name="insurance_provider"/>
                             <field name="policy_number"/>

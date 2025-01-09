@@ -44,9 +44,6 @@
                         <group>
                             <group>
                                 <field name="reason_for_admission"/>
-
-                                <field name="admission_status" required="0"/>
-
                             </group>
                             <group>
                                 <field name="admission_status"/>

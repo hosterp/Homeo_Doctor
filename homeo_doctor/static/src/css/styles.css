@@ -21,3 +21,16 @@ html .o_web_client > .o_action_manager {
 .ot_management select{
     width: 35% !important;
 }
+.insurance-form div{
+    width: 35% !important;
+}
+.insurance-form .o_field_char{
+    width: 35% !important;
+}
+.insurance-form .o_field_float{
+    width: 35% !important;
+}
+
+.insurance-form select{
+    width: 35% !important;
+}
