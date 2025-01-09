@@ -18,7 +18,11 @@
                                 class="btn-primary"/>
                         <button name="action_create_referral_xray" type="object" string="Refer for X-RAY"
                                 class="btn-primary"/>
+                        <button name="action_create_referral_audiology" type="object" string="Refer for Audiology"
+                                class="btn-primary"/>
                         <button name="action_create_referral_lab" type="object" string="Refer for Lab"
+                                class="btn-primary"/>
+                        <button name="admission_button" string="Move to Admission" type="object"
                                 class="btn-primary"/>
                         <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object"
                                 class="btn-primary"/>
@@ -94,6 +98,15 @@
                             </page>
                             <page string="X-RAY">
                                 <field name="xray_report_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="scan_report_date"/>
+                                    </tree>
+                                </field>
+
+                            </page>
+                            <page string="Audiology">
+                                <field name="audiology_report_ids">
                                     <tree>
                                         <field name="report_details"/>
                                         <field name="scan_report_date"/>

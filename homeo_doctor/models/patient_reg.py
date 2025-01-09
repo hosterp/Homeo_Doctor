@@ -12,7 +12,7 @@ class PatientRegistration(models.Model):
     _rec_name = 'reference_no'
     _order = 'reference_no desc'
 
-    reference_no = fields.Char(string="Reference")
+    reference_no = fields.Char(string="Reference",related='user_id.reference_no')
     date = fields.Date(default=dateutil.utils.today(), readonly=True)
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     user_id = fields.Many2one('patient.reg', string='Name',required=True)
@@ -35,6 +35,8 @@ class PatientRegistration(models.Model):
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray")
     lab_report_ids = fields.One2many('doctor.lab.report', 'patient_id', string="Lab")
+    audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
+
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
@@ -64,6 +66,36 @@ class PatientRegistration(models.Model):
                 record.formatted_date = formatted_date
             else:
                 record.formatted_date = ''
+
+    def admission_button(self):
+        print('admission button click.........................')
+
+
+        appointment_vals = {
+            'patient_id': self.id,
+            'attending_doctor': self.doctor_id.id,
+
+        }
+        appointment = self.env['hospital.admitted.patient'].create(appointment_vals)
+        registration_vals = {
+            'user_id': self.id,
+            'patient_id': self.patient_id,
+            'address': self.address,
+            'age': self.age,
+            'phone_number': self.phone_number,
+            'attending_doctor': self.doctor_id,
+            'admission_date': self.formatted_date,
+        }
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Success',
+                'message': 'Pharmacy record sent successfully!',
+                'sticky': False,
+                'warning': False,
+            }
+        }
 
     def action_move_to_pharmacy(self):
         self.move_to_pharmacy_clicked = True
@@ -119,6 +151,9 @@ class PatientRegistration(models.Model):
     def action_create_referral_xray(self):
         return self._create_referral(scan_type='xray')
 
+    def action_create_referral_audiology(self):
+        return self._create_referral(scan_type='audiology')
+
     def _create_referral(self, scan_type):
         for consultation in self:
             if not consultation.patient_id:
@@ -153,9 +188,15 @@ class PatientRegistration(models.Model):
                 'doctor': consultation.doctor_id.id,
                 'patient_id': consultation.id,
                 'referral_type': 'lab',
-                'details': 'Referred for lab tests.',
             })
+            if referral:
+                lab_report = self.env['doctor.lab.report'].create({
+                    'referral_details': referral.details,
+                    'lab_reference_no': referral.reference_no,
+                    'patient_id': referral.patient_id.id,
+                    'doctor_id': referral.doctor.id,
 
+                })
 
             return {
                 'type': 'ir.actions.act_window',
@@ -189,12 +230,13 @@ class DoctorReferral(models.Model):
     referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation')],
                                      default='scanning')
     details = fields.Text(string="Referral Details")
-    scan_type = fields.Selection([('mri', 'MRI'), ('ct', 'CT Scan'), ('xray', 'X-Ray')], string="Scan Type",readonly=True)
+    scan_type = fields.Selection([('mri', 'MRI'), ('ct', 'CT Scan'), ('xray', 'X-Ray'),('audiology','Audiology')], string="Scan Type",readonly=True)
 
 
     mri_report_id = fields.Many2one('scanning.mri', string="MRI Report",readonly=True)
     ct_report_id = fields.Many2one('scanning.ct', string="CT Report",readonly=True)
     xray_report_id = fields.Many2one('scanning.x.ray', string="X-Ray Report",readonly=True)
+    audiology_report_id = fields.Many2one('scanning.x.ray', string="X-Ray Report",readonly=True)
 
 
     @api.model
@@ -216,7 +258,7 @@ class LabReferral(models.Model):
                                      default='lab')
     details = fields.Text(string="Referral Details")
 
-    mri_report_id = fields.Many2one('doctor.lab.report', string="Lab Report", readonly=True)
+    lab_report_id = fields.Many2one('doctor.lab.report', string="Lab Report", readonly=True)
 
     @api.model
     def create(self, vals):

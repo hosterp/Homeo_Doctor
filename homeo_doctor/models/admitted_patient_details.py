@@ -29,14 +29,14 @@ class AdmittedPatient(models.Model):
         ('surgery', 'Surgery'),
         ('icu', 'ICU'),
         ('emergency', 'Emergency'),
-    ], string="Admitting Department", required=True)
+    ], string="Admitting Department",)
     attending_doctor = fields.Many2one('doctor.profile', string="Attending Doctor", required=True)
     reason_for_admission = fields.Text(string="Reason for Admission")
     admission_status = fields.Selection([
         ('regular', 'Regular'),
         ('emergency', 'Emergency'),
         ('icu', 'ICU'),
-    ], string="Admission Status", required=True)
+    ], string="Admission Status")
 
 
     previous_conditions = fields.Text(string="Previous Medical History")

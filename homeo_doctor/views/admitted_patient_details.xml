@@ -33,12 +33,12 @@
                             <field name="bed_number"/>
                             <field name="room_category"/>
                             <field name="advance_amount"/>
-                            <field name="admitting_department"/>
+                            <field name="admitting_department" required="0"/>
                             <field name="attending_doctor"/>
                         </group>
                         <group>
                             <field name="reason_for_admission"/>
-                            <field name="admission_status"/>
+                            <field name="admission_status" required="0"/>
                         </group>
                         <notebook>
                             <page string="Medical History">

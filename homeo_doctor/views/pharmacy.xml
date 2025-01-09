@@ -68,6 +68,11 @@
                   action="action_pharmacy_description"
                   sequence="0"/>
 
+        <menuitem id="menu_my_product_template"
+                  name="Medicines"
+                  parent="menu_pharmacy_root"
+                  action="action_my_product_template"
+                  sequence="1"/>
 
     </data>
 </odoo>

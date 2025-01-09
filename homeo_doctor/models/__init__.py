@@ -13,3 +13,4 @@ from .import ct_scan
 from .import patient_appointments
 from .import mri_scan
 from .import x_ray_scan
+from .import audiology

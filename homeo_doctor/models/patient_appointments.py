@@ -19,6 +19,7 @@ class PatientAppointment(models.Model):
         default='draft', string="Status")
     notes = fields.Text(string="Appointment Notes")
     created_date = fields.Datetime(default=fields.Datetime.now, readonly=True)
+    consultation_fee = fields.Integer(string='Consultation Fee')
 
     @api.onchange('department')
     def _onchange_department_id(self):

@@ -1,0 +1,58 @@
+<odoo>
+    <data>
+        <record id="view_audiology_tree" model="ir.ui.view">
+            <field name="name">audiology.ref.tree</field>
+            <field name="model">audiology.ref</field>
+            <field name="arch" type="xml">
+                <tree string="Audiology">
+                    <field name="patient_id"/>
+                    <field name="age"/>
+                    <field name="gender"/>
+                    <field name="doctor_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- CT Scan Form View -->
+        <record id="view_audiology_form" model="ir.ui.view">
+            <field name="name">audiology.ref.form</field>
+            <field name="model">audiology.ref</field>
+            <field name="arch" type="xml">
+                <form string="Audiology">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="patient_id"/>
+                                <field name="age"/>
+                                <field name="gender"/>
+                                <field name="doctor_id"/>
+                                 <field name="referral_id"/>
+                                <field name="scan_registered_date"/>
+                                <field name="scan_report_date"/>
+                            </group>
+                            <group>
+                                <field name="investigation"/>
+                                <field name="details"/>
+                                <field name="report_details"/>
+                                <field name="impression"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- CT Scan Action -->
+        <record id="action_audiology" model="ir.actions.act_window">
+            <field name="name">Audiology</field>
+            <field name="res_model">audiology.ref</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_scanning_root" name="Scanning" parent="menu_hospital_root" sequence="7"/>
+        <menuitem id="menu_audiology" name="Audiology" parent="menu_scanning_root" action="action_audiology"
+                  sequence="4"/>
+    </data>
+</odoo>

@@ -29,6 +29,7 @@
                     </group>
                     <group>
                         <field name="doctor_id"/>
+                        <field name="consultation_fee"/>
                         <field name="reason"/>
                     </group>
                     </group>

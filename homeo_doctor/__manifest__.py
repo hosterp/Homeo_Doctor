@@ -33,6 +33,7 @@
         "views/mri_scan.xml",
         "views/x_ray_scan.xml",
         "views/patient_appointments.xml",
+        "views/audiology.xml",
         "views/templates.xml",
 
     ],

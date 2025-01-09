@@ -27,7 +27,7 @@ class PatientRegistration(models.Model):
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
-    consultation_fee=fields.Integer(string='Consultation Fee')
+
 
     @api.onchange('department_id')
     def _onchange_department_id(self):
@@ -106,7 +106,7 @@ class PatientRegistration(models.Model):
             'doctor_id': self.doc_name,
         }
 
-        patient_registration = self.env['patient.registration'].create(registration_vals)
+        # patient_registration = self.env['patient.registration'].create(registration_vals)
         return {
             'type': 'ir.actions.act_window',
             'name': 'Patient Appointment',
