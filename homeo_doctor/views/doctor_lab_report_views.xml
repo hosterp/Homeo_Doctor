@@ -43,7 +43,7 @@
                                 <field name="bill_amount"/>
                             </group>
                             <group>
-                                <field name="lab_reference_no"/>
+                                <field name="lab_reference_no" invisible="1"/>
                                 <field name="referral_details"/>
                                 <field name="report_details"/>
                                 <field name="attachment" filename="attachment_name"/>
