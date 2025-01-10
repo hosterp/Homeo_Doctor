@@ -13,6 +13,8 @@
                             <field name="name" required="1"/>
                             <field name="specialization"/>
                             <field name="available_hours"/>
+                            <field name="consultation_fee_doctor"/>
+                            <field name="consultation_fee_limit"/>
                         </group>
                         <group>
                             <field name="phone" widget="phone" required="1"/>

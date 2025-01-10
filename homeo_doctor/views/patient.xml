@@ -36,6 +36,7 @@
                                 <field name="department_id"/>
                                 <field name="doc_name"/>
                                 <field name="time"/>
+                                <field name="consultation_fee"/>
 
 
                             </group>

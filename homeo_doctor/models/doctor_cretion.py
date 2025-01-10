@@ -19,6 +19,8 @@ class DoctorProfile(models.Model):
     available_days = fields.Many2many('doctor.available.day', string='Available Days')
     available_hours = fields.Char(string='Available Hours')
     bio = fields.Text(string='Doctor Bio')
+    consultation_fee_doctor = fields.Integer(string='Consultation Fee')
+    consultation_fee_limit = fields.Integer(string='Consultation Fee Day Limit')
 
     @api.model
     def create(self, vals):

@@ -28,6 +28,14 @@ class PatientRegistration(models.Model):
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
+    consultation_fee = fields.Integer(string='Consultation Fee', compute='_compute_consultation_fee', store=True)
+
+    @api.depends('doc_name')
+    def _compute_consultation_fee(self):
+        for record in self:
+            if record.doc_name:
+                # Automatically populate consultation_fee from the selected doctor's record
+                record.consultation_fee = record.doc_name.consultation_fee_doctor
 
 
 
