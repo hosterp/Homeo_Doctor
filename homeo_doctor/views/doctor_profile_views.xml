@@ -9,22 +9,24 @@
                 <form string="Doctor Profile">
                     <sheet>
                         <group>
-                            <field name="doctor_id" required="1"/>
-                            <field name="name" required="1"/>
-                            <field name="specialization"/>
-                            <field name="available_hours"/>
-                            <field name="consultation_fee_doctor"/>
-                            <field name="consultation_fee_limit"/>
+                            <group>
+                                <field name="doctor_id" required="1"/>
+                                <field name="joining_date"/>
+                                <field name="name" required="1"/>
+                                <field name="specialization"/>
+                                <field name="department_id"/>
+                                <field name="available_hours"/>
+                            </group>
+                            <group>
+                                <field name="consultation_fee_doctor"/>
+                                <field name="consultation_fee_limit"/>
+                                <field name="phone" widget="phone" required="1"/>
+                                <field name="email" widget="email"/>
+                                <field name="qualification"/>
+                                <field name="experience_years"/>
+                            </group>
                         </group>
                         <group>
-                            <field name="phone" widget="phone" required="1"/>
-                            <field name="email" widget="email"/>
-                            <field name="department_id"/>
-                            <field name="experience_years"/>
-                        </group>
-                        <group>
-                            <field name="qualification"/>
-                            <field name="joining_date"/>
                             <field name="available_days"/>
                             <field name="bio"/>
                         </group>
