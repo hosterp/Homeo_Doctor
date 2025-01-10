@@ -28,7 +28,7 @@
                                 <field name="age"/>
                                 <field name="gender"/>
                                 <field name="doctor_id"/>
-                                <field name="referral_id"/>
+                                <field name="referral_id" invisible="1"/>
                                 <field name="scan_registered_date"/>
                                 <field name="scan_report_date"/>
                             </group>
