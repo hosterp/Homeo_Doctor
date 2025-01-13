@@ -26,6 +26,8 @@
                                 class="btn-primary"/>
                         <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object"
                                 class="btn-primary"/>
+                        <button name="action_view_consultations" type="object" string="View All Consultations" class="btn-primary"/>
+
 
                     </header>
                     <sheet>

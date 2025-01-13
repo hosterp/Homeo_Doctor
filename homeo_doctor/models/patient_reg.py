@@ -37,6 +37,21 @@ class PatientRegistration(models.Model):
     lab_report_ids = fields.One2many('doctor.lab.report', 'patient_id', string="Lab")
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
 
+    previous_consultation_ids = fields.One2many(
+        'patient.registration', 'id',
+        string='Previous Consultations',
+        compute='_compute_previous_consultations',
+        store=False
+    )
+
+    @api.depends('patient_id')
+    def _compute_previous_consultations(self):
+        for record in self:
+            # Fetch all previous consultations for the same patient, excluding the current record
+            record.previous_consultation_ids = self.search([
+                ('patient_id', '=', record.patient_id.id),
+                ('id', '!=', record.id)
+            ])
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
@@ -68,8 +83,6 @@ class PatientRegistration(models.Model):
                 record.formatted_date = ''
 
     def admission_button(self):
-        print('admission button click.........................')
-
 
         appointment_vals = {
             'patient_id': self.id,
@@ -206,6 +219,17 @@ class PatientRegistration(models.Model):
                 'res_id': referral.id,
                 'target': 'new',
             }
+
+    def action_view_consultations(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Previous Consultations',
+            'view_mode': 'tree,form',
+            'res_model': 'patient.registration',
+            'domain': [('patient_id', '=', self.user_id.id)],
+            'context': {'default_patient_id': self.user_id.id},
+        }
+
 
 
 class PrescriptionEntryLine(models.Model):
