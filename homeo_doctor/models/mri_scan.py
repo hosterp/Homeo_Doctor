@@ -4,6 +4,7 @@ class MRI_Scan(models.Model):
     _name = 'scanning.mri'
     _rec_name = 'patient_id'
 
+
     patient_id = fields.Many2one('patient.reg', string="Patient", required=True)
     age = fields.Integer(string='Age', required=True, related='patient_id.age')
     gender = fields.Selection(string='Gender', related='patient_id.gender')
@@ -17,6 +18,10 @@ class MRI_Scan(models.Model):
     impression = fields.Text(string="Impression")
     referral_id = fields.Many2one('doctor.referral', string="Referral ID")
     report_details = fields.Text(string="MRI Report Details")
+    scan_line_ids = fields.One2many('mri.scan.line', 'mri_id', string='Scan Lines')
+
+    def print_invoice(self):
+        return self.env.ref('homeo_doctor.action_report_mri_invoice').report_action(self)
 
     def action_add_report(self, report_details):
 
@@ -48,3 +53,31 @@ class MRI_Scan(models.Model):
             )
             self.referral_id = latest_referral.id if latest_referral else False
             self.details = latest_referral.details if latest_referral else False
+
+class MRIScanType(models.Model):
+    _name = 'mri.scan.type'
+    _description = 'Type of MRI Scan'
+
+    name = fields.Char(string='Scan Type', required=True)
+
+class MRIBodyPart(models.Model):
+    _name = 'mri.body.part'
+    _description = 'MRI Scan Body Part'
+
+    name = fields.Char(string='Body Part', required=True)
+
+class MRIRate(models.Model):
+    _name = 'mri.rate'
+    _description = 'MRI Scan Rate'
+    _rec_name = 'amount'  # This will display the amount in Many2one fields
+
+    amount = fields.Float(string='Amount', required=True)
+
+class MRIScanLine(models.Model):
+    _name = 'mri.scan.line'
+    _description = 'MRI Scan Line'
+
+    mri_id = fields.Many2one('scanning.mri', string='MRI Scan')
+    scan_type_id = fields.Many2one('mri.scan.type', string='Type of MRI Scan', required=True)
+    body_part_id = fields.Many2one('mri.body.part', string='Body Part', required=True)
+    rate_id = fields.Many2one('mri.rate', string='Rate', required=True)
