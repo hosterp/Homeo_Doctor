@@ -1,6 +1,8 @@
 from odoo import api, fields, models, _
 import datetime
 
+from odoo.addons.test_convert.tests.test_env import record
+
 
 class PatientAppointment(models.Model):
     _name = 'patient.appointment'
@@ -20,6 +22,10 @@ class PatientAppointment(models.Model):
     notes = fields.Text(string="Appointment Notes")
     created_date = fields.Datetime(default=fields.Datetime.now, readonly=True)
     consultation_fee = fields.Integer(string='Consultation Fee', compute='_compute_consultation_fee', store=True)
+    address = fields.Text(related='patient_id.address',string='Address')
+    age = fields.Integer(related='patient_id.age',string='Age')
+    phone_number = fields.Char(related='patient_id.phone_number',string='Phone Number')
+    gender = fields.Selection(related='patient_id.gender',string='Gender')
 
     @api.depends('doctor_id', 'patient_id')
     def _compute_consultation_fee(self):
@@ -88,6 +94,27 @@ class PatientAppointment(models.Model):
                 else:
                     record.consultation_fee = consultation_fee
 
+    def action_appointment_confirm(self):
+        for record in self:
+            # Prepare the values for patient registration
+            registration_vals = {
+                'user_id': record.patient_id.reference_no,
+                'patient_id': record.patient_id.patient_id,
+                'address': record.patient_id.address,
+                'age': record.patient_id.age,
+                'phone_number': record.patient_id.phone_number,
+                'doctor_id': record.patient_id.doc_name,
+            }
+            patient_registration = self.env['patient.registration'].create(registration_vals)
+            print(registration_vals,'registration_vals....................................................')
+            # return {
+            #     'type': 'ir.actions.act_window',
+            #     'name': 'Patient Registration',
+            #     'res_model': 'patient.registration',
+            #     'view_mode': 'form',
+            #     'res_id': patient_registration.id,
+            #     'target': 'new',
+            # }
     @api.model
     def create(self, vals):
         # Automatically compute the consultation fee before saving

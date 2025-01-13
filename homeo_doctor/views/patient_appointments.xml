@@ -20,18 +20,29 @@
             <form>
                 <sheet>
                     <group>
-                    <group>
-                        <field name="appointment_reference"/>
-                        <field name="patient_id"/>
-                        <field name="appointment_date"/>
-                        <field name="department"/>
-<!--                        <field name="status"/>-->
-                    </group>
-                    <group>
-                        <field name="doctor_id"/>
-                        <field name="consultation_fee" readonly="1"/>
-                        <field name="reason"/>
-                    </group>
+                        <group>
+                            <field name="appointment_reference"/>
+                            <field name="patient_id"/>
+                            <field name="gender"/>
+
+                            <field name="age"/>
+
+                            <field name="appointment_date"/>
+                            <field name="department"/>
+                            <!--                        <field name="status"/>-->
+                        </group>
+                        <group>
+                            <field name="address"/>
+                            <field name="phone_number"/>
+                            <field name="doctor_id"/>
+                            <field name="consultation_fee" readonly="1"/>
+                            <field name="reason"/>
+                        </group>
+                        <group>
+                            <button name="action_appointment_confirm" type="object" string="Confirm Appointment"
+                                    class="oe_highlight"/>
+                        </group>
+
                     </group>
                     <notebook>
                         <page string="Notes">
@@ -50,7 +61,8 @@
         <field name="target">current</field>
     </record>
 
-    <menuitem id="menu_patient_appointments" name="Appointments" action="action_patient_appointments" parent="menu_my_patient_template_root"/>
+    <menuitem id="menu_patient_appointments" name="Appointments" action="action_patient_appointments"
+              parent="menu_my_patient_template_root"/>
 
 </odoo>
 
