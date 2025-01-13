@@ -116,6 +116,7 @@ class PatientRegistration(models.Model):
             'name': self.patient_id,
             'patient_id': self.reference_no,
             'phone_number': self.phone_number,
+            'date':self.date,
             'prescription_line_ids': [(0, 0, {
                 'product_id': line.product_id.id,
                 'total_med': line.total_med,
