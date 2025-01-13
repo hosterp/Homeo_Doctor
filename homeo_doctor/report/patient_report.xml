@@ -84,7 +84,7 @@
                 </t>
             </t>
         </template>
-
+<!--  Print invoice for consultation form      -->
         <record id="action_patient_report" model="ir.actions.report">
             <field name="name">Patient Report</field>
             <field name="model">patient.registration</field>
