@@ -19,6 +19,10 @@ class Audiology(models.Model):
     impression = fields.Text(string="Impression")
     referral_id = fields.Many2one('doctor.referral', string="Referral ID")
     report_details = fields.Text(string="Audiology Report Details")
+    therapy_line_ids = fields.One2many('audiology.therapy.line', 'audiology_id', string='Therapy Details')
+
+    def print_invoice(self):
+        return self.env.ref('homeo_doctor.action_report_audiology_invoice').report_action(self)
 
 
 
@@ -50,3 +54,32 @@ class Audiology(models.Model):
             self.referral_id = latest_referral.id if latest_referral else False
             self.details = latest_referral.details if latest_referral else False
 
+
+class AudiologyService(models.Model):
+    _name = 'audiology.service.type'
+    _description = 'Type of Audiology Therapy'
+
+    name = fields.Char(string='Service', required=True)
+
+class Session(models.Model):
+    _name = 'audiology.session'
+    _description = 'Audiology Sessions'
+    _rec_name = 'session'
+
+    session = fields.Integer(string='Session', required=True)
+
+class AudiologyRate(models.Model):
+    _name = 'audiology.rate'
+    _description = 'Audiology Therapy Rate'
+    _rec_name = 'amount'  # This will display the amount in Many2one fields
+
+    amount = fields.Float(string='Amount', required=True)
+
+class AudiologyTherapyLine(models.Model):
+    _name = 'audiology.therapy.line'
+    _description = 'Audiology Therapy Line'
+
+    audiology_id = fields.Many2one('audiology.ref', string='Audiology Therapy')
+    service_id = fields.Many2one('audiology.service.type', string='Service', required=True)
+    session_id = fields.Many2one('audiology.session', string='Session', required=True)
+    rate_id = fields.Many2one('audiology.rate', string='Rate/Session', required=True)

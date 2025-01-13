@@ -20,6 +20,9 @@
             <field name="model">audiology.ref</field>
             <field name="arch" type="xml">
                 <form string="Audiology">
+                        <header>
+                            <button name="print_invoice" string="Print Invoice" type="object" class="oe_highlight"/>
+                        </header>
                     <sheet>
                         <group>
                             <group>
@@ -38,6 +41,17 @@
                                 <field name="impression"/>
                             </group>
                         </group>
+                        <notebook>
+                            <page string="Therapy Details">
+                                <field name="therapy_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="service_id"/>
+                                        <field name="session_id"/>
+                                        <field name="rate_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
