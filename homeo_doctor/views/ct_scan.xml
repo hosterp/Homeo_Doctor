@@ -20,6 +20,9 @@
             <field name="model">scanning.ct</field>
             <field name="arch" type="xml">
                 <form string="CT Scan">
+                        <header>
+                            <button name="print_invoice" string="Print Invoice" type="object" class="oe_highlight"/>
+                        </header>
                     <sheet>
 
                         <group>
@@ -39,6 +42,18 @@
                                 <field name="impression"/>
                             </group>
                         </group>
+                        <notebook>
+                            <page string="Scan Details">
+                                <field name="scan_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="scan_type_id"/>
+                                        <field name="body_part_id"/>
+                                        <field name="rate_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
                     </sheet>
                 </form>
             </field>

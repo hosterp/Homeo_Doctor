@@ -35,6 +35,12 @@
         "views/patient_appointments.xml",
         "views/audiology.xml",
         "views/templates.xml",
+        "report/ct_invoice_template.xml",
+        "report/ct_reports.xml",
+        "report/mri_invoice_template.xml",
+        "report/mri_reports.xml",
+        "report/x_ray_invoice_template.xml",
+        "report/x_ray_reports.xml",
 
     ],
     'assets': {

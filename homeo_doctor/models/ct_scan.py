@@ -15,6 +15,10 @@ class CT_Scan(models.Model):
     impression = fields.Text(string="Impression")
     referral_id = fields.Many2one('doctor.referral', string="Referral ID")
     report_details = fields.Text(string="CT Report Details")
+    scan_line_ids = fields.One2many('ct.scan.line', 'ct_id', string='Scan Lines')
+
+    def print_invoice(self):
+        return self.env.ref('homeo_doctor.action_report_ct_invoice').report_action(self)
 
 
     def action_add_report(self, report_details):
@@ -45,3 +49,31 @@ class CT_Scan(models.Model):
             self.referral_id = latest_referral.id if latest_referral else False
             self.details = latest_referral.details if latest_referral else False
 
+
+class CTScanType(models.Model):
+    _name = 'ct.scan.type'
+    _description = 'Type of CT Scan'
+
+    name = fields.Char(string='Scan Type', required=True)
+
+class CTBodyPart(models.Model):
+    _name = 'ct.body.part'
+    _description = 'CT Scan Body Part'
+
+    name = fields.Char(string='Body Part', required=True)
+
+class CTRate(models.Model):
+    _name = 'ct.rate'
+    _description = 'CT Scan Rate'
+    _rec_name = 'amount'  # This will display the amount in Many2one fields
+
+    amount = fields.Float(string='Amount', required=True)
+
+class CTScanLine(models.Model):
+    _name = 'ct.scan.line'
+    _description = 'CT Scan Line'
+
+    ct_id = fields.Many2one('scanning.ct', string='CT Scan')
+    scan_type_id = fields.Many2one('ct.scan.type', string='Type of CT Scan', required=True)
+    body_part_id = fields.Many2one('ct.body.part', string='Body Part', required=True)
+    rate_id = fields.Many2one('ct.rate', string='Rate', required=True)
