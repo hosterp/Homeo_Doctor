@@ -1,5 +1,95 @@
 <odoo>
     <data>
+        <!-- QWeb Template for Pharmacy Description Report -->
+        <template id="pharmacy_report_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="row mt32 mb32">
+                                <div class="col-10">
+                                    <strong>Patient ID:</strong>
+                                    <strong>
+                                        <p class="d-inline" t-field="o.patient_id" style="font-size: 20px;"/>
+                                    </strong>
+                                </div>
+                                <div class="col-4">
+                                    <strong>Phone:</strong>
+                                    <p class="d-inline" t-field="o.phone_number"/>
+                                </div>
+                            </div>
+                            <br></br>
+                            <div class="row mt32 mb32">
+                                <div class="col-6">
+                                    <strong>Patient Name:</strong>
+                                    <p class="d-inline" t-field="o.name"/>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <strong>Bill Amount:</strong>
+                                    <span t-field="o.bill_amount"/>
+                                </div>
+                            </div>
+                            <br></br>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Medicine</th>
+                                        <th>Total Medicine</th>
+                                        <th>Per Prescription</th>
+                                        <th>Morning</th>
+                                        <th>Noon</th>
+                                        <th>Night</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.prescription_line_ids" t-as="medicine">
+                                        <tr>
+                                            <td>
+                                                <span t-field="medicine.product_id.display_name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="medicine.total_med"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="medicine.per_ped"/>
+                                            </td>
+                                            <td>
+                                                <t t-if="medicine.morn">
+                                                    &#x2713; <!-- Tick symbol -->
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <t t-if="medicine.noon">
+                                                    &#x2713; <!-- Tick symbol -->
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <t t-if="medicine.night">
+                                                    &#x2713; <!-- Tick symbol -->
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- Report Action -->
+        <record id="action_pharmacy_report" model="ir.actions.report">
+            <field name="name">Pharmacy Report</field>
+            <field name="model">pharmacy.description</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">homeo_doctor.pharmacy_report_template</field>
+            <field name="report_file">homeo_doctor.pharmacy_report_template</field>
+            <field name="print_report_name">'Pharmacy Report'</field>
+            <field name="binding_model_id" ref="model_pharmacy_description"/>
+        </record>
+
+        <!-- Form View -->
         <record id="view_pharmacy_description_form" model="ir.ui.view">
             <field name="name">pharmacy.description.form</field>
             <field name="model">pharmacy.description</field>
@@ -12,11 +102,10 @@
                                 <field name="name"/>
                             </group>
                             <group>
-                                 <field name="phone_number"/>
+                                <field name="phone_number"/>
                                 <field name="bill_amount"/>
                             </group>
                         </group>
-
                         <notebook>
                             <page string="Prescriptions">
                                 <field name="prescription_line_ids">
@@ -36,17 +125,20 @@
             </field>
         </record>
 
+        <!-- Tree View -->
         <record id="pharmacy_tree" model="ir.ui.view">
             <field name="name">pharmacy.tree</field>
             <field name="model">pharmacy.description</field>
             <field name="arch" type="xml">
-                <tree string="Patient Details">
+                <tree string="Pharmacy Description">
                     <field name="patient_id" string='Patient ID'/>
                     <field name="name"/>
                     <field name="phone_number"/>
                 </tree>
             </field>
         </record>
+
+        <!-- Action -->
         <record id="action_pharmacy_description" model="ir.actions.act_window">
             <field name="name">Pharmacy Description</field>
             <field name="res_model">pharmacy.description</field>
@@ -60,6 +152,8 @@
                 </p>
             </field>
         </record>
+
+        <!-- Menu Items -->
         <menuitem id="menu_pharmacy_root" name="Pharmacy" sequence="5" parent="menu_homeo_head"/>
 
         <menuitem id="menu_pharmacy_description"
@@ -73,6 +167,5 @@
                   parent="menu_pharmacy_root"
                   action="action_my_product_template"
                   sequence="1"/>
-
     </data>
 </odoo>
