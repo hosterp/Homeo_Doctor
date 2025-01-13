@@ -1,77 +1,113 @@
 <odoo>
     <data>
         <!-- QWeb Template for Pharmacy Description Report -->
+        <template id="pharmacy_minimal_layout">
+        <t t-call="web.basic_layout">
+            <div class="header">
+                <div class="text-center">
+                    <h2 style="text-decoration: underline; margin-bottom: 10px;">Hospital Management</h2>
+                    <p>Trivandrum | Phone No: 0001-123456 </p>
+                </div>
+            </div>
+            <t t-raw="0"/>
+        </t>
+    </template>
         <template id="pharmacy_report_template">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
-                    <t t-call="web.external_layout">
+                    <t t-call="homeo_doctor.pharmacy_minimal_layout">
                         <div class="page">
-                            <div class="row mt32 mb32">
-                                <div class="col-10">
-                                    <strong>Patient ID:</strong>
-                                    <strong>
-                                        <p class="d-inline" t-field="o.patient_id" style="font-size: 20px;"/>
-                                    </strong>
-                                </div>
-                                <div class="col-4">
-                                    <strong>Phone:</strong>
-                                    <p class="d-inline" t-field="o.phone_number"/>
+                            <!-- Header Section -->
+                            <div class="row" style="border-bottom: 2px solid #1a73e8; padding-bottom: 10px; margin-bottom: 20px;">
+                                <div class="col-12 text-center">
+                                    <h3 style="color: #1a73e8; font-weight: bold;">Prescription Details</h3>
                                 </div>
                             </div>
-                            <br></br>
-                            <div class="row mt32 mb32">
+
+                            <!-- Patient Information Section -->
+                            <div class="row" style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                                 <div class="col-6">
-                                    <strong>Patient Name:</strong>
-                                    <p class="d-inline" t-field="o.name"/>
+                                    <div class="mb-2">
+                                        <strong style="color: #666;">Patient ID: </strong>
+                                        <span t-field="o.patient_id" style="font-size: 16px; color: #333;"/>
+                                    </div>
+                                    <div class="mb-2">
+                                        <strong style="color: #666;">Patient Name: </strong>
+                                        <span t-field="o.name" style="font-size: 16px; color: #333;"/>
+                                    </div>
                                 </div>
-                                <div class="col-6 text-right">
-                                    <strong>Bill Amount:</strong>
-                                    <span t-field="o.bill_amount"/>
+                                <div class="col-6">
+                                    <div class="text-right  mb-2">
+                                        <strong style="color: #666;">Phone: </strong>
+                                        <span t-field="o.phone_number" style="font-size: 16px; color: #333;"/>
+                                    </div>
+                                    <div class="text-right mb-2">
+                                        <strong style="color: #666;">Date: </strong>
+                                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"
+                                              style="font-size: 16px; color: #333;"/>
+                                    </div>
                                 </div>
                             </div>
-                            <br></br>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Medicine</th>
-                                        <th>Total Medicine</th>
-                                        <th>Per Prescription</th>
-                                        <th>Morning</th>
-                                        <th>Noon</th>
-                                        <th>Night</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-foreach="o.prescription_line_ids" t-as="medicine">
-                                        <tr>
-                                            <td>
-                                                <span t-field="medicine.product_id.display_name"/>
+
+                            <!-- Prescription Table -->
+                            <div style="margin-top: 20px;">
+                                <table class="table table-bordered" style="border: 1px solid #dee2e6;">
+                                    <thead>
+                                        <tr style="background-color: #1a73e8; color: white;">
+                                            <th class="text-center" style="width: 25%;">Medicine</th>
+                                            <th class="text-center" style="width: 10%;">Qty</th>
+                                            <th class="text-center" style="width: 10%;">Per Time</th>
+                                            <th class="text-center" style="width: 25%;">Timing</th>
+                                            <th class="text-center" style="width: 15%;">Rate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.prescription_line_ids" t-as="medicine">
+                                            <tr>
+                                                <td style="vertical-align: middle;">
+                                                    <span t-field="medicine.product_id.display_name"/>
+                                                </td>
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <span t-field="medicine.total_med"/>
+                                                </td>
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <span t-field="medicine.per_ped"/>
+                                                </td>
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <span t-if="medicine.morn" class="badge badge-success"
+                                                          style="margin: 0 3px; background-color: #28a745;">Morning</span>
+                                                    <span t-if="medicine.noon" class="badge badge-success"
+                                                          style="margin: 0 3px; background-color: #28a745;">Noon</span>
+                                                    <span t-if="medicine.night" class="badge badge-success"
+                                                          style="margin: 0 3px; background-color: #28a745;">Night</span>
+                                                </td>
+                                                <td class="text-right" style="vertical-align: middle;">
+                                                    <span t-field="medicine.rate" t-options='{"widget": "float", "precision": 2}'/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <!-- Total Row -->
+                                        <tr style="background-color: #f8f9fa; font-weight: bold;">
+                                            <td colspan="4" class="text-right" style="border-top: 2px solid #dee2e6;">
+                                                Total Amount:
                                             </td>
-                                            <td>
-                                                <span t-field="medicine.total_med"/>
-                                            </td>
-                                            <td>
-                                                <span t-field="medicine.per_ped"/>
-                                            </td>
-                                            <td>
-                                                <t t-if="medicine.morn">
-                                                    &#x2713; <!-- Tick symbol -->
-                                                </t>
-                                            </td>
-                                            <td>
-                                                <t t-if="medicine.noon">
-                                                    &#x2713; <!-- Tick symbol -->
-                                                </t>
-                                            </td>
-                                            <td>
-                                                <t t-if="medicine.night">
-                                                    &#x2713; <!-- Tick symbol -->
-                                                </t>
+                                            <td class="text-right" style="border-top: 2px solid #dee2e6;">
+                                                <span t-esc="sum(o.prescription_line_ids.mapped('rate'))"
+                                                      t-options='{"widget": "float", "precision": 2}'/>
                                             </td>
                                         </tr>
-                                    </t>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Footer Notes -->
+                            <div class="row mt-5">
+                                <div class="col-12">
+                                    <p style="font-style: italic; color: #666; font-size: 14px;">
+                                        * Please take medicines as prescribed
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </t>
                 </t>
@@ -103,7 +139,7 @@
                             </group>
                             <group>
                                 <field name="phone_number"/>
-                                <field name="bill_amount"/>
+                                <field name="bill_amount" invisible="1"/>
                             </group>
                         </group>
                         <notebook>
@@ -116,6 +152,7 @@
                                         <field name="morn"/>
                                         <field name="noon"/>
                                         <field name="night"/>
+                                        <field name="rate" sum="Total"/>
                                     </tree>
                                 </field>
                             </page>
