@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        id="action_report_lab_invoice"
+        string="Lab Invoice"
+        model="doctor.lab.report"
+        report_type="qweb-pdf"
+        name="homeo_doctor.report_lab_invoice"
+        file="homeo_doctor.report_lab_invoice"
+    />
+</odoo>

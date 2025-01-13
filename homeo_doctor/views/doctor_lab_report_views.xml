@@ -49,6 +49,17 @@
                                 <field name="attachment" filename="attachment_name"/>
                             </group>
                         </group>
+                         <notebook>
+                            <page string="Lab Details">
+                                <field name="lab_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="lab_type_id"/>
+
+                                        <field name="rate_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>

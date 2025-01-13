@@ -18,6 +18,7 @@ class DoctorLabReport(models.Model):
     referral_details = fields.Text(string="Referral Details")
     report_details = fields.Text(string="Lab Report Details")
     lab_reference_no=fields.Many2one('lab.referral','Reference No')
+    lab_line_ids = fields.One2many('lab.scan.line', 'lab_id', string='Lab Lines')
 
     @api.model
     def create(self, vals):
@@ -61,3 +62,27 @@ class DoctorLabReport(models.Model):
             )
             self.lab_reference_no = latest_referral.id if latest_referral else False
             self.referral_details=latest_referral.details if latest_referral else False
+
+
+    def print_invoice(self):
+        return self.env.ref('homeo_doctor.action_report_ct_invoice').report_action(self)
+class LabType(models.Model):
+    _name = 'lab.type'
+    _description = 'Type of Lab Test'
+
+    name = fields.Char(string='Test Description', required=True)
+
+class LabRate(models.Model):
+    _name = 'lab.rate'
+    _description = 'Lab Test Rate'
+    _rec_name = 'amount'  # This will display the amount in Many2one fields
+
+    amount = fields.Float(string='Amount', required=True)
+
+class LabScanLine(models.Model):
+    _name = 'lab.scan.line'
+    _description = 'Lab Scan Line'
+
+    lab_id = fields.Many2one('doctor.lab.report', string='Lab Test')
+    lab_type_id = fields.Many2one('lab.type', string='Lab Test description', required=True)
+    rate_id = fields.Many2one('lab.rate', string='Rate', required=True)

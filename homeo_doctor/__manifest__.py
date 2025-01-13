@@ -43,6 +43,9 @@
         "report/x_ray_reports.xml",
         "report/audiology_invoice_template.xml",
         "report/audiology_reports.xml",
+        "report/lab_report.xml",
+        "report/lab_report.xml",
+        "report/Lab_report_report.xml",
 
     ],
     'assets': {
