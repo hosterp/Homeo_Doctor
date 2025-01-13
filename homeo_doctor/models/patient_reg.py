@@ -49,7 +49,7 @@ class PatientRegistration(models.Model):
         for record in self:
             # Fetch all previous consultations for the same patient, excluding the current record
             record.previous_consultation_ids = self.search([
-                ('patient_id', '=', record.patient_id.id),
+                ('user_id', '=', record.user_id.id),
                 ('id', '!=', record.id)
             ])
     def _compute_lab_report_count(self):
@@ -221,13 +221,15 @@ class PatientRegistration(models.Model):
             }
 
     def action_view_consultations(self):
+        test=self.env['patient.registration'].search([('patient_id', '=', [self.user_id.id])])
+        print(test,'previous record..............................................')
         return {
             'type': 'ir.actions.act_window',
             'name': 'Previous Consultations',
             'view_mode': 'tree,form',
             'res_model': 'patient.registration',
-            'domain': [('patient_id', '=', self.user_id.id)],
-            'context': {'default_patient_id': self.user_id.id},
+            'domain': [('user_id', 'in', self.reference_no if isinstance(self.reference_no, list) else [self.reference_no])],
+            'context': {'default_patient_id': self.reference_no},
         }
 
 
