@@ -41,6 +41,8 @@
         "report/mri_reports.xml",
         "report/x_ray_invoice_template.xml",
         "report/x_ray_reports.xml",
+        "report/audiology_invoice_template.xml",
+        "report/audiology_reports.xml",
 
     ],
     'assets': {
