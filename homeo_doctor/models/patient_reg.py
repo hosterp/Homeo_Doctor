@@ -104,7 +104,7 @@ class PatientRegistration(models.Model):
             'tag': 'display_notification',
             'params': {
                 'title': 'Success',
-                'message': 'Pharmacy record sent successfully!',
+                'message': 'record sent successfully!',
                 'sticky': False,
                 'warning': False,
             }
