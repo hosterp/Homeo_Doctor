@@ -85,13 +85,13 @@ class PatientRegistration(models.Model):
     def admission_button(self):
 
         appointment_vals = {
-            'patient_id': self.id,
+            'patient_id': self.user_id.id,
             'attending_doctor': self.doctor_id.id,
 
         }
         appointment = self.env['hospital.admitted.patient'].create(appointment_vals)
         registration_vals = {
-            'user_id': self.id,
+            'user_id': self.user_id.id,
             'patient_id': self.patient_id,
             'address': self.address,
             'age': self.age,
