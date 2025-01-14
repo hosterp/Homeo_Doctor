@@ -37,10 +37,14 @@
                             <field name="doctor_id"/>
                             <field name="consultation_fee" readonly="1"/>
                             <field name="reason"/>
+                            <field name="button_visible" invisible="1"/>
                         </group>
                         <group>
-                            <button name="action_appointment_confirm" type="object" string="Confirm Appointment"
-                                    class="oe_highlight"/>
+                            <button name="action_appointment_confirm"
+                                    type="object"
+                                    string="Confirm Appointment"
+                                    class="oe_highlight"
+                                    attrs="{'invisible': [('button_visible', '=', False)]}"/>
                         </group>
 
                     </group>

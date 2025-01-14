@@ -26,6 +26,7 @@ class PatientAppointment(models.Model):
     age = fields.Integer(related='patient_id.age',string='Age')
     phone_number = fields.Char(related='patient_id.phone_number',string='Phone Number')
     gender = fields.Selection(related='patient_id.gender',string='Gender')
+    button_visible = fields.Boolean(default=True)
 
     @api.depends('doctor_id', 'patient_id')
     def _compute_consultation_fee(self):
@@ -107,6 +108,7 @@ class PatientAppointment(models.Model):
             }
             patient_registration = self.env['patient.registration'].create(registration_vals)
             print(registration_vals,'registration_vals....................................................')
+            self.button_visible = False
             # return {
             #     'type': 'ir.actions.act_window',
             #     'name': 'Patient Registration',
