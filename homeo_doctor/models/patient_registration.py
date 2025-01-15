@@ -29,7 +29,27 @@ class PatientRegistration(models.Model):
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
     consultation_fee = fields.Integer(string='Consultation Fee', compute='_compute_consultation_fee', store=True)
+    prescription_line_ids = fields.One2many('pharmacy.prescription.line', 'admission_id', string="Prescriptions")
+    lab_report_reg_ids = fields.One2many('doctor.lab.report', 'user_ide', string="Lab")
+    mri_report_reg_ids = fields.One2many('scanning.mri', 'user_ide', string="MRI")
+    ct_report_reg_ids = fields.One2many('scanning.ct', 'user_ide', string="CT")
+    audiology_report_reg_ids = fields.One2many('audiology.ref', 'user_ide', string="Audiology")
+    xray_report_reg_ids = fields.One2many('audiology.ref', 'user_ide', string="X Ray")
 
+    bystander_name = fields.Char(string="Bystander Name")
+    bystander_mobile = fields.Char(string="Bystander Mobile")
+    room_category = fields.Many2one('room.category', string='Room Category')
+    advance_amount = fields.Integer(string='Advance Amount')
+    admission_boolean=fields.Boolean(default=False)
+
+    @api.onchange('room_category')
+    def onchange_advance_amount(self):
+        for i in self:
+            if i.room_category:
+                i.advance_amount = i.room_category.advance_amount
+
+            else:
+                pass
     @api.depends('doc_name')
     def _compute_consultation_fee(self):
         for record in self:

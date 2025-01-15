@@ -28,6 +28,7 @@ class PatientRegistration(models.Model):
     med_ids = fields.One2many("prescription.entry.lines", 'prescription_line_id', string="Prescription Entry Lines")
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     move_to_pharmacy_clicked = fields.Boolean(string="Move to Pharmacy Clicked", default=False)
+    move_to_admission_clicked = fields.Boolean(string="Move to Patient Reg  Clicked", default=False)
     blood_pressure = fields.Char(string='Blood Pressure')
     sugar_level = fields.Float(string='Sugar Level (mg/dl)')
     weight = fields.Float(string='Weight (kg)')
@@ -84,28 +85,77 @@ class PatientRegistration(models.Model):
                 record.formatted_date = ''
 
     def admission_button(self):
+        self.move_to_admission_clicked = True
 
-        appointment_vals = {
-            'patient_id': self.user_id.id,
-            'attending_doctor': self.doctor_id.id,
+        # Prepare admission values for prescription lines
+        admission_vals = {
+            'prescription_line_ids': [(0, 0, {
+                'product_id': line.product_id.id,
+                'total_med': line.total_med,
+                'per_ped': line.per_ped,
+                'morn': line.morn,
+                'noon': line.noon,
+                'night': line.night,
+            }) for line in self.med_ids],
+        }
+        # result = {
+        #     'lab_report_reg_ids': [(0, 0, {
+        #         'report_details': line.report_details,
+        #         'date': line.date,
+        #         'doctor_id': line.doctor_id.id,
+        #         'patient_id': line.patient_id.id,
+        #
+        #     }) for line in self.lab_report_ids],
+        # }
+        # mri_result = {
+        #     'mri_report_reg_ids': [(0, 0, {
+        #         'report_details': line.report_details,
+        #         'date': line.date,
+        #         'doctor_id': line.doctor_id.id,
+        #         'patient_id': line.patient_id.id,
+        #
+        #     }) for line in self.mri_report_ids],
+        # }
+        # ct_result = {
+        #     'ct_report_reg_ids': [(0, 0, {
+        #         'report_details': line.report_details,
+        #         'date': line.date,
+        #         'doctor_id': line.doctor_id.id,
+        #         'patient_id': line.patient_id.id,
+        #
+        #     }) for line in self.ct_report_ids],
+        # }
 
-        }
-        appointment = self.env['hospital.admitted.patient'].create(appointment_vals)
-        registration_vals = {
-            'user_id': self.user_id.id,
-            'patient_id': self.patient_id,
-            'address': self.address,
-            'age': self.age,
-            'phone_number': self.phone_number,
-            'attending_doctor': self.doctor_id,
-            'admission_date': self.formatted_date,
-        }
+
+        admission_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
+        # lab_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
+        # mri_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
+        # ct_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
+        admission_record.admission_boolean=True
+        if admission_record:
+
+            for line_vals in admission_vals['prescription_line_ids']:
+                admission_record.prescription_line_ids = [(0, 0, line_vals[2])]
+        # if lab_record:
+        #     for line_vals in result['lab_report_reg_ids']:
+        #         lab_record.lab_report_reg_ids = [(0, 0, line_vals[2])]
+        # if mri_record:
+        #     for line_vals in mri_result['mri_report_reg_ids']:
+        #         mri_record.mri_report_reg_ids = [(0, 0, line_vals[2])]
+        # if ct_record:
+        #     for line_vals in ct_result['ct_report_reg_ids']:
+        #         ct_record.ct_report_reg_ids = [(0, 0, line_vals[2])]
+        else:
+
+            admission_record = self.env['patient.reg'].create(admission_vals)
+
+        # Notify the user about the success
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
                 'title': 'Success',
-                'message': 'record sent successfully!',
+                'message': 'Record updated or created successfully!',
                 'sticky': False,
                 'warning': False,
             }

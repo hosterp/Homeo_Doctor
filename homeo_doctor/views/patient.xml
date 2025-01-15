@@ -28,6 +28,7 @@
                                 <field name="email"/>
                                 <field name="registration_fee"/>
                                 <field name="phone_number" widget="phone"/>
+                                <field name="bystander_name"/>
 
                             </group>
                             <group col="3">
@@ -37,15 +38,73 @@
                                 <field name="doc_name"/>
                                 <field name="time"/>
                                 <field name="consultation_fee"/>
-
-
+                                <field name="admission_boolean" invisible="1"/>
                             </group>
-                            <group col="3">
-                                <!--                                <field name="symptoms"/>-->
 
+                            <group col="3" string="Admission Details" attrs="{'invisible': [('admission_boolean', '=', False)]}">
+                                <field name="bystander_mobile"/>
+                                <field name="room_category"/>
+                                <field name="advance_amount"/>
                             </group>
 
                         </group>
+                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">
+                            <page string="Prescriptions">
+                                <field name="prescription_line_ids">
+                                    <tree>
+                                        <field name="product_id"/>
+                                        <field name="total_med"/>
+                                        <field name="per_ped"/>
+                                        <field name="morn"/>
+                                        <field name="noon"/>
+                                        <field name="night"/>
+                                        <field name="rate" sum="Total"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">
+                             <page string="Lab">
+                                <field name="lab_report_reg_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="MRI">
+                                <field name="mri_report_reg_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="scan_report_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="CT">
+                                <field name="ct_report_reg_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="scan_report_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                             <page string="X Ray">
+                                <field name="xray_report_reg_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="scan_report_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Audiology">
+                                <field name="audiology_report_reg_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="scan_report_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
 
                         <group col="3">
                             <field name="remark"/>

@@ -17,6 +17,7 @@ class PharmacyPrescriptionLine(models.Model):
     _description = 'Pharmacy Prescription Line'
 
     pharmacy_id = fields.Many2one('pharmacy.description', string="Pharmacy")
+    admission_id=fields.Many2one('patient.reg',string='Patient Registration')
     product_id = fields.Many2one('product.product', string="Medicine")
     total_med = fields.Integer("Total Medicine")
     per_ped = fields.Integer("Per Medicine")
