@@ -2,10 +2,11 @@ from odoo import api, fields, models, _
 
 class MRI_Scan(models.Model):
     _name = 'scanning.mri'
-    _rec_name = 'patient_id'
+    _rec_name = 'user_ide'
 
-
-    patient_id = fields.Many2one('patient.reg', string="Patient", required=True)
+    user_ide = fields.Many2one('patient.reg', string="Patient")
+    patient_id = fields.Many2one('patient.registration', string="Consultation ID", required=True)
+    reference_no = fields.Char(string="Reference No")
     age = fields.Integer(string='Age', required=True, related='patient_id.age')
     gender = fields.Selection(string='Gender', related='patient_id.gender')
     doctor_id = fields.Many2one('doctor.profile', string="Doctor", required=True)
@@ -42,17 +43,19 @@ class MRI_Scan(models.Model):
 
 
 
-    @api.onchange('patient_id')
+    @api.onchange('user_ide')
     def _onchange_patient_id(self):
-        if self.patient_id:
+        if self.user_ide:
 
             latest_referral = self.env['doctor.referral'].search(
-                [('patient_id', '=', self.patient_id.id),('scan_type','=','mri')],
+                [('user_ide', '=', self.user_ide.id),('scan_type','=','mri')],
                 order='create_date desc', 
                 limit=1
             )
             self.referral_id = latest_referral.id if latest_referral else False
             self.details = latest_referral.details if latest_referral else False
+            self.patient_id = latest_referral.patient_id if latest_referral else False
+
 
 class MRIScanType(models.Model):
     _name = 'mri.scan.type'

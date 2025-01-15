@@ -12,11 +12,11 @@ class PatientRegistration(models.Model):
     _rec_name = 'reference_no'
     _order = 'reference_no desc'
 
-    reference_no = fields.Char(string="Reference",related='user_id.reference_no')
+    reference_no = fields.Char(string="Reference")
     date = fields.Date(default=dateutil.utils.today(), readonly=True)
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     user_id = fields.Many2one('patient.reg', string='Name',required=True)
-    patient_id = fields.Char(string='Name',required=True,related='user_id.patient_id')
+    patient_id = fields.Char(string='Name',required=True,related='user_id.reference_no')
     doctor_id=fields.Many2one(string='Doctor name',related='user_id.doc_name')
     address = fields.Text(string='Address',required=True,related='user_id.address')
     age = fields.Integer( string='Age',required=True,related='user_id.age')
@@ -72,6 +72,7 @@ class PatientRegistration(models.Model):
             vals['reference_no'] = self.env['ir.sequence'].next_by_code(
                 'patient.registrartion.group') or _('New')
         res = super(PatientRegistration, self).create(vals)
+        print("val",res)
         return res
 
     def _compute_formatted_date(self):
@@ -153,34 +154,39 @@ class PatientRegistration(models.Model):
     def action_create_referral_lab(self):
         return self._create_referral_lab()
 
-    def action_create_referral_ct(self):
-        return self._create_referral(scan_type='ct')
-
-
-    def action_create_referral_mri(self):
-
-        return self._create_referral(scan_type='mri')
-
-
-    def action_create_referral_xray(self):
-        return self._create_referral(scan_type='xray')
-
-    def action_create_referral_audiology(self):
-        return self._create_referral(scan_type='audiology')
-
-    def _create_referral(self, scan_type):
+    def action_create_referral_xray(self,scan_type='xray'):
         for consultation in self:
-            if not consultation.patient_id:
+            if not consultation.user_id:  # Assuming user_id is the patient
                 raise UserError("Patient not selected.")
 
+            # Debugging output
+            print("User  ID:", consultation.user_id)
+            print("User  Reference No:", consultation.user_id.reference_no)
 
+            # Create the referral record
             referral = self.env['doctor.referral'].create({
                 'doctor_id': consultation.doctor_id.id,
-                'patient_id': consultation.user_id.id,
+                'user_ide': consultation.user_id.id,
+                'patient_id': consultation.reference_no,
                 'referral_type': 'scanning',
                 'details': f'Refer for {scan_type.replace("_", " ").title()}',
                 'scan_type': scan_type,
             })
+
+            # Create the xray scan record and link it to the reference_no
+            x_ray_vals = {
+                'patient_id': consultation.user_id.id,
+                'doctor_id': consultation.doctor_id.id,
+                'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
+                'scan_registered_date': fields.Date.today(),
+                # Add other necessary fields...
+            }
+
+            # Debugging output for xray scan values
+            print("MRI Scan Values:", x_ray_vals)
+
+            # Create the xray scan record
+            xray_scan = self.env['scanning.x.ray'].create(x_ray_vals)
 
         return {
             'type': 'ir.actions.act_window',
@@ -189,9 +195,181 @@ class PatientRegistration(models.Model):
             'view_mode': 'form',
             'res_id': referral.id,
             'target': 'new',
-
         }
 
+
+    def action_create_referral_mri(self,scan_type='mri'):
+        for consultation in self:
+            if not consultation.user_id:  # Assuming user_id is the patient
+                raise UserError("Patient not selected.")
+
+            # Debugging output
+            print("User  ID:", consultation.user_id)
+            print("User  Reference No:", consultation.user_id.reference_no)
+
+            # Create the referral record
+            referral = self.env['doctor.referral'].create({
+                'doctor_id': consultation.doctor_id.id,
+                'user_ide': consultation.user_id.id,
+                'patient_id': consultation.reference_no,
+                'referral_type': 'scanning',
+                'details': f'Refer for {scan_type.replace("_", " ").title()}',
+                'scan_type': scan_type,
+            })
+
+            # Create the MRI scan record and link it to the reference_no
+            mri_scan_vals = {
+                'patient_id': consultation.user_id.id,
+                'doctor_id': consultation.doctor_id.id,
+                'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
+                'scan_registered_date': fields.Date.today(),
+                # Add other necessary fields...
+            }
+
+            # Debugging output for MRI scan values
+            print("MRI Scan Values:", mri_scan_vals)
+
+            # Create the MRI scan record
+            mri_scan = self.env['scanning.mri'].create(mri_scan_vals)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Referral',
+            'res_model': 'doctor.referral',
+            'view_mode': 'form',
+            'res_id': referral.id,
+            'target': 'new',
+        }
+
+
+    def action_create_referral_ct(self,scan_type='ct'):
+        for consultation in self:
+            if not consultation.user_id:  # Assuming user_id is the patient
+                raise UserError("Patient not selected.")
+
+            # Debugging output
+            print("User  ID:", consultation.user_id)
+            print("User  Reference No:", consultation.user_id.reference_no)
+
+            # Create the referral record
+            referral = self.env['doctor.referral'].create({
+                'doctor_id': consultation.doctor_id.id,
+                'user_ide': consultation.user_id.id,
+                'patient_id': consultation.reference_no,
+                'referral_type': 'scanning',
+                'details': f'Refer for {scan_type.replace("_", " ").title()}',
+                'scan_type': scan_type,
+            })
+
+            # Create the ct scan record and link it to the reference_no
+            ct_vals = {
+                'patient_id': consultation.user_id.id,
+                'doctor_id': consultation.doctor_id.id,
+                'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
+                'scan_registered_date': fields.Date.today(),
+                # Add other necessary fields...
+            }
+
+            # Debugging output for ct scan values
+            print("ct Scan Values:", ct_vals)
+
+            # Create the ct scan record
+            ct_scan = self.env['scanning.ct'].create(ct_vals)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Referral',
+            'res_model': 'doctor.referral',
+            'view_mode': 'form',
+            'res_id': referral.id,
+            'target': 'new',
+        }
+
+    def action_create_referral_audiology(self,scan_type='audiology'):
+        for consultation in self:
+            if not consultation.user_id:  # Assuming user_id is the patient
+                raise UserError("Patient not selected.")
+
+            # Debugging output
+            print("User  ID:", consultation.user_id)
+            print("User  Reference No:", consultation.user_id.reference_no)
+
+            # Create the referral record
+            referral = self.env['doctor.referral'].create({
+                'doctor_id': consultation.doctor_id.id,
+                'user_ide': consultation.user_id.id,
+                'patient_id': consultation.reference_no,
+                'referral_type': 'scanning',
+                'details': f'Refer for {scan_type.replace("_", " ").title()}',
+                'scan_type': scan_type,
+            })
+
+            # Create the ct scan record and link it to the reference_no
+            audiology_vals = {
+                'patient_id': consultation.user_id.id,
+                'doctor_id': consultation.doctor_id.id,
+                'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
+                'scan_registered_date': fields.Date.today(),
+                # Add other necessary fields...
+            }
+
+            # Debugging output for audiology scan values
+            print("Audiology Scan Values:", audiology_vals)
+
+            # Create the ct scan record
+            audio_scan = self.env['audiology.ref'].create(audiology_vals)
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Referral',
+            'res_model': 'doctor.referral',
+            'view_mode': 'form',
+            'res_id': referral.id,
+            'target': 'new',
+        }
+
+    # def _create_referral(self, scan_type):
+    #     for consultation in self:
+    #         if not consultation.user_id:  # Assuming user_id is the patient
+    #             raise UserError("Patient not selected.")
+    #
+    #         # Debugging output
+    #         print("User  ID:", consultation.user_id)
+    #         print("User  Reference No:", consultation.user_id.reference_no)
+    #
+    #         # Create the referral record
+    #         referral = self.env['doctor.referral'].create({
+    #             'doctor_id': consultation.doctor_id.id,
+    #             'user_ide': consultation.user_id.id,
+    #             'patient_id': consultation.reference_no,
+    #             'referral_type': 'scanning',
+    #             'details': f'Refer for {scan_type.replace("_", " ").title()}',
+    #             'scan_type': scan_type,
+    #         })
+    #
+    #         # Create the MRI scan record and link it to the reference_no
+    #         mri_scan_vals = {
+    #             'patient_id': consultation.user_id.id,
+    #             'doctor_id': consultation.doctor_id.id,
+    #             'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
+    #             'scan_registered_date': fields.Date.today(),
+    #             # Add other necessary fields...
+    #         }
+    #
+    #         # Debugging output for MRI scan values
+    #         print("MRI Scan Values:", mri_scan_vals)
+    #
+    #         # Create the MRI scan record
+    #         mri_scan = self.env['scanning.mri'].create(mri_scan_vals)
+    #
+    #     return {
+    #         'type': 'ir.actions.act_window',
+    #         'name': 'Referral',
+    #         'res_model': 'doctor.referral',
+    #         'view_mode': 'form',
+    #         'res_id': referral.id,
+    #         'target': 'new',
+    #     }
     def _create_referral_lab(self):
         for consultation in self:
             if not consultation.patient_id:
@@ -252,8 +430,9 @@ class DoctorReferral(models.Model):
     _rec_name = 'reference_no'
 
     reference_no = fields.Char(string="Reference",readonly=True)
+    user_ide = fields.Many2one('patient.reg', string="Patient", readonly=True)
     doctor_id = fields.Many2one('doctor.profile', string="Doctor",readonly=True)
-    patient_id = fields.Many2one('patient.reg', string="Patient",readonly=True)
+    patient_id = fields.Many2one('patient.registration', string="Consultation ID",readonly=True)
     referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation')],
                                      default='scanning')
     details = fields.Text(string="Referral Details")
