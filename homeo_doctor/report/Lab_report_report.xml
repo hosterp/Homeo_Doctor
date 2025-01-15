@@ -47,8 +47,12 @@
                                     <h5 class="mb-3">Patient Information</h5>
                                     <table class="table table-borderless mb-0">
                                         <tr>
-                                            <td class="pl-0"><strong>Name:</strong></td>
+                                            <td class="pl-0"><strong>Patient ID:</strong></td>
                                             <td><span t-field="o.patient_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-0"><strong>Name:</strong></td>
+                                            <td><span t-field="o.patient_id.patient_id"/></td>
                                         </tr>
                                         <tr>
                                             <td class="pl-0"><strong>Age/Gender:</strong></td>
