@@ -48,11 +48,11 @@
                                     <table class="table table-borderless mb-0">
                                         <tr>
                                             <td class="pl-0"><strong>Patient ID:</strong></td>
-                                            <td><span t-field="o.patient_id"/></td>
+                                            <td><span t-field="o.user_ide"/></td>
                                         </tr>
                                         <tr>
                                             <td class="pl-0"><strong>Name:</strong></td>
-                                            <td><span t-field="o.patient_id.patient_id"/></td>
+                                            <td><span t-field="o.user_ide.patient_id"/></td>
                                         </tr>
                                         <tr>
                                             <td class="pl-0"><strong>Age/Gender:</strong></td>

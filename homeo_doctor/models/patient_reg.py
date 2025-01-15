@@ -458,8 +458,8 @@ class PatientRegistration(models.Model):
             'name': 'Previous Consultations',
             'view_mode': 'tree,form',
             'res_model': 'patient.registration',
-            'domain': [('user_id', 'in', self.reference_no if isinstance(self.reference_no, list) else [self.reference_no])],
-            'context': {'default_patient_id': self.reference_no},
+            'domain': [('user_id', 'in', self.patient_id if isinstance(self.patient_id, list) else [self.patient_id])],
+            'context': {'default_patient_id': self.patient_id},
         }
 
 

@@ -69,8 +69,12 @@
                                     <h5 class="mb-3">Doctor Information</h5>
                                     <table class="table table-borderless mb-0">
                                         <tr>
+                                            <td class="pl-0"><strong>Patient ID:</strong></td>
+                                            <td><span t-field="o.user_ide"/></td>
+                                        </tr>
+                                        <tr>
                                             <td class="pl-0"><strong>Name:</strong></td>
-                                            <td><span t-field="o.doctor_id.name"/></td>
+                                            <td><span t-field="o.user_ide.patient_id"/></td>
                                         </tr>
                                         <tr>
                                             <td class="pl-0"><strong>Department:</strong></td>
