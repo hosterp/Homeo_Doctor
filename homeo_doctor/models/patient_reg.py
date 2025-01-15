@@ -372,20 +372,21 @@ class PatientRegistration(models.Model):
     #     }
     def _create_referral_lab(self):
         for consultation in self:
-            if not consultation.patient_id:
+            if not consultation.user_id:
                 raise UserError("Patient not selected.")
 
             # Create a lab referral record
             referral = self.env['lab.referral'].create({
                 'doctor': consultation.doctor_id.id,
-                'patient_id': consultation.id,
+                'user_ide': consultation.user_id.id,
+                'patient_id': consultation.reference_no,
                 'referral_type': 'lab',
             })
             if referral:
                 lab_report = self.env['doctor.lab.report'].create({
                     'referral_details': referral.details,
-                    'lab_reference_no': referral.reference_no,
-                    'patient_id': referral.patient_id.id,
+                    'reference_no': referral.reference_no,
+                    'patient_id': referral.user_ide.id,
                     'doctor_id': referral.doctor.id,
 
                 })
@@ -459,6 +460,7 @@ class LabReferral(models.Model):
 
     reference_no = fields.Char(string="Reference", readonly=True)
     doctor=fields.Many2one('doctor.profile',string='Doctor')
+    user_ide = fields.Many2one('patient.reg', string="Patient", readonly=True)
     patient_id=fields.Many2one('patient.registration',string='Patient')
     referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation'),('lab','LAB')],
                                      default='lab')

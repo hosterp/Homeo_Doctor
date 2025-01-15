@@ -39,6 +39,7 @@
                             <group>
                                 <field name="date"/>
                                 <field name="doctor_id"/>
+                                <field name="user_ide"/>
                                 <field name="patient_id"/>
                                 <field name="bill_amount"/>
                             </group>

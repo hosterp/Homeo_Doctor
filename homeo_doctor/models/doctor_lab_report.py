@@ -6,10 +6,12 @@ class DoctorLabReport(models.Model):
     _rec_name = 'report_reference'
     _order = 'date desc'
 
+    user_ide = fields.Many2one('patient.reg', string="Patient")
+    patient_id = fields.Many2one('patient.registration', string="Consultation ID", required=True)
+    reference_no = fields.Char(string="Reference No")
     report_reference = fields.Char(string="Report Reference", readonly=True, default=lambda self: _('New'))
     date = fields.Date(string="Report Date", default=fields.Date.context_today, required=True)
     doctor_id = fields.Many2one('doctor.profile', string="Doctor", required=True)
-    patient_id = fields.Many2one('patient.reg', string="Patient", required=True)
     report_details = fields.Text(string="Report Details")
     attachment = fields.Binary(string="Result")
     attachment_name = fields.Char(string="Result")
@@ -52,16 +54,17 @@ class DoctorLabReport(models.Model):
 
         return True
 
-    @api.onchange('patient_id')
+    @api.onchange('user_ide')
     def _onchange_patient_id(self):
-        if self.patient_id:
+        if self.user_ide:
             latest_referral = self.env['lab.referral'].search(
-                [('patient_id', '=', self.patient_id.id)],
+                [('user_ide', '=', self.user_ide.id)],
                 order='create_date desc',
                 limit=1
             )
             self.lab_reference_no = latest_referral.id if latest_referral else False
             self.referral_details=latest_referral.details if latest_referral else False
+            self.patient_id = latest_referral.patient_id if latest_referral else False
 
 
     def print_invoice(self):
