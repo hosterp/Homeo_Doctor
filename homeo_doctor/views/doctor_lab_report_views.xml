@@ -5,7 +5,8 @@
             <field name="model">doctor.lab.report</field>
             <field name="arch" type="xml">
                 <tree string="Doctor Lab Reports">
-                    <field name="patient_id"/>
+                    <field name="patient_id" invisible="1"/>
+                    <field name="user_ide" string="Patient ID"/>
                     <field name="report_reference" invisible="1"/>
                     <field name="date"/>
                     <field name="doctor_id"/>
@@ -50,7 +51,7 @@
                                 <field name="attachment" filename="attachment_name"/>
                             </group>
                         </group>
-                         <notebook>
+                        <notebook>
                             <page string="Lab Details">
                                 <field name="lab_line_ids">
                                     <tree editable="bottom">
