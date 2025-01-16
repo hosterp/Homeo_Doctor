@@ -39,14 +39,14 @@
                                 <field name="doc_name"/>
                                 <field name="time"/>
                                 <field name="consultation_fee"/>
-                                <field name="admission_boolean" invisible="1"/>
+                                <field name="admission_boolean" />
                             </group>
                         </group>
                         <group col="4" string="Admission Details"
                                attrs="{'invisible': [('admission_boolean', '=', False)]}">
                             <group>
                                 <field name="bystander_name"/>
-                                <field name="admitted_date"/>
+                                <field name="admitted_date" attrs="{'required': [('admission_boolean', '=', True)]}"/>
                                 <field name="bed_number"/>
                             </group>
                             <group>

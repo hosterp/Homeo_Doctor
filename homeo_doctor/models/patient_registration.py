@@ -42,15 +42,32 @@ class PatientRegistration(models.Model):
     bystander_mobile = fields.Char(string="Bystander Mobile No")
     bystander_relation = fields.Char(string="Relation")
     room_category = fields.Many2one('room.category', string='Room Category')
-    advance_amount = fields.Integer(string='Advance Amount')
+    advance_amount = fields.Integer(string='Per Day')
     bed_number = fields.Integer(string='Bed Number')
     nurse_charge = fields.Integer(string='Nurse Fee')
     alternate_no = fields.Char(string='Alternate Number')
-    no_days = fields.Integer(string='Number Of Days')
+    no_days = fields.Integer(string='Number Of Days',compute='_compute_no_days', store=True)
     admitted_date = fields.Datetime(string='Admitted Date')
     admission_boolean=fields.Boolean(default=False)
     dob = fields.Date(string='DOB' ,required=True)
 
+    @api.depends('admitted_date')
+    def _compute_no_days(self):
+        for record in self:
+            if record.admitted_date:
+                admitted_date = fields.Datetime.from_string(record.admitted_date)
+                current_date = fields.Datetime.now()
+                record.no_days = (current_date - admitted_date).days + 1
+            else:
+                record.no_days = 0
+
+    def update_no_days(self):
+        records = self.search([])
+        for record in records:
+            if record.admitted_date:
+                admitted_date = fields.Datetime.from_string(record.admitted_date)
+                current_date = fields.Datetime.now()
+                record.no_days = (current_date - admitted_date).days + 1
 
     @api.depends('dob')
     def _compute_age(self):
