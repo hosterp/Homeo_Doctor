@@ -16,7 +16,7 @@ class PatientRegistration(models.Model):
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     patient_id = fields.Char(required=True, string="Name")
     address = fields.Text(required=True, string="Address")
-    age = fields.Integer(required=True, string="Age" , compute='_compute_age', store=True)
+    age = fields.Integer(string="Age" , compute='_compute_age', store=True)
     phone_number = fields.Char(string="Mobile No",size=12)
     email = fields.Char(string="Email ID")
     department_id=fields.Many2one('doctor.department',string='Department',required=True)
@@ -43,7 +43,7 @@ class PatientRegistration(models.Model):
     room_category = fields.Many2one('room.category', string='Room Category')
     advance_amount = fields.Integer(string='Advance Amount')
     admission_boolean=fields.Boolean(default=False)
-    dob = fields.Date(string='Date of Birth')
+    dob = fields.Date(string='DOB' ,required=True)
 
 
     @api.depends('dob')

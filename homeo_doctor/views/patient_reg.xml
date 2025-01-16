@@ -9,7 +9,7 @@
                     <header>
                         <button name="action_view_lab_reports" type="object" string="Lab Result"
                                 class="btn-primary" invisible="1">
-                            <field name="lab_report_count" widget="statinfo" />
+                            <field name="lab_report_count" widget="statinfo"/>
                         </button>
 
                         <button name="action_create_referral_mri" type="object" string="Refer for MRI"
@@ -23,10 +23,11 @@
                         <button name="action_create_referral_lab" type="object" string="Refer for Lab"
                                 class="btn-primary"/>
                         <button name="admission_button" string="Move to Admission" type="object"
-                                class="btn-primary" />
+                                class="btn-primary"/>
                         <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object"
                                 class="btn-primary"/>
-                        <button name="action_view_consultations" type="object" string="View All Consultations" class="btn-primary"/>
+                        <button name="action_view_consultations" type="object" string="View All Consultations"
+                                class="btn-primary"/>
 
 
                     </header>
@@ -43,6 +44,7 @@
                                 <field name="patient_id" invisible="1"/>
                                 <field name="gender"/>
                                 <field name="address"/>
+                                <field name="symptoms"/>
                                 <field name="checkup_reports"/>
                             </group>
                             <group col="3">
@@ -54,7 +56,7 @@
                                 <field name="doctor_id" invisible="1"/>
                             </group>
                             <group col="3">
-                                <field name="symptoms"/>
+
 
                             </group>
                         </group>
@@ -133,7 +135,7 @@
                     <field name="patient_name" string="Patient Name"/>
                     <field name="patient_id" string="Patient ID"/>
                     <field name="formatted_date" string="Consultation Date"/>
-                     <field name="reference_no" string="Appointment NO"/>
+                    <field name="reference_no" string="Appointment NO"/>
                     <field name="age"/>
                     <field name="phone_number"/>
                 </tree>
