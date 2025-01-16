@@ -56,8 +56,8 @@
                                 <field name="prescription_line_ids">
                                     <tree>
                                         <field name="product_id"/>
-                                        <field name="total_med"/>
-                                        <field name="per_ped"/>
+                                        <field name="total_med" invisible="1"/>
+                                        <field name="per_ped" invisible="1"/>
                                         <field name="morn"/>
                                         <field name="noon"/>
                                         <field name="night"/>

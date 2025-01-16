@@ -65,8 +65,8 @@
                                 <tree editable="bottom" col="13">
                                     <field name="prescription_line_id" invisible="1"/>
                                     <field name="product_id" colspan="2"/>
-                                    <field name="total_med" colspan="2"/>
-                                    <field name="per_ped" colspan="2"/>
+                                    <field name="total_med" colspan="2" invisible="1"/>
+                                    <field name="per_ped" colspan="2" invisible="1"/>
                                     <field name="morn" colspan="2"/>
                                     <field name="noon" colspan="2"/>
                                     <field name="night" colspan="2"/>
