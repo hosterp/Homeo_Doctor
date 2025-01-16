@@ -8,6 +8,7 @@ class DoctorLabReport(models.Model):
 
     user_ide = fields.Many2one('patient.reg', string="Patient")
     patient_id = fields.Many2one('patient.registration', string="Consultation ID", required=True)
+    patient_name = fields.Char(related='patient_id.patient_name',string="Patient Name")
     reference_no = fields.Char(string="Reference No")
     report_reference = fields.Char(string="Report Reference", readonly=True, default=lambda self: _('New'))
     date = fields.Date(string="Report Date", default=fields.Date.context_today, required=True)
