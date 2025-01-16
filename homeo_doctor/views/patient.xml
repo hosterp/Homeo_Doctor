@@ -33,7 +33,7 @@
                             </group>
                             <group col="3">
                                 <field name="dob"/>
-                                <field name="age"/>
+                                <field name="age" invisible="1"/>
                                 <field name="gender"/>
                                 <field name="department_id"/>
                                 <field name="doc_name"/>
@@ -41,15 +41,27 @@
                                 <field name="consultation_fee"/>
                                 <field name="admission_boolean" invisible="1"/>
                             </group>
-
-                            <group col="3" string="Admission Details"
-                                   attrs="{'invisible': [('admission_boolean', '=', False)]}">
+                        </group>
+                        <group col="4" string="Admission Details"
+                               attrs="{'invisible': [('admission_boolean', '=', False)]}">
+                            <group>
                                 <field name="bystander_name"/>
+                                <field name="admitted_date"/>
+                                <field name="bed_number"/>
+                            </group>
+                            <group>
+                                <field name="bystander_relation"/>
+                                <field name="nurse_charge" string="Nursing Fee"/>
+                                <field name="alternate_no" string="Alternate Mobile No"/>
+                            </group>
+                            <group>
                                 <field name="bystander_mobile"/>
-                                <field name="room_category"/>
+                                <field name="no_days"/>
+                            </group>
+                            <group>
+                                 <field name="room_category"/>
                                 <field name="advance_amount"/>
                             </group>
-
                         </group>
                         <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">
                             <page string="Prescriptions">
