@@ -10,7 +10,7 @@
                     <field name="user_ide" string="Patient ID"/>
                     <field name="report_reference" invisible="1"/>
                     <field name="date" string="Consultation Date"/>
-                    <field name="doctor_id"/>
+                    <field name="doctor_id" string="Doctor Name"/>
                 </tree>
             </field>
         </record>
