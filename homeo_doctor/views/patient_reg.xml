@@ -33,37 +33,32 @@
                     </header>
                     <sheet>
                         <h1 class="oe_left">
-                            <field name="reference_no" readonly="1"/>
+                            <field name="reference_no" readonly="1" invisible="1"/>
                         </h1>
                         <h3 class="oe_right">
                             <field name="formatted_date" readonly="1" string="Date"/>
                         </h3>
-                        <group col="4">
+                        <group col="5">
+                            <group>
+                                <field name="patient_id"/>
+                            </group>
                             <group>
                                 <field name="patient_name"/>
-                                <field name="patient_id" invisible="1"/>
-
+                                <field name="doctor_id" invisible="1"/>
                             </group>
                             <group>
                                 <field name="age"/>
-                                <field name="doctor_id" invisible="1"/>
                             </group>
                             <group>
                                 <field name="gender"/>
                             </group>
+                        </group>
+                        <group col="4">
                             <group>
                                 <field name="phone_number" widget="phone" string="Mobile No"/>
                             </group>
-                        </group>
-                        <group col="3">
                             <group>
                                 <field name="address"/>
-                            </group>
-                            <group>
-                                <field name="symptoms"/>
-                            </group>
-                            <group>
-                                <field name="checkup_reports"/>
                             </group>
                         </group>
                         <group col="4">
@@ -80,6 +75,14 @@
                                 <field name="temperature"/>
                             </group>
 
+                        </group>
+                        <group>
+                            <group>
+                                <field name="symptoms"/>
+                            </group>
+                            <group>
+                                <field name="checkup_reports"/>
+                            </group>
                         </group>
                         <group>
                             <field name="med_ids" nolabel="1">
