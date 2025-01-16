@@ -32,7 +32,8 @@
 
                             </group>
                             <group col="3">
-                                <field name="age"/>
+                                <field name="dob"/>
+                                <field name="age" invisible="1"/>
                                 <field name="gender"/>
                                 <field name="department_id"/>
                                 <field name="doc_name"/>

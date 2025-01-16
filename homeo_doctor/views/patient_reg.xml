@@ -39,7 +39,8 @@
                         </h3>
                         <group>
                             <group col="3">
-                                <field name="patient_id"/>
+                                <field name="patient_name"/>
+                                <field name="patient_id" invisible="1"/>
                                 <field name="gender"/>
                                 <field name="address"/>
                                 <field name="checkup_reports"/>
@@ -129,9 +130,10 @@
             <field name="model">patient.registration</field>
             <field name="arch" type="xml">
                 <tree string="Consultation Details">
-                    <field name="reference_no" string="NO"/>
-                    <field name="patient_id"/>
-                    <field name="formatted_date" string="Date"/>
+                    <field name="patient_name" string="Patient Name"/>
+                    <field name="patient_id" string="Patient ID"/>
+                    <field name="formatted_date" string="Consultation Date"/>
+                     <field name="reference_no" string="Appointment NO"/>
                     <field name="age"/>
                     <field name="phone_number"/>
                 </tree>
@@ -139,7 +141,7 @@
         </record>
 
         <record id="action_patient_registration" model="ir.actions.act_window">
-            <field name="name">Consultation Details</field>
+            <field name="name">Patient ID</field>
             <field name="res_model">patient.registration</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="patient_registration_tree"/>

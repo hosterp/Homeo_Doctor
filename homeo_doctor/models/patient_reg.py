@@ -17,6 +17,7 @@ class PatientRegistration(models.Model):
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     user_id = fields.Many2one('patient.reg', string='Name',required=True)
     patient_id = fields.Char(string='Name',required=True,related='user_id.reference_no')
+    patient_name = fields.Char(string='Name',required=True,related='user_id.patient_id')
     doctor_id=fields.Many2one(string='Doctor name',related='user_id.doc_name')
     address = fields.Text(string='Address',required=True,related='user_id.address')
     age = fields.Integer( string='Age',required=True,related='user_id.age')

@@ -1,3 +1,5 @@
+from datetime import date
+
 import dateutil.utils
 from odoo import api, fields, models, tools,_
 import odoo.addons
@@ -14,7 +16,7 @@ class PatientRegistration(models.Model):
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     patient_id = fields.Char(required=True, string="Name")
     address = fields.Text(required=True, string="Address")
-    age = fields.Integer(required=True, string="Age")
+    age = fields.Integer(required=True, string="Age" , compute='_compute_age', store=True)
     phone_number = fields.Char(string="Mobile No",size=12)
     email = fields.Char(string="Email ID")
     department_id=fields.Many2one('doctor.department',string='Department',required=True)
@@ -41,7 +43,21 @@ class PatientRegistration(models.Model):
     room_category = fields.Many2one('room.category', string='Room Category')
     advance_amount = fields.Integer(string='Advance Amount')
     admission_boolean=fields.Boolean(default=False)
+    dob = fields.Date(string='Date of Birth')
 
+
+    @api.depends('dob')
+    def _compute_age(self):
+        for record in self:
+            if record.dob:
+                today = date.today()
+                dob = record.dob
+
+                record.age = today.year - dob.year - (
+                        (today.month, today.day) < (dob.month, dob.day)
+                )
+            else:
+                record.age = 0
     @api.onchange('room_category')
     def onchange_advance_amount(self):
         for i in self:
