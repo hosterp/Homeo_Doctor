@@ -38,27 +38,48 @@
                         <h3 class="oe_right">
                             <field name="formatted_date" readonly="1" string="Date"/>
                         </h3>
-                        <group>
-                            <group col="3">
+                        <group col="4">
+                            <group>
                                 <field name="patient_name"/>
                                 <field name="patient_id" invisible="1"/>
-                                <field name="gender"/>
-                                <field name="address"/>
-                                <field name="symptoms"/>
-                                <field name="checkup_reports"/>
+
                             </group>
-                            <group col="3">
+                            <group>
                                 <field name="age"/>
-                                <field name="phone_number" widget="phone"/>
-                                <field name="blood_pressure"/>
-                                <field name="sugar_level"/>
-                                <field name="weight"/>
                                 <field name="doctor_id" invisible="1"/>
                             </group>
-                            <group col="3">
-
-
+                            <group>
+                                <field name="gender"/>
                             </group>
+                            <group>
+                                <field name="phone_number" widget="phone"/>
+                            </group>
+                        </group>
+                        <group col="3">
+                            <group>
+                                <field name="address"/>
+                            </group>
+                            <group>
+                                <field name="symptoms"/>
+                            </group>
+                            <group>
+                                <field name="checkup_reports"/>
+                            </group>
+                        </group>
+                        <group col="4">
+                            <group>
+                                <field name="blood_pressure"/>
+                            </group>
+                            <group>
+                                <field name="sugar_level"/>
+                            </group>
+                            <group>
+                                <field name="weight"/>
+                            </group>
+                            <group>
+                                <field name="temperature"/>
+                            </group>
+
                         </group>
                         <group>
                             <field name="med_ids" nolabel="1">

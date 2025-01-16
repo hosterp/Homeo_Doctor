@@ -38,7 +38,7 @@ class PatientRegistration(models.Model):
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray")
     lab_report_ids = fields.One2many('doctor.lab.report', 'patient_id', string="Lab")
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
-
+    temperature=fields.Char(string='Temperature')
     previous_consultation_ids = fields.One2many(
         'patient.registration', 'id',
         string='Previous Consultations',
