@@ -30,7 +30,7 @@
                                 <field name="user_ide" string="Patient ID" />
                                 <field name="patient_name"/>
                                 <field name="patient_id" invisible="1"/>
-                                <field name="reference_no"/>
+                                <field name="reference_no" invisible="1"/>
                                 <field name="age"/>
                                 <field name="gender"/>
                                 <field name="doctor_id"/>
