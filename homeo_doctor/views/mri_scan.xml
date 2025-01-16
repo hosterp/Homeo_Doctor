@@ -5,7 +5,8 @@
             <field name="model">scanning.mri</field>
             <field name="arch" type="xml">
                 <tree string="MRI Scan">
-                    <field name="patient_id"/>
+                    <field name="patient_name"/>
+                    <field name="patient_id" string="Patient ID"/>
                     <field name="age"/>
                     <field name="gender"/>
                     <field name="doctor_id"/>
@@ -21,16 +22,17 @@
             <field name="model">scanning.mri</field>
             <field name="arch" type="xml">
                 <form string="MRI Scan">
-                        <header>
-                            <button name="print_invoice" string="Print Invoice" type="object" class="oe_highlight"/>
-                        </header>
+                    <header>
+                        <button name="print_invoice" string="Print Invoice" type="object" class="oe_highlight"/>
+                    </header>
                     <sheet>
 
                         <group>
                             <group>
-                                <field name="user_ide"/>
-                                <field name="patient_id"/>
-                                <field name="reference_no"/>
+                                <field name="user_ide" string="Patient ID"/>
+                                <field name="patient_name"/>
+                                <field name="patient_id" invisible="1"/>
+                                <field name="reference_no" invisible="1"/>
                                 <field name="age"/>
                                 <field name="gender"/>
                                 <field name="doctor_id"/>

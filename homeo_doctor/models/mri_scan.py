@@ -6,6 +6,7 @@ class MRI_Scan(models.Model):
 
     user_ide = fields.Many2one('patient.reg', string="Patient")
     patient_id = fields.Many2one('patient.registration', string="Consultation ID", required=True)
+    patient_name = fields.Char(related='patient_id.patient_name',string="Patient Name")
     reference_no = fields.Char(string="Reference No")
     age = fields.Integer(string='Age', required=True, related='patient_id.age')
     gender = fields.Selection(string='Gender', related='patient_id.gender')
