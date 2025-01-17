@@ -9,7 +9,7 @@ class PharmacyDescription(models.Model):
     name = fields.Char(string="Patient Name")
     phone_number = fields.Char(string="Phone Number")
     bill_amount=fields.Integer(string='Bill Amount')
-    date= fields.Datetime(string="Date")
+    date= fields.Datetime(string="Date",default=fields.Datetime.now)
     prescription_line_ids = fields.One2many('pharmacy.prescription.line', 'pharmacy_id', string="Prescriptions")
 
 class PharmacyPrescriptionLine(models.Model):
@@ -21,9 +21,9 @@ class PharmacyPrescriptionLine(models.Model):
     product_id = fields.Many2one('product.product', string="Medicine")
     total_med = fields.Integer("Total Medicine")
     per_ped = fields.Integer("Per Medicine")
-    morn = fields.Boolean("Morning")
-    noon = fields.Boolean("Noon")
-    night = fields.Boolean("Night")
+    morn = fields.Integer("Morning")
+    noon = fields.Integer("Noon")
+    night = fields.Integer("Night")
     rate = fields.Float(string='Rate', compute='_compute_rate', store=True)
 
     @api.depends('product_id', 'total_med')

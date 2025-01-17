@@ -134,8 +134,8 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="patient_id"/>
-                                <field name="name"/>
+                                <field name="patient_id" string="Patient ID"/>
+                                <field name="name" string="Patient Name"/>
                             </group>
                             <group>
                                 <field name="phone_number"/>

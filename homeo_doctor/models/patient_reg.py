@@ -165,10 +165,9 @@ class PatientRegistration(models.Model):
     def action_move_to_pharmacy(self):
         self.move_to_pharmacy_clicked = True
         pharmacy_vals = {
-            'name': self.patient_id,
-            'patient_id': self.reference_no,
+            'name': self.patient_name,
+            'patient_id': self.patient_id,
             'phone_number': self.phone_number,
-            'date':self.date,
             'prescription_line_ids': [(0, 0, {
                 'product_id': line.product_id.id,
                 'total_med': line.total_med,
@@ -473,9 +472,9 @@ class PrescriptionEntryLine(models.Model):
     product_id = fields.Many2one('product.product', string="Medicine")
     total_med = fields.Integer("Tot Med")
     per_ped = fields.Integer("Per Med")
-    morn = fields.Boolean("Morn")
-    noon = fields.Boolean("Noon")
-    night = fields.Boolean("Night")
+    morn = fields.Integer("Morn")
+    noon = fields.Integer("Noon")
+    night = fields.Integer("Night")
 
 class DoctorReferral(models.Model):
     _name = 'doctor.referral'
