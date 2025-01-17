@@ -431,6 +431,7 @@ class PatientRegistration(models.Model):
                 'doctor': consultation.doctor_id.id,
                 'user_ide': consultation.user_id.id,
                 'patient_id': consultation.reference_no,
+                'patient_name': consultation.patient_name,
                 'referral_type': 'lab',
             })
             if referral:
@@ -513,6 +514,7 @@ class LabReferral(models.Model):
     doctor=fields.Many2one('doctor.profile',string='Doctor')
     user_ide = fields.Many2one('patient.reg', string="Patient", readonly=True)
     patient_id=fields.Many2one('patient.registration',string='Patient')
+    patient_name=fields.Char(related='patient_id.patient_name',string='Patient Name')
     referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation'),('lab','LAB')],
                                      default='lab')
     details = fields.Text(string="Referral Details")
