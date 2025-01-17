@@ -62,6 +62,12 @@ class PatientRegistration(models.Model):
             else:
                 record.no_days = 0
 
+    @api.onchange('no_days')
+    def _admission_button_active(self):
+        vals=self.env['patient.registration'].search([('patient_id', '=', self.reference_no)])
+        vals.move_to_admission_clicked=False
+
+
     @api.depends('dob')
     def _compute_age(self):
         for record in self:

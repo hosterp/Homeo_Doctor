@@ -39,7 +39,7 @@
                                 <field name="doc_name"/>
                                 <field name="time"/>
                                 <field name="consultation_fee"/>
-                                <field name="admission_boolean" />
+                                <field name="admission_boolean" invisible="1"/>
                             </group>
                         </group>
                         <group col="4" string="Admission Details"
