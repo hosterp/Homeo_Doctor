@@ -57,6 +57,7 @@
                             <group>
                                 <field name="bystander_mobile"/>
                                 <field name="no_days"/>
+                                <field name="discharge_date"/>
                             </group>
                             <group>
                                  <field name="room_category"/>

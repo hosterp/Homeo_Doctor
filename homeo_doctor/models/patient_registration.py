@@ -50,24 +50,17 @@ class PatientRegistration(models.Model):
     admitted_date = fields.Datetime(string='Admitted Date')
     admission_boolean=fields.Boolean(default=False)
     dob = fields.Date(string='DOB' ,required=True)
+    discharge_date=fields.Datetime(string='Discharge Date')
 
-    @api.depends('admitted_date')
+    @api.depends('discharge_date')
     def _compute_no_days(self):
         for record in self:
             if record.admitted_date:
                 admitted_date = fields.Datetime.from_string(record.admitted_date)
-                current_date = fields.Datetime.now()
+                current_date =record.discharge_date
                 record.no_days = (current_date - admitted_date).days + 1
             else:
                 record.no_days = 0
-
-    def update_no_days(self):
-        records = self.search([])
-        for record in records:
-            if record.admitted_date:
-                admitted_date = fields.Datetime.from_string(record.admitted_date)
-                current_date = fields.Datetime.now()
-                record.no_days = (current_date - admitted_date).days + 1
 
     @api.depends('dob')
     def _compute_age(self):
@@ -86,6 +79,7 @@ class PatientRegistration(models.Model):
         for i in self:
             if i.room_category:
                 i.advance_amount = i.room_category.advance_amount
+                i.nurse_charge = i.room_category.nursing_fee
 
             else:
                 pass
@@ -183,3 +177,4 @@ class RoomCategory(models.Model):
 
     room_category=fields.Char(string='Room Category')
     advance_amount=fields.Integer(string='Advance Amount')
+    nursing_fee=fields.Integer(string='Nursing Fee')
