@@ -24,6 +24,7 @@ class DoctorLabReport(models.Model):
     lab_reference_no=fields.Many2one('lab.referral','Reference No')
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_id', string='Lab Lines')
 
+
     @api.model
     def create(self, vals):
         if vals.get('report_reference', _('New')) == _('New'):
@@ -91,3 +92,14 @@ class LabScanLine(models.Model):
     lab_id = fields.Many2one('doctor.lab.report', string='Lab Test')
     lab_type_id = fields.Many2one('lab.type', string='Lab Test description', required=True)
     rate_id = fields.Many2one('lab.rate', string='Rate', required=True)
+    total_amount = fields.Float(
+        string="Total",
+        compute='_compute_total_amount',
+        store=True
+    )
+
+    @api.depends('rate_id')
+    def _compute_total_amount(self):
+        for record in self:
+            total = sum(record.rate_id.amount for line in record  if line.rate_id)
+            record.total_amount = total

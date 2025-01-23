@@ -61,8 +61,8 @@
                                 <field name="lab_line_ids">
                                     <tree editable="bottom">
                                         <field name="lab_type_id"/>
-
                                         <field name="rate_id"/>
+                                        <field name="total_amount" sum="Total"/>
                                     </tree>
                                 </field>
                             </page>
