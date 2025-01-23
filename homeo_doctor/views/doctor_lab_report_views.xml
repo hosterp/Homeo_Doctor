@@ -11,6 +11,7 @@
                     <field name="report_reference" invisible="1"/>
                     <field name="date" string="Consultation Date"/>
                     <field name="doctor_id" string="Doctor Name"/>
+                    <field name="patient_phone"/>
                 </tree>
             </field>
         </record>
@@ -20,8 +21,10 @@
             <field name="model">doctor.lab.report</field>
             <field name="arch" type="xml">
                 <search string="Search Lab Reports">
+                    <field name="patient_name"/>
+                    <field name="user_ide"/>
+                    <field name="patient_phone"/>
                     <field name="doctor_id"/>
-                    <field name="patient_id"/>
                     <field name="date" filter_domain="[('date', '>=', self)]"/>
                 </search>
             </field>
