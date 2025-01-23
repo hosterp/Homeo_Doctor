@@ -105,12 +105,12 @@
                                     </tr>
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                        <td colspan="2" class="text-right"><strong>Sub Total</strong></td>
-                                        <td class="text-right">
-                                            ₹ <span t-esc="'%.2f'% sum(o.lab_line_ids.mapped('total_amount'))"/>
-                                        </td>
-                                    </tr>
+<!--                                    <tr>-->
+<!--                                        <td colspan="2" class="text-right"><strong>Sub Total</strong></td>-->
+<!--                                        <td class="text-right">-->
+<!--                                            ₹ <span t-esc="'%.2f'% sum(o.lab_line_ids.mapped('total_amount'))"/>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
                                     <tr>
                                         <td colspan="2" class="text-right"><strong>Total Amount</strong></td>
                                         <td class="text-right">
