@@ -47,6 +47,21 @@ class PatientRegistration(models.Model):
         store=False
     )
 
+    referred_doctor_ids = fields.Many2many(
+        'doctor.profile',
+        # 'doctor_consultation_referred_rel',
+        # 'consultation_id',
+        # 'doctor_id',
+        string='Referred Doctors',
+    )
+    referred_department_ids = fields.Many2many(
+        'doctor.department',
+        # 'doctor_consultation_referred_rel',
+        # 'consultation_id',
+        # 'doctor_id',
+        string='Referred Department',
+    )
+
     @api.depends('patient_id')
     def _compute_previous_consultations(self):
         for record in self:

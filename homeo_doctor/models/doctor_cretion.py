@@ -1,3 +1,5 @@
+from email.policy import default
+
 from odoo import api, fields, models
 
 class DoctorProfile(models.Model):
@@ -21,6 +23,7 @@ class DoctorProfile(models.Model):
     bio = fields.Text(string='Doctor Bio')
     consultation_fee_doctor = fields.Integer(string='Consultation Fee')
     consultation_fee_limit = fields.Integer(string='Consultation Fee Day Limit')
+    is_doctor=fields.Boolean(default=False)
 
     @api.model
     def create(self, vals):

@@ -23,7 +23,7 @@
                         <button name="action_create_referral_lab" type="object" string="Refer for Lab"
                                 class="btn-primary"/>
                         <button name="admission_button" string="Move to Admission" type="object"
-                                class="btn-primary"   attrs="{'invisible': [('move_to_admission_clicked', '=', True)]}"/>
+                                class="btn-primary" attrs="{'invisible': [('move_to_admission_clicked', '=', True)]}"/>
                         <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object"
                                 class="btn-primary"/>
                         <button name="action_view_consultations" type="object" string="View All Consultations"
@@ -98,7 +98,9 @@
                             </field>
                         </group>
                         <group>
-                             <field name="medicine_course" string="Medicine Course"/>
+                            <field name="medicine_course" string="Medicine Course"/>
+                            <field name="referred_department_ids" widget="many2many_tags"/>
+                            <field name="referred_doctor_ids" widget="many2many_tags"/>
                         </group>
                         <group>
                             <field name="remark"/>
