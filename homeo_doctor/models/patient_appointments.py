@@ -11,10 +11,12 @@ class PatientAppointment(models.Model):
     _order = 'appointment_date desc'
 
     appointment_reference = fields.Char(string="Appointment No", readonly=True)
-    patient_id = fields.Many2one('patient.reg', string='Patient', required=True)
+    patient_id = fields.Many2one('patient.reg', string='Patient ID', required=True)
+    patient_name= fields.Char(related='patient_id.patient_id', string='Patient Name', required=True)
     appointment_date = fields.Datetime(string="Appointment Date", required=True)
     doctor_id = fields.Many2one('doctor.profile', string='Doctor')
-    department=fields.Many2one('doctor.department',string='Department',required=True)
+    department=fields.Many2one('doctor.department',string='Department')
+    departments=fields.Many2many('doctor.department',string='Departments')
     reason = fields.Text(string="Reason for Appointment")
     status = fields.Selection(
         [('draft', 'Draft'), ('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')],
@@ -30,6 +32,21 @@ class PatientAppointment(models.Model):
     doctor_ids = fields.Many2many('doctor.profile', string='Doctors')
     consultation_fee_ids = fields.One2many('appointment.fee', 'appointment_id', string='Consultation Fees')
 
+    @api.onchange('departments')
+    def _onchange_departments(self):
+        if self.departments:
+            department_ids = self.departments.ids
+
+            doctors = self.env['doctor.profile'].search([('department_id', 'in', department_ids)])
+
+            return {
+                'domain': {'doctor_ids': [('id', 'in', doctors.ids)]}
+            }
+        else:
+
+            return {
+                'domain': {'doctor_ids': []}
+            }
     # @api.depends('doctor_id', 'patient_id')
     # def _compute_consultation_fee(self):
     #     for record in self:
