@@ -234,6 +234,7 @@ class PatientRegistration(models.Model):
                 'doctor_id': consultation.doctor_id.id,
                 'user_ide': consultation.user_id.id,
                 'patient_id': consultation.reference_no,
+                'patient_name': consultation.patient_name,
                 'referral_type': 'scanning',
                 'details': f'Refer for {scan_type.replace("_", " ").title()}',
                 'scan_type': scan_type,
@@ -505,7 +506,7 @@ class DoctorReferral(models.Model):
                                      default='scanning')
     details = fields.Text(string="Referral Details")
     scan_type = fields.Selection([('mri', 'MRI'), ('ct', 'CT Scan'), ('xray', 'X-Ray'),('audiology','Audiology')], string="Scan Type",readonly=True)
-
+    patient_name = fields.Char(related='patient_id.patient_name', string='Patient Name')
 
     mri_report_id = fields.Many2one('scanning.mri', string="MRI Report",readonly=True)
     ct_report_id = fields.Many2one('scanning.ct', string="CT Report",readonly=True)
