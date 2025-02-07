@@ -71,7 +71,7 @@ class DoctorLabReport(models.Model):
 
 
     def print_invoice(self):
-        return self.env.ref('homeo_doctor.action_report_ct_invoice').report_action(self)
+        return self.env.ref('homeo_doctor.action_report_lab_invoice').report_action(self)
 class LabType(models.Model):
     _name = 'lab.type'
     _description = 'Type of Lab Test'

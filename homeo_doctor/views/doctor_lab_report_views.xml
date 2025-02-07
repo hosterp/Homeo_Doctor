@@ -37,11 +37,11 @@
             <field name="arch" type="xml">
                 <form string="Doctor Lab Report">
                     <header>
-                          <button name="%(action_report_lab_invoice)d"
-                            string="Print Invoice"
-                            type="action"
-                            class="btn-primary"/>
-<!--                        <button name="print_invoice" string="Print Invoice" type="object" class="oe_highlight"/>-->
+                        <button name="print_invoice"
+                                string="Print Invoice"
+                                type="object"
+                                class="btn-primary"/>
+                        <button string="Forward Button" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <h1>
