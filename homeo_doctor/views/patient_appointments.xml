@@ -29,22 +29,37 @@
 
                             <field name="appointment_date"/>
                             <field name="department"/>
+
+
                             <!--                        <field name="status"/>-->
                         </group>
                         <group>
                             <field name="address"/>
                             <field name="phone_number"/>
-                            <field name="doctor_id"/>
+                            <field name="doctor_id" invisible="1"/>
+                            <field name="doctor_ids" widget="many2many_tags"/>
                             <field name="consultation_fee" readonly="1"/>
                             <field name="reason"/>
+
                             <field name="button_visible" invisible="1"/>
+
                         </group>
+<!--                        <group>-->
+<!--                            <field name="consultation_fee_ids">-->
+<!--                                <tree editable="bottom">-->
+<!--                                    <field name="doctor_id"/>-->
+<!--                                    <field name="consultation_fee"/>-->
+<!--                                    <field name="consultation_fee" readonly="1" string="Total Consultation Fee"/>-->
+<!--                                </tree>-->
+<!--                            </field>-->
+<!--                        </group>-->
                         <group>
                             <button name="action_appointment_confirm"
                                     type="object"
                                     string="Confirm Appointment"
                                     class="oe_highlight"
                                     attrs="{'invisible': [('button_visible', '=', False)]}"/>
+
                         </group>
 
                     </group>

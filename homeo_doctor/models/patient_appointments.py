@@ -13,7 +13,7 @@ class PatientAppointment(models.Model):
     appointment_reference = fields.Char(string="Appointment No", readonly=True)
     patient_id = fields.Many2one('patient.reg', string='Patient', required=True)
     appointment_date = fields.Datetime(string="Appointment Date", required=True)
-    doctor_id = fields.Many2one('doctor.profile', string='Doctor', required=True)
+    doctor_id = fields.Many2one('doctor.profile', string='Doctor')
     department=fields.Many2one('doctor.department',string='Department',required=True)
     reason = fields.Text(string="Reason for Appointment")
     status = fields.Selection(
@@ -27,73 +27,148 @@ class PatientAppointment(models.Model):
     phone_number = fields.Char(related='patient_id.phone_number',string='Phone Number')
     gender = fields.Selection(related='patient_id.gender',string='Gender')
     button_visible = fields.Boolean(default=True)
+    doctor_ids = fields.Many2many('doctor.profile', string='Doctors')
+    consultation_fee_ids = fields.One2many('appointment.fee', 'appointment_id', string='Consultation Fees')
 
-    @api.depends('doctor_id', 'patient_id')
+    # @api.depends('doctor_id', 'patient_id')
+    # def _compute_consultation_fee(self):
+    #     for record in self:
+    #         if record.patient_id and record.doctor_id and record.appointment_date:
+    #             # Fetch consultation fee details
+    #             consultation_fee_limit = record.doctor_id.consultation_fee_limit or 0
+    #             consultation_fee = record.doctor_id.consultation_fee_doctor or 0
+    #
+    #             # Convert appointment_date to date for comparison
+    #             appointment_date = record.appointment_date.date()
+    #
+    #             # 1. Check last appointment
+    #             last_appointment = self.env['patient.appointment'].search([
+    #                 ('patient_id', '=', record.patient_id.id),
+    #                 ('doctor_id', '=', record.doctor_id.id),
+    #                 ('id', '!=', record.id) if record.id else ('id', '!=', False),
+    #             ], order='appointment_date desc', limit=1)
+    #
+    #             if last_appointment:
+    #                 # Convert last appointment datetime to date
+    #                 last_appointment_date = last_appointment.appointment_date.date()
+    #                 last_appointment_day = (appointment_date - last_appointment_date).days
+    #                 # print("last appointment", last_appointment_day)
+    #             else:
+    #                 last_appointment_day = 0
+    #                 # print("appointment set zero")
+    #
+    #             # 2. Check last registration
+    #             last_registration = self.env['patient.reg'].search([
+    #                 ('patient_id', '=', record.patient_id.patient_id),
+    #                 ('doc_name', '=', record.doctor_id.id),
+    #             ], order='formatted_date desc', limit=1)
+    #
+    #             # print('last register read', last_registration.read())
+    #             # print("register object date ", last_registration.date)
+    #
+    #             if last_registration:
+    #                 # last_registration.date is already a date object, no need to convert
+    #                 last_registration_day = (appointment_date - last_registration.date).days
+    #                 # print("last register", last_registration_day)
+    #             else:
+    #                 last_registration_day = 0
+    #                 # print("register set zero")
+    #
+    #             # Compare the two days and choose the larger value for delta_days
+    #             if last_registration_day != 0 and last_appointment_day != 0:
+    #                 delta_days = min(last_registration_day, last_appointment_day)
+    #             elif last_appointment_day != 0 and last_registration_day == 0:
+    #                 delta_days = last_appointment_day
+    #             elif last_appointment_day == 0 and last_registration_day != 0:
+    #                 delta_days = last_registration_day
+    #             else:
+    #                 record.consultation_fee = consultation_fee
+    #                 return
+    #
+    #             if last_registration_day or last_appointment_day != 0:
+    #                 # Apply the consultation fee logic
+    #                 if last_appointment or last_registration:
+    #                     if delta_days <= consultation_fee_limit:
+    #                         record.consultation_fee = 0.0
+    #                     else:
+    #                         record.consultation_fee = consultation_fee
+    #                 else:
+    #                     record.consultation_fee = consultation_fee
+    #             else:
+    #                 record.consultation_fee = consultation_fee
+    @api.depends('doctor_ids', 'appointment_date', 'patient_id')
     def _compute_consultation_fee(self):
         for record in self:
-            if record.patient_id and record.doctor_id and record.appointment_date:
-                # Fetch consultation fee details
-                consultation_fee_limit = record.doctor_id.consultation_fee_limit or 0
-                consultation_fee = record.doctor_id.consultation_fee_doctor or 0
 
-                # Convert appointment_date to date for comparison
+            record.consultation_fee = 0.0
+
+
+            if record.patient_id and record.appointment_date:
                 appointment_date = record.appointment_date.date()
 
-                # 1. Check last appointment
-                last_appointment = self.env['patient.appointment'].search([
-                    ('patient_id', '=', record.patient_id.id),
-                    ('doctor_id', '=', record.doctor_id.id),
-                    ('id', '!=', record.id) if record.id else ('id', '!=', False),
-                ], order='appointment_date desc', limit=1)
 
-                if last_appointment:
-                    # Convert last appointment datetime to date
-                    last_appointment_date = last_appointment.appointment_date.date()
-                    last_appointment_day = (appointment_date - last_appointment_date).days
-                    # print("last appointment", last_appointment_day)
+                if record.doctor_id:
+                    doctors_to_process = [record.doctor_id]
                 else:
-                    last_appointment_day = 0
-                    # print("appointment set zero")
+                    doctors_to_process = record.doctor_ids
 
-                # 2. Check last registration
-                last_registration = self.env['patient.reg'].search([
-                    ('patient_id', '=', record.patient_id.patient_id),
-                    ('doc_name', '=', record.doctor_id.id),
-                ], order='formatted_date desc', limit=1)
+                total_fee = 0.0
 
-                # print('last register read', last_registration.read())
-                # print("register object date ", last_registration.date)
 
-                if last_registration:
-                    # last_registration.date is already a date object, no need to convert
-                    last_registration_day = (appointment_date - last_registration.date).days
-                    # print("last register", last_registration_day)
-                else:
-                    last_registration_day = 0
-                    # print("register set zero")
+                print(f"Doctors to process: {doctors_to_process}")
 
-                # Compare the two days and choose the larger value for delta_days
-                if last_registration_day != 0 and last_appointment_day != 0:
-                    delta_days = min(last_registration_day, last_appointment_day)
-                elif last_appointment_day != 0 and last_registration_day == 0:
-                    delta_days = last_appointment_day
-                elif last_appointment_day == 0 and last_registration_day != 0:
-                    delta_days = last_registration_day
-                else:
-                    record.consultation_fee = consultation_fee
-                    return
 
-                if last_registration_day or last_appointment_day != 0:
-                    # Apply the consultation fee logic
-                    if last_appointment or last_registration:
-                        if delta_days <= consultation_fee_limit:
-                            record.consultation_fee = 0.0
-                        else:
-                            record.consultation_fee = consultation_fee
-                    else:
-                        record.consultation_fee = consultation_fee
-                else:
-                    record.consultation_fee = consultation_fee
+                for doctor in doctors_to_process:
+                    print(f"Processing doctor: {doctor.name}")
+
+
+                    consultation_fee_limit = doctor.consultation_fee_limit or 0
+                    consultation_fee = doctor.consultation_fee_doctor or 0
+
+
+                    last_appointment = self.env['patient.appointment'].search([
+                        ('patient_id', '=', record.patient_id.id),
+                        ('doctor_id', '=', doctor.id),
+                        ('id', '!=', record.id) if record.id else ('id', '!=', False),
+                    ], order='appointment_date desc', limit=1)
+
+                    last_appointment_day = (
+                        (appointment_date - last_appointment.appointment_date.date()).days
+                        if last_appointment else float('inf')
+                    )
+
+
+                    last_registration = self.env['patient.reg'].search([
+                        ('patient_id', '=', record.patient_id.patient_id),
+                        ('doc_name', '=', doctor.id),
+                    ], order='formatted_date desc', limit=1)
+
+                    last_registration_day = (
+                        (appointment_date - last_registration.date).days
+                        if last_registration else float('inf')
+                    )
+
+
+                    delta_days = min(last_appointment_day, last_registration_day)
+
+
+                    fee = 0.0 if delta_days <= consultation_fee_limit else consultation_fee
+
+
+                    total_fee += fee
+
+
+                    self.env['appointment.fee'].create({
+                        'appointment_id': record.id,
+                        'doctor_id': doctor.id,
+                        'consultation_fee': fee,
+                    })
+
+
+                print(f"Total consultation fee for this appointment: {total_fee}")
+
+
+                record.consultation_fee = total_fee
 
     def action_appointment_confirm(self):
         for record in self:
@@ -177,3 +252,10 @@ class PatientAppointment(models.Model):
 
 
 
+class AppointmentFee(models.Model):
+    _name = 'appointment.fee'
+    _description = 'Consultation Fee Per Doctor'
+
+    appointment_id = fields.Many2one('patient.appointment', string='Appointment')
+    doctor_id = fields.Many2one('doctor.profile', string='Doctor')
+    consultation_fee = fields.Float(string='Consultation Fee')
