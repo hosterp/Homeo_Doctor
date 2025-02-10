@@ -97,6 +97,7 @@ class LabScanLine(models.Model):
         compute='_compute_total_amount',
         store=True
     )
+    lab_result=fields.Char('Result')
 
     @api.depends('rate_id')
     def _compute_total_amount(self):
