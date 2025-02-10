@@ -5,112 +5,90 @@
             <field name="name">patient.registration.form</field>
             <field name="model">patient.registration</field>
             <field name="arch" type="xml">
-                <form string="Consultation Details">
-                    <header>
-                        <button name="action_view_lab_reports" type="object" string="Lab Result"
-                                class="btn-primary" invisible="1">
-                            <field name="lab_report_count" widget="statinfo"/>
-                        </button>
-
-                        <button name="action_create_referral_mri" type="object" string="Refer for MRI"
-                                class="btn-primary"/>
-                        <button name="action_create_referral_ct" type="object" string="Refer for CT"
-                                class="btn-primary"/>
-                        <button name="action_create_referral_xray" type="object" string="Refer for X-RAY"
-                                class="btn-primary"/>
-                        <button name="action_create_referral_audiology" type="object" string="Refer for Audiology"
-                                class="btn-primary"/>
-                        <button name="action_create_referral_lab" type="object" string="Refer for Lab"
-                                class="btn-primary"/>
-                        <button name="admission_button" string="Move to Admission" type="object"
-                                class="btn-primary" attrs="{'invisible': [('move_to_admission_clicked', '=', True)]}"/>
-                        <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object"
-                                class="btn-primary"/>
-                        <button name="action_view_consultations" type="object" string="View All Consultations"
-                                class="btn-primary"/>
-
-
-                    </header>
+               <form string="Consultation Details" class="patient_consulattaion_page">
+                   <header>
+                       <button name="action_create_referral_lab" type="object" string="Lab Referral" class="oe_highlight"/>
+                       <button name="action_create_referral_mri" type="object" string="MRI Referral" class="oe_highlight"/>
+                       <button name="action_create_referral_ct" type="object" string="CT Referral" class="oe_highlight"/>
+                       <button name="action_create_referral_xray" type="object" string="X-RAY Referral" class="oe_highlight"/>
+                       <button name="action_create_referral_audiology" type="object" string="Audiology Referral" class="oe_highlight"/>
+                       <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object" class="oe_highlight"/>
+                       <field name="move_to_admission_clicked" invisible="1"/>
+                       <button name="admission_button" string="Admit Patient" type="object" class="btn-danger" attrs="{'invisible': [('move_to_admission_clicked', '=', True)]}"/>
+                   </header>
                     <sheet>
-                        <h1 class="oe_left">
-                            <field name="reference_no" readonly="1" invisible="1"/>
-                        </h1>
-                        <h3 class="oe_right">
-                            <field name="formatted_date" readonly="1" string="Date"/>
-                        </h3>
-                        <group col="5">
-                            <group>
-                                <field name="patient_id"/>
-                            </group>
-                            <group>
-                                <field name="patient_name" string="Patient Name"/>
-                                <field name="doctor_id" invisible="1"/>
-                            </group>
-                            <group>
-                                <field name="age"/>
-                            </group>
-                            <group>
-                                <field name="gender"/>
-                            </group>
-                        </group>
-                        <group col="4">
-                            <group>
-                                <field name="phone_number" widget="phone" string="Mobile No"/>
-                            </group>
-                            <group>
-                                <field name="address"/>
-                            </group>
-                        </group>
-                        <group col="4">
-                            <group>
-                                <field name="blood_pressure"/>
-                            </group>
-                            <group>
-                                <field name="sugar_level"/>
-                            </group>
-                            <group>
-                                <field name="weight"/>
-                            </group>
-                            <group>
-                                <field name="temperature"/>
-                            </group>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="reference_no" readonly="1" class="o_reference_number"
+                                       placeholder="Consultation Reference"/>
+                            </h1>
+                            <div class="o_consultation_date">
+                                <field name="formatted_date" readonly="1" string="Consultation Date"/>
+                            </div>
+                        </div>
 
+                        <group name="patient_info" string="Patient Information" col="12" class="paitent_details">
+                            <field name="patient_id" string="Patient ID" colspan="1" required="1"/>
+                            <field name="patient_name" string="Name" colspan="1" required="1"/>
+                            <field name="age" string="Age" colspan="1" required="1"/>
+                            <field name="gender" string="Gender" colspan="1" required="1"/>
+                            <field name="phone_number" widget="phone" string="Mobile No" colspan="1" required="1"/>
+                            <field name="address" string="Address" colspan="1" required="1"/>
+                            <field name="doctor_id" string="Consulting Doctor" colspan="1" required="1"/>
                         </group>
-                        <group>
-                            <group>
-                                <field name="symptoms"/>
+
+                        <group name="vital_signs" string="Vital Signs" class="o_vital_signs_group" >
+                            <group class="pressure_sugar">
+                                <div class="o_field_widget blood_class">
+                                     <label class="o_form_label" for="blood_pressure">Blood Pressure (mmHg)</label>
+                                    <field name="blood_pressure" string="Blood Pressure (mmHg)" class="oe_inline" style="width: 10%;"/>
+                                      <span style="margin: 0 5px;">-</span>
+                                    <field name="blood_pressure_low" string="Blood Pressure low (mmHg)" nolabel="1" class="oe_inline" style="width: 10%;"/>
+                                </div>
+                                 <div class="o_field_widget sugar_class">
+                                     <label class="o_form_label" for="sugar_level">Blood Sugar (mg/dL)</label>
+                                    <field name="sugar_level" string="Blood Sugar (mg/dL)" class="oe_inline sugar_level" style="width: 10%;"/>
+                                      <span style="margin: 0 5px;">-</span>
+                                    <field name="ppbs" nolabel="1" class="oe_inline ppbs" style="width: 10%;"/>
+                                </div>
                             </group>
-                            <group>
-                                <field name="checkup_reports"/>
+                            <group class="weight_temp">
+                                <field name="weight" string="Weight (kg)"/>
+                                <field name="temperature" string="Temperature (°C)"/>
                             </group>
                         </group>
-                        <group>
+
+                        <!-- Rest of the form remains the same -->
+                        <group name="consultation_details" string="Consultation Details">
+                            <field name="symptoms" placeholder="Patient Symptoms"/>
+                            <field name="checkup_reports" placeholder="Checkup Notes"/>
+                        </group>
+
+                        <group name="prescription" string="Prescription">
                             <field name="med_ids" nolabel="1">
-                                <tree editable="bottom" col="13">
-                                    <field name="prescription_line_id" invisible="1"/>
-                                    <field name="product_id" colspan="2"/>
-                                    <field name="total_med" colspan="2" invisible="1"/>
-                                    <field name="per_ped" colspan="2" invisible="1"/>
-                                    <field name="morn" colspan="2"/>
-                                    <field name="noon" colspan="2"/>
-                                    <field name="night" colspan="2"/>
+                                <tree editable="bottom" decoration-warning="total_med == 0">
+                                    <field name="product_id" required="1"/>
+                                    <field name="morn" string="Morning"/>
+                                    <field name="noon" string="Noon"/>
+                                    <field name="night" string="Night"/>
+                                    <field name="total_med" string="Total Dosage"/>
                                 </tree>
                             </field>
-                        </group>
-                        <group>
+                            <group>
                             <field name="medicine_course" string="Medicine Course"/>
+                            </group>
+                        </group>
+
+                        <group name="additional_info">
+                            <!-- <field name="medicine_course" string="Medicine Course"/> -->
                             <field name="referred_department_ids" widget="many2many_tags"/>
                             <field name="referred_doctor_ids" widget="many2many_tags"/>
+                            <field name="remark" placeholder="Additional Remarks"/>
                         </group>
-                        <group>
-                            <field name="remark"/>
-                        </group>
-                        <group col="3">
-                            <field name="move_to_pharmacy_clicked" invisible="1"/>
-                            <field name="move_to_admission_clicked" invisible="1"/>
-                        </group>
+
                         <notebook>
-                            <page string="Lab Result">
+                            <!-- Notebook content remains unchanged -->
+                            <page string="Lab Reports" name="lab_reports">
                                 <field name="lab_report_ids">
                                     <tree>
                                         <field name="report_details"/>
@@ -118,46 +96,49 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="MRI">
-                                <field name="mri_report_ids">
-                                    <tree>
-                                        <field name="report_details"/>
-                                        <field name="scan_report_date"/>
-                                    </tree>
-                                </field>
-                            </page>
-                            <page string="CT">
-                                <field name="ct_report_ids">
-                                    <tree>
-                                        <field name="report_details"/>
-                                        <field name="scan_report_date"/>
-                                    </tree>
-                                </field>
-                            </page>
-                            <page string="X-RAY">
-                                <field name="xray_report_ids">
-                                    <tree>
-                                        <field name="report_details"/>
-                                        <field name="scan_report_date"/>
-                                    </tree>
-                                </field>
-
-                            </page>
-                            <page string="Audiology">
-                                <field name="audiology_report_ids">
-                                    <tree>
-                                        <field name="report_details"/>
-                                        <field name="scan_report_date"/>
-                                    </tree>
-                                </field>
-
+                            <page string="Medical Imaging" name="medical_imaging">
+                                <notebook>
+                                    <page string="MRI" name="mri_reports">
+                                        <field name="mri_report_ids">
+                                            <tree>
+                                                <field name="report_details"/>
+                                                <field name="scan_report_date"/>
+                                            </tree>
+                                        </field>
+                                    </page>
+                                    <page string="CT Scan" name="ct_reports">
+                                        <field name="ct_report_ids">
+                                            <tree>
+                                                <field name="report_details"/>
+                                                <field name="scan_report_date"/>
+                                            </tree>
+                                        </field>
+                                    </page>
+                                    <page string="X-RAY" name="xray_reports">
+                                        <field name="xray_report_ids">
+                                            <tree>
+                                                <field name="report_details"/>
+                                                <field name="scan_report_date"/>
+                                            </tree>
+                                        </field>
+                                    </page>
+                                    <page string="Audiology" name="audiology_reports">
+                                        <field name="audiology_report_ids">
+                                            <tree>
+                                                <field name="report_details"/>
+                                                <field name="scan_report_date"/>
+                                            </tree>
+                                        </field>
+                                    </page>
+                                </notebook>
                             </page>
                         </notebook>
-
                     </sheet>
                 </form>
             </field>
         </record>
+
+        <!-- Rest of the XML remains unchanged -->
         <record id="patient_registration_tree" model="ir.ui.view">
             <field name="name">patient.registration.tree</field>
             <field name="model">patient.registration</field>
@@ -184,6 +165,7 @@
                 </p>
             </field>
         </record>
+
         <record id="view_referral_form" model="ir.ui.view">
             <field name="name">doctor.referral.form</field>
             <field name="model">doctor.referral</field>
@@ -217,7 +199,7 @@
                         <group col="3">
                             <group>
                                  <field name="patient_name"/>
-                                 <field name="lab_test"/>
+                                <field name="lab_test"/>
                                 <field name="patient_id" invisible="1"/>
                             </group>
                             <group>
@@ -236,5 +218,3 @@
         </record>
     </data>
 </odoo>
-
-
