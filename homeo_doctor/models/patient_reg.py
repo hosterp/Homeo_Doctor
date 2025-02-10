@@ -531,6 +531,8 @@ class LabReferral(models.Model):
     user_ide = fields.Many2one('patient.reg', string="Patient", readonly=True)
     patient_id=fields.Many2one('patient.registration',string='Patient')
     patient_name=fields.Char(related='patient_id.patient_name',string='Patient Name')
+    lab_test = fields.Many2one('labtest.type', string='Lab Test')
+    test_type = fields.Many2one('test.type', string='Test Type')
     referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation'),('lab','LAB')],
                                      default='lab')
     details = fields.Text(string="Referral Details")
@@ -542,3 +544,16 @@ class LabReferral(models.Model):
         if vals.get('reference_no', _('New')) == _('New'):
             vals['reference_no'] = self.env['ir.sequence'].next_by_code('lab.referral') or _('New')
         return super(LabReferral, self).create(vals)
+
+class LabTest(models.Model):
+    _name = 'labtest.type'
+    _rec_name = 'lab_test'
+
+    lab_test=fields.Char('Lab Test')
+
+
+class TestType(models.Model):
+    _name = 'test.type'
+    _rec_name = 'test_type'
+
+    test_type = fields.Char('Test Type')
