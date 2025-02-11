@@ -118,3 +118,7 @@ table.o_group.o_inner_group.weight_temp.o_group_col_6 {
 table.o_group.o_inner_group.pressure_sugar.o_group_col_6 {
     width: 60% !important;
 }
+
+.o_form_view .oe_inline, .o_form_view .oe_left, .o_form_view .oe_right, .o_form_view .o_group.o_inner_group.oe_subtotal_footer {
+	width: 10% !important;
+}

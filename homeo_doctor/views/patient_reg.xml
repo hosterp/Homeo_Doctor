@@ -45,18 +45,18 @@
                                 <div class="o_field_widget blood_class">
                                      <label class="o_form_label" for="blood_pressure">Blood Pressure (mmHg)</label>
                                     <span style="margin: 0 5px;">(High)</span>
-                                    <field name="blood_pressure" string="Blood Pressure (mmHg)" class="oe_inline" style="width: 10%;"/>
+                                    <field name="blood_pressure" string="Blood Pressure (mmHg)" class="oe_inline" />
                                       <span style="margin: 0 5px;">-</span>
                                     <span style="margin: 0 5px;">(Low)</span>
-                                    <field name="blood_pressure_low" string="Blood Pressure low (mmHg)" nolabel="1" class="oe_inline" style="width: 10%;"/>
+                                    <field name="blood_pressure_low" string="Blood Pressure low (mmHg)" nolabel="1" class="oe_inline" />
                                 </div>
                                  <div class="o_field_widget sugar_class">
                                      <label class="o_form_label" for="sugar_level">Blood Sugar (mg/dL)</label>
                                      <span style="margin: 0 5px;">(FBS)</span>
-                                    <field name="sugar_level" string="Blood Sugar (mg/dL)" class="oe_inline sugar_level" style="width: 10%;"/>
+                                    <field name="sugar_level" string="Blood Sugar (mg/dL)" class="oe_inline sugar_level" />
                                       <span style="margin: 0 5px;">-</span>
                                      <span style="margin: 0 5px;">(PPBS)</span>
-                                    <field name="ppbs" nolabel="1" class="oe_inline ppbs" style="width: 10%;"/>
+                                    <field name="ppbs" nolabel="1" class="oe_inline ppbs" />
                                 </div>
                             </group>
                             <group class="weight_temp">
