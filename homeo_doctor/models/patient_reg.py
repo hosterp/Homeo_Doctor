@@ -1,3 +1,5 @@
+from email.policy import default
+
 import dateutil.utils
 from odoo import api, fields, models, tools,_
 import odoo.addons
@@ -42,6 +44,7 @@ class PatientRegistration(models.Model):
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
     temperature=fields.Char(string='Temperature')
     medicine_course=fields.Char(string='medicine course')
+    doctor_remark_ids = fields.One2many('consultation.remark', 'consultation_id', string='Doctor Remarks')
     previous_consultation_ids = fields.One2many(
         'patient.registration', 'id',
         string='Previous Consultations',
@@ -63,6 +66,20 @@ class PatientRegistration(models.Model):
         # 'doctor_id',
         string='Referred Department',
     )
+    remark_boolean=fields.Boolean(default=False)
+    @api.onchange('referred_doctor_ids')
+    def _onchange_referred_doctor_ids(self):
+        if self.referred_doctor_ids:
+            self.remark_boolean=True
+            existing_doctors = self.doctor_remark_ids.mapped('doctor_id')
+            new_remark_lines = [(0, 0, {'doctor_id': doctor.id}) for doctor in self.referred_doctor_ids if
+                                doctor not in existing_doctors]
+
+            if new_remark_lines:
+                self.doctor_remark_ids = [(5,)] + new_remark_lines
+        else:
+            self.remark_boolean = False
+
 
     @api.onchange('referred_department_ids')
     def _onchange_referred_department_ids(self):
@@ -80,6 +97,7 @@ class PatientRegistration(models.Model):
                     'referred_doctor_ids': []
                 }
             }
+
 
     @api.depends('patient_id')
     def _compute_previous_consultations(self):
@@ -576,3 +594,10 @@ class TestType(models.Model):
     _rec_name = 'test_type'
 
     test_type = fields.Char('Test Type')
+
+class ConsultationRemark(models.Model):
+    _name = 'consultation.remark'
+
+    consultation_id = fields.Many2one('patient.registration', string='Consultation', ondelete='cascade')
+    doctor_id = fields.Many2one('doctor.profile', string='Doctor')
+    remark = fields.Text(string='Remark')
