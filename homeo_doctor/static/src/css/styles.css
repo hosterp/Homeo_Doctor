@@ -34,3 +34,88 @@ html .o_web_client > .o_action_manager {
 .insurance-form select{
     width: 35% !important;
 }
+
+.patient_consulattaion_page .o_form_sheet_bg > .o_form_sheet {
+    max-width: 93% !important;
+}
+
+
+
+
+
+
+
+/* Custom CSS for Patient Registration Form */
+.o_patient_consultation_form {
+    background-color: #f9f9f9;
+}
+
+.o_consultation_header {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 15px;
+}
+
+.o_header_buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.o_header_buttons .btn {
+    min-width: 120px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.o_patient_info_group .o_form_label {
+    font-weight: bold;
+    color: #555;
+}
+
+.o_vital_signs_group .o_form_label {
+    color: #007bff;
+}
+
+.o_reference_number {
+    color: #007bff;
+    font-size: 1.2em;
+}
+
+.o_consultation_date {
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.o_patient_consultation_form .o_form_sheet {
+    max-width: 1200px;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.o_notebook .nav-tabs .nav-link.active {
+    background-color: #007bff;
+    color: white;
+}
+
+
+.o_form_view .paitent_details > tbody > tr > td.o_td_label {
+    min-width: 85px !important;
+}
+
+.o_form_view .paitent_details .o_td_label + td {
+    padding: 0px 85px 0px 8px !important;
+
+}
+
+table.o_group.o_inner_group.weight_temp.o_group_col_6 {
+    width: 20% !important;
+    margin-left: 20% !important;
+}
+
+table.o_group.o_inner_group.pressure_sugar.o_group_col_6 {
+    width: 60% !important;
+}
+
+
