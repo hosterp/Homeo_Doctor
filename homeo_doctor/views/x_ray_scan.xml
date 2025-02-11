@@ -6,7 +6,7 @@
             <field name="arch" type="xml">
                 <tree string="X Ray Scan">
                     <field name="patient_name"/>
-                    <field name="patient_id"/>
+                    <field name="user_ide"/>
                     <field name="age"/>
                     <field name="gender"/>
                     <field name="doctor_id"/>
