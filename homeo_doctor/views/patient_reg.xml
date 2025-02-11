@@ -14,7 +14,10 @@
                        <button name="action_create_referral_audiology" type="object" string="Audiology Referral" class="oe_highlight"/>
                        <button name="action_move_to_pharmacy" string="Move to Pharmacy" type="object" class="oe_highlight"/>
                        <field name="move_to_admission_clicked" invisible="1"/>
+                       <button name="action_view_consultations" type="object" string="View All Consultations"
+                                class="btn-primary"/>
                        <button name="admission_button" string="Admit Patient" type="object" class="btn-danger" attrs="{'invisible': [('move_to_admission_clicked', '=', True)]}"/>
+
                    </header>
                     <sheet>
                         <div class="oe_title">
