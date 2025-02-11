@@ -35,7 +35,7 @@
                             <field name="patient_name" string="Name" colspan="1" required="1"/>
                             <field name="age" string="Age" colspan="1" required="1"/>
                             <field name="gender" string="Gender" colspan="1" required="1"/>
-                            <field name="phone_number" widget="phone" string="Mobile No" colspan="1" required="1"/>
+                            <field name="phone_number" widget="phone" string="Mobile No" colspan="1" required="0"/>
                             <field name="address" style="margin-right:10px;" string="Address" colspan="1" required="1"/>
                             <field name="doctor_id" string="Consulting Doctor" colspan="1" required="1"/>
                         </group>
