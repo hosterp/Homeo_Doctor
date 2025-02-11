@@ -92,7 +92,13 @@
                             <field name="referred_doctor_ids" widget="many2many_tags"/>
                             <field name="remark" placeholder="Additional Remarks"/>
                         </group>
-
+                        <field name="remark_boolean" invisible="1"/>
+                        <field name="doctor_remark_ids" attrs="{'invisible': [('remark_boolean', '=', False)]}">
+                            <tree editable="bottom">
+                                <field name="doctor_id"/>
+                                <field name="remark" placeholder="Remark for this doctor"/>
+                            </tree>
+                        </field>
                         <notebook>
                             <!-- Notebook content remains unchanged -->
                             <page string="Lab Reports" name="lab_reports">
