@@ -84,8 +84,9 @@ html .o_web_client > .o_action_manager {
 }
 
 .o_consultation_date {
-    color: #6c757d;
-    margin-bottom: 15px;
+    color: #000;
+    margin-left: 95% ;
+    font-weight: bold;
 }
 
 .o_patient_consultation_form .o_form_sheet {
