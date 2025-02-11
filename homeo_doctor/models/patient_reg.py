@@ -62,6 +62,23 @@ class PatientRegistration(models.Model):
         string='Referred Department',
     )
 
+    @api.onchange('referred_department_ids')
+    def _onchange_referred_department_ids(self):
+        if self.referred_department_ids:
+            return {
+                'domain': {
+                    'referred_doctor_ids': [
+                        ('department_id', 'in', self.referred_department_ids.ids)
+                    ]
+                }
+            }
+        else:
+            return {
+                'domain': {
+                    'referred_doctor_ids': []
+                }
+            }
+
     @api.depends('patient_id')
     def _compute_previous_consultations(self):
         for record in self:
