@@ -125,8 +125,8 @@ class PatientAppointment(models.Model):
 
 
                 if record.doctor_id:
-                    doctors_to_process = [record.doctor_id]
-                else:
+                #     doctors_to_process = [record.doctor_id]
+                # else:
                     doctors_to_process = record.doctor_ids
 
                 total_fee = 0.0
@@ -186,6 +186,7 @@ class PatientAppointment(models.Model):
 
 
                 record.consultation_fee = total_fee
+                print( record.consultation_fee,' record.consultation_fee...............................')
 
     def action_appointment_confirm(self):
         for record in self:

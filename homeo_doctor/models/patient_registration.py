@@ -184,3 +184,8 @@ class RoomCategory(models.Model):
     room_category=fields.Char(string='Room Category')
     advance_amount=fields.Integer(string='Advance Amount')
     nursing_fee=fields.Integer(string='Nursing Fee')
+
+
+
+
+
