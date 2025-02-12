@@ -106,13 +106,13 @@ html .o_web_client > .o_action_manager {
 }
 
 .o_form_view .paitent_details .o_td_label + td {
-    padding: 0px 10% 0px 8px !important;
+    padding: 0px 2% 0px 8px !important;
 
 }
 
 table.o_group.o_inner_group.weight_temp.o_group_col_6 {
     width: 20% !important;
-    margin-left: 20% !important;
+
 }
 
 table.o_group.o_inner_group.pressure_sugar.o_group_col_6 {
@@ -120,5 +120,8 @@ table.o_group.o_inner_group.pressure_sugar.o_group_col_6 {
 }
 
 .o_form_view .oe_inline, .o_form_view .oe_left, .o_form_view .oe_right, .o_form_view .o_group.o_inner_group.oe_subtotal_footer {
-	width: 10% !important;
+    width: 10% !important;
+}
+.o_form_view.o_form_editable .oe_title {
+    max-width: 100%;
 }

@@ -61,6 +61,8 @@
                             </group>
                             <group class="weight_temp">
                                 <field name="weight" string="Weight (kg)"/>
+                            </group>
+                                <group class="weight_temp">
                                 <field name="temperature" string="Temperature (°C)"/>
                             </group>
                         </group>
