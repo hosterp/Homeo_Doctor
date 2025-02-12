@@ -46,6 +46,7 @@
         "report/lab_report.xml",
         "report/lab_report.xml",
         "report/Lab_report_report.xml",
+        "views/custom_title.xml",
 
     ],
     'assets': {

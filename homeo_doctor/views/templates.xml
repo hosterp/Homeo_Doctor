@@ -4,6 +4,7 @@
         <xpath expr="//head" position="inside">
             <link rel="stylesheet" href="/homeo_doctor/static/src/css/styles.css"/>
             <script type="text/javascript" src="/homeo_doctor/static/src/js/custom_filter.js"></script>
+            <script type="text/javascript" src="/homeo_doctor/static/src/js/custom_title.js"></script>
         </xpath>
     </template>
 </odoo>
