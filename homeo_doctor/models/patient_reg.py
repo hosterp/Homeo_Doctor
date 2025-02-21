@@ -26,6 +26,7 @@ class PatientRegistration(models.Model):
     phone_number = fields.Char( string='Phone No',size=12,related='user_id.phone_number')
     gender = fields.Selection( string='Gender',related='user_id.gender')
     symptoms = fields.Text(string="Symptoms")
+    professional_diagnosis = fields.Text(string='Professional Diagnosis')
     remark = fields.Text(string="Remark")
     checkup_reports=fields.Text(string='Checkup Details')
     med_ids = fields.One2many("prescription.entry.lines", 'prescription_line_id', string="Prescription Entry Lines")
