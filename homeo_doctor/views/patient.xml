@@ -51,12 +51,12 @@
                             </group>
                             <group>
                                 <field name="bystander_relation"/>
-                                <field name="nurse_charge" string="Nursing Fee"/>
+                                <field name="nurse_charge" string="Nursing Fee" invisible="1"/>
                                 <field name="alternate_no" string="Alternate Mobile No"/>
                             </group>
                             <group>
                                 <field name="bystander_mobile"/>
-                                <field name="no_days"/>
+                                <field name="no_days" invisible="1"/>
                                 <field name="discharge_date"/>
                             </group>
                             <group>
@@ -64,21 +64,21 @@
                                 <field name="advance_amount"/>
                             </group>
                         </group>
-                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">
-                            <page string="Prescriptions">
-                                <field name="prescription_line_ids">
-                                    <tree>
-                                        <field name="product_id"/>
-                                        <field name="total_med" invisible="1"/>
-                                        <field name="per_ped" invisible="1"/>
-                                        <field name="morn"/>
-                                        <field name="noon"/>
-                                        <field name="night"/>
-                                        <field name="rate" sum="Total"/>
-                                    </tree>
-                                </field>
-                            </page>
-                        </notebook>
+<!--                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
+<!--                            <page string="Prescriptions">-->
+<!--                                <field name="prescription_line_ids">-->
+<!--                                    <tree>-->
+<!--                                        <field name="product_id"/>-->
+<!--                                        <field name="total_med" invisible="1"/>-->
+<!--                                        <field name="per_ped" invisible="1"/>-->
+<!--                                        <field name="morn"/>-->
+<!--                                        <field name="noon"/>-->
+<!--                                        <field name="night"/>-->
+<!--                                        <field name="rate" sum="Total"/>-->
+<!--                                    </tree>-->
+<!--                                </field>-->
+<!--                            </page>-->
+<!--                        </notebook>-->
                         <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">
                             <page string="Lab">
                                 <field name="lab_report_reg_ids">

@@ -142,16 +142,16 @@ class PatientRegistration(models.Model):
         self.move_to_admission_clicked = True
 
         # Prepare admission values for prescription lines
-        admission_vals = {
-            'prescription_line_ids': [(0, 0, {
-                'product_id': line.product_id.id,
-                'total_med': line.total_med,
-                'per_ped': line.per_ped,
-                'morn': line.morn,
-                'noon': line.noon,
-                'night': line.night,
-            }) for line in self.med_ids],
-        }
+        # admission_vals = {
+        #     'prescription_line_ids': [(0, 0, {
+        #         'product_id': line.product_id.id,
+        #         'total_med': line.total_med,
+        #         'per_ped': line.per_ped,
+        #         'morn': line.morn,
+        #         'noon': line.noon,
+        #         'night': line.night,
+        #     }) for line in self.med_ids],
+        # }
         # result = {
         #     'lab_report_reg_ids': [(0, 0, {
         #         'report_details': line.report_details,
@@ -186,10 +186,10 @@ class PatientRegistration(models.Model):
         # mri_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
         # ct_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
         admission_record.admission_boolean=True
-        if admission_record:
+        # if admission_record:
 
-            for line_vals in admission_vals['prescription_line_ids']:
-                admission_record.prescription_line_ids = [(0, 0, line_vals[2])]
+            # for line_vals in admission_vals['prescription_line_ids']:
+            #     admission_record.prescription_line_ids = [(0, 0, line_vals[2])]
         # if lab_record:
         #     for line_vals in result['lab_report_reg_ids']:
         #         lab_record.lab_report_reg_ids = [(0, 0, line_vals[2])]
@@ -199,9 +199,9 @@ class PatientRegistration(models.Model):
         # if ct_record:
         #     for line_vals in ct_result['ct_report_reg_ids']:
         #         ct_record.ct_report_reg_ids = [(0, 0, line_vals[2])]
-        else:
+        # else:
 
-            admission_record = self.env['patient.reg'].create(admission_vals)
+            # admission_record = self.env['patient.reg'].create(admission_vals)
 
         # Notify the user about the success
         return {
