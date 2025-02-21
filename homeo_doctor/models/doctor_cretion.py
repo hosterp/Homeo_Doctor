@@ -22,7 +22,7 @@ class DoctorProfile(models.Model):
     available_hours = fields.Char(string='Available Hours')
     bio = fields.Text(string='Doctor Bio')
     consultation_fee_doctor = fields.Integer(string='Consultation Fee')
-    consultation_fee_limit = fields.Integer(string='Consultation Fee Day Limit')
+    consultation_fee_limit = fields.Integer(string='Consultation Fee Day Limit',default=7)
     is_doctor=fields.Boolean(default=False)
 
     @api.model

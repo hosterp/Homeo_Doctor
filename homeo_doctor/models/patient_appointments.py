@@ -77,7 +77,7 @@ class PatientAppointment(models.Model):
     #             # 2. Check last registration
     #             last_registration = self.env['patient.reg'].search([
     #                 ('patient_id', '=', record.patient_id.patient_id),
-    #                 ('doc_name', '=', record.doctor_id.id),
+    #                 ('doc_name', '=', record.doctor_ids.id),
     #             ], order='formatted_date desc', limit=1)
     #
     #             # print('last register read', last_registration.read())
@@ -129,78 +129,80 @@ class PatientAppointment(models.Model):
                 # else:
                     doctors_to_process = record.doctor_ids
 
-                total_fee = 0.0
+                    total_fee = 0.0
 
 
-                print(f"Doctors to process: {doctors_to_process}")
+                    print(f"Doctors to process: {doctors_to_process}")
 
 
-                for doctor in doctors_to_process:
-                    print(f"Processing doctor: {doctor.name}")
+                    for doctor in doctors_to_process:
+                        print(f"Processing doctor: {doctor.name}")
 
 
-                    consultation_fee_limit = doctor.consultation_fee_limit or 0
-                    consultation_fee = doctor.consultation_fee_doctor or 0
+                        consultation_fee_limit = doctor.consultation_fee_limit or 0
+                        consultation_fee = doctor.consultation_fee_doctor or 0
 
 
-                    last_appointment = self.env['patient.appointment'].search([
-                        ('patient_id', '=', record.patient_id.id),
-                        ('doctor_id', '=', doctor.id),
-                        ('id', '!=', record.id) if record.id else ('id', '!=', False),
-                    ], order='appointment_date desc', limit=1)
+                        last_appointment = self.env['patient.appointment'].search([
+                            ('patient_id', '=', record.patient_id.id),
+                            ('doctor_id', '=', doctor.id),
+                            ('id', '!=', record.id) if record.id else ('id', '!=', False),
+                        ], order='appointment_date desc', limit=1)
 
-                    last_appointment_day = (
-                        (appointment_date - last_appointment.appointment_date.date()).days
-                        if last_appointment else float('inf')
-                    )
-
-
-                    last_registration = self.env['patient.reg'].search([
-                        ('patient_id', '=', record.patient_id.patient_id),
-                        ('doc_name', '=', doctor.id),
-                    ], order='formatted_date desc', limit=1)
-
-                    last_registration_day = (
-                        (appointment_date - last_registration.date).days
-                        if last_registration else float('inf')
-                    )
+                        last_appointment_day = (
+                            (appointment_date - last_appointment.appointment_date.date()).days
+                            if last_appointment else float('inf')
+                        )
 
 
-                    delta_days = min(last_appointment_day, last_registration_day)
+                        last_registration = self.env['patient.reg'].search([
+                            ('patient_id', '=', record.patient_id.patient_id),
+                            ('doc_name', '=', doctor.id),
+                        ], order='formatted_date desc', limit=1)
+
+                        last_registration_day = (
+                            (appointment_date - last_registration.date).days
+                            if last_registration else float('inf')
+                        )
 
 
-                    fee = 0.0 if delta_days <= consultation_fee_limit else consultation_fee
+                        delta_days = min(last_appointment_day, last_registration_day)
 
 
-                    total_fee += fee
+                        fee = 0.0 if delta_days <= consultation_fee_limit else consultation_fee
 
 
-                    self.env['appointment.fee'].create({
-                        'appointment_id': record.id,
-                        'doctor_id': doctor.id,
-                        'consultation_fee': fee,
-                    })
+                        total_fee += fee
 
 
-                print(f"Total consultation fee for this appointment: {total_fee}")
+                        self.env['appointment.fee'].create({
+                            'appointment_id': record.id,
+                            'doctor_id': doctor.id,
+                            'consultation_fee': fee,
+                        })
 
 
-                record.consultation_fee = total_fee
-                print( record.consultation_fee,' record.consultation_fee...............................')
+                    print(f"Total consultation fee for this appointment: {total_fee}")
+    
+
+                    record.consultation_fee = total_fee
+                    print( record.consultation_fee,' record.consultation_fee...............................')
 
     def action_appointment_confirm(self):
         for record in self:
-            # Prepare the values for patient registration
-            registration_vals = {
-                'user_id': record.patient_id.reference_no,
-                'patient_id': record.patient_id.patient_id,
-                'address': record.patient_id.address,
-                'age': record.patient_id.age,
-                'phone_number': record.patient_id.phone_number,
-                'doctor_id': record.patient_id.doc_name,
-            }
-            patient_registration = self.env['patient.registration'].create(registration_vals)
-            print(registration_vals,'registration_vals....................................................')
+            # Create separate registration for each doctor
+            for doctor in record.doctor_ids:
+                registration_vals = {
+                    'user_id': record.patient_id.reference_no,
+                    'patient_id': record.patient_id.patient_id,
+                    'address': record.patient_id.address,
+                    'age': record.patient_id.age,
+                    'phone_number': record.patient_id.phone_number,
+                    'doctor_id': doctor.display_name,  # Single doctor name
+                }
+                patient_registration = self.env['patient.registration'].create(registration_vals)
+                print(f'Created registration for doctor {doctor.display_name}: {registration_vals}')
+
             self.button_visible = False
             # return {
             #     'type': 'ir.actions.act_window',
@@ -213,7 +215,7 @@ class PatientAppointment(models.Model):
     @api.model
     def create(self, vals):
         # Automatically compute the consultation fee before saving
-        if 'doctor_id' in vals and 'patient_id' in vals and 'appointment_date' in vals:
+        if 'doctor_ids' in vals and 'patient_id' in vals and 'appointment_date' in vals:
             doctor = self.env['doctor.profile'].browse(vals['doctor_id'])
             consultation_fee_limit = doctor.consultation_fee_limit or 0
             consultation_fee = doctor.consultation_fee_doctor or 0
@@ -222,7 +224,7 @@ class PatientAppointment(models.Model):
             last_appointment = self.search(
                 [
                     ('patient_id', '=', vals['patient_id']),
-                    ('doctor_id', '=', vals['doctor_id']),
+                    ('doctor_ids', '=', vals['doctor_id']),
                 ],
                 order='appointment_date desc',
                 limit=1
@@ -247,12 +249,12 @@ class PatientAppointment(models.Model):
         if self.department:
             return {
                 'domain': {
-                    'doctor_id': [('department_id', '=', self.department.id)],
+                    'doctor_ids': [('department_id', '=', self.department.id)],
                 }
             }
         return {
             'domain': {
-                'doctor_id': []
+                'doctor_ids': []
             }
         }
     @api.model
