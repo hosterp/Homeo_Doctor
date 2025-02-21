@@ -8,7 +8,7 @@
     'summary': 'Hospital Management Software',
 
     'depends': [
-        'product','hr'
+        'product','hr','account',
     ],
     'data': [
         "views/patient_reg.xml",
@@ -47,6 +47,7 @@
         "report/lab_report.xml",
         "report/Lab_report_report.xml",
         "views/custom_title.xml",
+        "views/account_move_view.xml",
 
     ],
     'assets': {
