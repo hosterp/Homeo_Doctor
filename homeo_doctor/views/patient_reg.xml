@@ -71,6 +71,7 @@
                         <group name="consultation_details" string="Consultation Details">
                             <field name="symptoms" placeholder="Patient Symptoms"/>
                             <field name="checkup_reports" placeholder="Checkup Notes"/>
+                            <field name="professional_diagnosis"/>
                         </group>
 
                         <group name="prescription" string="Prescription">

@@ -28,6 +28,7 @@
                                 <field name="pin_code"/>
                                 <field name="email" required="1"/>
                                 <field name="id_proof" widget='binary'/>
+                                <field name="echs_id"/>
                                 <field name="registration_fee"/>
                                 <field name="phone_number" widget="phone"/>
 
@@ -48,6 +49,7 @@
                                attrs="{'invisible': [('admission_boolean', '=', False)]}">
                             <group>
                                 <field name="bystander_name"/>
+                                <field name="bystander_email"/>
                                 <field name="admitted_date" attrs="{'required': [('admission_boolean', '=', True)]}"/>
                                 <field name="bed_number"/>
                             </group>
