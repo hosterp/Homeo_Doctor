@@ -20,7 +20,7 @@ class PatientRegistration(models.Model):
     user_id = fields.Many2one('patient.reg', string='Name',required=True)
     patient_id = fields.Char(string='Patient ID',required=True,related='user_id.reference_no')
     patient_name = fields.Char(string='Name',required=True,related='user_id.patient_id')
-    doctor_id=fields.Many2one(string='Doctor name',related='user_id.doc_name')
+    doctor_id=fields.Char(string='Doctor name')
     address = fields.Text(string='Address',required=True,related='user_id.address')
     age = fields.Integer( string='Age',required=True,related='user_id.age')
     phone_number = fields.Char( string='Phone No',size=12,related='user_id.phone_number')
