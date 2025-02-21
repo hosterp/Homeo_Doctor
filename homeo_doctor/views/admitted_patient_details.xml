@@ -39,6 +39,7 @@
                                 <field name="advance_amount"/>
                                 <field name="admitting_department" required="0"/>
                                 <field name="attending_doctor"/>
+                                <field name="insurance_provider"/>
                             </group>
                         </group>
                         <group>
