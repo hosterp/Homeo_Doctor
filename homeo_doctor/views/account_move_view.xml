@@ -8,16 +8,16 @@
             <xpath expr="//sheet/group" position="after">
                 <group col="3">
                     <group>
-                        <field name="uhid"/>
-                        <field name="patient_name"/>
+                        <field name="uhid"  attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
+                        <field name="patient_name"  attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                     </group>
                     <group>
-                        <field name="address"/>
-                        <field name="mobile"/>
+                        <field name="address"  attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
+                        <field name="mobile"  attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
 
                     </group>
                     <group>
-                         <field name="doctor"/>
+                         <field name="doctor"  attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                     </group>
                 </group>
 
