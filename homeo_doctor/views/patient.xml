@@ -24,8 +24,10 @@
                         <group>
                             <group col="3">
                                 <field name="patient_id"/>
-                                <field name="address"/>
-                                <field name="email"/>
+                                <field name="address" required="1"/>
+                                <field name="pin_code"/>
+                                <field name="email" required="1"/>
+                                <field name="id_proof" widget='binary'/>
                                 <field name="registration_fee"/>
                                 <field name="phone_number" widget="phone"/>
 

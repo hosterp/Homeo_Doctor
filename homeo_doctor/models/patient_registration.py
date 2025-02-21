@@ -19,6 +19,8 @@ class PatientRegistration(models.Model):
     age = fields.Integer(string="Age" , compute='_compute_age', store=True)
     phone_number = fields.Char(string="Mobile No",size=12)
     email = fields.Char(string="Email ID")
+    pin_code = fields.Integer(string="PIN Code")
+    id_proof = fields.Binary(string='Upload ID Proof')
     department_id=fields.Many2one('doctor.department',string='Department',required=True)
     doc_name=fields.Many2one('doctor.profile',string='Doctor',required=True)
     registration_fee = fields.Float(string="Registration Fee", required=True, default=50.0)
