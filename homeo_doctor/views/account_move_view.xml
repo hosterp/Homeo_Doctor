@@ -76,6 +76,12 @@
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_subtotal']" position="attributes">
                 <attribute name="string">Amount</attribute>
             </xpath>
+            <xpath expr="//page[@id='edi_documents']" position="attributes">
+                <attribute name="attrs">{'invisible': [('move_type', '=', 'out_invoice')]}</attribute>
+            </xpath>
+            <xpath expr="//page[@id='other_tab']" position="attributes">
+                <attribute name="attrs">{'invisible': [('move_type', '=', 'out_invoice')]}</attribute>
+            </xpath>
 
         </field>
     </record>
