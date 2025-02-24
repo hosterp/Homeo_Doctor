@@ -13,6 +13,13 @@ class AccountMove(models.Model):
     mobile=fields.Char(related='uhid.phone_number',string='Mobile No')
     invoice_line_ids=fields.One2many('account.move.line','move_id')
 
+    supplier_name = fields.Char('Supplier Name')
+    supplier_invoice = fields.Char('Invoice No')
+    supplier_phone = fields.Char('Phone No')
+    supplier_email = fields.Char('Email Id')
+    supplier_gst = fields.Char('GST No')
+    supplier_dl = fields.Char('DL/REG No')
+
     def _default_partner(self):
         return self.env['res.partner'].search([], limit=1)
 
@@ -22,6 +29,8 @@ class AccountMove(models.Model):
         if vals.get('move_type') == 'out_invoice' and not vals.get('name'):
             vals['name'] = self.env['ir.sequence'].next_by_code('account.move')
         return super(AccountMove, self).create(vals)
+
+
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
@@ -36,7 +45,43 @@ class AccountMoveLine(models.Model):
         store=True,
         ondelete="set null"
     )
+    manufacturing_company = fields.Char(string='MFC',store=True)
+    batch = fields.Char(string='Batch',store=True)
+    manufacturing_date = fields.Date(string='M.Date',store=True)
+    expiry_date = fields.Date(string='Exp.Date',store=True)
     move_type = fields.Selection(related='move_id.move_type', store=True)
+    ord_qty = fields.Integer(string='Ord.QTY',store=True)
+    to_be_received = fields.Integer(string='To Be Rec.',store=True)
+    free_qty = fields.Integer(string='Free',store=True)
+    rejected_qty = fields.Integer(string='Rejected',store=True)
+    supplier_mrp = fields.Integer(string='MRP',store=True)
+    quantity = fields.Integer(string='Quantity',store=True)
+
+    @api.onchange('ord_qty', 'quantity')
+    def _onchange_ord_qty_quantity(self):
+        for line in self:
+            if line.ord_qty is not None and line.quantity is not None:
+                line.to_be_received = line.ord_qty - line.quantity
+            else:
+                line.to_be_received = 0  # Reset if either field is empty
+
+    @api.onchange('ord_qty')
+    def _onchange_ord_qty(self):
+        for line in self:
+            if line.ord_qty is not None and line.quantity is not None:
+                line.to_be_received = line.ord_qty - line.quantity
+            else:
+                line.to_be_received = 0  # Reset if either field is empty
+
+    @api.onchange('quantity')
+    def _onchange_quantity(self):
+        for line in self:
+            if line.ord_qty is not None and line.quantity is not None:
+                line.to_be_received = line.ord_qty - line.quantity
+            else:
+                line.to_be_received = 0  # Reset if either field is empty
+
+
 
 
 

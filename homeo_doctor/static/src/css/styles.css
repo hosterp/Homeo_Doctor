@@ -125,3 +125,7 @@ table.o_group.o_inner_group.pressure_sugar.o_group_col_6 {
 .o_form_view.o_form_editable .oe_title {
     max-width: 100%;
 }
+
+.pharmacy_invoice_form .o_form_sheet_bg > .o_form_sheet {
+    max-width: 100% !important;
+}
