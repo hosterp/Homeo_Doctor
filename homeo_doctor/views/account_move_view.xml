@@ -60,13 +60,13 @@
             <xpath expr="//div[field[@name='invoice_date_due']]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
                 <field name="gst"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='gst']" position="before">
                 <field name="batch"/>
             </xpath>
-            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='batch']" position="after">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
                 <field name="ord_qty" />
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="after">
@@ -78,7 +78,7 @@
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='free_qty']" position="after">
                 <field name="rejected_qty" />
             </xpath>
-            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='batch']" position="before">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='ord_qty']" position="before">
                 <field name="manufacturing_company" />
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='manufacturing_company']" position="before">
