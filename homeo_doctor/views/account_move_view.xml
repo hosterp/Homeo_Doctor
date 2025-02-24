@@ -13,7 +13,7 @@
                     PHARMACY INVOICE
                 </span>
             </xpath>
-            
+
             <xpath expr="//sheet/group" position="after">
                 <group col="3">
                     <group>
@@ -54,13 +54,10 @@
                 <field name="gst"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='gst']" position="before">
-                <field name="hsn_code"/>
-            </xpath>
-            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='hsn_code']" position="before">
                 <field name="batch"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='batch']" position="before">
-                <field name="manufacturing_company"/>
+                <field name="manufacturing_company" />
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='manufacturing_company']" position="before">
                 <field name="expiry_date"/>

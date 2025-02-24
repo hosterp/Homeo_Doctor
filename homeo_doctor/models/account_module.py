@@ -51,7 +51,6 @@ class AccountMoveLine(models.Model):
         ondelete="set null"
     )
     manufacturing_company = fields.Char('MFC')
-    hsn_code = fields.Char('HSN')
     batch = fields.Char('Batch')
     manufacturing_date = fields.Date('M.Date')
     expiry_date = fields.Date('Exp.Date')
