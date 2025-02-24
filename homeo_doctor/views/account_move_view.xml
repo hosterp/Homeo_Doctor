@@ -8,12 +8,14 @@
             <xpath expr="//div[@class='oe_title']/span[field[@name='move_type']]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <xpath expr="//div[@class='oe_title']/span[field[@name='move_type']]" position="replace">
-                <span style="font-weight: bold; text-align: center; display: block; font-size: 30px; color: red;">
+            <xpath expr="//div[@class='oe_title']" position="inside">
+                <span style="font-weight: bold; text-align: center; display: block; font-size: 30px; color: red;"
+                      attrs="{'invisible': [('move_type', '!=', 'out_invoice')]}">
                     PHARMACY INVOICE
                 </span>
             </xpath>
-            
+
+
             <xpath expr="//sheet/group" position="after">
                 <group col="3">
                     <group>
