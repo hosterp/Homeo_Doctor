@@ -53,16 +53,17 @@ class AccountMoveLine(models.Model):
         store=True,
         ondelete="set null"
     )
-    manufacturing_company = fields.Char('MFC')
-    batch = fields.Char('Batch')
-    manufacturing_date = fields.Date('M.Date')
-    expiry_date = fields.Date('Exp.Date')
+    manufacturing_company = fields.Char(string='MFC')
+    batch = fields.Char(string='Batch')
+    manufacturing_date = fields.Date(string='M.Date')
+    expiry_date = fields.Date(string='Exp.Date')
     move_type = fields.Selection(related='move_id.move_type', store=True)
-    ord_qty = fields.Integer('Ord.QTY')
-    to_be_received = fields.Integer('To Be Rec.')
-    free_qty = fields.Integer('Free')
-    rejected_qty = fields.Integer('Rejected')
-    supplier_mrp = fields.Integer('MRP')
+    ord_qty = fields.Integer(string='Ord.QTY')
+    to_be_received = fields.Integer(string='To Be Rec.')
+    free_qty = fields.Integer(string='Free')
+    rejected_qty = fields.Integer(string='Rejected')
+    supplier_mrp = fields.Integer(string='MRP')
+
 
 
 
