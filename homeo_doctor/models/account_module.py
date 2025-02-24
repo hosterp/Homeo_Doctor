@@ -16,6 +16,9 @@ class AccountMove(models.Model):
     supplier_name = fields.Char('Supplier Name')
     supplier_invoice = fields.Char('Invoice No')
     supplier_phone = fields.Char('Phone No')
+    supplier_email = fields.Char('Email Id')
+    supplier_gst = fields.Char('GST No')
+    supplier_dl = fields.Char('DL/REG No')
 
     def _default_partner(self):
         return self.env['res.partner'].search([], limit=1)
@@ -55,6 +58,11 @@ class AccountMoveLine(models.Model):
     manufacturing_date = fields.Date('M.Date')
     expiry_date = fields.Date('Exp.Date')
     move_type = fields.Selection(related='move_id.move_type', store=True)
+    ord_qty = fields.Integer('Ord.QTY')
+    to_be_received = fields.Integer('To Be Rec.')
+    free_qty = fields.Integer('Free')
+    rejected_qty = fields.Integer('Rejected')
+    supplier_mrp = fields.Integer('MRP')
 
 
 
