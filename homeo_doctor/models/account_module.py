@@ -1,7 +1,11 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
-class CustomAccountMove(models.Model):
+from odoo.exceptions import UserError
+
+class AccountMove(models.Model):
     _inherit = 'account.move'
+
+    # partner_id = fields.Many2one('res.partner', string='Customer', required=False)
 
     custom_reference = fields.Char(string="Custom Reference")
     doctor=fields.Many2one('doctor.profile',string='Doctor')
@@ -10,6 +14,20 @@ class CustomAccountMove(models.Model):
     address=fields.Text(related='uhid.address',string='Address')
     mobile=fields.Char(related='uhid.phone_number',string='Mobile No')
     invoice_line_ids=fields.One2many('account.move.line','move_id')
+
+    supplier_name = fields.Char('Supplier Name')
+    supplier_invoice = fields.Char('Invoice No')
+    supplier_phone = fields.Char('Phone No')
+
+    def _default_partner(self):
+        return self.env['res.partner'].search([], limit=1)
+
+    partner_id = fields.Many2one('res.partner', string="Customer", required=True, default=_default_partner)
+    @api.model
+    def create(self, vals):
+        if vals.get('move_type') == 'out_invoice' and not vals.get('name'):
+            vals['name'] = self.env['ir.sequence'].next_by_code('account.move')
+        return super(AccountMove, self).create(vals)
 
 
 
@@ -25,7 +43,29 @@ class AccountMoveLine(models.Model):
         store=True,
         ondelete="set null"
     )
+    manufacturing_company = fields.Char('MFC')
+    hsn_code = fields.Char('HSN')
+    batch = fields.Char('Batch')
+    manufacturing_date = fields.Date('M.Date')
+    expiry_date = fields.Date('Exp.Date')
 
+    # @api.model
+    # def create(self, vals):
+    #     # Ensure required fields are set
+    #     if 'product_id' not in vals or not vals['product_id']:
+    #         raise UserError("Product must be specified for the invoice line.")
+    #     if 'quantity' not in vals or vals['quantity'] <= 0:
+    #         raise UserError("Quantity must be greater than zero.")
+    #     if 'price_unit' not in vals or vals['price_unit'] <= 0:
+    #         raise UserError("Price unit must be greater than zero.")
+    #     # Ensure account_id is set based on the product category
+    #     if 'account_id' not in vals or not vals['account_id']:
+    #         product = self.env['product.product'].browse(vals['product_id'])
+    #         if product:
+    #             vals['account_id'] = product.categ_id.property_account_income_categ_id.id
+    #         else:
+    #             raise UserError("Product not found.")
+    #     return super(AccountMoveLine, self).create(vals)
 
 
 
