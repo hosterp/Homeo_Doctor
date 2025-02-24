@@ -5,6 +5,15 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_title']/span[field[@name='move_type']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@class='oe_title']/span[field[@name='move_type']]" position="replace">
+                <span style="font-weight: bold; text-align: center; display: block; font-size: 30px; color: red;">
+                    PHARMACY INVOICE
+                </span>
+            </xpath>
+            
             <xpath expr="//sheet/group" position="after">
                 <group col="3">
                     <group>
@@ -30,6 +39,7 @@
                 </group>
 
             </xpath>
+
             <xpath expr="//group[field[@name='partner_id']]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
@@ -39,11 +49,8 @@
             <xpath expr="//div[field[@name='invoice_date_due']]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-
-            <xpath expr="//notebook/page[@id='invoice_tab']" position="inside">
-
-            </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
+
                 <field name="gst"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='gst']" position="before">
@@ -63,6 +70,9 @@
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="before">
                 <field name="category"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="before">
+                <field name="hsn"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="attributes">
                 <attribute name="invisible">1</attribute>

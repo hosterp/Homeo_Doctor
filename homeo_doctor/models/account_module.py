@@ -1,6 +1,4 @@
-from odoo import models, fields, api
-
-from odoo.exceptions import UserError
+from odoo import models, fields,api
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -29,13 +27,22 @@ class AccountMove(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('account.move')
         return super(AccountMove, self).create(vals)
 
+    def _default_partner(self):
+        return self.env['res.partner'].search([], limit=1)
 
+    partner_id = fields.Many2one('res.partner', string="Customer", required=True, default=_default_partner)
+    @api.model
+    def create(self, vals):
+        if vals.get('move_type') == 'out_invoice' and not vals.get('name'):
+            vals['name'] = self.env['ir.sequence'].next_by_code('account.move')
+        return super(AccountMove, self).create(vals)
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
 
     gst=fields.Integer(string='GST Rate(%)')
+    hsn=fields.Char(string='HSN')
     move_id=fields.Many2one('account.move')
     category = fields.Many2one(
         'medicine.category',
@@ -48,24 +55,8 @@ class AccountMoveLine(models.Model):
     batch = fields.Char('Batch')
     manufacturing_date = fields.Date('M.Date')
     expiry_date = fields.Date('Exp.Date')
+    move_type = fields.Selection(related='move_id.move_type', store=True)
 
-    # @api.model
-    # def create(self, vals):
-    #     # Ensure required fields are set
-    #     if 'product_id' not in vals or not vals['product_id']:
-    #         raise UserError("Product must be specified for the invoice line.")
-    #     if 'quantity' not in vals or vals['quantity'] <= 0:
-    #         raise UserError("Quantity must be greater than zero.")
-    #     if 'price_unit' not in vals or vals['price_unit'] <= 0:
-    #         raise UserError("Price unit must be greater than zero.")
-    #     # Ensure account_id is set based on the product category
-    #     if 'account_id' not in vals or not vals['account_id']:
-    #         product = self.env['product.product'].browse(vals['product_id'])
-    #         if product:
-    #             vals['account_id'] = product.categ_id.property_account_income_categ_id.id
-    #         else:
-    #             raise UserError("Product not found.")
-    #     return super(AccountMoveLine, self).create(vals)
 
 
 
@@ -73,5 +64,10 @@ class MedicineCategory(models.Model):
     _name = 'medicine.category'
     _rec_name = 'medicine_category'
 
+    medicine_category = fields.Char(string='Category', required=True)
+    sequence = fields.Char(string='Category Code', readonly=True)
 
-    medicine_category=fields.Char(string='Category')
+    @api.model
+    def create(self, vals):
+        vals['sequence'] = self.env['ir.sequence'].next_by_code('medicine.category') or '/'
+        return super(MedicineCategory, self).create(vals)
