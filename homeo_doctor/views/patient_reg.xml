@@ -164,6 +164,7 @@
                     <field name="patient_id" string="Patient ID"/>
                     <field name="formatted_date" string="Consultation Date"/>
                     <field name="reference_no" string="Appointment NO"/>
+                    <field name="appointment_date" string="Appointment Date"/>
                     <field name="age"/>
                     <field name="phone_number" string="Mobile No"/>
                     <field name="doctor_id"/>

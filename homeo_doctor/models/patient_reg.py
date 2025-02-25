@@ -45,6 +45,7 @@ class PatientRegistration(models.Model):
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
     temperature=fields.Char(string='Temperature')
     medicine_course=fields.Char(string='medicine course')
+    appointment_date =  fields.Date('Appointment Date')
     doctor_remark_ids = fields.One2many('consultation.remark', 'consultation_id', string='Doctor Remarks')
     previous_consultation_ids = fields.One2many(
         'patient.registration', 'id',

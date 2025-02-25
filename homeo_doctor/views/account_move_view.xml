@@ -70,7 +70,7 @@
                 <field name="gst"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='gst']" position="before">
-                <field name="batch"/>
+                <field name="batch" />
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
                 <field name="ord_qty"/>
@@ -127,8 +127,7 @@
                 <attribute name="attrs">{'invisible': [('move_type', '=', 'out_invoice')]}</attribute>
             </xpath>
             <xpath expr="//button[@name='action_reverse']" position="attributes">
-                <attribute name="invisible">1
-                </attribute>
+                <attribute name="attrs">{'invisible': ['|', ('move_type', 'not in', ( 'in_invoice')), ('state', '!=', 'posted')]}</attribute>
             </xpath>
 
         </field>

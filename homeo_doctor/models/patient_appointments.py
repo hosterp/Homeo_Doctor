@@ -209,6 +209,7 @@ class PatientAppointment(models.Model):
                     'age': record.patient_id.age,
                     'phone_number': record.patient_id.phone_number,
                     'doctor_id': doctor.display_name,  # Single doctor name
+                    'appointment_date':record.appointment_date,
                 }
                 patient_registration = self.env['patient.registration'].create(registration_vals)
                 print(f'Created registration for doctor {doctor.display_name}: {registration_vals}')
