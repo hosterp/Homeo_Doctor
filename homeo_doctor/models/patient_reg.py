@@ -47,6 +47,9 @@ class PatientRegistration(models.Model):
     medicine_course=fields.Char(string='medicine course')
     appointment_date =  fields.Date('Appointment Date')
     doctor_remark_ids = fields.One2many('consultation.remark', 'consultation_id', string='Doctor Remarks')
+    status = fields.Selection(
+        [('draft', 'Draft'), ('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')],
+        default='draft', string="Status")
     previous_consultation_ids = fields.One2many(
         'patient.registration', 'id',
         string='Previous Consultations',

@@ -31,6 +31,13 @@ class PatientAppointment(models.Model):
     button_visible = fields.Boolean(default=True)
     doctor_ids = fields.Many2many('doctor.profile', string='Doctors')
     consultation_fee_ids = fields.One2many('appointment.fee', 'appointment_id', string='Consultation Fees')
+    status = fields.Selection(
+        [('draft', 'Draft'), ('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')],
+        default='draft', string="Status")
+
+    def action_cancel(self):
+        for record in self:
+            record.status = 'cancelled'
 
     @api.onchange('departments')
     def _onchange_departments(self):
@@ -201,6 +208,7 @@ class PatientAppointment(models.Model):
     def action_appointment_confirm(self):
         for record in self:
             # Create separate registration for each doctor
+            record.status='confirmed'
             for doctor in record.doctor_ids:
                 registration_vals = {
                     'user_id': record.patient_id.reference_no,
@@ -212,6 +220,7 @@ class PatientAppointment(models.Model):
                     'appointment_date':record.appointment_date,
                 }
                 patient_registration = self.env['patient.registration'].create(registration_vals)
+                patient_registration.status='confirmed'
                 print(f'Created registration for doctor {doctor.display_name}: {registration_vals}')
 
             self.button_visible = False
