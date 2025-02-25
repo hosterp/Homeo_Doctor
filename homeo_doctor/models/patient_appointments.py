@@ -13,7 +13,7 @@ class PatientAppointment(models.Model):
     appointment_reference = fields.Char(string="Appointment No", readonly=True)
     patient_id = fields.Many2one('patient.reg', string='Patient ID', required=True)
     patient_name= fields.Char(related='patient_id.patient_id', string='Patient Name', required=True)
-    appointment_date = fields.Datetime(string="Appointment Date", required=True)
+    appointment_date = fields.Datetime(string="Appointment Date")
     doctor_id = fields.Many2one('doctor.profile', string='Doctor')
     department=fields.Many2one('doctor.department',string='Department')
     departments=fields.Many2many('doctor.department',string='Departments')

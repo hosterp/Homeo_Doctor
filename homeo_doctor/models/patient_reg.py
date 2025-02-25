@@ -123,6 +123,17 @@ class PatientRegistration(models.Model):
             'domain': [('patient_id', '=', self.reference_no)],
             'context': dict(self.env.context, default_patient_id=self.reference_no),
         }
+    def action_reffer_move(self):
+        self.env['patient.appointment'].create({
+            'patient_id': self.patient_id,
+            'address': self.address,
+            'age': self.age,
+            'doctor_ids':self.referred_doctor_ids,
+            'departments' :self.referred_department_ids,
+            'phone_number': self.phone_number,
+        })
+        return
+
     @api.model
     def create(self, vals):
         if vals.get('reference_no', _('New')) == _('New'):

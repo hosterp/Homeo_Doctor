@@ -93,6 +93,7 @@
                             <!-- <field name="medicine_course" string="Medicine Course"/> -->
                             <field name="referred_department_ids" widget="many2many_tags"/>
                             <field name="referred_doctor_ids" widget="many2many_tags"/>
+                            <button name="action_reffer_move" type="object" string="GO"/>
                             <field name="remark" placeholder="Additional Remarks"/>
                         </group>
                         <field name="remark_boolean" invisible="1"/>
