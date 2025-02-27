@@ -72,7 +72,7 @@
 
         <!-- Menu Item -->
         <menuitem id="menu_scanning_root" name="Scanning" parent="menu_hospital_root" sequence="7"/>
-        <menuitem id="menu_scanning_x_ray" name="X Ray Scan" parent="menu_scanning_root" action="action_x_ray_scan"
+        <menuitem id="menu_scanning_x_ray" name="X Ray Scan" parent="menu_lab_reports_root" action="action_x_ray_scan"
                   sequence="3"/>
     </data>
 </odoo>
