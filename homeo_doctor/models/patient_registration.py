@@ -21,7 +21,7 @@ class PatientRegistration(models.Model):
     email = fields.Char(string="Email ID")
     pin_code = fields.Integer(string="PIN Code")
     id_proof = fields.Binary(string='Upload ID Proof')
-    echs_id = fields.Char(string="ECHS ID")
+    vssc_id = fields.Char(string="VSSC ID No")
     department_id=fields.Many2one('doctor.department',string='Department',required=True)
     doc_name=fields.Many2one('doctor.profile',string='Doctor',required=True)
     registration_fee = fields.Float(string="Registration Fee", required=True, default=50.0)
@@ -55,7 +55,7 @@ class PatientRegistration(models.Model):
     admission_boolean=fields.Boolean(default=False)
     dob = fields.Date(string='DOB' ,required=True)
     discharge_date=fields.Datetime(string='Discharge Date')
-
+    vssc_boolean=fields.Boolean(string='VSSC',default=False)
     def action_report_patient_card(self):
         return self.env.ref('homeo_doctor.report_patient_card').report_action(self)
 

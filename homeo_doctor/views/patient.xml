@@ -21,27 +21,32 @@
                         <h3 class="oe_right">
                             <field name="formatted_date" readonly="1" string="Date"/>
                         </h3>
-                        <group>
-                            <group col="3">
+                        <group col="3">
+                            <group>
                                 <field name="patient_id"/>
                                 <field name="address" required="1"/>
                                 <field name="pin_code"/>
                                 <field name="email" required="1"/>
-                                <field name="id_proof" widget='binary'/>
-                                <field name="echs_id"/>
                                 <field name="registration_fee"/>
-                                <field name="phone_number" widget="phone"/>
 
 
                             </group>
-                            <group col="3">
+                            <group>
+                                <field name="vssc_boolean"/>
+                                <field name="vssc_id" attrs="{'invisible': [('vssc_boolean', '=', False)]}"/>
+                                <field name="id_proof" widget='binary'
+                                       attrs="{'invisible': [('vssc_boolean', '=', False)]}"/>
                                 <field name="dob"/>
                                 <field name="age" invisible="1"/>
                                 <field name="gender"/>
+                                <field name="phone_number" widget="phone"/>
+                            </group>
+                            <group>
                                 <field name="department_id"/>
                                 <field name="doc_name"/>
                                 <field name="time"/>
                                 <field name="consultation_fee"/>
+                                <field name="registration_fee"/>
                                 <field name="admission_boolean" invisible="1"/>
                             </group>
                         </group>
