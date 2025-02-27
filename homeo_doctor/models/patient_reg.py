@@ -28,6 +28,7 @@ class PatientRegistration(models.Model):
     symptoms = fields.Text(string="Symptoms")
     professional_diagnosis = fields.Text(string='Professional Diagnosis')
     remark = fields.Text(string="Remark")
+    consultation_fee=fields.Integer(related='user_id.consultation_fee',string='Consultation Fee')
     checkup_reports=fields.Text(string='Checkup Details')
     med_ids = fields.One2many("prescription.entry.lines", 'prescription_line_id', string="Prescription Entry Lines")
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
