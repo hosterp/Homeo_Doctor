@@ -147,7 +147,7 @@ class PatientRegistration(models.Model):
             'address': record.address,
             'age': record.age,
             'phone_number': record.phone_number,
-            'doctor_id': record.doc_name,
+            'doctor_id': record.doc_name.display_name,
             'appointment_date' : record.time,
         })
 
