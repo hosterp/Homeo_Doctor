@@ -46,6 +46,8 @@
         "report/lab_report.xml",
         "report/lab_report.xml",
         "report/Lab_report_report.xml",
+        "report/report_patient_card.xml",
+        "report/report_action.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
 

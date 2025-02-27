@@ -56,6 +56,9 @@ class PatientRegistration(models.Model):
     dob = fields.Date(string='DOB' ,required=True)
     discharge_date=fields.Datetime(string='Discharge Date')
 
+    def action_report_patient_card(self):
+        return self.env.ref('homeo_doctor.report_patient_card').report_action(self)
+
     @api.depends('discharge_date')
     def _compute_no_days(self):
         for record in self:

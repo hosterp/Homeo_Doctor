@@ -68,21 +68,21 @@
                                 <field name="advance_amount"/>
                             </group>
                         </group>
-<!--                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
-<!--                            <page string="Prescriptions">-->
-<!--                                <field name="prescription_line_ids">-->
-<!--                                    <tree>-->
-<!--                                        <field name="product_id"/>-->
-<!--                                        <field name="total_med" invisible="1"/>-->
-<!--                                        <field name="per_ped" invisible="1"/>-->
-<!--                                        <field name="morn"/>-->
-<!--                                        <field name="noon"/>-->
-<!--                                        <field name="night"/>-->
-<!--                                        <field name="rate" sum="Total"/>-->
-<!--                                    </tree>-->
-<!--                                </field>-->
-<!--                            </page>-->
-<!--                        </notebook>-->
+                        <!--                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
+                        <!--                            <page string="Prescriptions">-->
+                        <!--                                <field name="prescription_line_ids">-->
+                        <!--                                    <tree>-->
+                        <!--                                        <field name="product_id"/>-->
+                        <!--                                        <field name="total_med" invisible="1"/>-->
+                        <!--                                        <field name="per_ped" invisible="1"/>-->
+                        <!--                                        <field name="morn"/>-->
+                        <!--                                        <field name="noon"/>-->
+                        <!--                                        <field name="night"/>-->
+                        <!--                                        <field name="rate" sum="Total"/>-->
+                        <!--                                    </tree>-->
+                        <!--                                </field>-->
+                        <!--                            </page>-->
+                        <!--                        </notebook>-->
                         <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">
                             <page string="Lab">
                                 <field name="lab_report_reg_ids">
@@ -153,7 +153,7 @@
             <field name="arch" type="xml">
                 <search string="Search Patient">
                     <field name="reference_no" string="Patient ID"/>
-                     <field name="patient_id" string="Patient Name"/>
+                    <field name="patient_id" string="Patient Name"/>
                     <field name="phone_number" string="Phone Number"/>
                     <filter string="Patient ID"
                             name="reference_number_filter"
