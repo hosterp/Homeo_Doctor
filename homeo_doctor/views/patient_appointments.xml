@@ -18,9 +18,9 @@
         <field name="name">patient.appointment.form</field>
         <field name="model">patient.appointment</field>
         <field name="arch" type="xml">
-            <header>
-                <field name="status" widget="statusbar" options="{'clickable': 'true'}"/>
-            </header>
+<!--            <header>-->
+<!--                <field name="status" widget="statusbar" options="{'clickable': 'true'}"/>-->
+<!--            </header>-->
 
             <form>
                 <sheet>
@@ -66,8 +66,8 @@
                                     string="Confirm Appointment"
                                     class="oe_highlight"
                                     attrs="{'invisible': [('button_visible', '=', False)]}"/>
-                            <button name="action_cancel" string="Cancel" type="object" class="btn btn-danger"
-                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>
+<!--                            <button name="action_cancel" string="Cancel" type="object" class="btn btn-danger"-->
+<!--                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>-->
 
                         </group>
 
