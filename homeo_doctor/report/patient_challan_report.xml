@@ -1,0 +1,123 @@
+<odoo>
+    <data>
+        <report
+                id="report_patient_challan_action"
+                model="patient.reg"
+                string="Challan Print"
+                report_type="qweb-pdf"
+                file="homeo_doctor.view_report_patient_challan"
+                name="homeo_doctor.view_report_patient_challan"
+        />
+
+        <record id="view_report_patient_challan" model="ir.ui.view">
+            <field name="name">report_patient_challan</field>
+            <field name="model">patient.reg</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+                <t t-name="homeo_doctor.report_patient_challan">
+                    <t t-call="web.html_container">
+                        <t t-foreach="docs" t-as="doc">
+                            <div class="page" style="width: 80%; margin: auto; padding: 20px; border: 1px solid #000;">
+
+                                <div style="text-align: center; margin-bottom: 20px;">
+                                    <h1 style="font-size: 24px; margin: 0;">HOSPITAL NAME</h1>
+                                    <p style="margin: 0; font-size: 14px;">Address | Phone | Email</p>
+                                    <hr style="border: 1px solid #000;"/>
+                                </div>
+
+
+                                <!-- Report Title -->
+<!--                                <h2 style="text-align: center; font-size: 20px; margin-bottom: 15px; text-decoration: underline;">-->
+<!--                                    Registration Bill-->
+<!--                                </h2>-->
+
+                                <!-- Patient Information Table -->
+                                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                                    <tr>
+                                        <td style="font-weight: bold; width: 30%; padding: 8px; border: 1px solid #000;">
+                                            UHID:
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.reference_no"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Patient
+                                            Name:
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.patient_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Address:
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.address"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Phone
+                                            Number:
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.phone_number"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Doctor:
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.doc_name.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">
+                                            Department:
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.department_id.display_name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">
+                                            Registration Fee:
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.registration_fee"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Consultation Fee :
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.consultation_fee"/>
+                                        </td>
+                                    </tr>
+<!--                                    <tr>-->
+<!--                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Bed-->
+<!--                                            Number:-->
+<!--                                        </td>-->
+<!--                                        <td style="padding: 8px; border: 1px solid #000;">-->
+<!--                                            <t t-esc="doc.bed_number"/>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+                                </table>
+
+                                <!-- Footer -->
+                                <div style="text-align: center; margin-top: 30px;">
+                                    <p style="font-size: 14px;">Thank you for visiting
+                                        <strong>HOSPITAL NAME</strong>
+                                    </p>
+                                </div>
+
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
