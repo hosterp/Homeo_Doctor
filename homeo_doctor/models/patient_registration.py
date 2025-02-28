@@ -16,7 +16,7 @@ class PatientRegistration(models.Model):
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     patient_id = fields.Char(required=True, string="Name")
     address = fields.Text(required=True, string="Address")
-    age = fields.Integer(string="Age" , compute='_compute_age', store=True)
+    age = fields.Integer(string="Age" , store=True)
     phone_number = fields.Char(string="Mobile No",size=12)
     email = fields.Char(string="Email ID")
     pin_code = fields.Integer(string="PIN Code")
@@ -53,7 +53,7 @@ class PatientRegistration(models.Model):
     no_days = fields.Integer(string='Number Of Days',compute='_compute_no_days', store=True)
     admitted_date = fields.Datetime(string='Admitted Date')
     admission_boolean=fields.Boolean(default=False)
-    dob = fields.Date(string='DOB' ,required=True)
+    dob = fields.Date(string='DOB')
     discharge_date=fields.Datetime(string='Discharge Date')
     vssc_boolean=fields.Boolean(string='VSSC',default=False)
     def action_report_patient_card(self):
@@ -75,7 +75,7 @@ class PatientRegistration(models.Model):
         vals.move_to_admission_clicked=False
 
 
-    @api.depends('dob')
+    @api.onchange('dob')
     def _compute_age(self):
         for record in self:
             if record.dob:
