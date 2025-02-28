@@ -91,6 +91,7 @@
                 <field name="expiry_date"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='expiry_date']" position="before">
+                <field name="supplier_packing"/>
                 <field name="manufacturing_date"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="before">

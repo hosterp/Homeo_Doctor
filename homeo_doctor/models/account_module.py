@@ -20,6 +20,7 @@ class AccountMove(models.Model):
     supplier_gst = fields.Char('GST No')
     supplier_dl = fields.Char('DL/REG No')
 
+
     def _default_partner(self):
         return self.env['res.partner'].search([], limit=1)
 
@@ -56,7 +57,7 @@ class AccountMoveLine(models.Model):
     rejected_qty = fields.Integer(string='Rejected',store=True)
     supplier_mrp = fields.Integer(string='MRP',store=True)
     quantity = fields.Integer(string='Quantity',store=True)
-
+    supplier_packing = fields.Many2one('supplier.packing', string='Packing')
     @api.onchange('ord_qty', 'quantity')
     def _onchange_ord_qty_quantity(self):
         for line in self:
@@ -97,3 +98,9 @@ class MedicineCategory(models.Model):
     def create(self, vals):
         vals['sequence'] = self.env['ir.sequence'].next_by_code('medicine.category') or '/'
         return super(MedicineCategory, self).create(vals)
+
+class SupplierPacking(models.Model):
+    _name='supplier.packing'
+    _rec_name = 'supplier_packing'
+
+    supplier_packing=fields.Char(string='Packing')
