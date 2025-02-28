@@ -104,3 +104,11 @@ class SupplierPacking(models.Model):
     _rec_name = 'supplier_packing'
 
     supplier_packing=fields.Char(string='Packing')
+
+
+
+
+class AccountPaymentRegister(models.TransientModel):
+    _inherit = 'account.payment.register'
+
+    pay_mode=fields.Selection([('cash','Cash'),('upi','UPI'),('card','Card')],default='cash',string='Payment Mode')

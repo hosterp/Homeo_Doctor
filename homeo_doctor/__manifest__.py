@@ -50,6 +50,7 @@
         "report/report_action.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
+        "views/register_paymeny.xml",
 
     ],
     'assets': {
