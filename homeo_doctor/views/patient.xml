@@ -26,7 +26,7 @@
                                 <field name="patient_id"/>
                                 <field name="address" required="1"/>
                                 <field name="pin_code" required="1"/>
-                                <field name="email" required="1"/>
+                                <field name="email" required="1" widget="email"/>
 <!--                                <field name="registration_fee"/>-->
 
 
