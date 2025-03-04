@@ -79,11 +79,43 @@
                         </group>
 
                         <!-- Rest of the form remains the same -->
-                        <group name="consultation_details" string="Consultation Details">
-                            <field name="symptoms" placeholder="Patient Symptoms"/>
-                            <field name="checkup_reports" placeholder="Checkup Notes"/>
-                            <field name="professional_diagnosis"/>
-                        </group>
+                        <group name="consultation_details" string="Clinical Assessment" class="consultation_details_section o_group_col_6">
+                                    <!-- Chief complaints and history fields -->
+                                    <field name="symptoms" placeholder="Chief Complaints and Symptomatology"
+                                           class="clinical_findings" widget="text"/>
+                                    <field name="presenting_complaints" placeholder="Detailed Presenting Complaints"
+                                           class="clinical_findings" widget="text"/>
+                                    <field name="allergies" placeholder="Known Allergies and Hypersensitivities"
+                                           class="medical_history" widget="text"/>
+
+
+                                    <!-- Medication fields -->
+                                    <field name="present_medications" placeholder="Current Medication Regimen"
+                                           class="medication_field" widget="text"/>
+
+                                    <!-- Examination fields -->
+                                    <field name="general_examination" placeholder="General Physical Examination Findings"
+                                           class="examination_field" widget="text"/>
+                                    <field name="local_and_systemic" placeholder="Systemic Examination and Organ-specific Findings"
+                                           class="examination_field" widget="text"/>
+
+                                    <!-- Investigation fields -->
+                                    <field name="investigation" placeholder="Diagnostic Investigations and Laboratory Studies"
+                                           class="examination_field" widget="text"/>
+                                    <field name="endoscopy_finding" placeholder="Endoscopic/Ultrasonographic Findings"
+                                           class="examination_field" widget="text"/>
+
+                                    <!-- Review fields -->
+                                    <field name="review_date" string="Scheduled Follow-up Date" class="date_field"/>
+                                    <field name="review_note" placeholder="Follow-up Instructions and Recommendations"
+                                           class="clinical_findings" widget="text"/>
+                                    <field name="checkup_reports" placeholder="Assessment Notes"
+                                           class="clinical_findings" widget="text"/>
+
+                                    <!-- Diagnosis field - most important -->
+                                    <field name="professional_diagnosis" string="Clinical Diagnosis and Assessment"
+                                           class="diagnosis_field" widget="text"/>
+                                </group>
 
                         <group name="prescription" string="Prescription">
                             <field name="med_ids" nolabel="1">

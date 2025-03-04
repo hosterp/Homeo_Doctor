@@ -129,3 +129,149 @@ table.o_group.o_inner_group.pressure_sugar.o_group_col_6 {
 .pharmacy_invoice_form .o_form_sheet_bg > .o_form_sheet {
     max-width: 100% !important;
 }
+
+.patient_consulattaion_page .o_list_view {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    .o_list_table > thead {
+        background-color: #34495E;
+
+        > tr > th {
+            color: white;
+            font-weight: 600;
+        }
+    }
+
+    .o_list_record_selector {
+        width: 40px;
+    }
+}
+
+ .patient_consulattaion_page .o_notebook {
+        margin-top: 20px;
+
+        .nav-tabs {
+            border-bottom: 2px solid #3498DB;
+
+            .nav-link {
+                border-radius: 6px 6px 0 0;
+
+                &.active {
+                    font-weight: 600;
+                    color: #2C3E50;
+                    border-color: #3498DB #3498DB #fff;
+                }
+            }
+        }
+
+        .tab-content {
+            padding-top: 20px;
+        }
+    }
+
+/* Add this to your module's /static/src/scss/styles.scss file */
+
+/* Professional styling for consultation details section */
+ .o_form_view .o_form_sheet {
+  .consultation_details_section {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+
+    /* Section title styling */
+    .o_horizontal_separator {
+      color: #2c3e50;
+      font-size: 18px;
+      font-weight: 600;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+
+    /* Row styling for better organization */
+    .o_group_col_6 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    /* Field label styling */
+    .o_form_label {
+      color: #34495e;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    /* Field input styling */
+    .o_field_widget {
+      &.o_field_text textarea {
+        border: 1px solid #dde2e6;
+        border-radius: 4px;
+        padding: 10px;
+        min-height: 90px;
+        transition: all 0.2s ease;
+
+        &:focus {
+          border-color: #3498db;
+          box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+          outline: none;
+        }
+      }
+
+      /* Different styling for different field types */
+      &.clinical_findings textarea {
+        border-left: 4px solid #27ae60;
+      }
+
+      &.medical_history textarea {
+        border-left: 4px solid #e74c3c;
+      }
+
+      &.medication_field textarea {
+        border-left: 4px solid #f39c12;
+      }
+
+      &.examination_field textarea {
+        border-left: 4px solid #9b59b6;
+      }
+
+      &.diagnosis_field textarea,
+      &.diagnosis_field input {
+        border-left: 4px solid #3498db;
+        font-weight: 500;
+      }
+
+      &.date_field .o_datepicker {
+        .o_datepicker_input {
+          border-radius: 4px;
+          border: 1px solid #dde2e6;
+          height: 36px;
+        }
+      }
+    }
+
+    /* Field placeholder styling */
+    textarea::placeholder {
+      color: #95a5a6;
+      font-style: italic;
+      font-size: 13px;
+    }
+  }
+}
+
+/* Styling for the field focus states */
+.consultation_details_section {
+  .o_field_widget.focus {
+    background-color: #f1f7fb;
+    transition: background-color 0.3s ease;
+  }
+
+  /* Add subtle dividers between sections */
+  .o_group > tbody > tr:not(:last-child) {
+    border-bottom: 1px solid #ecf0f1;
+  }
+}
