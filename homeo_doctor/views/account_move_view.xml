@@ -69,9 +69,6 @@
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
                 <field name="gst"/>
             </xpath>
-            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='gst']" position="before">
-                <field name="batch"/>
-            </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
                 <field name="ord_qty"/>
             </xpath>
@@ -92,13 +89,14 @@
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='expiry_date']" position="before">
                 <field name="supplier_packing"/>
-                <field name="manufacturing_date"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="before">
                 <field name="category"/>
             </xpath>
-            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="after">
                 <field name="hsn"/>
+                <field name="batch"/>
+                <field name="manufacturing_date"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="attributes">
                 <attribute name="invisible">1</attribute>
