@@ -27,7 +27,7 @@
                                 <field name="address" required="1"/>
                                 <field name="pin_code" required="1"/>
                                 <field name="email" required="1"/>
-                                <field name="registration_fee"/>
+<!--                                <field name="registration_fee"/>-->
 
 
                             </group>
@@ -36,7 +36,7 @@
                                 <field name="vssc_id" attrs="{'invisible': [('vssc_boolean', '=', False)]}"/>
                                 <field name="id_proof" widget='binary'
                                        attrs="{'invisible': [('vssc_boolean', '=', False)]}"/>
-                                <field name="dob" attrs="{'required': [('age', '=', False)]}"/>
+                                <field name="dob" attrs="{'required': [('age', '=', False)]}" widget="date" options="{'datepicker': {'changeYear': true, 'yearRange': '1900:2100'}}"/>
                                 <field name="age" attrs="{'required': [('dob', '=', False)]}"/>
 
                                 <field name="gender"/>
@@ -47,7 +47,7 @@
                                 <field name="doc_name"/>
                                 <field name="time"/>
                                 <field name="consultation_fee"/>
-<!--                                <field name="registration_fee"/>-->
+                                <field name="registration_fee"/>
                                 <field name="admission_boolean" invisible="1"/>
                             </group>
                         </group>
