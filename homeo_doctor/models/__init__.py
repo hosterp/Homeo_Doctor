@@ -15,3 +15,4 @@ from .import mri_scan
 from .import x_ray_scan
 from .import audiology
 from .import account_module
+from .import intent
