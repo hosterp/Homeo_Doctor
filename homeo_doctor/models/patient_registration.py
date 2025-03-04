@@ -1,8 +1,13 @@
+import re
 from datetime import date
+from odoo.exceptions import UserError
 
 import dateutil.utils
 from odoo import api, fields, models, tools,_
 import odoo.addons
+from odoo.odoo.exceptions import ValidationError
+
+
 # from datetime import datetime, date
 # default=date.today()
 class PatientRegistration(models.Model):
@@ -74,7 +79,12 @@ class PatientRegistration(models.Model):
         vals=self.env['patient.registration'].search([('patient_id', '=', self.reference_no)])
         vals.move_to_admission_clicked=False
 
-
+    @api.constrains('email')
+    def _check_email(self):
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        for record in self:
+            if record.email and not re.match(email_regex, record.email):
+                raise UserError("⚠️ Warning: The email address '%s' is invalid." % record.email)
     @api.onchange('dob')
     def _compute_age(self):
         for record in self:
