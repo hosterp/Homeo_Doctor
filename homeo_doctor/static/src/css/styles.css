@@ -10,9 +10,11 @@
 html .o_web_client > .o_action_manager {
     color: #181717 !important;
 }
+/*
 .o_form_view .o_group {
     padding: 0px 45px 0px 45px !important;
 }
+*/
 
 .ot_management div{
     width: 35% !important;
@@ -80,7 +82,7 @@ html .o_web_client > .o_action_manager {
 
 .o_reference_number {
     color: #007bff;
-    font-size: 1.2em;
+    font-size: 27px;
 }
 
 .o_consultation_date {
@@ -274,4 +276,50 @@ table.o_group.o_inner_group.pressure_sugar.o_group_col_6 {
   .o_group > tbody > tr:not(:last-child) {
     border-bottom: 1px solid #ecf0f1;
   }
+}
+
+/* Global font size override without modifying base style */
+html {
+    font-size: 16px !important;
+}
+
+/* Ensure consistent sizing across Odoo interface */
+.o_web_client {
+    font-size: 16px !important;
+}
+
+.o_content {
+    font-size: 16px !important;
+}
+
+/* Additional elements to ensure comprehensive coverage */
+.o_form_view,
+.o_list_view,
+.o_kanban_view,
+.o_form_field,
+.o_form_label,
+.dropdown-menu,
+.o_dropdown_menu {
+    font-size: 16px !important;
+}
+
+.o_form_view .o_vital_signs_group .o_field_widget {
+	width: 100%;
+	margin-left: -2px !important;
+}
+
+.o_form_view .o_group.o_inner_group > tbody > tr > td.o_td_label {
+	padding: 0px 15px 0px 9px !important;
+	min-width: 112px !important;
+}
+
+.patient_consulattaion_page .oe_title {
+	margin-bottom: -40px !important;
+}
+
+.btn {
+	font-size: 0.9rem !important;
+}
+.o_control_panel .o_cp_bottom_left > .o_cp_action_menus {
+	margin-right: -10% !important;
 }
