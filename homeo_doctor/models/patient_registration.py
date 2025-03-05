@@ -19,19 +19,19 @@ class PatientRegistration(models.Model):
     reference_no = fields.Char(string="Reference")
     date = fields.Date(default=dateutil.utils.today(), readonly=True)
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
-    patient_id = fields.Char(required=True, string="Name")
-    address = fields.Text(required=True, string="Address")
+    patient_id = fields.Char( string="Name")
+    address = fields.Text( string="Address")
     age = fields.Integer(string="Age" , store=True)
     phone_number = fields.Char(string="Mobile No",size=12)
     email = fields.Char(string="Email ID")
     pin_code = fields.Integer(string="PIN Code")
     id_proof = fields.Binary(string='Upload ID Proof')
     vssc_id = fields.Char(string="VSSC ID No")
-    department_id=fields.Many2one('doctor.department',string='Department',required=True)
-    doc_name=fields.Many2one('doctor.profile',string='Doctor',required=True)
-    registration_fee = fields.Float(string="Registration Fee", required=True, default=50.0)
+    department_id=fields.Many2one('doctor.department',string='Department')
+    doc_name=fields.Many2one('doctor.profile',string='Doctor')
+    registration_fee = fields.Float(string="Registration Fee", default=50.0)
     remark = fields.Text(string="Remark")
-    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender", required=True)
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     time=fields.Datetime(string="Date & Time")
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
@@ -61,6 +61,8 @@ class PatientRegistration(models.Model):
     dob = fields.Date(string='DOB')
     discharge_date=fields.Datetime(string='Discharge Date')
     vssc_boolean=fields.Boolean(string='VSSC',default=False)
+    consultation_check = fields.Boolean(default=False)
+    temp_reference_no =  fields.Char(string=" Temporary Reference")
     def action_report_patient_card(self):
         return self.env.ref('homeo_doctor.report_patient_card').report_action(self)
 
@@ -146,20 +148,28 @@ class PatientRegistration(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals.get('reference_no', _('New')) == _('New'):
-            vals['reference_no'] = self.env['ir.sequence'].next_by_code(
-                'patient.reg.group') or _('New')
+        # Check if consultation_check is False in the vals dictionary before generating reference_no
+        if not vals.get('consultation_check'):  # Default to True if not set
+            if vals.get('reference_no', _('New')) == _('New'):
+                vals['reference_no'] = self.env['ir.sequence'].next_by_code('patient.reg.group') or _('New')
+        else:
+            # If consultation_check is True, generate a temporary reference number (temp_reference_no)
+            if vals.get('temp_reference_no', _('New')) == _('New'):
+                vals['temp_reference_no'] = self.env['ir.sequence'].next_by_code('patient.reg.temp') or _('New')
+        # Create the main patient registration record
         record = super(PatientRegistration, self).create(vals)
 
-        self.env['patient.registration'].create({
-            'user_id': record.id,
-            'patient_id': record.patient_id,
-            'address': record.address,
-            'age': record.age,
-            'phone_number': record.phone_number,
-            'doctor_id': record.doc_name.display_name,
-            'appointment_date' : record.time,
-        })
+        # After record creation, check if consultation_check is False
+        if not record.consultation_check:
+            self.env['patient.registration'].create({
+                'user_id': record.id,
+                'patient_id': record.patient_id,
+                'address': record.address,
+                'age': record.age,
+                'phone_number': record.phone_number,
+                'doctor_id': record.doc_name.display_name,
+                'appointment_date': record.time,
+            })
 
         return record
 
