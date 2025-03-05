@@ -323,3 +323,23 @@ html {
 .o_control_panel .o_cp_bottom_left > .o_cp_action_menus {
 	margin-right: -10% !important;
 }
+
+
+.o_form_view .o_form_sheet .consultation_details_section .o_form_label {
+      white-space: nowrap !important;
+      padding: 10px !important;
+  }
+
+.o_form_view .o_form_sheet .consultation_details_section .o_field_text{
+    border-width: 3px !important;
+    border-color: #34495e !important;
+}
+
+.o_form_view .o_form_sheet .consultation_details_section .o_datepicker_input{
+    border-width: 3px !important;
+    border-color: #34495e !important;
+}
+
+.o_td_label .o_form_label {
+    white-space: nowrap;
+}
