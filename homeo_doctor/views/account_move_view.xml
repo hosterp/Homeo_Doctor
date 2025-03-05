@@ -56,6 +56,15 @@
                 </group>
 
             </xpath>
+            <xpath expr="//h1[field[@name='name']]" position="attributes">
+                <attribute name="attrs">{'invisible': [('name', '=', '/'), ('state', '=', 'draft')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//h1/span[@attrs]" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'in', ['draft', 'posted', 'cancel'])]}</attribute>
+            </xpath>
             <xpath expr="//button[@name='action_invoice_sent']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
