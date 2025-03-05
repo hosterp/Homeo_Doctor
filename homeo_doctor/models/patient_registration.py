@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 import dateutil.utils
 from odoo import api, fields, models, tools,_
 import odoo.addons
-from odoo.odoo.exceptions import ValidationError
+# from odoo.odoo.exceptions import ValidationError
 
 
 # from datetime import datetime, date
