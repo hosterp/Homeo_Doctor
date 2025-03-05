@@ -91,6 +91,7 @@
 
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
                 <field name="gst"/>
+                <field name="stock_in_hand"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
                 <field name="ord_qty" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>

@@ -64,6 +64,7 @@ class AccountMoveLine(models.Model):
     supplier_mrp = fields.Integer(string='MRP',store=True)
     quantity = fields.Integer(string='Quantity',store=True)
     supplier_packing = fields.Many2one('supplier.packing', string='Packing')
+    stock_in_hand=fields.Char(string='Stock In Hand')
     @api.onchange('ord_qty', 'quantity')
     def _onchange_ord_qty_quantity(self):
         for line in self:
