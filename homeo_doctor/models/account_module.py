@@ -118,3 +118,7 @@ class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
     pay_mode=fields.Selection([('cash','Cash'),('upi','UPI'),('card','Card')],default='cash',string='Payment Mode')
+    move_id = fields.Many2one('account.move', string='Invoice')
+
+    uhid = fields.Many2one(related='move_id.uhid', string='UHID', store=True, readonly=True)
+    patient_name = fields.Char(related='move_id.patient_name', string='Patient Name', store=True, readonly=True)
