@@ -21,6 +21,7 @@ class AccountMove(models.Model):
     supplier_email = fields.Char('Email Id')
     supplier_gst = fields.Char('GST No')
     supplier_dl = fields.Char('DL/REG No')
+    supplier_bill_date = fields.Date(string='Bill Date', default=lambda self: date.today())
 
     invoice_date = fields.Date(
         string="Date",

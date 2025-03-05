@@ -32,9 +32,9 @@
                                attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                     </group>
                     <group>
-                        <field name="supplier_phone"
+                        <field name="supplier_bill_date"
                                attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
-                        <field name="supplier_email"
+                        <field name="supplier_phone"
                                attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="invoice_date" string="Date" readonly="1"
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
@@ -52,6 +52,9 @@
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="doctor"
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
+                    </group>
+                    <group>
+
                     </group>
                 </group>
 
@@ -185,10 +188,13 @@
             </xpath>
 
             <xpath expr="//field[@name='name']" position="after">
-                <field name="uhid"/>
-                <field name="patient_name"/>
-                 <field name="mobile"/>
-                 <field name="doctor"/>
+                <field name="supplier_name" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
+                <field name="supplier_phone" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
+                <field name="supplier_gst" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
+                <field name="uhid" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
+                <field name="patient_name" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
+                 <field name="mobile" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
+                 <field name="doctor" invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')"/>
             </xpath>
 
         </field>
