@@ -21,6 +21,7 @@ class AccountMove(models.Model):
     supplier_email = fields.Char('Email Id')
     supplier_gst = fields.Char('GST No')
     supplier_dl = fields.Char('DL/REG No')
+    supplier_bill_date = fields.Date(string='Bill Date', default=lambda self: date.today())
 
     invoice_date = fields.Date(
         string="Date",
@@ -64,6 +65,7 @@ class AccountMoveLine(models.Model):
     supplier_mrp = fields.Integer(string='MRP',store=True)
     quantity = fields.Integer(string='Quantity',store=True)
     supplier_packing = fields.Many2one('supplier.packing', string='Packing')
+    stock_in_hand=fields.Char(string='Stock In Hand', store=True)
     @api.onchange('ord_qty', 'quantity')
     def _onchange_ord_qty_quantity(self):
         for line in self:
@@ -118,3 +120,20 @@ class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
     pay_mode=fields.Selection([('cash','Cash'),('upi','UPI'),('card','Card')],default='cash',string='Payment Mode')
+    move_id = fields.Many2one('account.move', string='Invoice')
+
+    uhid = fields.Many2one(related='move_id.uhid', string='UHID', store=True, readonly=True)
+    patient_name = fields.Char(related='move_id.patient_name', string='Patient Name', store=True, readonly=True)
+
+    @api.model
+    def default_get(self, fields):
+        res = super(AccountPaymentRegister, self).default_get(fields)
+        active_id = self.env.context.get('active_id')
+        if active_id:
+            move = self.env['account.move'].browse(active_id)
+            res.update({
+                'move_id': move.id,
+                'uhid': move.uhid.id,
+                'patient_name': move.patient_name,
+            })
+        return res
