@@ -93,16 +93,16 @@
                 <field name="gst"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
-                <field name="ord_qty"/>
+                <field name="ord_qty" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="after">
-                <field name="to_be_received"/>
+                <field name="to_be_received" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='to_be_received']" position="after">
-                <field name="free_qty"/>
+                <field name="free_qty" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='free_qty']" position="after">
-                <field name="rejected_qty"/>
+                <field name="rejected_qty" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='ord_qty']" position="before">
                 <field name="manufacturing_company"/>
@@ -137,7 +137,7 @@
                 <attribute name="string">Rate</attribute>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="before">
-                <field name="supplier_mrp"/>
+                <field name="supplier_mrp" invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_subtotal']" position="attributes">
                 <attribute name="string">Amount</attribute>
