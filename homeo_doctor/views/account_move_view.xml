@@ -56,6 +56,10 @@
                 </group>
 
             </xpath>
+            <xpath expr="//field[@name='narration']" position="attributes">
+                <attribute name="attrs">{'invisible': True}</attribute>
+            </xpath>
+
             <xpath expr="//h1[field[@name='name']]" position="attributes">
                 <attribute name="attrs">{'invisible': [('name', '=', '/'), ('state', '=', 'draft')]}</attribute>
             </xpath>
