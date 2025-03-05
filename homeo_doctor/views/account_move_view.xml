@@ -147,10 +147,10 @@
                 <attribute name="string">Amount</attribute>
             </xpath>
             <xpath expr="//page[@id='edi_documents']" position="attributes">
-                <attribute name="attrs">{'invisible': [('move_type', '=', 'out_invoice')]}</attribute>
+                  <attribute name="attrs">{'invisible': [('move_type', 'in', ('out_invoice', 'in_invoice'))]}</attribute>
             </xpath>
             <xpath expr="//page[@id='other_tab']" position="attributes">
-                <attribute name="attrs">{'invisible': [('move_type', '=', 'out_invoice')]}</attribute>
+                 <attribute name="attrs">{'invisible': [('move_type', 'in', ('out_invoice', 'in_invoice'))]}</attribute>
             </xpath>
             <xpath expr="//button[@name='action_reverse']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('move_type', 'not in', ( 'in_invoice')), ('state', '!=',
