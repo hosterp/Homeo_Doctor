@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo import models, fields,api
 
 class AccountMove(models.Model):
@@ -20,6 +22,10 @@ class AccountMove(models.Model):
     supplier_gst = fields.Char('GST No')
     supplier_dl = fields.Char('DL/REG No')
 
+    invoice_date = fields.Date(
+        string="Date",
+        default=lambda self: date.today()
+    )
 
     def _default_partner(self):
         return self.env['res.partner'].search([], limit=1)
