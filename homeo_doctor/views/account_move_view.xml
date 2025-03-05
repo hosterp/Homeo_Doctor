@@ -36,10 +36,11 @@
                                attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="supplier_email"
                                attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
+                        <field name="invoice_date" string="Date" readonly="1"
+                               attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="address"
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
-                        <field name="mobile"
-                               attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
+
 
                     </group>
                     <group>
@@ -47,14 +48,34 @@
                                attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="supplier_dl"
                                attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
+                        <field name="mobile"
+                               attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="doctor"
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                     </group>
                 </group>
 
             </xpath>
+            <xpath expr="//field[@name='narration']" position="attributes">
+                <attribute name="attrs">{'invisible': True}</attribute>
+            </xpath>
 
+            <xpath expr="//h1[field[@name='name']]" position="attributes">
+                <attribute name="attrs">{'invisible': [('name', '=', '/'), ('state', '=', 'draft')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//h1/span[@attrs]" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'in', ['draft', 'posted', 'cancel'])]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_invoice_sent']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <xpath expr="//group[field[@name='partner_id']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[field[@name='invoice_date']]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//group[field[@name='partner_id']]" position="attributes">
@@ -66,6 +87,7 @@
             <xpath expr="//div[field[@name='invoice_date_due']]" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
                 <field name="gst"/>
             </xpath>
