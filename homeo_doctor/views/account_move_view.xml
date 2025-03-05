@@ -56,9 +56,7 @@
                 </group>
 
             </xpath>
-            <xpath expr="//button[@name='action_register_payment']" position="attributes">
-                <attribute name="context">{'default_move_id': active_id}</attribute>
-            </xpath>
+
             <xpath expr="//field[@name='narration']" position="attributes">
                 <attribute name="attrs">{'invisible': True}</attribute>
             </xpath>
@@ -168,6 +166,7 @@
         <field name="model">account.payment.register</field>
         <field name="inherit_id" ref="account.view_account_payment_register_form"/>
         <field name="arch" type="xml">
+
             <xpath expr="//field[@name='communication']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>

@@ -122,3 +122,16 @@ class AccountPaymentRegister(models.TransientModel):
 
     uhid = fields.Many2one(related='move_id.uhid', string='UHID', store=True, readonly=True)
     patient_name = fields.Char(related='move_id.patient_name', string='Patient Name', store=True, readonly=True)
+
+    @api.model
+    def default_get(self, fields):
+        res = super(AccountPaymentRegister, self).default_get(fields)
+        active_id = self.env.context.get('active_id')
+        if active_id:
+            move = self.env['account.move'].browse(active_id)
+            res.update({
+                'move_id': move.id,
+                'uhid': move.uhid.id,
+                'patient_name': move.patient_name,
+            })
+        return res
