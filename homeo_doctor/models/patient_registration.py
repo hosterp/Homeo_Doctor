@@ -24,7 +24,7 @@ class PatientRegistration(models.Model):
     age = fields.Integer(string="Age" , store=True)
     phone_number = fields.Char(string="Mobile No",size=12)
     email = fields.Char(string="Email ID")
-    pin_code = fields.Integer(string="PIN Code")
+    pin_code = fields.Char(string="PIN Code")
     id_proof = fields.Binary(string='Upload ID Proof')
     vssc_id = fields.Char(string="VSSC ID No")
     department_id=fields.Many2one('doctor.department',string='Department')

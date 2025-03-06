@@ -59,6 +59,7 @@
     'assets': {
         'web.assets_backend': [
             'homeo_doctor/static/src/js/custom_filter.js',
+            'homeo_doctor/static/src/js/blank_value.js',
         ],
     },
     'demo': [
