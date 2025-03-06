@@ -66,6 +66,9 @@ class AccountMoveLine(models.Model):
     quantity = fields.Integer(string='Quantity',store=True)
     supplier_packing = fields.Many2one('supplier.packing', string='Packing')
     stock_in_hand=fields.Char(string='Stock In Hand', store=True)
+    product_uom_category_id = fields.Many2one('uom.category', string="Category", required=True)
+
+
     @api.onchange('ord_qty', 'quantity')
     def _onchange_ord_qty_quantity(self):
         for line in self:
@@ -91,8 +94,11 @@ class AccountMoveLine(models.Model):
                 line.to_be_received = 0  # Reset if either field is empty
 
 
+class UoMCategory(models.Model):
+    _name = 'uom.category'
+    _description = 'Product UoM Categories'
 
-
+    name = fields.Char('Category', required=True, translate=True)
 
 
 class MedicineCategory(models.Model):
