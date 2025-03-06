@@ -131,7 +131,7 @@
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="after">
                 <field name="hsn"/>
                 <field name="batch"/>
-                <field name="manufacturing_date"/>
+                <field name="date_maturity" string="M.Date"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -156,7 +156,7 @@
                 <attribute name="string">Amount</attribute>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="after">
-                <field name="product_uom_category_id"/>
+                <field name="product_uom_category_id" readonly="0"/>
             </xpath>
             <xpath expr="//page[@id='edi_documents']" position="attributes">
                 <attribute name="attrs">{'invisible': [('move_type', 'in', ('out_invoice', 'in_invoice'))]}</attribute>
@@ -174,6 +174,9 @@
             </xpath>
             <xpath expr="//field[@name='discount']" position="attributes">
                 <attribute name="optional"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_maturity']" position="attributes">
+                <attribute name="invisible">0</attribute>
             </xpath>
 
 
