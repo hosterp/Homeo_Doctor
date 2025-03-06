@@ -98,6 +98,7 @@
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
                 <field name="gst"/>
                 <field name="discount" string="Disc.%"/>
+                <field name="supplier_rack" string="Rack"  invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
                 <field name="stock_in_hand"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
@@ -114,6 +115,8 @@
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='free_qty']" position="after">
                 <field name="rejected_qty"
+                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
+                <field name="reason_for_rejection"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='ord_qty']" position="before">

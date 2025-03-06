@@ -67,8 +67,8 @@ class AccountMoveLine(models.Model):
     supplier_packing = fields.Many2one('supplier.packing', string='Packing')
     stock_in_hand=fields.Char(string='Stock In Hand', store=True)
     product_uom_category_id = fields.Many2one('uom.category', string="Category", required=True)
-
-
+    supplier_rack=fields.Many2one('supplier.rack')
+    reason_for_rejection=fields.Char('Reason For Rejection')
     @api.onchange('ord_qty', 'quantity')
     def _onchange_ord_qty_quantity(self):
         for line in self:
@@ -93,10 +93,15 @@ class AccountMoveLine(models.Model):
             else:
                 line.to_be_received = 0  # Reset if either field is empty
 
+class SupplierRack(models.Model):
+    _name='supplier.rack'
+    _rec_name='rack'
+    rack=fields.Char('Rack')
 
 class UoMCategory(models.Model):
-    _name = 'uom.category'
+    _inherit = 'uom.category'
     _description = 'Product UoM Categories'
+    _rec_name='name'
 
     name = fields.Char('Category', required=True, translate=True)
 
