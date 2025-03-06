@@ -1,3 +1,5 @@
+from email.policy import default
+
 from odoo import api, fields, models, _
 
 class DoctorLabReport(models.Model):
@@ -6,14 +8,14 @@ class DoctorLabReport(models.Model):
     _rec_name = 'report_reference'
     _order = 'date desc'
 
-    user_ide = fields.Many2one('patient.reg', string="Patient")
-    patient_id = fields.Many2one('patient.registration', string="Consultation ID", required=True)
+    user_ide = fields.Many2one('patient.reg', string="UHID")
+    patient_id = fields.Many2one('patient.registration', string="Consultation ID")
     patient_name = fields.Char(related='patient_id.patient_name',string="Patient Name")
     patient_phone = fields.Char(related='patient_id.phone_number',string="Patient Mobile Number")
     reference_no = fields.Char(string="Reference No")
     report_reference = fields.Char(string="Report Reference", readonly=True, default=lambda self: _('New'))
-    date = fields.Date(string="Report Date", default=fields.Date.context_today, required=True)
-    doctor_id = fields.Many2one('doctor.profile', string="Doctor", required=True)
+    date = fields.Date(string="Report Date", default=fields.Date.context_today)
+    doctor_id = fields.Many2one('doctor.profile', string="Doctor")
     report_details = fields.Text(string="Report Details")
     attachment = fields.Binary(string="Result")
     attachment_name = fields.Char(string="Result")
@@ -24,11 +26,60 @@ class DoctorLabReport(models.Model):
     lab_reference_no=fields.Many2one('lab.referral','Reference No')
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_id', string='Lab Lines')
 
+    # with register
+    register_visible =  fields.Boolean(default=True)
+    register_patient_name = fields.Char("Patient Name")
+    register_address = fields.Text(string="Address")
+    register_age = fields.Integer(string="Age", store=True)
+    register_phone_number = fields.Char(string="Mobile No", size=12)
+    register_email = fields.Char(string="Email ID")
+    # register_pin_code = fields.Integer(string="PIN Code")
+    register_id_proof = fields.Binary(string='Upload ID Proof')
+    register_vssc_id = fields.Char(string="VSSC ID No")
+    # register_department_id = fields.Many2one('doctor.department', string='Department')
+    # register_doc_name = fields.Many2one('doctor.profile', string='Doctor')
+    registration_fee = fields.Float(string="Registration Fee", default=50.0)
+    consultation_check = fields.Boolean(default=True)
+
+    # @api.model
+    # def create(self, vals):
+    #     record = super(DoctorLabReport, self).create(vals)
+    #     self.env['patient.reg'].create({
+    #         'patient_id': record.register_patient_name,
+    #         'address': record.register_address,
+    #         'age': record.register_age,
+    #         'email': record.register_email,
+    #         'phone_number': record.register_phone_number,
+    #         'registration_fee': record.registration_fee,
+    #
+    #     })
+    #     return record
 
     @api.model
     def create(self, vals):
+        # Generate report reference if not provided
         if vals.get('report_reference', _('New')) == _('New'):
             vals['report_reference'] = self.env['ir.sequence'].next_by_code('doctor.lab.report') or _('New')
+
+        # Check if registration is visible and patient name is provided
+        if vals.get('register_visible', True) and vals.get('register_patient_name'):
+            # Prepare patient registration values
+            patient_reg_vals = {
+                'patient_id': vals.get('register_patient_name'),
+                'address': vals.get('register_address'),
+                'age': vals.get('register_age'),
+                'email': vals.get('register_email'),
+                'phone_number': vals.get('register_phone_number'),
+                'registration_fee': vals.get('registration_fee', 50.0),
+                'consultation_check': vals.get('consultation_check',True)
+
+            }
+            print(patient_reg_vals)
+
+            # Create patient registration
+            self.env['patient.reg'].create(patient_reg_vals)
+
+        # Create the lab report
         return super(DoctorLabReport, self).create(vals)
 
     @api.model

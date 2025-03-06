@@ -339,7 +339,25 @@ html {
     border-width: 3px !important;
     border-color: #34495e !important;
 }
+.o_form_view .o_form_sheet .medicine_course .o_input{
+    border-width: 1px !important;
+    border-color: #34495e !important;
+}
 
+.o_form_view .o_form_sheet .additional_info .o_input{
+    border-width: 1px !important;
+    border-color: #34495e !important;
+}
 .o_td_label .o_form_label {
     white-space: nowrap;
 }
+
+.additional_info .o_field_widget .o_input_dropdown > input {
+	width: 150px !important;
+}
+
+.additional_info .btn:not(:disabled):not(.disabled) {
+	background-color: #34495e !important;
+	color: white !important;
+}
+

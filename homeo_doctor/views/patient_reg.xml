@@ -107,26 +107,32 @@
                                            class="diagnosis_field" widget="text"/>
                                 </group>
 
-                        <group name="prescription" string="Prescription">
+                        <group name="prescription" class="prescription" string="Prescription">
                             <field name="med_ids" nolabel="1">
                                 <tree editable="bottom" decoration-warning="total_med == 0">
-                                    <field name="product_id" required="1"/>
+                                    <field name="product_id" style="width:300px;" required="1"/>
                                     <field name="morn" string="Morning"/>
                                     <field name="noon" string="Noon"/>
                                     <field name="night" string="Night"/>
                                     <field name="total_med" string="Total Dosage"/>
                                 </tree>
                             </field>
-                            <group>
+                            <group class="medicine_course">
                                 <field name="medicine_course" string="Medicine Course"/>
                             </group>
                         </group>
 
-                        <group name="additional_info">
+                        <group name="additional_info" class="additional_info" col="16">
                             <!-- <field name="medicine_course" string="Medicine Course"/> -->
-                            <field name="referred_department_ids" widget="many2many_tags"/>
-                            <field name="referred_doctor_ids" widget="many2many_tags"/>
-                            <button name="action_reffer_move" type="object" string="GO"/>
+                            <group>
+                                <field name="referred_department_ids" widget="many2many_tags"/>
+                            </group>
+                            <group>
+                                <field name="referred_doctor_ids" widget="many2many_tags"/>
+                            </group>
+                            <group>
+                                <button name="action_reffer_move" type="object" string="GO"/>
+                            </group>
                             <field name="remark" placeholder="Additional Remarks"/>
                         </group>
                         <field name="remark_boolean" invisible="1"/>
