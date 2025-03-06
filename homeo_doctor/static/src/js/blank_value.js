@@ -1,4 +1,4 @@
-odoo.define('your_module_name.float_no_default', function (require) {
+odoo.define('homeo_doctor.float_no_default', function (require) {
     "use strict";
 
     var FieldInteger = require('web.basic_fields').FieldInteger;
