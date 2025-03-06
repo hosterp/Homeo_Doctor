@@ -1,45 +1,19 @@
-odoo.define('your_module_name.float_no_default', function (require) {
+odoo.define('homeo_doctor.custom_filter', function (require) {
     "use strict";
 
-    var FieldInteger = require('web.basic_fields').FieldInteger;
-    var fieldRegistry = require('web.field_registry');
+    var ListView = require('web.ListView');
+    var core = require('web.core');
 
-    var FloatNoDefaultWidget = FieldInteger.extend({
-        /**
-         * @override
-         */
-        _renderReadonly: function () {
-            // Don't display anything if the value is 0 or false
-            if (this.value === 0 || this.value === false) {
-                this.$el.text('');
-            } else {
-                this._super.apply(this, arguments);
-            }
-        },
-
-        /**
-         * @override
-         */
-        _renderEdit: function () {
+    var CustomListView = ListView.extend({
+        init: function (parent, options) {
             this._super.apply(this, arguments);
-            // Clear the input if the value is 0 or false
-            if (this.value === 0 || this.value === false) {
-                this.$input.val('');
-            }
+            // Your custom JavaScript logic here
         },
 
-        /**
-         * @override
-         */
-        _parseValue: function (value) {
-            if (value === '') {
-                return false;
-            }
-            return this._super.apply(this, arguments);
-        }
+        // You can override other methods or add your logic here
     });
 
-    fieldRegistry.add('float_no_default', FloatNoDefaultWidget);
+    core.view_registry.add('patient_reg_tree_custom', CustomListView);
 
-    return FloatNoDefaultWidget;
+    return CustomListView;
 });
