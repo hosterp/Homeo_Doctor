@@ -97,6 +97,7 @@
 
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
                 <field name="gst"/>
+                <field name="discount" string="Disc.%"/>
                 <field name="stock_in_hand"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
@@ -125,7 +126,7 @@
                 <field name="supplier_packing"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="before">
-                <field name="category"/>
+                <field name="category" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="after">
                 <field name="hsn"/>
@@ -154,6 +155,9 @@
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_subtotal']" position="attributes">
                 <attribute name="string">Amount</attribute>
             </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="after">
+                <field name="product_uom_category_id"/>
+            </xpath>
             <xpath expr="//page[@id='edi_documents']" position="attributes">
                 <attribute name="attrs">{'invisible': [('move_type', 'in', ('out_invoice', 'in_invoice'))]}</attribute>
             </xpath>
@@ -167,6 +171,9 @@
             </xpath>
             <xpath expr="//page[@id='invoice_tab']" position="attributes">
                 <attribute name="string"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='discount']" position="attributes">
+                <attribute name="optional"></attribute>
             </xpath>
 
 
@@ -204,7 +211,7 @@
                 <field name="amount_untaxed"/>
             </xpath>
             <xpath expr="//field[@name='amount_total_signed']" position="replace">
-                 <field name="amount_total"/>
+                <field name="amount_total"/>
             </xpath>
 
             <xpath expr="//field[@name='name']" position="after">
