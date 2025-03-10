@@ -50,11 +50,11 @@
                 </p>
             </field>
         </record>
-        <menuitem id="menu_medicine_reg"
-                  name="Stock Entry"
-                  parent="menu_stock_root"
-                  action="action_medicine_entry"
-                  sequence="0"/>
+<!--        <menuitem id="menu_medicine_reg"-->
+<!--                  name="Stock Entry"-->
+<!--                  parent="menu_stock_root"-->
+<!--                  action="action_medicine_entry"-->
+<!--                  sequence="0"/>-->
     </data>
 </odoo>
 

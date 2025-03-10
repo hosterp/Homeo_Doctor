@@ -37,15 +37,13 @@ class PatientRegistration(models.Model):
             vals['casualty_no'] = self.env['ir.sequence'].next_by_code('casualty.reg') or '/'
         return super(PatientRegistration, self).create(vals)
 
-
-    def action_open_prescription(self):
+    def action_fill_prescription(self):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Prescription Entry',
             'res_model': 'prescription.casualty.entry.lines',
-            'view_mode': 'form',
-            'view_type': 'form',
-            'target': 'new',
+            'view_mode': 'tree,form',
+            'target': 'current',
             'context': {'default_prescription_line_id': self.id},
         }
 
