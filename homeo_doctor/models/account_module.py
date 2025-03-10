@@ -1,6 +1,8 @@
 from datetime import date
 
 from odoo import models, fields,api,_
+from odoo.odoo.exceptions import ValidationError
+
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -49,6 +51,7 @@ class AccountMove(models.Model):
                         'product_id': line.product_id.id,
                         'quantity': line.quantity,
                         'uom_id': line.product_uom_id.id,
+                        'rate':line.price_unit,
                         'state': 'confirmed',
                     })
         return res
@@ -120,8 +123,28 @@ class AccountMoveLine(models.Model):
             else:
                 line.to_be_received = 0  # Reset if either field is empty
 
+    @api.onchange('quantity')
+    def _onchange_quantity_update_stock(self):
+        if self.product_id and self.move_type == 'out_invoice':
+            stock_entries = self.env['stock.entry'].search([
+                ('product_id', '=', self.product_id.id)
+            ], order='id asc')
 
+            qty_to_reduce = self.quantity
 
+            for stock in stock_entries:
+                if qty_to_reduce <= 0:
+                    break
+
+                if stock.quantity >= qty_to_reduce:
+                    stock.quantity -= qty_to_reduce
+                    qty_to_reduce = 0
+                else:
+                    qty_to_reduce -= stock.quantity
+                    stock.quantity = 0
+
+            if qty_to_reduce > 0:
+                raise ValidationError(_("Not enough stock available for %s!") % self.product_id.name)
 
 
 class SupplierRack(models.Model):
@@ -191,6 +214,7 @@ class StockEntry(models.Model):
     invoice_id = fields.Many2one('account.move', string="Invoice", domain=[('type', '=', 'in_invoice'), ('state', '=', 'posted')])
     product_id = fields.Many2one('product.product', string="Product", required=True)
     quantity = fields.Float(string="Quantity", required=True)
+    rate = fields.Float(string="Rate", required=True)
     uom_id = fields.Many2one('uom.uom', string="Unit of Measure")
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -203,3 +227,19 @@ class StockEntry(models.Model):
         if vals.get('name', 'New') == 'New':
             vals['name'] = self.env['ir.sequence'].next_by_code('stock.entry') or 'New'
         return super(StockEntry, self).create(vals)
+
+    # def write(self, vals):
+    #     """Ensure stock quantity doesn't go negative and delete if zero."""
+    #     for record in self:
+    #         new_qty = vals.get('quantity', record.quantity)
+    #         if new_qty < 0:
+    #             raise ValidationError(_("Stock quantity cannot be negative!"))
+    #
+    #     res = super(StockEntry, self).write(vals)
+    #
+    #     # Delete records where quantity = 0
+    #     for record in self:
+    #         if record.quantity == 0:
+    #             record.unlink()
+    #
+    #     return res
