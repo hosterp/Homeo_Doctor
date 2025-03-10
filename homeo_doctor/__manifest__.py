@@ -54,6 +54,7 @@
         "views/account_move_view.xml",
         "views/register_paymeny.xml",
         "views/intent.xml",
+        "views/stock_entry_view.xml",
 
     ],
     'assets': {

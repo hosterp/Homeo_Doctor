@@ -1,6 +1,6 @@
 from datetime import date
 
-from odoo import models, fields,api
+from odoo import models, fields,api,_
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -38,7 +38,22 @@ class AccountMove(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('account.move')
         return super(AccountMove, self).create(vals)
 
+    def action_post(self):
+        """Override the invoice confirmation to create stock entries."""
+        res = super(AccountMove, self).action_post()
 
+        # Create stock entries for each invoice line
+        for move in self:
+            if move.move_type == 'in_invoice':  # Only for vendor bills
+                for line in move.invoice_line_ids:
+                    self.env['stock.entry'].create({
+                        'invoice_id': move.id,
+                        'product_id': line.product_id.id,
+                        'quantity': line.quantity,
+                        'uom_id': line.product_uom_id.id,
+                        'state': 'confirmed',
+                    })
+        return res
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
@@ -69,6 +84,8 @@ class AccountMoveLine(models.Model):
     product_uom_category_id = fields.Many2one('uom.category', string="Category", required=True)
     supplier_rack=fields.Many2one('supplier.rack')
     reason_for_rejection=fields.Char('Reason For Rejection')
+
+
     @api.onchange('ord_qty', 'quantity')
     def _onchange_ord_qty_quantity(self):
         for line in self:
@@ -92,6 +109,44 @@ class AccountMoveLine(models.Model):
                 line.to_be_received = line.ord_qty - line.quantity
             else:
                 line.to_be_received = 0  # Reset if either field is empty
+
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('validated', 'Validated'),
+        ('done', 'Done'),
+    ], default='draft', string="Status", tracking=True)
+
+    @api.onchange('stock_in_hand')
+    def create_stock_entry(self):
+        """Create a stock move when stock changes."""
+        stock_move_obj = self.env['stock.move']
+
+        for line in self:
+            if not line.hsn:
+                line.hsn = "UNKNOWN_HSN"  # Assign a default HSN if missing
+
+            product = self.env['product.product'].search([], limit=1)
+            if not product:
+                raise ValueError(f"No product found for HSN: {line.hsn}")
+
+            stock_move = stock_move_obj.create({
+                'name': 'Stock Move for ' + str(line.hsn),
+                'product_id': product.id,
+                'product_uom_qty': line.quantity,
+                'product_uom': product.uom_id.id,
+                'location_id': self.env.ref('stock.stock_location_stock').id,
+                'location_dest_id': self.env.ref('stock.stock_location_customers').id,
+                'state': 'draft',
+            })
+
+            stock_move._action_confirm()
+            stock_move._action_assign()
+            stock_move._action_done()
+
+            line.state = 'done'
+
+        return {'value': {}}
+
 
 class SupplierRack(models.Model):
     _name='supplier.rack'
@@ -148,3 +203,27 @@ class AccountPaymentRegister(models.TransientModel):
                 'patient_name': move.patient_name,
             })
         return res
+
+
+
+class StockEntry(models.Model):
+    _name = 'stock.entry'
+    _description = 'Stock Entry'
+    _inherit = ['mail.thread', 'mail.activity.mixin']  # Optional for chatter
+
+    name = fields.Char(string="Reference", required=True, copy=False, default=lambda self: _('New'))
+    invoice_id = fields.Many2one('account.move', string="Invoice", domain=[('type', '=', 'in_invoice'), ('state', '=', 'posted')])
+    product_id = fields.Many2one('product.product', string="Product", required=True)
+    quantity = fields.Float(string="Quantity", required=True)
+    uom_id = fields.Many2one('uom.uom', string="Unit of Measure")
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirmed', 'Confirmed'),
+        ('done', 'Done')
+    ], string="Status", default="draft", tracking=True)
+
+    @api.model
+    def create(self, vals):
+        if vals.get('name', 'New') == 'New':
+            vals['name'] = self.env['ir.sequence'].next_by_code('stock.entry') or 'New'
+        return super(StockEntry, self).create(vals)
