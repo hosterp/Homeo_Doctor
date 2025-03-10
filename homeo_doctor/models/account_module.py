@@ -1,6 +1,6 @@
 from datetime import date
 
-from odoo import models, fields,api
+from odoo import models, fields,api,_
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -38,7 +38,20 @@ class AccountMove(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('account.move')
         return super(AccountMove, self).create(vals)
 
+    def action_post(self):
+        res = super(AccountMove, self).action_post()
 
+        for move in self:
+            if move.move_type == 'in_invoice':
+                for line in move.invoice_line_ids:
+                    self.env['stock.entry'].create({
+                        'invoice_id': move.id,
+                        'product_id': line.product_id.id,
+                        'quantity': line.quantity,
+                        'uom_id': line.product_uom_id.id,
+                        'state': 'confirmed',
+                    })
+        return res
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
@@ -65,9 +78,23 @@ class AccountMoveLine(models.Model):
     supplier_mrp = fields.Integer(string='MRP',store=True)
     quantity = fields.Integer(string='Quantity',store=True)
     supplier_packing = fields.Many2one('supplier.packing', string='Packing')
-    stock_in_hand=fields.Char(string='Stock In Hand', store=True)
+    stock_in_hand=fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
     product_uom_category_id = fields.Many2one('uom.category', string="Category", required=True)
+    supplier_rack=fields.Many2one('supplier.rack')
+    reason_for_rejection=fields.Char('Reason For Rejection')
 
+    @api.depends('product_id')
+    def _compute_stock_in_hand(self):
+        """Fetch the total available quantity from stock.entry for the selected product."""
+        for record in self:
+            if record.product_id:
+                total_quantity = sum(self.env['stock.entry'].search([
+                    ('product_id', '=', record.product_id.id)
+                ]).mapped('quantity'))  # Summing up all quantities
+
+                record.stock_in_hand = total_quantity
+            else:
+                record.stock_in_hand = 0.0
 
     @api.onchange('ord_qty', 'quantity')
     def _onchange_ord_qty_quantity(self):
@@ -94,9 +121,18 @@ class AccountMoveLine(models.Model):
                 line.to_be_received = 0  # Reset if either field is empty
 
 
+
+
+
+class SupplierRack(models.Model):
+    _name='supplier.rack'
+    _rec_name='rack'
+    rack=fields.Char('Rack')
+
 class UoMCategory(models.Model):
-    _name = 'uom.category'
+    _inherit = 'uom.category'
     _description = 'Product UoM Categories'
+    _rec_name='name'
 
     name = fields.Char('Category', required=True, translate=True)
 
@@ -143,3 +179,27 @@ class AccountPaymentRegister(models.TransientModel):
                 'patient_name': move.patient_name,
             })
         return res
+
+
+
+class StockEntry(models.Model):
+    _name = 'stock.entry'
+    _description = 'Stock Entry'
+    _inherit = ['mail.thread', 'mail.activity.mixin']  # Optional for chatter
+
+    name = fields.Char(string="Reference", required=True, copy=False, default=lambda self: _('New'))
+    invoice_id = fields.Many2one('account.move', string="Invoice", domain=[('type', '=', 'in_invoice'), ('state', '=', 'posted')])
+    product_id = fields.Many2one('product.product', string="Product", required=True)
+    quantity = fields.Float(string="Quantity", required=True)
+    uom_id = fields.Many2one('uom.uom', string="Unit of Measure")
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirmed', 'Confirmed'),
+        ('done', 'Done')
+    ], string="Status", default="draft", tracking=True)
+
+    @api.model
+    def create(self, vals):
+        if vals.get('name', 'New') == 'New':
+            vals['name'] = self.env['ir.sequence'].next_by_code('stock.entry') or 'New'
+        return super(StockEntry, self).create(vals)

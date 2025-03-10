@@ -55,6 +55,7 @@
         "views/register_paymeny.xml",
         "views/intent.xml",
         "views/casualty.xml",
+        "views/stock_entry_view.xml",
 
     ],
     'assets': {
