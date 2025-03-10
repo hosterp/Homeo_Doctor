@@ -31,7 +31,7 @@
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="reference_no" readonly="1" class="o_reference_number"
+                                <field name="token_no" readonly="1" class="o_reference_number"
                                        placeholder="Consultation Reference"/>
                             </h1>
                             <div class="o_consultation_date">
@@ -40,7 +40,7 @@
                         </div>
 
                         <group name="patient_info" string="Patient Information" col="12" class="paitent_details">
-                            <field name="patient_id" string="UHID" colspan="1" required="1"/>
+                            <field name="patient_id" string="UHID" readonly="1" colspan="1" required="1"/>
                             <field name="patient_name" string="Name" colspan="1" required="1"/>
                             <field name="age" string="Age" colspan="1" required="1"/>
                             <field name="gender" string="Gender" colspan="1" required="1"/>
@@ -110,20 +110,23 @@
                         <group name="prescription" class="prescription" string="Prescription">
                             <field name="med_ids" nolabel="1">
                                 <tree editable="bottom" decoration-warning="total_med == 0">
-                                    <field name="product_id" style="width:300px;" required="1"/>
+                                    <field name="product_id"  required="1"/>
                                     <field name="morn" string="Morning"/>
                                     <field name="noon" string="Noon"/>
                                     <field name="night" string="Night"/>
-                                    <field name="total_med" string="Total Dosage"/>
+                                    <field name="total_med" string="Total Dosage" invisible="1"/>
                                 </tree>
                             </field>
-                            <group class="medicine_course">
-                                <field name="medicine_course" string="Medicine Course"/>
-                            </group>
+<!--                            <group class="medicine_course">-->
+<!--                                <field name="medicine_course" style="width:100px;" string="Medicine Course"/>-->
+<!--                            </group>-->
                         </group>
 
                         <group name="additional_info" class="additional_info" col="16">
                             <!-- <field name="medicine_course" string="Medicine Course"/> -->
+                            <group class="medicine_course">
+                                <field name="medicine_course" style="width:70px;" string="Medicine Course"/>
+                            </group>
                             <group>
                                 <field name="referred_department_ids" widget="many2many_tags"/>
                             </group>
@@ -201,6 +204,7 @@
             <field name="arch" type="xml">
                 <tree string="Consultation Details">
                     <field name="patient_id" string="UHID"/>
+                    <field name="token_no" string="Token No"/>
                     <field name="patient_name" string="Patient Name"/>
 <!--                    <field name="formatted_date" string="Consultation Date"/>-->
 <!--                    <field name="reference_no" string="Appointment NO"/>-->

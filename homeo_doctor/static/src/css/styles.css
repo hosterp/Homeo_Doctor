@@ -359,5 +359,17 @@ html {
 .additional_info .btn:not(:disabled):not(.disabled) {
 	background-color: #34495e !important;
 	color: white !important;
+	margin-top: -4px !important;
+}
+
+
+.prescription .o_list_view th[data-name="product_id"],
+.prescription .o_list_view td[data-name="product_id"] {
+    width: 30% !important;
+}
+
+
+.o_list_view .o_list_table .text-warning {
+	color: #000 !important;
 }
 

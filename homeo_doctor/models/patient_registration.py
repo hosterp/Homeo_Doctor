@@ -1,5 +1,8 @@
 import re
 from datetime import date
+
+from gevent.util import print_run_info
+
 from odoo.exceptions import UserError
 
 import dateutil.utils
@@ -17,6 +20,7 @@ class PatientRegistration(models.Model):
     _order = 'reference_no desc'
 
     reference_no = fields.Char(string="Reference")
+    token_no = fields.Char(string="Token No")
     date = fields.Date(default=dateutil.utils.today(), readonly=True)
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
     patient_id = fields.Char( string="Name")
@@ -148,6 +152,13 @@ class PatientRegistration(models.Model):
 
     @api.model
     def create(self, vals):
+        # Generate token number if doctor is selected
+        if vals.get('doc_name'):
+            doctor = self.env['doctor.profile'].browse(vals.get('doc_name'))
+            if doctor:
+                vals['token_no'] = doctor.get_next_token_number()
+
+
         # Check if consultation_check is False in the vals dictionary before generating reference_no
         if not vals.get('consultation_check'):  # Default to True if not set
             if vals.get('reference_no', _('New')) == _('New'):
@@ -156,6 +167,14 @@ class PatientRegistration(models.Model):
             # If consultation_check is True, generate a temporary reference number (temp_reference_no)
             if vals.get('temp_reference_no', _('New')) == _('New'):
                 vals['temp_reference_no'] = self.env['ir.sequence'].next_by_code('patient.reg.temp') or _('New')
+
+        # # Generate token number if doctor is selected
+        # if vals.get('doc_name'):
+        #     doctor = self.env['doctor.profile'].browse(vals.get('doc_name'))
+        #     if doctor:
+        #         vals['token_no'] = doctor.get_next_token_number()
+
+
         # Create the main patient registration record
         record = super(PatientRegistration, self).create(vals)
 
@@ -163,13 +182,15 @@ class PatientRegistration(models.Model):
         if not record.consultation_check:
             self.env['patient.registration'].create({
                 'user_id': record.id,
-                'patient_id': record.patient_id,
+                'patient_id': record.id,
+                'token_no': record.token_no,
                 'address': record.address,
                 'age': record.age,
                 'phone_number': record.phone_number,
                 'doctor_id': record.doc_name.display_name,
                 'appointment_date': record.time,
             })
+
 
         return record
 

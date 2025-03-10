@@ -11,6 +11,7 @@ class PatientAppointment(models.Model):
     _order = 'appointment_date desc'
 
     appointment_reference = fields.Char(string="Appointment No", readonly=True)
+    token_no = fields.Char("Token No")
     patient_id = fields.Many2one('patient.reg', string='Patient ID', required=True)
     patient_name= fields.Char(related='patient_id.patient_id', string='Patient Name', required=True)
     appointment_date = fields.Datetime(string="Appointment Date")
@@ -212,7 +213,8 @@ class PatientAppointment(models.Model):
             for doctor in record.doctor_ids:
                 registration_vals = {
                     'user_id': record.patient_id.reference_no,
-                    'patient_id': record.patient_id.patient_id,
+                    'patient_id': record.patient_id.id,
+                    'token_no': record.token_no,
                     'address': record.patient_id.address,
                     'age': record.patient_id.age,
                     'phone_number': record.patient_id.phone_number,
@@ -282,6 +284,22 @@ class PatientAppointment(models.Model):
         if vals.get('appointment_reference', 'New') == 'New':
             appointment_ref = self.env['ir.sequence'].next_by_code('patient.appointment.sequence')
             vals['appointment_reference'] = appointment_ref or 'New'
+            # Generate token number if doctor is selected
+        if vals.get('doctor_id'):
+            doctor = self.env['doctor.profile'].browse(vals.get('doctor_id'))
+            if doctor:
+                vals['token_no'] = doctor.get_next_token_number()
+
+        # For multiple doctors, use the first doctor to generate token
+        elif vals.get('doctor_ids') and isinstance(vals['doctor_ids'], list):
+            for cmd in vals['doctor_ids']:
+                if cmd[0] == 6 and cmd[2]:  # Command 6 is set
+                    doctor_ids = cmd[2]
+                    if doctor_ids:
+                        doctor = self.env['doctor.profile'].browse(doctor_ids[0])
+                        vals['token_no'] = doctor.get_next_token_number()
+                        break
+
         return super(PatientAppointment, self).create(vals)
 
 
