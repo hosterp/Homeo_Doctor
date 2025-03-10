@@ -39,12 +39,10 @@ class AccountMove(models.Model):
         return super(AccountMove, self).create(vals)
 
     def action_post(self):
-        """Override the invoice confirmation to create stock entries."""
         res = super(AccountMove, self).action_post()
 
-        # Create stock entries for each invoice line
         for move in self:
-            if move.move_type == 'in_invoice':  # Only for vendor bills
+            if move.move_type == 'in_invoice':
                 for line in move.invoice_line_ids:
                     self.env['stock.entry'].create({
                         'invoice_id': move.id,
@@ -80,11 +78,23 @@ class AccountMoveLine(models.Model):
     supplier_mrp = fields.Integer(string='MRP',store=True)
     quantity = fields.Integer(string='Quantity',store=True)
     supplier_packing = fields.Many2one('supplier.packing', string='Packing')
-    stock_in_hand=fields.Char(string='Stock In Hand', store=True)
+    stock_in_hand=fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
     product_uom_category_id = fields.Many2one('uom.category', string="Category", required=True)
     supplier_rack=fields.Many2one('supplier.rack')
     reason_for_rejection=fields.Char('Reason For Rejection')
 
+    @api.depends('product_id')
+    def _compute_stock_in_hand(self):
+        """Fetch the total available quantity from stock.entry for the selected product."""
+        for record in self:
+            if record.product_id:
+                total_quantity = sum(self.env['stock.entry'].search([
+                    ('product_id', '=', record.product_id.id)
+                ]).mapped('quantity'))  # Summing up all quantities
+
+                record.stock_in_hand = total_quantity
+            else:
+                record.stock_in_hand = 0.0
 
     @api.onchange('ord_qty', 'quantity')
     def _onchange_ord_qty_quantity(self):
@@ -110,42 +120,8 @@ class AccountMoveLine(models.Model):
             else:
                 line.to_be_received = 0  # Reset if either field is empty
 
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('validated', 'Validated'),
-        ('done', 'Done'),
-    ], default='draft', string="Status", tracking=True)
 
-    @api.onchange('stock_in_hand')
-    def create_stock_entry(self):
-        """Create a stock move when stock changes."""
-        stock_move_obj = self.env['stock.move']
 
-        for line in self:
-            if not line.hsn:
-                line.hsn = "UNKNOWN_HSN"  # Assign a default HSN if missing
-
-            product = self.env['product.product'].search([], limit=1)
-            if not product:
-                raise ValueError(f"No product found for HSN: {line.hsn}")
-
-            stock_move = stock_move_obj.create({
-                'name': 'Stock Move for ' + str(line.hsn),
-                'product_id': product.id,
-                'product_uom_qty': line.quantity,
-                'product_uom': product.uom_id.id,
-                'location_id': self.env.ref('stock.stock_location_stock').id,
-                'location_dest_id': self.env.ref('stock.stock_location_customers').id,
-                'state': 'draft',
-            })
-
-            stock_move._action_confirm()
-            stock_move._action_assign()
-            stock_move._action_done()
-
-            line.state = 'done'
-
-        return {'value': {}}
 
 
 class SupplierRack(models.Model):
