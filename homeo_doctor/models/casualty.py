@@ -16,7 +16,6 @@ class PatientRegistration(models.Model):
 
     casualty_no = fields.Char(string="UHID")
     date = fields.Date(default=dateutil.utils.today(), readonly=True)
-    formatted_date = fields.Char(string='Formatted Date')
     patient_id = fields.Char( string="Name")
     address = fields.Text( string="Address")
     age = fields.Integer(string="Age" , store=True)
@@ -30,6 +29,7 @@ class PatientRegistration(models.Model):
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
     remark = fields.Text(string="Remark")
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
+    prescription_line_id = fields.Many2one("casualty.reg", string="Prescription Entry", ondelete='cascade')
 
     @api.model
     def create(self, vals):
@@ -44,6 +44,7 @@ class PatientRegistration(models.Model):
             'res_model': 'prescription.casualty.entry.lines',
             'view_mode': 'tree,form',
             'target': 'current',
+            'domain': [('prescription_line_id', '=', self.id)],
             'context': {'default_prescription_line_id': self.id},
         }
 
@@ -54,8 +55,8 @@ class PrescriptionCasualtyEntryLine(models.Model):
 
     prescription_line_id = fields.Many2one("casualty.reg", string="Prescription Entry")
     product_id = fields.Many2one('product.product', string="Medicine")
-    total_med = fields.Integer("Tot Med")
-    per_ped = fields.Integer("Per Med")
+    # total_med = fields.Integer("Tot Med")
+    # per_ped = fields.Integer("Per Med")
     morn = fields.Integer("Morn")
     noon = fields.Integer("Noon")
     night = fields.Integer("Night")

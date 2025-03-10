@@ -1,7 +1,10 @@
 from datetime import date
 
 from odoo import models, fields,api,_
-from odoo.odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError
+
+
+# from odoo.odoo.exceptions import ValidationError
 
 
 class AccountMove(models.Model):
