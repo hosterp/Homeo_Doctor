@@ -16,3 +16,4 @@ from .import x_ray_scan
 from .import audiology
 from .import account_module
 from .import intent
+from .import casualty

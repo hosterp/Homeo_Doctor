@@ -24,6 +24,32 @@ class DoctorProfile(models.Model):
     consultation_fee_doctor = fields.Integer(string='Consultation Fee')
     consultation_fee_limit = fields.Integer(string='Consultation Fee Day Limit',default=7)
     is_doctor=fields.Boolean(default=False)
+    token_no = fields.Char("Token No")
+    last_token_number = fields.Integer(string="Last Token Number", default=0)
+    last_token_date = fields.Date(string="Last Token Date")
+
+    # Method to get the next token number
+    def get_next_token_number(self):
+        self.ensure_one()
+        today = fields.Date.context_today(self)
+
+        # Reset token number if it's a new day
+        if not self.last_token_date or self.last_token_date != today:
+            next_number = 1
+            self.write({
+                'last_token_date': today,
+                'last_token_number': next_number
+            })
+        else:
+            next_number = self.last_token_number + 1
+            self.write({
+                'last_token_number': next_number
+            })
+
+        # Format the token number as a 4-digit number (0001 format)
+        token = f"{next_number:04d}"
+
+        return token
 
     @api.model
     def create(self, vals):

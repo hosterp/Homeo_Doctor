@@ -156,6 +156,21 @@ class PatientRegistration(models.Model):
             # If consultation_check is True, generate a temporary reference number (temp_reference_no)
             if vals.get('temp_reference_no', _('New')) == _('New'):
                 vals['temp_reference_no'] = self.env['ir.sequence'].next_by_code('patient.reg.temp') or _('New')
+
+        if vals.get('doctor_id'):
+            doctor = self.env['doctor.profile'].browse(vals.get('doctor_id'))
+            if doctor:
+                vals['token_no'] = doctor.get_next_token_number()
+
+        # For multiple doctors, use the first doctor to generate token
+        elif vals.get('doctor_ids') and isinstance(vals['doctor_ids'], list):
+            for cmd in vals['doctor_ids']:
+                if cmd[0] == 6 and cmd[2]:  # Command 6 is set
+                    doctor_ids = cmd[2]
+                    if doctor_ids:
+                        doctor = self.env['doctor.profile'].browse(doctor_ids[0])
+                        vals['token_no'] = doctor.get_next_token_number()
+                        break
         # Create the main patient registration record
         record = super(PatientRegistration, self).create(vals)
 
@@ -163,13 +178,14 @@ class PatientRegistration(models.Model):
         if not record.consultation_check:
             self.env['patient.registration'].create({
                 'user_id': record.id,
-                'patient_id': record.patient_id,
+                'patient_id': record.id,
                 'address': record.address,
                 'age': record.age,
                 'phone_number': record.phone_number,
                 'doctor_id': record.doc_name.display_name,
                 'appointment_date': record.time,
             })
+
 
         return record
 
