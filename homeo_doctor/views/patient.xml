@@ -147,7 +147,8 @@
                 <tree string="Patient Details">
                     <field name="reference_no" string="UHID"/>
                     <field name="patient_id"/>
-                    <field name="temp_reference_no"/>
+                    <field name="token_no"/>
+<!--                    <field name="temp_reference_no"/>-->
                     <field name="formatted_date" string="Registration Date"/>
                     <field name="age"/>
                     <field name="phone_number"/>

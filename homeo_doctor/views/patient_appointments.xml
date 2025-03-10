@@ -6,6 +6,7 @@
             <tree>
                 <field name="appointment_reference" invisible="1"/>
                 <field name="patient_id"/>
+                <field name="token_no"/>
                 <field name="patient_name"/>
                 <field name="appointment_date"/>
                 <field name="departments" widget="many2many_tags"/>
