@@ -27,9 +27,9 @@
 
 
                                 <!-- Report Title -->
-<!--                                <h2 style="text-align: center; font-size: 20px; margin-bottom: 15px; text-decoration: underline;">-->
-<!--                                    Registration Bill-->
-<!--                                </h2>-->
+                                <!--                                <h2 style="text-align: center; font-size: 20px; margin-bottom: 15px; text-decoration: underline;">-->
+                                <!--                                    Registration Bill-->
+                                <!--                                </h2>-->
 
                                 <!-- Patient Information Table -->
                                 <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
@@ -88,28 +88,38 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Consultation Fee :
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">
+                                            Consultation Fee :
                                         </td>
                                         <td style="padding: 8px; border: 1px solid #000;">
                                             <t t-esc="doc.consultation_fee"/>
                                         </td>
                                     </tr>
-<!--                                    <tr>-->
-<!--                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Bed-->
-<!--                                            Number:-->
-<!--                                        </td>-->
-<!--                                        <td style="padding: 8px; border: 1px solid #000;">-->
-<!--                                            <t t-esc="doc.bed_number"/>-->
-<!--                                        </td>-->
-<!--                                    </tr>-->
+                                    <tr>
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Total
+                                            Amount:
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.registration_fee + doc.consultation_fee"/>
+                                        </td>
+                                    </tr>
+
+                                    <!--                                    <tr>-->
+                                    <!--                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Bed-->
+                                    <!--                                            Number:-->
+                                    <!--                                        </td>-->
+                                    <!--                                        <td style="padding: 8px; border: 1px solid #000;">-->
+                                    <!--                                            <t t-esc="doc.bed_number"/>-->
+                                    <!--                                        </td>-->
+                                    <!--                                    </tr>-->
                                 </table>
 
                                 <!-- Footer -->
-<!--                                <div style="text-align: center; margin-top: 30px;">-->
-<!--                                    <p style="font-size: 14px;">Thank you for visiting-->
-<!--                                        <strong>HOSPITAL NAME</strong>-->
-<!--                                    </p>-->
-<!--                                </div>-->
+                                <!--                                <div style="text-align: center; margin-top: 30px;">-->
+                                <!--                                    <p style="font-size: 14px;">Thank you for visiting-->
+                                <!--                                        <strong>HOSPITAL NAME</strong>-->
+                                <!--                                    </p>-->
+                                <!--                                </div>-->
 
                             </div>
                         </t>
