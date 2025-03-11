@@ -29,7 +29,7 @@ class PatientRegistration(models.Model):
     phone_number = fields.Char(string="Mobile No",size=12)
     email = fields.Char(string="Email ID")
     pin_code = fields.Char(string="PIN Code")
-    id_proof = fields.Binary(string='Upload ID Proof')
+    id_proof = fields.Binary(string='Upload VSSC ID Proof')
     vssc_id = fields.Char(string="VSSC ID No")
     department_id=fields.Many2one('doctor.department',string='Department')
     doc_name=fields.Many2one('doctor.profile',string='Doctor')
@@ -69,6 +69,11 @@ class PatientRegistration(models.Model):
     temp_reference_no =  fields.Char(string=" Temporary Reference")
     def action_report_patient_card(self):
         return self.env.ref('homeo_doctor.report_patient_card').report_action(self)
+
+    @api.onchange('vssc_boolean')
+    def _onchange_vssc_boolean(self):
+        if self.vssc_boolean:
+            self.registration_fee = 0.0
 
     @api.depends('discharge_date')
     def _compute_no_days(self):
