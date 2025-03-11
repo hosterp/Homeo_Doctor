@@ -292,10 +292,12 @@ class PatientRegistration(models.Model):
             # Debugging output
             print("User  ID:", consultation.user_id)
             print("User  Reference No:", consultation.user_id.reference_no)
-
+            doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
+            if not doctor:
+                raise UserError("Doctor not found in the system.")
             # Create the referral record
             referral = self.env['doctor.referral'].create({
-                'doctor_id': consultation.doctor_id.id,
+                'doctor_id': doctor.id,
                 'user_ide': consultation.user_id.id,
                 'patient_id': consultation.reference_no,
                 'patient_name': consultation.patient_name,
@@ -307,7 +309,7 @@ class PatientRegistration(models.Model):
             # Create the xray scan record and link it to the reference_no
             x_ray_vals = {
                 'patient_id': consultation.user_id.id,
-                'doctor_id': consultation.doctor_id.id,
+                'doctor_id': doctor.id,
                 'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
                 'scan_registered_date': fields.Date.today(),
                 # Add other necessary fields...
@@ -337,10 +339,12 @@ class PatientRegistration(models.Model):
             # Debugging output
             print("User  ID:", consultation.user_id)
             print("User  Reference No:", consultation.user_id.reference_no)
-
+            doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
+            if not doctor:
+                raise UserError("Doctor not found in the system.")
             # Create the referral record
             referral = self.env['doctor.referral'].create({
-                'doctor_id': consultation.doctor_id.id,
+                'doctor_id':doctor.id,
                 'user_ide': consultation.user_id.id,
                 'patient_id': consultation.reference_no,
                 'referral_type': 'scanning',
@@ -351,7 +355,7 @@ class PatientRegistration(models.Model):
             # Create the MRI scan record and link it to the reference_no
             mri_scan_vals = {
                 'patient_id': consultation.user_id.id,
-                'doctor_id': consultation.doctor_id.id,
+                'doctor_id': doctor.id,
                 'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
                 'scan_registered_date': fields.Date.today(),
                 # Add other necessary fields...
@@ -381,10 +385,13 @@ class PatientRegistration(models.Model):
             # Debugging output
             print("User  ID:", consultation.user_id)
             print("User  Reference No:", consultation.user_id.reference_no)
+            doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
+            if not doctor:
+                raise UserError("Doctor not found in the system.")
 
             # Create the referral record
             referral = self.env['doctor.referral'].create({
-                'doctor_id': consultation.doctor_id.id,
+                'doctor_id': doctor.id,
                 'user_ide': consultation.user_id.id,
                 'patient_id': consultation.reference_no,
                 'referral_type': 'scanning',
@@ -395,7 +402,7 @@ class PatientRegistration(models.Model):
             # Create the ct scan record and link it to the reference_no
             ct_vals = {
                 'patient_id': consultation.user_id.id,
-                'doctor_id': consultation.doctor_id.id,
+                'doctor_id': doctor.id,
                 'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
                 'scan_registered_date': fields.Date.today(),
                 # Add other necessary fields...
@@ -424,10 +431,12 @@ class PatientRegistration(models.Model):
             # Debugging output
             print("User  ID:", consultation.user_id)
             print("User  Reference No:", consultation.user_id.reference_no)
-
+            doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
+            if not doctor:
+                raise UserError("Doctor not found in the system.")
             # Create the referral record
             referral = self.env['doctor.referral'].create({
-                'doctor_id': consultation.doctor_id.id,
+                'doctor_id': doctor.id,
                 'user_ide': consultation.user_id.id,
                 'patient_id': consultation.reference_no,
                 'referral_type': 'scanning',
@@ -438,7 +447,7 @@ class PatientRegistration(models.Model):
             # Create the ct scan record and link it to the reference_no
             audiology_vals = {
                 'patient_id': consultation.user_id.id,
-                'doctor_id': consultation.doctor_id.id,
+                'doctor_id': doctor.id,
                 'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
                 'scan_registered_date': fields.Date.today(),
                 # Add other necessary fields...
@@ -505,10 +514,12 @@ class PatientRegistration(models.Model):
         for consultation in self:
             if not consultation.user_id:
                 raise UserError("Patient not selected.")
-
+            doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
+            if not doctor:
+                raise UserError("Doctor not found in the system.")
             # Create a lab referral record
             referral = self.env['lab.referral'].create({
-                'doctor': consultation.doctor_id.id,
+                'doctor': doctor.id,
                 'user_ide': consultation.user_id.id,
                 'patient_id': consultation.reference_no,
                 'patient_name': consultation.patient_name,
