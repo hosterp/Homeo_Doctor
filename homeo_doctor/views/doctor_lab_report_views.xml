@@ -47,32 +47,39 @@
                         <h1>
                             <field name="report_reference" readonly="1"/>
                         </h1>
-                        <group>
+                        <group col="3">
                             <group>
                                 <field name="date"/>
 
                                 <!-- with register -->
                                 <field name="register_visible" string="visibile" invisible="0"/>
-                               <field name="register_patient_name" attrs="{'invisible': [('register_visible', '=', False)]}"/>
-                                <field name="register_address" attrs="{'invisible': [('register_visible', '=', False)]}"/>
-                                <field name="register_age" attrs="{'invisible': [('register_visible', '=', False)]}"/>
-                                <field name="register_phone_number" attrs="{'invisible': [('register_visible', '=', False)]}"/>
-                                <field name="register_email" attrs="{'invisible': [('register_visible', '=', False)]}"/>
-                                <field name="registration_fee" attrs="{'invisible': [('register_visible', '=', False)]}"/>
-
+                                <field name="register_patient_name"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                <field name="register_address"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
 
                                 <field name="patient_name" attrs="{'invisible': [('register_visible', '=', True)]}"/>
-                                <field name="user_ide" string="UHID" attrs="{'invisible': [('register_visible', '=', True)]}"/>
+                                <field name="user_ide" string="UHID"
+                                       attrs="{'invisible': [('register_visible', '=', True)]}"/>
                                 <field name="patient_id" invisible="1"/>
-                                <field name="doctor_id" attrs="{'invisible': [('register_visible', '=', True)]}"/>
-                                <field name="bill_amount"/>
 
                             </group>
                             <group>
+                                <field name="doctor_id" attrs="{'invisible': [('register_visible', '=', True)]}"/>
                                 <field name="lab_reference_no" invisible="1"/>
                                 <field name="referral_details" string="Checkup Details"/>
                                 <field name="report_details"/>
+                                <field name="register_age" attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                <field name="register_phone_number"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                <field name="register_email" attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                <field name="registration_fee"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                            </group>
+                            <group>
+
                                 <field name="attachment" filename="attachment_name"/>
+                                <field name="bill_amount"/>
                             </group>
                         </group>
                         <notebook>
