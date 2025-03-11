@@ -150,6 +150,7 @@
                     <field name="token_no"/>
 <!--                    <field name="temp_reference_no"/>-->
                     <field name="formatted_date" string="Registration Date"/>
+                    <field name="time"  string="Appointment Date"/>
                     <field name="age"/>
                     <field name="phone_number"/>
                 </tree>
