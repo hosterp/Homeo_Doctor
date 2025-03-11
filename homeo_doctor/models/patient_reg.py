@@ -167,7 +167,6 @@ class PatientRegistration(models.Model):
 
     def admission_button(self):
         self.move_to_admission_clicked = True
-
         # Prepare admission values for prescription lines
         # admission_vals = {
         #     'prescription_line_ids': [(0, 0, {
@@ -207,8 +206,8 @@ class PatientRegistration(models.Model):
         #     }) for line in self.ct_report_ids],
         # }
 
-
-        admission_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
+        admission_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id.reference_no)],
+                                                          limit=1)
         # lab_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
         # mri_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
         # ct_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)

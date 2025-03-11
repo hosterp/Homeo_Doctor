@@ -372,4 +372,14 @@ html {
 .o_list_view .o_list_table .text-warning {
 	color: #000 !important;
 }
+.o_form_view .o_form_sheet_bg {
+    background: none !important; /* Remove default */
+    background-image: url('/homeo_doctor/static/src/img/background.jpg') !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+
+
+
 
