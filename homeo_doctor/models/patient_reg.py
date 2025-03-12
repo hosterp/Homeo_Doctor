@@ -542,15 +542,19 @@ class PatientRegistration(models.Model):
             }
 
     def action_view_consultations(self):
-        test = self.env['patient.registration'].search([('patient_id', '=', [self.user_id.id])])
-        print(test, 'previous record..............................................')
+
+        if not self.patient_id:
+            return
+        test = self.env['patient.registration'].search([('patient_id', '=', self.patient_id.id)])
+
+
         return {
             'type': 'ir.actions.act_window',
             'name': 'Previous Consultations',
             'view_mode': 'tree,form',
             'res_model': 'patient.registration',
-            'domain': [('user_id', 'in', self.patient_id if isinstance(self.patient_id, list) else [self.patient_id])],
-            'context': {'default_patient_id': self.patient_id},
+            'domain': [('patient_id', '=', self.patient_id.id)],
+            'context': {'default_patient_id': self.patient_id.id},
         }
 
 
