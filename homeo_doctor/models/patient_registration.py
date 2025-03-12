@@ -73,6 +73,14 @@ class PatientRegistration(models.Model):
     # ('card', 'Card')
     # ], string='Payment Method')
     # payment_reference = fields.Char(string='Payment Reference')
+
+    def _get_report_values(self, docids, data=None):
+        docs = self.env['patient.reg'].browse(docids)
+        return {
+            'docs': docs,
+            'company_logo': self.env.user.company_id.logo,  # Ensure logo is included
+        }
+
     def action_register_confirm(self):
         payment_vals = {
         'payment_method': self.payment_method,

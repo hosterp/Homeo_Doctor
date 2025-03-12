@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <report
-        id="report_patient_card"
-        model="patient.reg"
-        string="Patient Card"
-        report_type="qweb-pdf"
-        name="homeo_doctor.patient_card_template"
-        file="homeo_doctor.patient_card_template"
-        print_report_name="'Patient_Card_%s' % (object.reference_no)"
+            id="report_patient_card"
+            model="patient.reg"
+            string="Patient Card"
+            report_type="qweb-pdf"
+            name="homeo_doctor.patient_card_template"
+            file="homeo_doctor.patient_card_template"
+            print_report_name="'Patient_Card_%s' % (object.reference_no)"
     />
 
-   <template id="patient_card_template">
-    <t t-call="web.html_container">
-        <t t-foreach="docs" t-as="doc">
-            <div class="page" style="
+    <template id="patient_card_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="page" style="
                 width: 90mm; height: 60mm;
                 border: 2px solid #003366;
                 border-radius: 10px;
@@ -23,44 +23,58 @@
                 box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
                 background: linear-gradient(to right, #f8f9fa, #ffffff);">
 
-                <!-- Header Section with Logo -->
-                <div style="display: flex; align-items: center;
+                    <!-- Header Section with Logo -->
+                    <div style="display: flex; align-items: center;
                             border-bottom: 2px solid #003366;
                             padding-bottom: 5px; margin-bottom: 5px;">
-<!--                    <img t-if="doc.company_id.logo"-->
-<!--                        t-att-src="'data:image/png;base64,' + doc.company_id.logo.decode('utf-8')"-->
-<!--                        style="width: 45px; height: 45px; border-radius: 50%; margin-right: 8px;"/>-->
+                        <img t-if="company_logo"
+                             t-att-src="'data:image/png;base64,' + company_logo"
+                             style="width: 45px; height: 45px; border-radius: 50%; margin-right: 8px;"/>
 
-                    <div style="text-align: left;">
-                        <h2 style="margin: 0; font-size: 14px; color: #003366;">Hospital Name</h2>
-                        <p style="margin: 0; font-size: 10px; color: #555;">123, Street Name, City, Country</p>
+
+                        <div style="text-align: left;">
+                            <h2 style="margin: 0; font-size: 14px; color: #003366;">SATHWANA HOSPITAL</h2>
+                            <p style="margin: 0; font-size: 10px; color: #555;">NCC Road,Ambalamukku,
+                                Thiruvananthapuram
+                            </p>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Patient Details Section -->
-                <div style="text-align: left; font-size: 12px; line-height: 1.4;">
-                    <p><strong style="color:#003366;">UHID:</strong> <span t-esc="doc.reference_no"/></p>
-                    <p><strong style="color:#003366;">Patient Name:</strong> <span t-esc="doc.patient_id"/></p>
-                    <p><strong style="color:#003366;">Gender:</strong> <span t-esc="dict(doc._fields['gender'].selection).get(doc.gender)"/></p>
-                    <p><strong style="color:#003366;">Mobile:</strong> <span t-esc="doc.phone_number"/></p>
-                </div>
+                    <!-- Patient Details Section -->
+                    <div style="text-align: left; font-size: 12px; line-height: 1.4;">
+                        <p>
+                            <strong style="color:#003366;">UHID:</strong>
+                            <span t-esc="doc.reference_no"/>
+                        </p>
+                        <p>
+                            <strong style="color:#003366;">Patient Name:</strong>
+                            <span t-esc="doc.patient_id"/>
+                        </p>
+                        <p>
+                            <strong style="color:#003366;">Gender:</strong>
+                            <span t-esc="dict(doc._fields['gender'].selection).get(doc.gender)"/>
+                        </p>
+                        <p>
+                            <strong style="color:#003366;">Mobile:</strong>
+                            <span t-esc="doc.phone_number"/>
+                        </p>
+                    </div>
 
-                <!-- QR Code / ID Proof Section -->
-                <div style="margin-top: 5px; text-align: center;">
-                    <img t-if="doc.id_proof"
-                        t-att-src="'data:image/png;base64,' + doc.id_proof.decode('utf-8')"
-                        style="width: 50px; height: 50px; border: 1px solid #003366; border-radius: 5px;"/>
-                </div>
+                    <!-- QR Code / ID Proof Section -->
+                    <div style="margin-top: 5px; text-align: center;">
+                        <img t-if="doc.id_proof"
+                             t-att-src="'data:image/png;base64,' + doc.id_proof.decode('utf-8')"
+                             style="width: 50px; height: 50px; border: 1px solid #003366; border-radius: 5px;"/>
+                    </div>
 
-                <!-- Footer (Hospital Info) -->
-                <div style="margin-top: 5px; font-size: 10px; color: #666; text-align: center;">
-                    <p style="margin: 0;">www.hospitalwebsite.com | +123 456 7890</p>
+                    <!-- Footer (Hospital Info) -->
+                    <!--                <div style="margin-top: 5px; font-size: 10px; color: #666; text-align: center;">-->
+                    <!--                    <p style="margin: 0;">www.hospitalwebsite.com | +123 456 7890</p>-->
+                    <!--                </div>-->
                 </div>
-            </div>
+            </t>
         </t>
-    </t>
-</template>
-
+    </template>
 
 
 </odoo>
