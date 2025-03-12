@@ -1,7 +1,7 @@
 from email.policy import default
 
 import dateutil.utils
-from odoo import api, fields, models, tools,_
+from odoo import api, fields, models, tools, _
 import odoo.addons
 from odoo.exceptions import UserError
 
@@ -18,17 +18,17 @@ class PatientRegistration(models.Model):
     token_no = fields.Char(string="Token No")
     date = fields.Date(default=dateutil.utils.today(), readonly=True)
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
-    user_id = fields.Many2one('patient.reg', string='Name',required=True)
-    patient_id = fields.Many2one('patient.reg',string='Patient ID',required=True)
-    patient_name = fields.Char(string='Name',required=True,related='user_id.patient_id')
-    doctor_id=fields.Char(string='Doctor name')
-    address = fields.Text(string='Address',required=True,related='user_id.address')
-    age = fields.Integer( string='Age',required=True,related='user_id.age')
-    phone_number = fields.Char( string='Phone No',size=12,related='user_id.phone_number')
-    gender = fields.Selection( string='Gender',related='user_id.gender')
+    user_id = fields.Many2one('patient.reg', string='Name', required=True)
+    patient_id = fields.Many2one('patient.reg', string='Patient ID', required=True)
+    patient_name = fields.Char(string='Name', required=True, related='user_id.patient_id')
+    doctor_id = fields.Char(string='Doctor name')
+    address = fields.Text(string='Address', required=True, related='user_id.address')
+    age = fields.Integer(string='Age', required=True, related='user_id.age')
+    phone_number = fields.Char(string='Phone No', size=12, related='user_id.phone_number')
+    gender = fields.Selection(string='Gender', related='user_id.gender')
     presenting_complaints = fields.Text('Presenting Complaints')
     allergies = fields.Text('Allergies id any')
-    present_medications =fields.Text('Present Medications')
+    present_medications = fields.Text('Present Medications')
     general_examination = fields.Text('General Examination')
     local_and_systemic = fields.Text('Local & Systemic Examination')
     investigation = fields.Text('Investigation')
@@ -38,8 +38,8 @@ class PatientRegistration(models.Model):
     symptoms = fields.Text(string="Symptoms")
     professional_diagnosis = fields.Text(string='Professional Diagnosis & Treatment Plat')
     remark = fields.Text(string="Remark")
-    consultation_fee=fields.Integer(related='user_id.consultation_fee',string='Consultation Fee')
-    checkup_reports=fields.Text(string='Checkup Details')
+    consultation_fee = fields.Integer(related='user_id.consultation_fee', string='Consultation Fee')
+    checkup_reports = fields.Text(string='Checkup Details')
     med_ids = fields.One2many("prescription.entry.lines", 'prescription_line_id', string="Prescription Entry Lines")
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     move_to_pharmacy_clicked = fields.Boolean(string="Move to Pharmacy Clicked", default=False)
@@ -54,9 +54,9 @@ class PatientRegistration(models.Model):
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray")
     lab_report_ids = fields.One2many('doctor.lab.report', 'patient_id', string="Lab")
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
-    temperature=fields.Char(string='Temperature')
-    medicine_course=fields.Char(string='medicine course')
-    appointment_date =  fields.Date('Appointment Date')
+    temperature = fields.Char(string='Temperature')
+    medicine_course = fields.Char(string='medicine course')
+    appointment_date = fields.Date('Appointment Date')
     doctor_remark_ids = fields.One2many('consultation.remark', 'consultation_id', string='Doctor Remarks')
     status = fields.Selection(
         [('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')],
@@ -82,11 +82,12 @@ class PatientRegistration(models.Model):
         # 'doctor_id',
         string='Referred Department',
     )
-    remark_boolean=fields.Boolean(default=False)
+    remark_boolean = fields.Boolean(default=False)
+
     @api.onchange('referred_doctor_ids')
     def _onchange_referred_doctor_ids(self):
         if self.referred_doctor_ids:
-            self.remark_boolean=True
+            self.remark_boolean = True
             existing_doctors = self.doctor_remark_ids.mapped('doctor_id')
             new_remark_lines = [(0, 0, {'doctor_id': doctor.id}) for doctor in self.referred_doctor_ids if
                                 doctor not in existing_doctors]
@@ -95,7 +96,6 @@ class PatientRegistration(models.Model):
                 self.doctor_remark_ids = [(5,)] + new_remark_lines
         else:
             self.remark_boolean = False
-
 
     @api.onchange('referred_department_ids')
     def _onchange_referred_department_ids(self):
@@ -114,7 +114,6 @@ class PatientRegistration(models.Model):
                 }
             }
 
-
     @api.depends('patient_id')
     def _compute_previous_consultations(self):
         for record in self:
@@ -123,10 +122,12 @@ class PatientRegistration(models.Model):
                 ('user_id', '=', record.user_id.id),
                 ('id', '!=', record.id)
             ])
+
     def _compute_lab_report_count(self):
         for record in self:
             # Count the lab reports for this patient
-            record.lab_report_count = self.env['doctor.lab.report'].search_count([('patient_id', '=', self.reference_no)])
+            record.lab_report_count = self.env['doctor.lab.report'].search_count(
+                [('patient_id', '=', self.reference_no)])
 
     def action_view_lab_reports(self):
         return {
@@ -137,13 +138,14 @@ class PatientRegistration(models.Model):
             'domain': [('patient_id', '=', self.reference_no)],
             'context': dict(self.env.context, default_patient_id=self.reference_no),
         }
+
     def action_reffer_move(self):
         self.env['patient.appointment'].create({
             'patient_id': self.patient_id.id,
             'address': self.address,
             'age': self.age,
-            'doctor_ids':self.referred_doctor_ids,
-            'departments' :self.referred_department_ids,
+            'doctor_ids': self.referred_doctor_ids,
+            'departments': self.referred_department_ids,
             'phone_number': self.phone_number,
         })
         return
@@ -154,7 +156,7 @@ class PatientRegistration(models.Model):
             vals['reference_no'] = self.env['ir.sequence'].next_by_code(
                 'patient.registrartion.group') or _('New')
         res = super(PatientRegistration, self).create(vals)
-        print("val",res)
+        print("val", res)
         return res
 
     def _compute_formatted_date(self):
@@ -211,11 +213,11 @@ class PatientRegistration(models.Model):
         # lab_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
         # mri_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
         # ct_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
-        admission_record.admission_boolean=True
+        admission_record.admission_boolean = True
         # if admission_record:
 
-            # for line_vals in admission_vals['prescription_line_ids']:
-            #     admission_record.prescription_line_ids = [(0, 0, line_vals[2])]
+        # for line_vals in admission_vals['prescription_line_ids']:
+        #     admission_record.prescription_line_ids = [(0, 0, line_vals[2])]
         # if lab_record:
         #     for line_vals in result['lab_report_reg_ids']:
         #         lab_record.lab_report_reg_ids = [(0, 0, line_vals[2])]
@@ -227,7 +229,7 @@ class PatientRegistration(models.Model):
         #         ct_record.ct_report_reg_ids = [(0, 0, line_vals[2])]
         # else:
 
-            # admission_record = self.env['patient.reg'].create(admission_vals)
+        # admission_record = self.env['patient.reg'].create(admission_vals)
 
         # Notify the user about the success
         return {
@@ -257,7 +259,6 @@ class PatientRegistration(models.Model):
             }) for line in self.med_ids],
         }
 
-
         pharmacy_record = self.env['pharmacy.description'].create(pharmacy_vals)
         return {
             'type': 'ir.actions.client',
@@ -279,11 +280,10 @@ class PatientRegistration(models.Model):
         #     'target': 'current',
         # }
 
-
     def action_create_referral_lab(self):
         return self._create_referral_lab()
 
-    def action_create_referral_xray(self,scan_type='xray'):
+    def action_create_referral_xray(self, scan_type='xray'):
         for consultation in self:
             if not consultation.user_id:  # Assuming user_id is the patient
                 raise UserError("Patient not selected.")
@@ -329,8 +329,7 @@ class PatientRegistration(models.Model):
             'target': 'new',
         }
 
-
-    def action_create_referral_mri(self,scan_type='mri'):
+    def action_create_referral_mri(self, scan_type='mri'):
         for consultation in self:
             if not consultation.user_id:  # Assuming user_id is the patient
                 raise UserError("Patient not selected.")
@@ -343,7 +342,7 @@ class PatientRegistration(models.Model):
                 raise UserError("Doctor not found in the system.")
             # Create the referral record
             referral = self.env['doctor.referral'].create({
-                'doctor_id':doctor.id,
+                'doctor_id': doctor.id,
                 'user_ide': consultation.user_id.id,
                 'patient_id': consultation.reference_no,
                 'referral_type': 'scanning',
@@ -375,8 +374,7 @@ class PatientRegistration(models.Model):
             'target': 'new',
         }
 
-
-    def action_create_referral_ct(self,scan_type='ct'):
+    def action_create_referral_ct(self, scan_type='ct'):
         for consultation in self:
             if not consultation.user_id:  # Assuming user_id is the patient
                 raise UserError("Patient not selected.")
@@ -422,7 +420,7 @@ class PatientRegistration(models.Model):
             'target': 'new',
         }
 
-    def action_create_referral_audiology(self,scan_type='audiology'):
+    def action_create_referral_audiology(self, scan_type='audiology'):
         for consultation in self:
             if not consultation.user_id:  # Assuming user_id is the patient
                 raise UserError("Patient not selected.")
@@ -543,8 +541,8 @@ class PatientRegistration(models.Model):
             }
 
     def action_view_consultations(self):
-        test=self.env['patient.registration'].search([('patient_id', '=', [self.user_id.id])])
-        print(test,'previous record..............................................')
+        test = self.env['patient.registration'].search([('patient_id', '=', [self.user_id.id])])
+        print(test, 'previous record..............................................')
         return {
             'type': 'ir.actions.act_window',
             'name': 'Previous Consultations',
@@ -553,7 +551,6 @@ class PatientRegistration(models.Model):
             'domain': [('user_id', 'in', self.patient_id if isinstance(self.patient_id, list) else [self.patient_id])],
             'context': {'default_patient_id': self.patient_id},
         }
-
 
 
 class PrescriptionEntryLine(models.Model):
@@ -568,25 +565,26 @@ class PrescriptionEntryLine(models.Model):
     noon = fields.Integer("Noon")
     night = fields.Integer("Night")
 
+
 class DoctorReferral(models.Model):
     _name = 'doctor.referral'
     _rec_name = 'reference_no'
 
-    reference_no = fields.Char(string="Reference",readonly=True)
+    reference_no = fields.Char(string="Reference", readonly=True)
     user_ide = fields.Many2one('patient.reg', string="Patient", readonly=True)
-    doctor_id = fields.Many2one('doctor.profile', string="Doctor",readonly=True)
-    patient_id = fields.Many2one('patient.registration', string="Consultation ID",readonly=True)
+    doctor_id = fields.Many2one('doctor.profile', string="Doctor", readonly=True)
+    patient_id = fields.Many2one('patient.registration', string="Consultation ID", readonly=True)
     referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation')],
                                      default='scanning')
     details = fields.Text(string="Referral Details")
-    scan_type = fields.Selection([('mri', 'MRI'), ('ct', 'CT Scan'), ('xray', 'X-Ray'),('audiology','Audiology')], string="Scan Type",readonly=True)
+    scan_type = fields.Selection([('mri', 'MRI'), ('ct', 'CT Scan'), ('xray', 'X-Ray'), ('audiology', 'Audiology')],
+                                 string="Scan Type", readonly=True)
     patient_name = fields.Char(related='patient_id.patient_name', string='Patient Name')
 
-    mri_report_id = fields.Many2one('scanning.mri', string="MRI Report",readonly=True)
-    ct_report_id = fields.Many2one('scanning.ct', string="CT Report",readonly=True)
-    xray_report_id = fields.Many2one('scanning.x.ray', string="X-Ray Report",readonly=True)
-    audiology_report_id = fields.Many2one('audiology.ref', string="Audiology Report",readonly=True)
-
+    mri_report_id = fields.Many2one('scanning.mri', string="MRI Report", readonly=True)
+    ct_report_id = fields.Many2one('scanning.ct', string="CT Report", readonly=True)
+    xray_report_id = fields.Many2one('scanning.x.ray', string="X-Ray Report", readonly=True)
+    audiology_report_id = fields.Many2one('audiology.ref', string="Audiology Report", readonly=True)
 
     @api.model
     def create(self, vals):
@@ -596,22 +594,36 @@ class DoctorReferral(models.Model):
         res = super(DoctorReferral, self).create(vals)
         return res
 
+
 class LabReferral(models.Model):
     _name = 'lab.referral'
     _rec_name = 'reference_no'
 
     reference_no = fields.Char(string="Reference", readonly=True)
-    doctor=fields.Many2one('doctor.profile',string='Doctor')
+    doctor = fields.Many2one('doctor.profile', string='Doctor')
     user_ide = fields.Many2one('patient.reg', string="Patient", readonly=True)
-    patient_id=fields.Many2one('patient.registration',string='Patient')
-    patient_name=fields.Char(related='patient_id.patient_name',string='Patient Name')
+    patient_id = fields.Many2one('patient.registration', string='Patient')
+    patient_name = fields.Char(related='patient_id.patient_name', string='Patient Name')
     lab_test = fields.Many2many('labtest.type', string='Lab Test')
     test_type = fields.Many2many('test.type', string='Test Type')
-    referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation'),('lab','LAB')],
+    referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation'), ('lab', 'LAB')],
                                      default='lab')
     details = fields.Text(string="Referral Details")
 
     lab_report_id = fields.Many2one('doctor.lab.report', string="Lab Report", readonly=True)
+
+    @api.onchange('lab_test', 'test_type')
+    def _onchange_tests(self):
+        lab_tests = ', '.join(self.lab_test.exists().mapped('lab_test'))
+        test_types = ', '.join(self.test_type.exists().mapped('test_type'))
+
+        details_list = []
+        if lab_tests:
+            details_list.append(f"Lab Tests: {lab_tests}")
+        if test_types:
+            details_list.append(f"Test Types: {test_types}")
+
+        self.details = "\n".join(details_list)
 
     @api.model
     def create(self, vals):
@@ -619,11 +631,12 @@ class LabReferral(models.Model):
             vals['reference_no'] = self.env['ir.sequence'].next_by_code('lab.referral') or _('New')
         return super(LabReferral, self).create(vals)
 
+
 class LabTest(models.Model):
     _name = 'labtest.type'
     _rec_name = 'lab_test'
 
-    lab_test=fields.Char('Lab Test')
+    lab_test = fields.Char('Lab Test')
 
 
 class TestType(models.Model):
@@ -631,6 +644,7 @@ class TestType(models.Model):
     _rec_name = 'test_type'
 
     test_type = fields.Char('Test Type')
+
 
 class ConsultationRemark(models.Model):
     _name = 'consultation.remark'
