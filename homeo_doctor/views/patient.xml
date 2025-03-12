@@ -23,6 +23,7 @@
                         </h3>
                         <group col="3">
                             <group>
+                                <field name="token_no"/>
                                 <field name="patient_id"/>
                                 <field name="address" required="1"/>
                                 <field name="pin_code" required="1"/>
