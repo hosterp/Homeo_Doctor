@@ -36,6 +36,20 @@
 
                         <button string="Fill Prescription" type="object" name="action_fill_prescription"
                                 class="oe_highlight"/>
+                        <field name="prescription_boolean" invisible="1"/>
+                        <notebook>
+                            <page attrs="{'invisible': [('prescription_boolean', '=', False)]}">
+                                <field name="prescription_line_ids">
+                                    <tree editable="1">
+                                        <field name="product_id"/>
+                                        <field name="morn"/>
+                                        <field name="noon"/>
+                                        <field name="night"/>
+                                    </tree>
+
+                                </field>
+                            </page>
+                        </notebook>
 
                     </sheet>
                 </form>
