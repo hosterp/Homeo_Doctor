@@ -57,10 +57,10 @@
                                        attrs="{'invisible': [('register_visible', '=', False)]}"/>
                                 <field name="register_address"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"/>
-
-                                <field name="patient_name" attrs="{'invisible': [('register_visible', '=', True)]}"/>
                                 <field name="user_ide" string="UHID"
                                        attrs="{'invisible': [('register_visible', '=', True)]}"/>
+                                <field name="patient_name" attrs="{'invisible': [('register_visible', '=', True)]}"/>
+
                                 <field name="patient_id" invisible="1"/>
 
                             </group>
