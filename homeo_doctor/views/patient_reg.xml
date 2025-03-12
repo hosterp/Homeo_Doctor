@@ -83,32 +83,32 @@
                             <group col="2">
                                 <group>
                                     <field name="symptoms" class="clinical_findings" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 200px;"/>
+                                           style="width: 100%;" />
                                     <field name="allergies" class="medical_history" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 200px;"/>
+                                           style="width: 100%; "/>
                                     <field name="general_examination" class="examination_field" widget="text"
-                                           colspan="2" style="width: 100%; min-width: 200px;"/>
+                                           colspan="2" style="width: 100%;"/>
                                     <field name="investigation" class="examination_field" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 200px;"/>
+                                           style="width: 100%;"/>
                                     <field name="review_date" string="Scheduled Follow-up Date" class="date_field"
-                                           colspan="2" style="width: 100%; min-width: 200px;"/>
+                                           colspan="2" style="width: 100%;"/>
                                     <field name="checkup_reports" class="clinical_findings" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 200px;"/>
+                                           style="width: 100%; "/>
                                 </group>
                                 <group>
                                     <field name="presenting_complaints" class="clinical_findings" widget="text"
-                                           colspan="2" style="width: 100%; min-width: 200px;"/>
+                                           colspan="2" style="width: 100%;"/>
                                     <field name="present_medications" class="medication_field" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 200px;"/>
+                                           style="width: 100%; "/>
                                     <field name="local_and_systemic" class="examination_field" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 200px;"/>
+                                           style="width: 100%;"/>
                                     <field name="endoscopy_finding" class="examination_field" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 200px;"/>
+                                           style="width: 100%; "/>
                                     <field name="review_note" class="clinical_findings" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 200px;"/>
+                                           style="width: 100%; "/>
                                     <field name="professional_diagnosis" string="Clinical Diagnosis and Assessment"
                                            class="diagnosis_field" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 200px;"/>
+                                           style="width: 100%;"/>
                                 </group>
                             </group>
                         </group>
