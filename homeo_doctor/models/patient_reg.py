@@ -144,9 +144,10 @@ class PatientRegistration(models.Model):
             'patient_id': self.patient_id.id,
             'address': self.address,
             'age': self.age,
-            'doctor_ids': self.referred_doctor_ids,
-            'departments': self.referred_department_ids,
+            'doctor_ids': [(6, 0, self.referred_doctor_ids.ids)],  # Correct format for Many2many field
+            'departments': [(6, 0, self.referred_department_ids.ids)],  # Correct format for Many2many field
             'phone_number': self.phone_number,
+            'appointment_date': fields.Datetime.now(),
         })
         return
 
