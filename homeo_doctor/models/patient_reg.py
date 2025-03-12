@@ -633,6 +633,7 @@ class LabReferral(models.Model):
         return super(LabReferral, self).create(vals)
 
 
+
 class LabTest(models.Model):
     _name = 'labtest.type'
     _rec_name = 'lab_test'
