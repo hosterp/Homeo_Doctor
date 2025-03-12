@@ -6,6 +6,10 @@
             <field name="model">casualty.reg</field>
             <field name="arch" type="xml">
                 <form string="Casualty Registration">
+                     <header>
+                        <button string="Admit Patient" type="object" name="action_admit_patient"
+                                class="oe_highlight"/>
+                    </header>
                     <sheet>
                         <group col="3">
                             <group>
