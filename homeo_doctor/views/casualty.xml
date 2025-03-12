@@ -7,29 +7,35 @@
             <field name="arch" type="xml">
                 <form string="Casualty Registration">
                     <sheet>
-                        <group>
+                        <group col="3">
                             <group>
                                 <field name="casualty_no" readonly="1"/>
                                 <field name="date"/>
                                 <field name="patient_id"/>
                                 <field name="age"/>
                                 <field name="gender"/>
-                                <field name="phone_number"/>
-                                <field name="email"/>
+
                             </group>
                             <group>
+                                <field name="vssc_boolean"/>
+                                <field name="id_proof" attrs="{'invisible': [('vssc_boolean', '=', False)]}"/>
+                                <field name="vssc_id" attrs="{'invisible': [('vssc_boolean', '=', False)]}"/>
+                                <field name="phone_number"/>
+                                <field name="email"/>
                                 <field name="address"/>
+                                <!--                                <field name="department_id"/>-->
+                            </group>
+                            <group>
+
                                 <field name="pin_code"/>
-                                <field name="id_proof"/>
-                                <field name="vssc_id"/>
-<!--                                <field name="department_id"/>-->
                                 <field name="doc_name"/>
                                 <field name="registration_fee"/>
-                                <field name="remark"/>
                             </group>
+                            <field name="remark"/>
                         </group>
 
-                        <button string="Fill Prescription" type="object" name="action_fill_prescription" class="oe_highlight"/>
+                        <button string="Fill Prescription" type="object" name="action_fill_prescription"
+                                class="oe_highlight"/>
 
                     </sheet>
                 </form>
@@ -51,6 +57,7 @@
                 <tree string="Casualty Registration">
                     <field name="casualty_no"/>
                     <field name="patient_id"/>
+                    <field name="age"/>
                     <field name="phone_number"/>
                     <field name="address"/>
                 </tree>
@@ -104,6 +111,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="menu_casualty_reg" name="Casualty Registration" parent="menu_my_patient_template_root" action="casualty_reg_action"/>
+        <menuitem id="menu_casualty_reg" name="Casualty Registration" parent="menu_my_patient_template_root"
+                  action="casualty_reg_action"/>
     </data>
 </openerp>
