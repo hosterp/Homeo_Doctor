@@ -213,8 +213,9 @@ class PatientRegistration(models.Model):
         # Generate token number if doctor is selected
         if vals.get('doc_name'):
             doctor = self.env['doctor.profile'].browse(vals.get('doc_name'))
+            appointment_date = vals.get('time') if vals.get('time') else fields.Date.context_today(self)
             if doctor:
-                vals['token_no'] = doctor.get_next_token_number()
+                vals['token_no'] = doctor.get_next_token_number(appointment_date)
 
 
         # Check if consultation_check is False in the vals dictionary before generating reference_no
