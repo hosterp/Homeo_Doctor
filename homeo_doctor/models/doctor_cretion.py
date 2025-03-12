@@ -29,9 +29,9 @@ class DoctorProfile(models.Model):
     last_token_date = fields.Date(string="Last Token Date")
 
     # Method to get the next token number
-    def get_next_token_number(self):
+    def get_next_token_number(self, appointment_date=None):
         self.ensure_one()
-        today = fields.Date.context_today(self)
+        today = appointment_date or fields.Date.context_today(self)
 
         # Reset token number if it's a new day
         if not self.last_token_date or self.last_token_date != today:

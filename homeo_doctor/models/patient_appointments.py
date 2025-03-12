@@ -311,16 +311,20 @@ class PatientAppointment(models.Model):
                 'doctor_ids': []
             }
         }
+
     @api.model
     def create(self, vals):
         if vals.get('appointment_reference', 'New') == 'New':
             appointment_ref = self.env['ir.sequence'].next_by_code('patient.appointment.sequence')
             vals['appointment_reference'] = appointment_ref or 'New'
-            # Generate token number if doctor is selected
+
+        # Generate token number if doctor is selected
         if vals.get('doctor_id'):
             doctor = self.env['doctor.profile'].browse(vals.get('doctor_id'))
+            appointment_date = fields.Date.from_string(vals.get('appointment_date')) if vals.get(
+                'appointment_date') else None
             if doctor:
-                vals['token_no'] = doctor.get_next_token_number()
+                vals['token_no'] = doctor.get_next_token_number(appointment_date)
 
         # For multiple doctors, use the first doctor to generate token
         elif vals.get('doctor_ids') and isinstance(vals['doctor_ids'], list):
@@ -329,7 +333,9 @@ class PatientAppointment(models.Model):
                     doctor_ids = cmd[2]
                     if doctor_ids:
                         doctor = self.env['doctor.profile'].browse(doctor_ids[0])
-                        vals['token_no'] = doctor.get_next_token_number()
+                        appointment_date = fields.Date.from_string(vals.get('appointment_date')) if vals.get(
+                            'appointment_date') else None
+                        vals['token_no'] = doctor.get_next_token_number(appointment_date)
                         break
 
         return super(PatientAppointment, self).create(vals)
