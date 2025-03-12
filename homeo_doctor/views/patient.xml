@@ -51,6 +51,16 @@
                                 <field name="admission_boolean" invisible="1"/>
                             </group>
                         </group>
+                        <group>
+                            <button name="action_register_confirm"
+                                    type="object"
+                                    string="Pay"
+                                    class="oe_highlight"
+                                />
+<!--                            <button name="action_cancel" string="Cancel" type="object" class="btn btn-danger"-->
+<!--                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>-->
+
+                        </group>
                         <group col="4" string="Admission Details"
                                attrs="{'invisible': [('admission_boolean', '=', False)]}">
                             <group>
@@ -150,7 +160,7 @@
                     <field name="token_no"/>
 <!--                    <field name="temp_reference_no"/>-->
                     <field name="formatted_date" string="Registration Date"/>
-                    <field name="time"  string="Appointment Date"/>
+                    <field name="time" string="Appointment Date"/>
                     <field name="age"/>
                     <field name="phone_number"/>
                 </tree>

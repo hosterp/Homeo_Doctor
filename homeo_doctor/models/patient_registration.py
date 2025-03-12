@@ -67,6 +67,59 @@ class PatientRegistration(models.Model):
     vssc_boolean=fields.Boolean(string='VSSC',default=False)
     consultation_check = fields.Boolean(default=False)
     temp_reference_no =  fields.Char(string=" Temporary Reference")
+    # payment_method = fields.Selection([
+    # ('cash', 'Cash'),
+    # ('upi', 'UPI'),
+    # ('card', 'Card')
+    # ], string='Payment Method')
+    # payment_reference = fields.Char(string='Payment Reference')
+    def action_register_confirm(self):
+        payment_vals = {
+        'payment_method': self.payment_method,
+        'payment_reference': self.payment_reference,
+        }
+        for record in self:
+            # Create wizard
+            wizard_vals = {
+                'patient_id': record.patient_id.id,
+                'patient_name': record.patient_name,
+                'register_id': record.id,
+                'doctor_ids': [(6, 0, record.doctor_ids.ids)],
+            }
+            
+            # Create wizard
+            wizard = self.env['register.payment.wizard'].create(wizard_vals)
+            
+            # Create fee lines
+            for doctor in record.doctor_ids:
+                # Get consultation fee for this doctor
+                doc_fee = 0
+                for fee in record.consultation_fee_ids:
+                    if fee.doctor_id.id == doctor.id:
+                        doc_fee = fee.consultation_fee
+                        break
+                
+                # If no fee found in consultation_fee_ids, calculate it
+                if doc_fee == 0 and hasattr(doctor, 'consultation_fee_doctor'):
+                    doc_fee = doctor.consultation_fee_doctor
+                    
+                # Create fee line
+                self.env['wizard.register.fee'].create({
+                    'wizard_id': wizard.id,
+                    'doctor_id': doctor.id,
+                    'fee_amount': doc_fee
+                })
+            
+            # Return action to open wizard
+            return {
+                'name': 'Register Payment',
+                'type': 'ir.actions.act_window',
+                'res_model': 'register.payment.wizard',
+                'res_id': wizard.id,
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {'active_id': record.id}
+            }
     def action_report_patient_card(self):
         return self.env.ref('homeo_doctor.report_patient_card').report_action(self)
 

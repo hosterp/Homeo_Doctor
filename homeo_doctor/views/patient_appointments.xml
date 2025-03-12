@@ -11,6 +11,7 @@
                 <field name="appointment_date"/>
                 <field name="departments" widget="many2many_tags"/>
                 <field name="doctor_ids" widget="many2many_tags"/>
+                <field name="payment_method" />
             </tree>
         </field>
     </record>

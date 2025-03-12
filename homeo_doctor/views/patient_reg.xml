@@ -204,11 +204,12 @@
             <field name="arch" type="xml">
                 <tree string="Consultation Details">
                     <field name="patient_id" string="UHID"/>
-                    <field name="appointment_date" string="Appointment Date"/>
                     <field name="token_no" string="Token No"/>
+                    <field name="appointment_date" string="Appointment Date"/>
                     <field name="patient_name" string="Patient Name"/>
 <!--                    <field name="formatted_date" string="Consultation Date"/>-->
 <!--                    <field name="reference_no" string="Appointment NO"/>-->
+<!--                    <field name="appointment_date" string="Appointment Date"/>-->
                     <field name="age"/>
                     <field name="gender"/>
                     <field name="phone_number" string="Mobile No"/>

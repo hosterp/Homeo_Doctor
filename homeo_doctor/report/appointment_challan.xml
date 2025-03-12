@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Template -->
+    <template id="report_patient_appointment_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="doc">
+                        <!-- Title Section -->
+                        <h1 class="text-center mb-4">Patient Appointment Report</h1>
+                        
+                        <!-- Patient Details -->
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <strong>Appointment Reference:</strong> 
+                                <span t-field="doc.appointment_reference"/>
+                            </div>
+                            <div class="col-6 text-right">
+                                <strong>Appointment Date:</strong> 
+                                <span t-field="doc.appointment_date" t-options='{"format": "dd MMMM yyyy, HH:mm"}'/>
+                            </div>
+                        </div>
+                        
+                        <!-- Patient Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h3>Patient Details</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Patient Name</th>
+                                        <td><span t-field="doc.patient_name"/></td>
+                                        <th>Gender</th>
+                                        <td><span t-field="doc.gender"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Age</th>
+                                        <td><span t-field="doc.age"/></td>
+                                        <th>Phone Number</th>
+                                        <td><span t-field="doc.phone_number"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address</th>
+                                        <td colspan="3"><span t-field="doc.address"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Appointment Details -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h3>Appointment Information</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Departments</th>
+                                        <td>
+                                            <t t-foreach="doc.departments" t-as="dept">
+                                                <span t-field="dept.name"/>
+                                                <t t-if="not dept_last">, </t>
+                                            </t>
+                                        </td>
+                                        <th>Doctors</th>
+                                        <td>
+                                            <t t-foreach="doc.doctor_ids" t-as="doctor">
+                                                <span t-field="doctor.name"/>
+                                                <t t-if="not doctor_last">, </t>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Consultation Fee</th>
+                                        <td><span t-field="doc.consultation_fee"/></td>
+                                        <th>Reason for Appointment</th>
+                                        <td><span t-field="doc.reason"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Notes Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h3>Additional Notes</h3>
+                                <div class="border p-3">
+                                    <span t-field="doc.notes"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Action -->
+    <record id="action_report_patient_appointment" model="ir.actions.report">
+        <field name="name">Patient Appointment Report</field>
+        <field name="model">patient.appointment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">patient_appointment.report_patient_appointment_template</field>
+        <field name="report_file">patient_appointment_report</field>
+        <field name="binding_model_id" ref="model_patient_appointment"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
