@@ -30,8 +30,8 @@ class PatientRegistration(models.Model):
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
     remark = fields.Text(string="Remark")
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
-    prescription_line_id = fields.Many2one("casualty.reg", string="Prescription Entry", ondelete='cascade')
-
+    prescription_line_ids=fields.One2many('prescription.casualty.entry.lines','prescription_line_id')
+    prescription_boolean=fields.Boolean(default=False)
     @api.model
     def create(self, vals):
         if not vals.get('casualty_no'):
@@ -39,15 +39,16 @@ class PatientRegistration(models.Model):
         return super(PatientRegistration, self).create(vals)
 
     def action_fill_prescription(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Prescription Entry',
-            'res_model': 'prescription.casualty.entry.lines',
-            'view_mode': 'tree,form',
-            'target': 'current',
-            'domain': [('prescription_line_id', '=', self.id)],
-            'context': {'default_prescription_line_id': self.id},
-        }
+        self.prescription_boolean=True
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'name': 'Prescription Entry',
+        #     'res_model': 'prescription.casualty.entry.lines',
+        #     'view_mode': 'tree,form',
+        #     'target': 'current',
+        #     'domain': [('prescription_line_id', '=', self.id)],
+        #     'context': {'default_prescription_line_id': self.id},
+        # }
 
 
 class PrescriptionCasualtyEntryLine(models.Model):

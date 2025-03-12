@@ -67,19 +67,24 @@
                             <group>
                                 <field name="doctor_id" attrs="{'invisible': [('register_visible', '=', True)]}"/>
                                 <field name="lab_reference_no" invisible="1"/>
-                                <field name="referral_details" string="Checkup Details"/>
-                                <field name="report_details"/>
                                 <field name="register_age" attrs="{'invisible': [('register_visible', '=', False)]}"/>
                                 <field name="register_phone_number"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"/>
                                 <field name="register_email" attrs="{'invisible': [('register_visible', '=', False)]}"/>
                                 <field name="registration_fee"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"/>
-                            </group>
-                            <group>
-
                                 <field name="attachment" filename="attachment_name"/>
                                 <field name="bill_amount"/>
+                            </group>
+
+                        </group>
+                        <group col="2">
+                            <group>
+                                <field name="referral_details" string="Checkup Details"/>
+
+                            </group>
+                            <group>
+                                <field name="report_details"/>
                             </group>
                         </group>
                         <notebook>
