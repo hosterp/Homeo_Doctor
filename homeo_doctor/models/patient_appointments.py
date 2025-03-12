@@ -213,73 +213,51 @@ class PatientAppointment(models.Model):
     #             print( record.consultation_fee,' record.consultation_fee...............................')
 
     def action_appointment_confirm(self):
-        payment_vals = {
-        'payment_method': self.payment_method,
-        'payment_reference': self.payment_reference,
-        'status': 'confirmed'
-        }
-        for record in self:
-            # Create separate registration for each doctor
-            record.status='confirmed'
-            for doctor in record.doctor_ids:
-                registration_vals = {
-                    'user_id': record.patient_id.reference_no,
-                    'patient_id': record.patient_id.id,
-                    'token_no': record.token_no,
-                    'address': record.patient_id.address,
-                    'age': record.patient_id.age,
-                    'phone_number': record.patient_id.phone_number,
-                    'doctor_id': doctor.display_name,  # Single doctor name
-                    'appointment_date':record.appointment_date,
-                
-                }
-                patient_registration = self.env['patient.registration'].create(registration_vals)
-                patient_registration.status='confirmed'
-                print(f'Created registration for doctor {doctor.display_name}: {registration_vals}')
+        self.ensure_one()
 
-            self.button_visible = False
-        for record in self:
-            # Create wizard
-            wizard_vals = {
-                'patient_id': record.patient_id.id,
-                'patient_name': record.patient_name,
-                'appointment_id': record.id,
-                'doctor_ids': [(6, 0, record.doctor_ids.ids)],
-            }
-            
-            # Create wizard
-            wizard = self.env['appointment.payment.wizard'].create(wizard_vals)
-            
-            # Create fee lines
-            for doctor in record.doctor_ids:
-                # Get consultation fee for this doctor
-                doc_fee = 0
-                for fee in record.consultation_fee_ids:
-                    if fee.doctor_id.id == doctor.id:
-                        doc_fee = fee.consultation_fee
-                        break
-                
-                # If no fee found in consultation_fee_ids, calculate it
-                if doc_fee == 0 and hasattr(doctor, 'consultation_fee_doctor'):
-                    doc_fee = doctor.consultation_fee_doctor
-                    
-                # Create fee line
-                self.env['wizard.appointment.fee'].create({
-                    'wizard_id': wizard.id,
-                    'doctor_id': doctor.id,
-                    'fee_amount': doc_fee
-                })
-            
-            # Return action to open wizard
-            return {
-                'name': 'Appointment Payment',
-                'type': 'ir.actions.act_window',
-                'res_model': 'appointment.payment.wizard',
-                'res_id': wizard.id,
-                'view_mode': 'form',
-                'target': 'new',
-                'context': {'active_id': record.id}
-            }
+        # Only set status and button_visible, don't create registrations yet
+        self.status = 'confirmed'
+        self.button_visible = False
+
+        # Create wizard
+        wizard_vals = {
+            'patient_id': self.patient_id.id,
+            'patient_name': self.patient_name,
+            'appointment_id': self.id,
+            'doctor_ids': [(6, 0, self.doctor_ids.ids)],
+        }
+
+        wizard = self.env['appointment.payment.wizard'].create(wizard_vals)
+
+        # Create fee lines
+        for doctor in self.doctor_ids:
+            # Get consultation fee for this doctor
+            doc_fee = 0
+            for fee in self.consultation_fee_ids:
+                if fee.doctor_id.id == doctor.id:
+                    doc_fee = fee.consultation_fee
+                    break
+
+            # If no fee found in consultation_fee_ids, calculate it
+            if doc_fee == 0 and hasattr(doctor, 'consultation_fee_doctor'):
+                doc_fee = doctor.consultation_fee_doctor
+
+            # Create fee line
+            self.env['wizard.appointment.fee'].create({
+                'wizard_id': wizard.id,
+                'doctor_id': doctor.id,
+                'fee_amount': doc_fee
+            })
+
+        return {
+            'name': 'Appointment Payment',
+            'type': 'ir.actions.act_window',
+            'res_model': 'appointment.payment.wizard',
+            'res_id': wizard.id,
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'active_id': self.id}
+        }
             # return {
             #     'type': 'ir.actions.act_window',
             #     'name': 'Patient Registration',
