@@ -43,7 +43,7 @@
                             <field name="patient_id" string="UHID" readonly="1" colspan="1" required="1"/>
                             <field name="patient_name" string="Name" colspan="1" required="1"/>
                             <field name="age" string="Age" colspan="1" required="1"/>
-                            <field name="gender" string="Gender" colspan="1" />
+                            <field name="gender" string="Gender" colspan="1"/>
                             <field name="phone_number" widget="phone" string="Mobile No" colspan="1" required="0"/>
                             <field name="address" style="margin-right:10px;" string="Address" colspan="1" required="1"/>
                             <field name="doctor_id" string="Consulting Doctor" colspan="1" required="1"/>
@@ -78,48 +78,55 @@
                             </group>
                         </group>
 
-                        <!-- Rest of the form remains the same -->
-                        <group name="consultation_details" string="Clinical Assessment" class="consultation_details_section o_group_col_6">
-                                    <!-- Chief complaints and history fields -->
-                                    <field name="symptoms" class="clinical_findings" widget="text"/>
-                                    <field name="presenting_complaints" class="clinical_findings" widget="text"/>
-                                    <field name="allergies" class="medical_history" widget="text"/>
-
-
-                                    <!-- Medication fields -->
-                                    <field name="present_medications" class="medication_field" widget="text"/>
-
-                                    <!-- Examination fields -->
-                                    <field name="general_examination" class="examination_field" widget="text"/>
-                                    <field name="local_and_systemic" class="examination_field" widget="text"/>
-
-                                    <!-- Investigation fields -->
-                                    <field name="investigation" class="examination_field" widget="text"/>
-                                    <field name="endoscopy_finding" class="examination_field" widget="text"/>
-
-                                    <!-- Review fields -->
-                                    <field name="review_date" string="Scheduled Follow-up Date" class="date_field"/>
-                                    <field name="review_note" class="clinical_findings" widget="text"/>
-                                    <field name="checkup_reports" class="clinical_findings" widget="text"/>
-
-                                    <!-- Diagnosis field - most important -->
-                                    <field name="professional_diagnosis" string="Clinical Diagnosis and Assessment"
-                                           class="diagnosis_field" widget="text"/>
+                        <group name="consultation_details" string="Clinical Assessment"
+                               class="consultation_details_section o_group_col_12">
+                            <group col="2">
+                                <group>
+                                    <field name="symptoms" class="clinical_findings" widget="text" colspan="2"
+                                           style="width: 100%; min-width: 500px;"/>
+                                    <field name="allergies" class="medical_history" widget="text" colspan="2"
+                                           style="width: 100%; min-width: 500px;"/>
+                                    <field name="general_examination" class="examination_field" widget="text"
+                                           colspan="2" style="width: 100%; min-width: 500px;"/>
+                                    <field name="investigation" class="examination_field" widget="text" colspan="2"
+                                           style="width: 100%; min-width: 500px;"/>
+                                    <field name="review_date" string="Scheduled Follow-up Date" class="date_field"
+                                           colspan="2" style="width: 100%; min-width: 500px;"/>
+                                    <field name="checkup_reports" class="clinical_findings" widget="text" colspan="2"
+                                           style="width: 100%; min-width:500px;"/>
                                 </group>
+                                <group>
+                                    <field name="presenting_complaints" class="clinical_findings" widget="text"
+                                           colspan="2" style="width: 100%; min-width: 500px;"/>
+                                    <field name="present_medications" class="medication_field" widget="text" colspan="2"
+                                           style="width: 100%; min-width: 500px;"/>
+                                    <field name="local_and_systemic" class="examination_field" widget="text" colspan="2"
+                                           style="width: 100%; min-width: 500px;"/>
+                                    <field name="endoscopy_finding" class="examination_field" widget="text" colspan="2"
+                                           style="width: 100%; min-width: 500px;"/>
+                                    <field name="review_note" class="clinical_findings" widget="text" colspan="2"
+                                           style="width: 100%; min-width: 500px;"/>
+                                    <field name="professional_diagnosis" string="Clinical Diagnosis and Assessment"
+                                           class="diagnosis_field" widget="text" colspan="2"
+                                           style="width: 100%; min-width: 500px;"/>
+                                </group>
+                            </group>
+                        </group>
+
 
                         <group name="prescription" class="prescription" string="Prescription">
                             <field name="med_ids" nolabel="1">
                                 <tree editable="bottom" decoration-warning="total_med == 0">
-                                    <field name="product_id"  required="1"/>
+                                    <field name="product_id" required="1"/>
                                     <field name="morn" string="Morning"/>
                                     <field name="noon" string="Noon"/>
                                     <field name="night" string="Night"/>
                                     <field name="total_med" string="Total Dosage" invisible="1"/>
                                 </tree>
                             </field>
-<!--                            <group class="medicine_course">-->
-<!--                                <field name="medicine_course" style="width:100px;" string="Medicine Course"/>-->
-<!--                            </group>-->
+                            <!--                            <group class="medicine_course">-->
+                            <!--                                <field name="medicine_course" style="width:100px;" string="Medicine Course"/>-->
+                            <!--                            </group>-->
                         </group>
 
                         <group name="additional_info" class="additional_info" col="16">
@@ -207,9 +214,9 @@
                     <field name="token_no" string="Token No"/>
                     <field name="appointment_date" string="Appointment Date"/>
                     <field name="patient_name" string="Patient Name"/>
-<!--                    <field name="formatted_date" string="Consultation Date"/>-->
-<!--                    <field name="reference_no" string="Appointment NO"/>-->
-<!--                    <field name="appointment_date" string="Appointment Date"/>-->
+                    <!--                    <field name="formatted_date" string="Consultation Date"/>-->
+                    <!--                    <field name="reference_no" string="Appointment NO"/>-->
+                    <!--                    <field name="appointment_date" string="Appointment Date"/>-->
                     <field name="age"/>
                     <field name="gender"/>
                     <field name="phone_number" string="Mobile No"/>
