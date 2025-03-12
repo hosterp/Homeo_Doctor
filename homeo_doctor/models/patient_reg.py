@@ -545,6 +545,7 @@ class PatientRegistration(models.Model):
 
         if not self.patient_id:
             return
+
         test = self.env['patient.registration'].search([('patient_id', '=', self.patient_id.id)])
 
 
@@ -555,6 +556,8 @@ class PatientRegistration(models.Model):
             'res_model': 'patient.registration',
             'domain': [('patient_id', '=', self.patient_id.id)],
             'context': {'default_patient_id': self.patient_id.id},
+            'views': [(self.env.ref('homeo_doctor.view_patient_registration_tree').id, 'tree'),
+                      (self.env.ref('homeo_doctor.patient_registration_form').id, 'form')],
         }
 
 

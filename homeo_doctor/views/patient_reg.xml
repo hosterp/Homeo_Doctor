@@ -83,27 +83,27 @@
                             <group col="16">
                                 <group>
                                     <field name="symptoms" class="clinical_findings" widget="text"
-                                           />
+                                    />
                                     <field name="allergies" class="medical_history" widget="text"
-                                           />
+                                    />
                                     <field name="general_examination" class="examination_field" widget="text"
-                                           />
+                                    />
                                     <field name="investigation" class="examination_field" widget="text"
-                                           />
+                                    />
                                     <field name="review_date" string="Scheduled Follow-up Date" class="date_field"
-                                           />
+                                    />
                                     <field name="checkup_reports" class="clinical_findings" widget="text"
-                                           />
+                                    />
                                 </group>
                                 <group>
                                     <field name="presenting_complaints" class="clinical_findings" widget="text"
-                                          />
+                                    />
                                     <field name="present_medications" class="medication_field" widget="text"/>
                                     <field name="local_and_systemic" class="examination_field" widget="text"/>
-                                    <field name="endoscopy_finding" class="examination_field" widget="text" />
+                                    <field name="endoscopy_finding" class="examination_field" widget="text"/>
                                     <field name="review_note" class="clinical_findings" widget="text"/>
                                     <field name="professional_diagnosis" string="Clinical Diagnosis and Assessment"
-                                           class="diagnosis_field" widget="text" />
+                                           class="diagnosis_field" widget="text"/>
                                 </group>
                             </group>
                         </group>
@@ -285,6 +285,32 @@
                     </sheet>
                 </form>
             </field>
+        </record>
+
+        <!-- Custom Tree View for Patient Registration -->
+        <record id="view_patient_registration_tree" model="ir.ui.view">
+            <field name="name">patient.registration.tree.prev</field>
+            <field name="model">patient.registration</field>
+            <field name="arch" type="xml">
+                <tree string="Previous Consultations">
+                    <field name="appointment_date" string="Date"/>
+                    <field name="patient_id" string="UHID"/>
+                    <field name="patient_name"/>
+                    <field name="doctor_id"/>
+                    <field name="referred_doctor_ids" widget="many2many_tags" string="Referred Doctors"/>
+                    <field name="referred_department_ids" widget="many2many_tags" string="Referred Department"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_patient_registration_tree" model="ir.actions.act_window">
+            <field name="name">Previous Consultations</field>
+            <field name="res_model">patient.registration</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_patient_registration_tree"/>
+            <field name="domain">[('patient_id', '=', context.get('default_patient_id'))]</field>
+            <field name="context">{'default_patient_id': context.get('default_patient_id')}</field>
         </record>
     </data>
 </odoo>
