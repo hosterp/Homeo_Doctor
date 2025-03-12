@@ -5,12 +5,13 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="appointment_reference" invisible="1"/>
-                <field name="patient_id"/>
+                <field name="patient_id" string="UHID"/>
                 <field name="token_no"/>
                 <field name="patient_name"/>
                 <field name="appointment_date"/>
                 <field name="departments" widget="many2many_tags"/>
                 <field name="doctor_ids" widget="many2many_tags"/>
+                <field name="payment_method" />
             </tree>
         </field>
     </record>

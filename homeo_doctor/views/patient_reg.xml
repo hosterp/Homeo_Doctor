@@ -205,6 +205,7 @@
                 <tree string="Consultation Details">
                     <field name="patient_id" string="UHID"/>
                     <field name="token_no" string="Token No"/>
+                    <field name="appointment_date" string="Appointment Date"/>
                     <field name="patient_name" string="Patient Name"/>
 <!--                    <field name="formatted_date" string="Consultation Date"/>-->
 <!--                    <field name="reference_no" string="Appointment NO"/>-->
