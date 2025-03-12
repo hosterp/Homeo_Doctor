@@ -38,6 +38,26 @@ class PatientRegistration(models.Model):
             vals['casualty_no'] = self.env['ir.sequence'].next_by_code('casualty.reg') or '/'
         return super(PatientRegistration, self).create(vals)
 
+    def action_admit_patient(self):
+        # Prepare the data to pass
+        patient_data = {
+            'patient_id': self.patient_id,
+            'address': self.address,
+            'age': self.age,
+            'phone_number': self.phone_number,
+            'email': self.email,
+            'pin_code': self.pin_code,
+            'id_proof': self.id_proof,
+            'vssc_id': self.vssc_id,
+            'vssc_boolean': self.vssc_boolean,
+            'admission_boolean':True,
+            'no_consultation':True,
+        }
+
+        # Create a new record in the target model with the patient data
+        # Replace 'patient.admission' with your actual target model
+        admission_record = self.env['patient.reg'].create(patient_data)
+
     def action_fill_prescription(self):
         self.prescription_boolean=True
         # return {
