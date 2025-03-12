@@ -333,6 +333,7 @@ html {
 .o_form_view .o_form_sheet .consultation_details_section .o_field_text{
     border-width: 3px !important;
     border-color: #34495e !important;
+    width:auto !important;
 }
 
 .o_form_view .o_form_sheet .consultation_details_section .o_datepicker_input{

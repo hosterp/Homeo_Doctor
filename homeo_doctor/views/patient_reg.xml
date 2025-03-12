@@ -80,35 +80,30 @@
 
                         <group name="consultation_details" string="Clinical Assessment"
                                class="consultation_details_section o_group_col_12">
-                            <group col="2">
+                            <group col="16">
                                 <group>
-                                    <field name="symptoms" class="clinical_findings" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 500px;"/>
-                                    <field name="allergies" class="medical_history" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 500px;"/>
+                                    <field name="symptoms" class="clinical_findings" widget="text"
+                                           />
+                                    <field name="allergies" class="medical_history" widget="text"
+                                           />
                                     <field name="general_examination" class="examination_field" widget="text"
-                                           colspan="2" style="width: 100%; min-width: 500px;"/>
-                                    <field name="investigation" class="examination_field" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 500px;"/>
+                                           />
+                                    <field name="investigation" class="examination_field" widget="text"
+                                           />
                                     <field name="review_date" string="Scheduled Follow-up Date" class="date_field"
-                                           colspan="2" style="width: 100%; min-width: 500px;"/>
-                                    <field name="checkup_reports" class="clinical_findings" widget="text" colspan="2"
-                                           style="width: 100%; min-width:500px;"/>
+                                           />
+                                    <field name="checkup_reports" class="clinical_findings" widget="text"
+                                           />
                                 </group>
                                 <group>
                                     <field name="presenting_complaints" class="clinical_findings" widget="text"
-                                           colspan="2" style="width: 100%; min-width: 500px;"/>
-                                    <field name="present_medications" class="medication_field" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 500px;"/>
-                                    <field name="local_and_systemic" class="examination_field" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 500px;"/>
-                                    <field name="endoscopy_finding" class="examination_field" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 500px;"/>
-                                    <field name="review_note" class="clinical_findings" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 500px;"/>
+                                          />
+                                    <field name="present_medications" class="medication_field" widget="text"/>
+                                    <field name="local_and_systemic" class="examination_field" widget="text"/>
+                                    <field name="endoscopy_finding" class="examination_field" widget="text" />
+                                    <field name="review_note" class="clinical_findings" widget="text"/>
                                     <field name="professional_diagnosis" string="Clinical Diagnosis and Assessment"
-                                           class="diagnosis_field" widget="text" colspan="2"
-                                           style="width: 100%; min-width: 500px;"/>
+                                           class="diagnosis_field" widget="text" />
                                 </group>
                             </group>
                         </group>
