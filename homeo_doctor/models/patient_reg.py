@@ -139,7 +139,7 @@ class PatientRegistration(models.Model):
         }
     def action_reffer_move(self):
         self.env['patient.appointment'].create({
-            'patient_id': self.patient_id,
+            'patient_id': self.patient_id.id,
             'address': self.address,
             'age': self.age,
             'doctor_ids':self.referred_doctor_ids,
