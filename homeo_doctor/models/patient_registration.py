@@ -220,12 +220,12 @@ class PatientRegistration(models.Model):
     @api.model
     def create(self, vals):
         # Generate token number if doctor is selected
-        if vals.get('no_consultation', True):
-            vals['token_no'] = False  # Do not generate token number
-            if vals.get('reference_no', _('New')) == _('New'):
-                vals['reference_no'] = self.env['ir.sequence'].next_by_code('patient.reg.group') or _('New')
-            # Skip creating a record in 'patient.registration' for no consultation case
-            return super(PatientRegistration, self).create(vals)
+        # if vals.get('no_consultation', True):
+        #     vals['token_no'] = False  # Do not generate token number
+        #     if vals.get('reference_no', _('New')) == _('New'):
+        #         vals['reference_no'] = self.env['ir.sequence'].next_by_code('patient.reg.group') or _('New')
+        #     # Skip creating a record in 'patient.registration' for no consultation case
+        #     return super(PatientRegistration, self).create(vals)
         if vals.get('doc_name'):
             doctor = self.env['doctor.profile'].browse(vals.get('doc_name'))
             appointment_date = vals.get('time') if vals.get('time') else fields.Date.context_today(self)
