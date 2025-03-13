@@ -32,6 +32,7 @@ class PatientRegistration(models.Model):
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     prescription_line_ids=fields.One2many('prescription.casualty.entry.lines','prescription_line_id')
     prescription_boolean=fields.Boolean(default=False)
+    no_consultation = fields.Boolean(default= False)
     @api.model
     def create(self, vals):
         if not vals.get('casualty_no'):
@@ -51,7 +52,7 @@ class PatientRegistration(models.Model):
             'vssc_id': self.vssc_id,
             'vssc_boolean': self.vssc_boolean,
             'admission_boolean':True,
-            'no_consultation':True,
+            'no_consultation':False,
         }
 
         # Create a new record in the target model with the patient data
