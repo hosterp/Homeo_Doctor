@@ -6,8 +6,10 @@ from gevent.util import print_run_info
 from odoo.exceptions import UserError
 
 import dateutil.utils
-from odoo import api, fields, models, tools,_
+from odoo import api, fields, models, tools, _
 import odoo.addons
+
+
 # from odoo.odoo.exceptions import ValidationError
 
 
@@ -23,21 +25,21 @@ class PatientRegistration(models.Model):
     token_no = fields.Char(string="Token No")
     date = fields.Date(default=dateutil.utils.today(), readonly=True)
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
-    patient_id = fields.Char( string="Name")
-    address = fields.Text( string="Address")
-    age = fields.Integer(string="Age" , store=True)
-    phone_number = fields.Char(string="Mobile No",size=12)
+    patient_id = fields.Char(string="Name")
+    address = fields.Text(string="Address")
+    age = fields.Integer(string="Age", store=True)
+    phone_number = fields.Char(string="Mobile No", size=12)
     email = fields.Char(string="Email ID")
     pin_code = fields.Char(string="PIN Code")
     id_proof = fields.Binary(string='Upload VSSC ID Proof')
     vssc_id = fields.Char(string="VSSC ID No")
-    department_id=fields.Many2one('doctor.department',string='Department')
-    doc_name=fields.Many2one('doctor.profile',string='Doctor')
+    department_id = fields.Many2one('doctor.department', string='Department')
+    doc_name = fields.Many2one('doctor.profile', string='Doctor')
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
     remark = fields.Text(string="Remark")
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
-    time=fields.Datetime(string="Date & Time")
+    time = fields.Datetime(string="Date & Time")
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
@@ -59,15 +61,16 @@ class PatientRegistration(models.Model):
     bed_number = fields.Integer(string='Bed Number')
     nurse_charge = fields.Integer(string='Nurse Fee')
     alternate_no = fields.Char(string='Alternate Number')
-    no_days = fields.Integer(string='Number Of Days',compute='_compute_no_days', store=True)
+    no_days = fields.Integer(string='Number Of Days', compute='_compute_no_days', store=True)
     admitted_date = fields.Datetime(string='Admitted Date')
-    admission_boolean=fields.Boolean(default=False)
+    admission_boolean = fields.Boolean(default=False)
     dob = fields.Date(string='DOB')
-    discharge_date=fields.Datetime(string='Discharge Date')
-    vssc_boolean=fields.Boolean(string='VSSC',default=False)
+    discharge_date = fields.Datetime(string='Discharge Date')
+    vssc_boolean = fields.Boolean(string='VSSC', default=False)
     consultation_check = fields.Boolean(default=False)
-    temp_reference_no =  fields.Char(string=" Temporary Reference")
+    temp_reference_no = fields.Char(string=" Temporary Reference")
     no_consultation = fields.Boolean(default=True)
+
     # payment_method = fields.Selection([
     # ('cash', 'Cash'),
     # ('upi', 'UPI'),
@@ -84,8 +87,8 @@ class PatientRegistration(models.Model):
 
     def action_register_confirm(self):
         payment_vals = {
-        'payment_method': self.payment_method,
-        'payment_reference': self.payment_reference,
+            'payment_method': self.payment_method,
+            'payment_reference': self.payment_reference,
         }
         for record in self:
             # Create wizard
@@ -95,10 +98,10 @@ class PatientRegistration(models.Model):
                 'register_id': record.id,
                 'doctor_ids': [(6, 0, record.doctor_ids.ids)],
             }
-            
+
             # Create wizard
             wizard = self.env['register.payment.wizard'].create(wizard_vals)
-            
+
             # Create fee lines
             for doctor in record.doctor_ids:
                 # Get consultation fee for this doctor
@@ -107,18 +110,18 @@ class PatientRegistration(models.Model):
                     if fee.doctor_id.id == doctor.id:
                         doc_fee = fee.consultation_fee
                         break
-                
+
                 # If no fee found in consultation_fee_ids, calculate it
                 if doc_fee == 0 and hasattr(doctor, 'consultation_fee_doctor'):
                     doc_fee = doctor.consultation_fee_doctor
-                    
+
                 # Create fee line
                 self.env['wizard.register.fee'].create({
                     'wizard_id': wizard.id,
                     'doctor_id': doctor.id,
                     'fee_amount': doc_fee
                 })
-            
+
             # Return action to open wizard
             return {
                 'name': 'Register Payment',
@@ -129,6 +132,7 @@ class PatientRegistration(models.Model):
                 'target': 'new',
                 'context': {'active_id': record.id}
             }
+
     def action_report_patient_card(self):
         return self.env.ref('homeo_doctor.report_patient_card').report_action(self)
 
@@ -142,15 +146,15 @@ class PatientRegistration(models.Model):
         for record in self:
             if record.admitted_date:
                 admitted_date = fields.Datetime.from_string(record.admitted_date)
-                current_date =record.discharge_date
+                current_date = record.discharge_date
                 record.no_days = (current_date - admitted_date).days + 1
             else:
                 record.no_days = 0
 
     @api.onchange('no_days')
     def _admission_button_active(self):
-        vals=self.env['patient.registration'].search([('patient_id', '=', self.reference_no)])
-        vals.move_to_admission_clicked=False
+        vals = self.env['patient.registration'].search([('patient_id', '=', self.reference_no)])
+        vals.move_to_admission_clicked = False
 
     @api.constrains('email')
     def _check_email(self):
@@ -158,6 +162,7 @@ class PatientRegistration(models.Model):
         for record in self:
             if record.email and not re.match(email_regex, record.email):
                 raise UserError("⚠️ Warning: The email address '%s' is invalid." % record.email)
+
     @api.onchange('dob')
     def _compute_age(self):
         for record in self:
@@ -170,6 +175,7 @@ class PatientRegistration(models.Model):
                 )
             else:
                 record.age = 0
+
     @api.onchange('room_category')
     def onchange_advance_amount(self):
         for i in self:
@@ -179,14 +185,13 @@ class PatientRegistration(models.Model):
 
             else:
                 pass
+
     @api.depends('doc_name')
     def _compute_consultation_fee(self):
         for record in self:
             if record.doc_name:
                 # Automatically populate consultation_fee from the selected doctor's record
                 record.consultation_fee = record.doc_name.consultation_fee_doctor
-
-
 
     @api.onchange('department_id')
     def _onchange_department_id(self):
@@ -224,14 +229,13 @@ class PatientRegistration(models.Model):
             vals['token_no'] = False  # Do not generate token number
             if vals.get('reference_no', _('New')) == _('New'):
                 vals['reference_no'] = self.env['ir.sequence'].next_by_code('patient.reg.group') or _('New')
-            # Skip creating a record in 'patient.registration' for no consultation case
+                # Skip creating a record in 'patient.registration' for no consultation case
                 return super(PatientRegistration, self).create(vals)
         if vals.get('doc_name'):
             doctor = self.env['doctor.profile'].browse(vals.get('doc_name'))
             appointment_date = vals.get('time') if vals.get('time') else fields.Date.context_today(self)
             if doctor:
                 vals['token_no'] = doctor.get_next_token_number(appointment_date)
-
 
         # Check if consultation_check is False in the vals dictionary before generating reference_no
         if not vals.get('consultation_check'):  # Default to True if not set
@@ -248,12 +252,11 @@ class PatientRegistration(models.Model):
         #     if doctor:
         #         vals['token_no'] = doctor.get_next_token_number()
 
-
         # Create the main patient registration record
         record = super(PatientRegistration, self).create(vals)
 
         # After record creation, check if consultation_check is False
-        if not record.consultation_check:
+        if not vals.get('admission_boolean', False) and not record.consultation_check:
             self.env['patient.registration'].create({
                 'user_id': record.id,
                 'patient_id': record.id,
@@ -264,7 +267,6 @@ class PatientRegistration(models.Model):
                 'doctor_id': record.doc_name.display_name,
                 'appointment_date': record.time,
             })
-
 
         return record
 
@@ -304,11 +306,6 @@ class RoomCategory(models.Model):
     _name = 'room.category'
     _rec_name = 'room_category'
 
-    room_category=fields.Char(string='Room Category')
-    advance_amount=fields.Integer(string='Advance Amount')
-    nursing_fee=fields.Integer(string='Nursing Fee')
-
-
-
-
-
+    room_category = fields.Char(string='Room Category')
+    advance_amount = fields.Integer(string='Advance Amount')
+    nursing_fee = fields.Integer(string='Nursing Fee')

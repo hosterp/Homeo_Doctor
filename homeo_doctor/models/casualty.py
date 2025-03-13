@@ -32,7 +32,7 @@ class PatientRegistration(models.Model):
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     prescription_line_ids=fields.One2many('prescription.casualty.entry.lines','prescription_line_id')
     prescription_boolean=fields.Boolean(default=False)
-    no_consultation = fields.Boolean(default= False)
+    no_consultation = fields.Boolean(default=False)
     @api.model
     def create(self, vals):
         if not vals.get('casualty_no'):
