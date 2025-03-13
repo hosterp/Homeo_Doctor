@@ -515,6 +515,7 @@ class PatientRegistration(models.Model):
             doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
             if not doctor:
                 raise UserError("Doctor not found in the system.")
+
             # Create a lab referral record
             referral = self.env['lab.referral'].create({
                 'doctor': doctor.id,
@@ -523,14 +524,6 @@ class PatientRegistration(models.Model):
                 'patient_name': consultation.patient_name,
                 'referral_type': 'lab',
             })
-            if referral:
-                lab_report = self.env['doctor.lab.report'].create({
-                    'referral_details': referral.details,
-                    'reference_no': referral.reference_no,
-                    'patient_id': referral.user_ide.id,
-                    'doctor_id': referral.doctor.id,
-
-                })
 
             return {
                 'type': 'ir.actions.act_window',
@@ -633,6 +626,18 @@ class LabReferral(models.Model):
 
         self.details = "\n".join(details_list)
 
+    def action_submit(self):
+        """Create a doctor.lab.report record when submitting the lab referral"""
+        for record in self:
+            lab_report = self.env['doctor.lab.report'].create({
+                'referral_details': record.details,
+                'reference_no': record.reference_no,
+                'user_ide': record.user_ide.id,
+                'doctor_id': record.doctor.id,
+                'patient_name': record.patient_name,
+            })
+            lab_report.register_visible=False
+            print('submitted..........................................................................')
     @api.model
     def create(self, vals):
         if vals.get('reference_no', _('New')) == _('New'):
