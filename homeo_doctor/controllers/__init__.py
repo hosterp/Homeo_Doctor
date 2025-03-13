@@ -8,7 +8,7 @@ class AuthLogin(http.Controller):
     @http.route('/web/login', type='http', auth="public", website=True)
     def web_login(self, redirect=None, **kw):
         recaptcha_response = kw.get('g-recaptcha-response')
-        secret_key = "6LfqC_MqAAAAAO4UIYViFc8aN-eq6gyja6eMsdJp"
+        secret_key = ""
 
         # Verify reCAPTCHA
         response = requests.post(
