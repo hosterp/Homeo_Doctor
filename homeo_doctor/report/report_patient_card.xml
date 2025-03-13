@@ -27,9 +27,12 @@
                     <div style="display: flex; align-items: center;
                             border-bottom: 2px solid #003366;
                             padding-bottom: 5px; margin-bottom: 5px;">
-                        <img t-if="company_logo"
-                             t-att-src="'data:image/png;base64,' + company_logo"
-                             style="width: 45px; height: 45px; border-radius: 50%; margin-right: 8px;"/>
+                        <!-- <img t-if="company_logo"
+                             src="'/homeo_doctor/static/src/img/logo.jpg'"
+                             style="width: 45px; height: 45px; border-radius: 50%; margin-right: 8px;"/> -->
+                             <!-- <img class="img" src='/homeo_doctor/static/src/img/logo.jpg' style="width: 45px; height: 45px; border-radius: 50%; margin-right: 8px;" /> -->
+                            <!-- <img class="img" t-attf-src="{{'/homeo_doctor/static/src/img/logo.jpg'}}" style="width: 45px; height: 45px; border-radius: 50%; margin-right: 8px;" /> -->
+                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)" style="width: 45px; height: 45px; border-radius: 50%; margin-right: 8px;"/>
 
 
                         <div style="text-align: left;">
