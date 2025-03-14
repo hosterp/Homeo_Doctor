@@ -36,6 +36,20 @@ class Audiology(models.Model):
     # register_department_id = fields.Many2one('doctor.department', string='Department')
     # register_doc_name = fields.Many2one('doctor.profile', string='Doctor')
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
+    walk_in_audio = fields.Boolean(default=False)
+
+
+    def action_walk_in_patient(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Walk-in Patients',
+            'res_model': 'audiology.ref',
+            'view_mode': 'tree,form',
+            'views': [(self.env.ref('homeo_doctor.view_audiology_walk_in_tree').id, 'tree'),
+                      (self.env.ref('homeo_doctor.view_audiology_form').id, 'form')],
+            'domain': [('register_visible', '=', True)],
+            'target': 'current',
+        }
 
     @api.model
     def create(self, vals):
