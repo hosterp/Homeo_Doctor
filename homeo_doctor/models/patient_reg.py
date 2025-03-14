@@ -377,7 +377,7 @@ class PatientRegistration(models.Model):
 
     def action_create_referral_ct(self, scan_type='ct'):
         for consultation in self:
-            if not consultation.user_id:  # Assuming user_id is the patient
+            if not consultation.user_id:
                 raise UserError("Patient not selected.")
 
             # Debugging output
@@ -397,11 +397,11 @@ class PatientRegistration(models.Model):
                 'scan_type': scan_type,
             })
 
-            # Create the ct scan record and link it to the reference_no
+
             ct_vals = {
                 'patient_id': consultation.user_id.id,
                 'doctor_id': doctor.id,
-                'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
+                'reference_no': consultation.reference_no,
                 'scan_registered_date': fields.Date.today(),
                 # Add other necessary fields...
             }
@@ -442,20 +442,20 @@ class PatientRegistration(models.Model):
                 'scan_type': scan_type,
             })
 
-            # Create the ct scan record and link it to the reference_no
-            audiology_vals = {
-                'patient_id': consultation.user_id.id,
-                'doctor_id': doctor.id,
-                'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
-                'scan_registered_date': fields.Date.today(),
-                # Add other necessary fields...
-            }
 
-            # Debugging output for audiology scan values
-            print("Audiology Scan Values:", audiology_vals)
-
-            # Create the ct scan record
-            audio_scan = self.env['audiology.ref'].create(audiology_vals)
+            # audiology_vals = {
+            #     'patient_id': consultation.user_id.id,
+            #     'doctor_id': doctor.id,
+            #     'reference_no': consultation.reference_no,
+            #     'scan_registered_date': fields.Date.today(),
+            #
+            # }
+            #
+            #
+            # print("Audiology Scan Values:", audiology_vals)
+            #
+            #
+            # audio_scan = self.env['audiology.ref'].create(audiology_vals)
 
         return {
             'type': 'ir.actions.act_window',
@@ -466,48 +466,7 @@ class PatientRegistration(models.Model):
             'target': 'new',
         }
 
-    # def _create_referral(self, scan_type):
-    #     for consultation in self:
-    #         if not consultation.user_id:  # Assuming user_id is the patient
-    #             raise UserError("Patient not selected.")
-    #
-    #         # Debugging output
-    #         print("User  ID:", consultation.user_id)
-    #         print("User  Reference No:", consultation.user_id.reference_no)
-    #
-    #         # Create the referral record
-    #         referral = self.env['doctor.referral'].create({
-    #             'doctor_id': consultation.doctor_id.id,
-    #             'user_ide': consultation.user_id.id,
-    #             'patient_id': consultation.reference_no,
-    #             'referral_type': 'scanning',
-    #             'details': f'Refer for {scan_type.replace("_", " ").title()}',
-    #             'scan_type': scan_type,
-    #         })
-    #
-    #         # Create the MRI scan record and link it to the reference_no
-    #         mri_scan_vals = {
-    #             'patient_id': consultation.user_id.id,
-    #             'doctor_id': consultation.doctor_id.id,
-    #             'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
-    #             'scan_registered_date': fields.Date.today(),
-    #             # Add other necessary fields...
-    #         }
-    #
-    #         # Debugging output for MRI scan values
-    #         print("MRI Scan Values:", mri_scan_vals)
-    #
-    #         # Create the MRI scan record
-    #         mri_scan = self.env['scanning.mri'].create(mri_scan_vals)
-    #
-    #     return {
-    #         'type': 'ir.actions.act_window',
-    #         'name': 'Referral',
-    #         'res_model': 'doctor.referral',
-    #         'view_mode': 'form',
-    #         'res_id': referral.id,
-    #         'target': 'new',
-    #     }
+
     def _create_referral_lab(self):
         for consultation in self:
             if not consultation.user_id:
@@ -516,7 +475,7 @@ class PatientRegistration(models.Model):
             if not doctor:
                 raise UserError("Doctor not found in the system.")
 
-            # Create a lab referral record
+
             referral = self.env['lab.referral'].create({
                 'doctor': doctor.id,
                 'user_ide': consultation.user_id.id,
@@ -594,6 +553,53 @@ class DoctorReferral(models.Model):
                 'doctor.referral.group') or _('New')
         res = super(DoctorReferral, self).create(vals)
         return res
+
+    def action_submit(self):
+        for record in self:
+
+            # patient_registration = self.env['patient.registration'].search([
+            #     ('user_id', '=', record.user_ide.id)
+            # ], limit=1)
+            #
+            # if patient_registration:
+            #     patient_registration.write({
+            #         'patient_name': record.patient_name,
+            #         'phone_number': record.user_ide.phone_number,
+            #         'address': record.user_ide.address,
+            #         'age': record.user_ide.age,
+            #         'gender': record.user_ide.gender,
+            #         'consultation_fee': record.user_ide.consultation_fee,
+            #     })
+            # else:
+            #
+            #     patient_registration = self.env['patient.registration'].create({
+            #         'user_id': record.user_ide.id,
+            #         'patient_id': record.user_ide.id,
+            #         'patient_name': record.patient_name,
+            #         'phone_number': record.user_ide.phone_number,
+            #         'address': record.user_ide.address,
+            #         'age': record.user_ide.age,
+            #         'gender': record.user_ide.gender,
+            #         'consultation_fee': record.user_ide.consultation_fee,
+            #     })
+
+            audiology_vals = {
+                'user_ide': record.user_ide.id,
+                'doctor_id':record.doctor_id.id,
+                'patient_name':record.patient_name,
+                'reference_no': record.reference_no,
+                'report_details': record.details,
+                'scan_registered_date': fields.Date.today(),
+                'patient_id': record.user_ide.id,
+
+            }
+
+
+            print("Audiology Scan Values:", audiology_vals)
+
+
+            audio_scan = self.env['audiology.ref'].create(audiology_vals)
+
 
 
 class LabReferral(models.Model):

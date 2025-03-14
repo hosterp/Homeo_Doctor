@@ -257,6 +257,12 @@
                             <field name="details"/>
                         </group>
                     </sheet>
+                    <footer>
+                        <button string="Submit" type="object" name="action_submit" class="oe_highlight"/>
+
+                        <!-- Cancel button -->
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
                 </form>
             </field>
         </record>
