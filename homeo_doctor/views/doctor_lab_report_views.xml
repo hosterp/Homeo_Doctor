@@ -5,6 +5,12 @@
             <field name="model">doctor.lab.report</field>
             <field name="arch" type="xml">
                 <tree string="Doctor Lab Reports">
+                    <header>
+                        <button name="action_walk_in_patient"
+                                string="Walk-in Patient"
+                                type="object"
+                                class="oe_highlight"/>
+                    </header>
                     <field name="patient_id" invisible="1"/>
                     <field name="patient_name"/>
                     <field name="user_ide" string="Patient ID"/>
@@ -12,6 +18,7 @@
                     <field name="date" string="Consultation Date"/>
                     <field name="doctor_id" string="Doctor Name"/>
                     <field name="patient_phone"/>
+                    <field name="register_visible" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -29,7 +36,28 @@
                 </search>
             </field>
         </record>
+        <record id="view_lab_walk_in_tree" model="ir.ui.view">
+            <field name="name">lab.ref.walk.tree</field>
+            <field name="model">doctor.lab.report</field>
+            <field name="arch" type="xml">
+                <tree string="Audiology">
+                    <field name="register_patient_name" string="Patient Name"/>
+                    <field name="register_age" string="Age"/>
+                    <field name="register_phone_number" string="Mobile"/>
+                    <field name="registration_fee" string="Fee"/>
+                    <field name="register_visible" invisible="1"/>
+                </tree>
+            </field>
+        </record>
 
+        <record id="action_patient_lab_walk_in" model="ir.actions.act_window">
+            <field name="name">Walk-in Patients</field>
+            <field name="res_model">doctor.lab.report</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_lab_walk_in_tree"/>
+            <field name="domain">[('register_visible', '=', True)]</field>
+            <field name="target">current</field>
+        </record>
         <!-- Lab Report Form View -->
         <record id="view_lab_report_form" model="ir.ui.view">
             <field name="name">doctor.lab.report.form</field>
@@ -108,6 +136,8 @@
             <field name="name">Doctor Lab Reports</field>
             <field name="res_model">doctor.lab.report</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_lab_report_tree"/>
+            <field name="domain">[('register_visible', '!=', True)]</field>
         </record>
 
         <!-- Menu Item -->

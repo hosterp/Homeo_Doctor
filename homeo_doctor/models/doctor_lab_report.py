@@ -42,6 +42,18 @@ class DoctorLabReport(models.Model):
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
     consultation_check = fields.Boolean(default=True)
 
+
+    def action_walk_in_patient(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Walk-in Patients',
+            'res_model': 'doctor.lab.report',
+            'view_mode': 'tree,form',
+            'views': [(self.env.ref('homeo_doctor.view_lab_walk_in_tree').id, 'tree'),
+                      (self.env.ref('homeo_doctor.view_lab_report_form').id, 'form')],
+            'domain': [('register_visible', '=', True)],
+            'target': 'current',
+        }
     # @api.model
     # def create(self, vals):
     #     record = super(DoctorLabReport, self).create(vals)
