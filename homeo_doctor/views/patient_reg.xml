@@ -152,8 +152,8 @@
                             <page string="Lab Reports" name="lab_reports">
                                 <field name="lab_report_ids">
                                     <tree>
-                                        <field name="report_details"/>
                                         <field name="date"/>
+                                        <field name="report_details"/>
                                     </tree>
                                 </field>
                             </page>
@@ -162,32 +162,32 @@
                                     <page string="MRI" name="mri_reports">
                                         <field name="mri_report_ids">
                                             <tree>
-                                                <field name="report_details"/>
                                                 <field name="scan_report_date"/>
+                                                <field name="report_details"/>
                                             </tree>
                                         </field>
                                     </page>
                                     <page string="CT Scan" name="ct_reports">
                                         <field name="ct_report_ids">
                                             <tree>
-                                                <field name="report_details"/>
                                                 <field name="scan_report_date"/>
+                                                <field name="report_details"/>
                                             </tree>
                                         </field>
                                     </page>
                                     <page string="X-RAY" name="xray_reports">
                                         <field name="xray_report_ids">
                                             <tree>
-                                                <field name="report_details"/>
                                                 <field name="scan_report_date"/>
+                                                <field name="report_details"/>
                                             </tree>
                                         </field>
                                     </page>
                                     <page string="Audiology" name="audiology_reports">
                                         <field name="audiology_report_ids">
                                             <tree>
-                                                <field name="report_details"/>
                                                 <field name="scan_report_date"/>
+                                                <field name="report_details"/>
                                             </tree>
                                         </field>
                                     </page>
