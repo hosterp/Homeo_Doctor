@@ -5,12 +5,12 @@ class MRI_Scan(models.Model):
     _rec_name = 'user_ide'
 
     user_ide = fields.Many2one('patient.reg', string="Patient")
-    patient_id = fields.Many2one('patient.registration', string="Consultation ID", required=True)
+    patient_id = fields.Many2one('patient.registration', string="Consultation ID")
     patient_name = fields.Char(related='patient_id.patient_name',string="Patient Name")
     reference_no = fields.Char(string="Reference No")
-    age = fields.Integer(string='Age', required=True, related='patient_id.age')
+    age = fields.Integer(string='Age', related='patient_id.age')
     gender = fields.Selection(string='Gender', related='patient_id.gender')
-    doctor_id = fields.Many2one('doctor.profile', string="Doctor", required=True)
+    doctor_id = fields.Many2one('doctor.profile', string="Doctor", )
     scan_registered_date = fields.Date(string="Registered Date")
     scan_report_date = fields.Date(string="Report Date")
     file_report = fields.Binary(string="Result")
@@ -21,6 +21,46 @@ class MRI_Scan(models.Model):
     referral_id = fields.Many2one('doctor.referral', string="Referral ID")
     report_details = fields.Text(string="MRI Report Details")
     scan_line_ids = fields.One2many('mri.scan.line', 'mri_id', string='Scan Lines')
+
+    register_visible = fields.Boolean(default=True)
+    register_patient_name = fields.Char("Patient Name")
+    register_address = fields.Text(string="Address")
+    register_age = fields.Integer(string="Age", store=True)
+    register_phone_number = fields.Char(string="Mobile No", size=12)
+    register_email = fields.Char(string="Email ID")
+    # register_pin_code = fields.Integer(string="PIN Code")
+    register_id_proof = fields.Binary(string='Upload ID Proof')
+    register_vssc_id = fields.Char(string="VSSC ID No")
+    # register_department_id = fields.Many2one('doctor.department', string='Department')
+    # register_doc_name = fields.Many2one('doctor.profile', string='Doctor')
+    registration_fee = fields.Float(string="Registration Fee", default=50.0)
+
+    @api.model
+    def create(self, vals):
+        # # Generate report reference if not provided
+        # if vals.get('report_reference', _('New')) == _('New'):
+        #     vals['report_reference'] = self.env['ir.sequence'].next_by_code('audiology.ref') or _('New')
+
+        # Check if registration is visible and patient name is provided
+        if vals.get('register_visible', True) and vals.get('register_patient_name'):
+            # Prepare patient registration values
+            patient_reg_vals = {
+                'patient_id': vals.get('register_patient_name'),
+                'address': vals.get('register_address'),
+                'age': vals.get('register_age'),
+                'email': vals.get('register_email'),
+                'phone_number': vals.get('register_phone_number'),
+                'registration_fee': vals.get('registration_fee', 50.0),
+                'consultation_check': vals.get('consultation_check', True),
+                'walk_in': True
+
+            }
+            print(patient_reg_vals)
+
+            # Create patient registration
+            self.env['patient.reg'].create(patient_reg_vals)
+
+        return super(MRI_Scan, self).create(vals)
 
     def print_invoice(self):
         return self.env.ref('homeo_doctor.action_report_mri_invoice').report_action(self)
