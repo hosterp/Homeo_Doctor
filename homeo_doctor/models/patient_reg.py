@@ -306,20 +306,20 @@ class PatientRegistration(models.Model):
                 'scan_type': scan_type,
             })
 
-            # Create the xray scan record and link it to the reference_no
-            x_ray_vals = {
-                'patient_id': consultation.user_id.id,
-                'doctor_id': doctor.id,
-                'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
-                'scan_registered_date': fields.Date.today(),
-                # Add other necessary fields...
-            }
-
-            # Debugging output for xray scan values
-            print("MRI Scan Values:", x_ray_vals)
-
-            # Create the xray scan record
-            xray_scan = self.env['scanning.x.ray'].create(x_ray_vals)
+            # # Create the xray scan record and link it to the reference_no
+            # x_ray_vals = {
+            #     'patient_id': consultation.user_id.id,
+            #     'doctor_id': doctor.id,
+            #     'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
+            #     'scan_registered_date': fields.Date.today(),
+            #     # Add other necessary fields...
+            # }
+            #
+            # # Debugging output for xray scan values
+            # print("MRI Scan Values:", x_ray_vals)
+            #
+            # # Create the xray scan record
+            # xray_scan = self.env['scanning.x.ray'].create(x_ray_vals)
 
         return {
             'type': 'ir.actions.act_window',
@@ -352,19 +352,19 @@ class PatientRegistration(models.Model):
             })
 
             # Create the MRI scan record and link it to the reference_no
-            mri_scan_vals = {
-                'patient_id': consultation.user_id.id,
-                'doctor_id': doctor.id,
-                'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
-                'scan_registered_date': fields.Date.today(),
-                # Add other necessary fields...
-            }
-
-            # Debugging output for MRI scan values
-            print("MRI Scan Values:", mri_scan_vals)
-
-            # Create the MRI scan record
-            mri_scan = self.env['scanning.mri'].create(mri_scan_vals)
+            # mri_scan_vals = {
+            #     'patient_id': consultation.user_id.id,
+            #     'doctor_id': doctor.id,
+            #     'reference_no': consultation.reference_no,  # Ensure this is the correct reference_no
+            #     'scan_registered_date': fields.Date.today(),
+            #     # Add other necessary fields...
+            # }
+            #
+            # # Debugging output for MRI scan values
+            # print("MRI Scan Values:", mri_scan_vals)
+            #
+            # # Create the MRI scan record
+            # mri_scan = self.env['scanning.mri'].create(mri_scan_vals)
 
         return {
             'type': 'ir.actions.act_window',
@@ -398,19 +398,19 @@ class PatientRegistration(models.Model):
             })
 
 
-            ct_vals = {
-                'patient_id': consultation.user_id.id,
-                'doctor_id': doctor.id,
-                'reference_no': consultation.reference_no,
-                'scan_registered_date': fields.Date.today(),
-                # Add other necessary fields...
-            }
-
-            # Debugging output for ct scan values
-            print("ct Scan Values:", ct_vals)
-
-            # Create the ct scan record
-            ct_scan = self.env['scanning.ct'].create(ct_vals)
+            # ct_vals = {
+            #     'patient_id': consultation.user_id.id,
+            #     'doctor_id': doctor.id,
+            #     'reference_no': consultation.reference_no,
+            #     'scan_registered_date': fields.Date.today(),
+            #     # Add other necessary fields...
+            # }
+            #
+            # # Debugging output for ct scan values
+            # print("ct Scan Values:", ct_vals)
+            #
+            # # Create the ct scan record
+            # ct_scan = self.env['scanning.ct'].create(ct_vals)
 
         return {
             'type': 'ir.actions.act_window',
@@ -556,50 +556,59 @@ class DoctorReferral(models.Model):
 
     def action_submit(self):
         for record in self:
+            if record.referral_type == 'scanning':
+                if record.scan_type == 'mri':
+                    report = self.env['scanning.mri'].create({
+                        'user_ide': record.user_ide.id,
+                        'doctor_id': record.doctor_id.id,
+                        'patient_name': record.patient_name,
+                        'reference_no': record.reference_no,
+                        'report_details': record.details,
+                        'scan_registered_date': fields.Date.today(),
+                        'patient_id': record.user_ide.id,
+                    })
+                    record.mri_report_id = report.id
 
-            # patient_registration = self.env['patient.registration'].search([
-            #     ('user_id', '=', record.user_ide.id)
-            # ], limit=1)
-            #
-            # if patient_registration:
-            #     patient_registration.write({
-            #         'patient_name': record.patient_name,
-            #         'phone_number': record.user_ide.phone_number,
-            #         'address': record.user_ide.address,
-            #         'age': record.user_ide.age,
-            #         'gender': record.user_ide.gender,
-            #         'consultation_fee': record.user_ide.consultation_fee,
-            #     })
-            # else:
-            #
-            #     patient_registration = self.env['patient.registration'].create({
-            #         'user_id': record.user_ide.id,
-            #         'patient_id': record.user_ide.id,
-            #         'patient_name': record.patient_name,
-            #         'phone_number': record.user_ide.phone_number,
-            #         'address': record.user_ide.address,
-            #         'age': record.user_ide.age,
-            #         'gender': record.user_ide.gender,
-            #         'consultation_fee': record.user_ide.consultation_fee,
-            #     })
+                elif record.scan_type == 'ct':
+                    report = self.env['scanning.ct'].create({
+                        'user_ide': record.user_ide.id,
+                        'doctor_id': record.doctor_id.id,
+                        'patient_name': record.patient_name,
+                        'reference_no': record.reference_no,
+                        'report_details': record.details,
+                        'scan_registered_date': fields.Date.today(),
+                        'patient_id': record.user_ide.id,
+                    })
+                    record.ct_report_id = report.id
 
-            audiology_vals = {
-                'user_ide': record.user_ide.id,
-                'doctor_id':record.doctor_id.id,
-                'patient_name':record.patient_name,
-                'reference_no': record.reference_no,
-                'report_details': record.details,
-                'scan_registered_date': fields.Date.today(),
-                'patient_id': record.user_ide.id,
+                elif record.scan_type == 'xray':
+                    report = self.env['scanning.x.ray'].create({
+                        'user_ide': record.user_ide.id,
+                        'doctor_id': record.doctor_id.id,
+                        'patient_name': record.patient_name,
+                        'reference_no': record.reference_no,
+                        'report_details': record.details,
+                        'scan_registered_date': fields.Date.today(),
+                        'patient_id': record.user_ide.id,
+                    })
+                    record.xray_report_id = report.id
 
-            }
+                elif record.scan_type == 'audiology':
+                    report = self.env['audiology.ref'].create({
+                        'user_ide': record.user_ide.id,
+                        'doctor_id': record.doctor_id.id,
+                        'patient_name': record.patient_name,
+                        'reference_no': record.reference_no,
+                        'report_details': record.details,
+                        'scan_registered_date': fields.Date.today(),
+                        'patient_id': record.user_ide.id,
+                    })
+                    record.audiology_report_id = report.id
 
+            else :
+                pass
 
-            print("Audiology Scan Values:", audiology_vals)
-
-
-            audio_scan = self.env['audiology.ref'].create(audiology_vals)
-
+            print(f"Created Report for {record.scan_type}: {report.id}")
 
 
 class LabReferral(models.Model):
