@@ -21,28 +21,40 @@
             <field name="model">audiology.ref</field>
             <field name="arch" type="xml">
                 <form string="Audiology">
-                        <header>
-                            <button name="print_invoice" string="Print Invoice" type="object" class="oe_highlight"/>
-                        </header>
+                    <header>
+                        <button name="print_invoice" string="Print Invoice" type="object" class="oe_highlight"/>
+                    </header>
                     <sheet>
-                        <group>
+                        <group col="2">
                             <group>
-                                <field name="user_ide" string="Patient ID" />
-                                <field name="patient_name"/>
+                                <field name="register_visible" invisible="1"/>
+                                <field name="user_ide" string="Patient ID"  attrs="{'invisible': [('register_visible', '=', True)]}"/>
+                                <field name="patient_name" attrs="{'invisible': [('register_visible', '=', True)]}"/>
                                 <field name="patient_id" invisible="1"/>
                                 <field name="reference_no" invisible="1"/>
-                                <field name="age"/>
-                                <field name="gender"/>
-                                <field name="doctor_id"/>
-                                 <field name="referral_id" invisible="1"/>
-                                <field name="scan_registered_date"/>
-                                <field name="scan_report_date"/>
+                                <field name="age" attrs="{'invisible': [('register_visible', '=', True)]}"/>
+                                <field name="gender" attrs="{'invisible': [('register_visible', '=', True)]}"/>
+                                <field name="doctor_id" attrs="{'invisible': [('register_visible', '=', True)]}"/>
+                                <field name="details" attrs="{'invisible': [('register_visible', '=', True)]}"/>
+                                <field name="impression" attrs="{'invisible': [('register_visible', '=', True)]}"/>
+                                <field name="register_patient_name"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                <field name="register_address"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                <field name="register_age" attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                <field name="register_phone_number"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                <field name="register_email" attrs="{'invisible': [('register_visible', '=', False)]}"/>
+
                             </group>
                             <group>
+                                <field name="referral_id" invisible="1"/>
+                                <field name="registration_fee"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                <field name="scan_registered_date"/>
+                                <field name="scan_report_date"/>
                                 <field name="investigation"/>
-                                <field name="details"/>
                                 <field name="report_details"/>
-                                <field name="impression"/>
                             </group>
                         </group>
                         <notebook>

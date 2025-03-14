@@ -568,7 +568,7 @@ class DoctorReferral(models.Model):
                         'patient_id': record.user_ide.id,
                     })
                     record.mri_report_id = report.id
-
+                    report.register_visible = False
                 elif record.scan_type == 'ct':
                     report = self.env['scanning.ct'].create({
                         'user_ide': record.user_ide.id,
@@ -580,7 +580,7 @@ class DoctorReferral(models.Model):
                         'patient_id': record.user_ide.id,
                     })
                     record.ct_report_id = report.id
-
+                    report.register_visible = False
                 elif record.scan_type == 'xray':
                     report = self.env['scanning.x.ray'].create({
                         'user_ide': record.user_ide.id,
@@ -592,6 +592,7 @@ class DoctorReferral(models.Model):
                         'patient_id': record.user_ide.id,
                     })
                     record.xray_report_id = report.id
+                    report.register_visible = False
 
                 elif record.scan_type == 'audiology':
                     report = self.env['audiology.ref'].create({
@@ -604,6 +605,7 @@ class DoctorReferral(models.Model):
                         'patient_id': record.user_ide.id,
                     })
                     record.audiology_report_id = report.id
+                    report.register_visible = False
 
             else :
                 pass
