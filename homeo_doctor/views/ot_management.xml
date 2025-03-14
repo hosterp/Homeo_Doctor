@@ -46,6 +46,6 @@
             <field name="view_mode">tree,form</field>
         </record>
         <menuitem id="menu_ot_management" name="OT Management"
-                  parent="menu_hospital_root" action="action_ot_management" sequence="2"/>
+                  parent="menu_homeo_head" action="action_ot_management" sequence="7"/>
     </data>
 </odoo>

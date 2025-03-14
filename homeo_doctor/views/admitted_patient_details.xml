@@ -101,9 +101,9 @@
 
         <menuitem id="menu_admitted_patient"
                   name="Admitted Patients"
-                  parent="menu_hospital_root"
+                  parent="menu_homeo_head"
                   action="action_admitted_patient"
-                  sequence="1"/>
+                  sequence="6"/>
 
     </data>
 </odoo>

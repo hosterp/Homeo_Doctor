@@ -44,8 +44,8 @@
             <field name="context">{}</field>
         </record>
 
-        <menuitem id="menu_patient_insurance" name="Patient Insurance" parent="menu_hospital_root"
-                  action="action_patient_insurance"/>
+        <menuitem id="menu_patient_insurance" name="Patient Insurance" parent="menu_homeo_head"
+                  action="action_patient_insurance" sequence="8"/>
 
 
     </data>
