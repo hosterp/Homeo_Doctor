@@ -41,7 +41,6 @@
                                 string="Print Invoice"
                                 type="object"
                                 class="btn-primary"/>
-                        <button string="Forward Button" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <h1>

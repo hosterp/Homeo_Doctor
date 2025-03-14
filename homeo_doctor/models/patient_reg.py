@@ -625,19 +625,37 @@ class LabReferral(models.Model):
             details_list.append(f"Test Types: {test_types}")
 
         self.details = "\n".join(details_list)
-
     def action_submit(self):
-        """Create a doctor.lab.report record when submitting the lab referral"""
+
         for record in self:
+
+            patient_registration = self.env['patient.registration'].search([
+                ('user_id', '=', record.user_ide.id)
+            ], limit=1)
+
+            if not patient_registration:
+                patient_registration = self.env['patient.registration'].create({
+                    'user_id': record.user_ide.id,
+                    'patient_id': record.user_ide.id,
+                    'patient_name': record.patient_name,
+                    'phone_number': record.user_ide.phone_number,
+                    'address': record.user_ide.address,
+                    'age': record.user_ide.age,
+                    'gender': record.user_ide.gender,
+                    'consultation_fee': record.user_ide.consultation_fee,
+                })
+
+
             lab_report = self.env['doctor.lab.report'].create({
                 'referral_details': record.details,
                 'reference_no': record.reference_no,
                 'user_ide': record.user_ide.id,
                 'doctor_id': record.doctor.id,
                 'patient_name': record.patient_name,
+                'patient_id': patient_registration.id,
             })
-            lab_report.register_visible=False
-            print('submitted..........................................................................')
+            lab_report.register_visible = False
+            print(f'Lab Report {lab_report.id} submitted and linked to Patient Registration {patient_registration.id}')
     @api.model
     def create(self, vals):
         if vals.get('reference_no', _('New')) == _('New'):

@@ -1,6 +1,8 @@
 from email.policy import default
 
 from odoo import api, fields, models, _
+from odoo.odoo.exceptions import UserError
+
 
 class DoctorLabReport(models.Model):
     _name = 'doctor.lab.report'
@@ -22,7 +24,6 @@ class DoctorLabReport(models.Model):
     bill_amount=fields.Integer('Bill Amount')
     referral_id = fields.Many2one('lab.referral', string="Referral ID")
     referral_details = fields.Text(string="Referral Details")
-    report_details = fields.Text(string="Lab Report Details")
     lab_reference_no=fields.Many2one('lab.referral','Reference No')
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_id', string='Lab Lines')
 
