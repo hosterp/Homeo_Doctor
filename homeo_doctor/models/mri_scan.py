@@ -35,6 +35,19 @@ class MRI_Scan(models.Model):
     # register_doc_name = fields.Many2one('doctor.profile', string='Doctor')
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
 
+    def action_walk_in_patient(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Walk-in Patients',
+            'res_model': 'scanning.mri',
+            'view_mode': 'tree,form',
+            'views': [(self.env.ref('homeo_doctor.view_MRI_walk_in_tree').id, 'tree'),
+                      (self.env.ref('homeo_doctor.view_scanning_mri_form').id, 'form')],
+            'domain': [('register_visible', '=', True)],
+            'target': 'current',
+        }
+
+
     @api.model
     def create(self, vals):
         # # Generate report reference if not provided
