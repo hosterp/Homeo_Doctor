@@ -27,8 +27,8 @@
                                 <field name="patient_id"/>
                                 <field name="address" required="1"/>
                                 <field name="pin_code" required="1"/>
-                                <field name="email"  widget="email"/>
-<!--                                <field name="registration_fee"/>-->
+                                <field name="email" widget="email"/>
+                                <!--                                <field name="registration_fee"/>-->
 
 
                             </group>
@@ -37,8 +37,10 @@
                                 <field name="vssc_id" attrs="{'invisible': [('vssc_boolean', '=', False)]}"/>
                                 <field name="id_proof" widget='binary'
                                        attrs="{'invisible': [('vssc_boolean', '=', False)]}"/>
-                                <field name="dob" attrs="{'required': [('age', '=', False)]}" widget="date" options="{'datepicker': {'changeYear': true, 'yearRange': '1900:2100'}}"/>
-                                <field name="age" widget="float_no_default" attrs="{'required': [('dob', '=', False)]}"/>
+                                <field name="dob" attrs="{'required': [('age', '=', False)]}" widget="date"
+                                       options="{'datepicker': {'changeYear': true, 'yearRange': '1900:2100'}}"/>
+                                <field name="age" widget="float_no_default"
+                                       attrs="{'required': [('dob', '=', False)]}"/>
 
                                 <field name="gender"/>
                                 <field name="phone_number" widget="phone" required="1"/>
@@ -53,13 +55,13 @@
                             </group>
                         </group>
                         <group>
-<!--                            <button name="action_register_confirm"-->
-<!--                                    type="object"-->
-<!--                                    string="Pay"-->
-<!--                                    class="oe_highlight"-->
-<!--                                />-->
-<!--                            <button name="action_cancel" string="Cancel" type="object" class="btn btn-danger"-->
-<!--                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>-->
+                            <!--                            <button name="action_register_confirm"-->
+                            <!--                                    type="object"-->
+                            <!--                                    string="Pay"-->
+                            <!--                                    class="oe_highlight"-->
+                            <!--                                />-->
+                            <!--                            <button name="action_cancel" string="Cancel" type="object" class="btn btn-danger"-->
+                            <!--                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>-->
 
                         </group>
                         <group col="4" string="Admission Details"
@@ -156,17 +158,52 @@
             <field name="model">patient.reg</field>
             <field name="arch" type="xml">
                 <tree string="Patient Details">
+                    <header>
+                        <button name="action_walk_in_patient"
+                                string="Walk-in Patient"
+                                type="object"
+                                class="oe_highlight"/>
+
+                    </header>
                     <field name="reference_no" string="UHID"/>
                     <field name="patient_id"/>
                     <field name="token_no"/>
-<!--                    <field name="temp_reference_no"/>-->
+                    <field name="temp_reference_no" invisible="1"/>
                     <field name="formatted_date" string="Registration Date"/>
                     <field name="time" string="Appointment Date"/>
                     <field name="age"/>
                     <field name="phone_number"/>
+                    <field name="walk_in" invisible="1"/>
                 </tree>
             </field>
         </record>
+        <record id="patient_reg_walk_in_tree" model="ir.ui.view">
+            <field name="name">patient.reg.walk.tree</field>
+            <field name="model">patient.reg</field>
+            <field name="arch" type="xml">
+                <tree string="Patient Details">
+                    <field name="reference_no" string="UHID" invisible="1"/>
+                    <field name="temp_reference_no"/>
+                    <field name="patient_id"/>
+                    <field name="token_no" invisible="1"/>
+                    <field name="formatted_date" string="Registration Date"/>
+                    <field name="time" string="Appointment Date" invisible="1"/>
+                    <field name="age"/>
+                    <field name="phone_number"/>
+                    <field name="walk_in" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_patient_reg_walk_in" model="ir.actions.act_window">
+            <field name="name">Walk-in Patients</field>
+            <field name="res_model">patient.reg</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="homeo_doctor.patient_reg_walk_in_tree"/>
+            <field name="domain">[('walk_in', '=', True)]</field>
+            <field name="target">current</field>
+        </record>
+
         <record id="patient_reg_search" model="ir.ui.view">
             <field name="name">patient.reg.search</field>
             <field name="model">patient.reg</field>
@@ -196,6 +233,7 @@
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="patient_reg_search"/>
             <field name="view_id" ref="patient_reg_tree"/>
+            <field name="domain">[('walk_in', '!=', True)]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create new patient

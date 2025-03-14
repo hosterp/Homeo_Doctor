@@ -70,13 +70,25 @@ class PatientRegistration(models.Model):
     consultation_check = fields.Boolean(default=False)
     temp_reference_no = fields.Char(string=" Temporary Reference")
     no_consultation = fields.Boolean(default=True)
-
+    walk_in=fields.Boolean(default=False)
     # payment_method = fields.Selection([
     # ('cash', 'Cash'),
     # ('upi', 'UPI'),
     # ('card', 'Card')
     # ], string='Payment Method')
     # payment_reference = fields.Char(string='Payment Reference')
+    def action_walk_in_patient(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Walk-in Patients',
+            'res_model': 'patient.reg',
+            'view_mode': 'tree,form',
+            'views': [(self.env.ref('homeo_doctor.patient_reg_walk_in_tree').id, 'tree')],
+            'domain': [('walk_in', '=', True)],
+            'target': 'current',
+        }
+
+
 
     def _get_report_values(self, docids, data=None):
         docs = self.env['patient.reg'].browse(docids)

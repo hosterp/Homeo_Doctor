@@ -71,7 +71,8 @@ class DoctorLabReport(models.Model):
                 'email': vals.get('register_email'),
                 'phone_number': vals.get('register_phone_number'),
                 'registration_fee': vals.get('registration_fee', 50.0),
-                'consultation_check': vals.get('consultation_check',True)
+                'consultation_check': vals.get('consultation_check',True),
+                'walk_in': True
 
             }
             print(patient_reg_vals)

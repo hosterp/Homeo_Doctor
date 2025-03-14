@@ -52,7 +52,7 @@
                                 <field name="date"/>
 
                                 <!-- with register -->
-                                <field name="register_visible" string="visibile" invisible="0"/>
+                                <field name="register_visible" string="visibile" invisible="1"/>
                                 <field name="register_patient_name"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"/>
                                 <field name="register_address"
