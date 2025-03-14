@@ -1,7 +1,7 @@
 from email.policy import default
 
 from odoo import api, fields, models, _
-from odoo.odoo.exceptions import UserError
+#from odoo.odoo.exceptions import UserError
 
 
 class DoctorLabReport(models.Model):
