@@ -116,6 +116,7 @@
                                     <field name="morn" string="Morning"/>
                                     <field name="noon" string="Noon"/>
                                     <field name="night" string="Night"/>
+                                    <field name="per_ped" string="Per Med" invisible="1"/>
                                     <field name="total_med" string="Total Dosage" invisible="1"/>
                                 </tree>
                             </field>
