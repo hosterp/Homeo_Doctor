@@ -369,7 +369,10 @@ html {
     width: 30% !important;
 }
 
-
+.prescription .o_list_view th[data-name="stock_in_hand"],
+.prescription .o_list_view td[data-name="stock_in_hand"] {
+    width: 10% !important;
+}
 .o_list_view .o_list_table .text-warning {
 	color: #000 !important;
 }
