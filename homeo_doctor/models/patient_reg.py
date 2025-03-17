@@ -248,7 +248,7 @@ class PatientRegistration(models.Model):
         self.move_to_pharmacy_clicked = True
         pharmacy_vals = {
             'name': self.patient_name,
-            'patient_id': self.patient_id,
+            'patient_id': self.patient_id.id,
             'phone_number': self.phone_number,
             'prescription_line_ids': [(0, 0, {
                 'product_id': line.product_id.id,
