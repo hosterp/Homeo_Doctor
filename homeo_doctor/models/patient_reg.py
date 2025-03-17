@@ -557,61 +557,50 @@ class DoctorReferral(models.Model):
 
     def action_submit(self):
         for record in self:
+            patient_registration = self.env['patient.registration'].search([
+                ('user_id', '=', record.user_ide.id)
+            ], limit=1)
+
+            if not patient_registration:
+                patient_registration = self.env['patient.registration'].create({
+                    'user_id': record.user_ide.id,
+                    'patient_name': record.patient_name,
+                    'phone_number': record.user_ide.phone_number,
+                    'address': record.user_ide.address,
+                    'age': record.user_ide.age,
+                    'gender': record.user_ide.gender,
+                    'consultation_fee': record.user_ide.consultation_fee,
+                })
+
+            record.patient_id = patient_registration.id  
+
             if record.referral_type == 'scanning':
+                report = None
+                report_values = {
+                    'user_ide': record.user_ide.id,
+                    'doctor_id': record.doctor_id.id,
+                    'patient_name': record.patient_name,
+                    'reference_no': record.reference_no,
+                    'details': record.details,
+                    'scan_registered_date': fields.Date.today(),
+                    'patient_id': patient_registration.id,
+                }
+
                 if record.scan_type == 'mri':
-                    report = self.env['scanning.mri'].create({
-                        'user_ide': record.user_ide.id,
-                        'doctor_id': record.doctor_id.id,
-                        'patient_name': record.patient_name,
-                        'reference_no': record.reference_no,
-                        'report_details': record.details,
-                        'scan_registered_date': fields.Date.today(),
-                        'patient_id': record.user_ide.id,
-                    })
+                    report = self.env['scanning.mri'].create(report_values)
                     record.mri_report_id = report.id
-                    report.register_visible = False
                 elif record.scan_type == 'ct':
-                    report = self.env['scanning.ct'].create({
-                        'user_ide': record.user_ide.id,
-                        'doctor_id': record.doctor_id.id,
-                        'patient_name': record.patient_name,
-                        'reference_no': record.reference_no,
-                        'report_details': record.details,
-                        'scan_registered_date': fields.Date.today(),
-                        'patient_id': record.user_ide.id,
-                    })
+                    report = self.env['scanning.ct'].create(report_values)
                     record.ct_report_id = report.id
-                    report.register_visible = False
                 elif record.scan_type == 'xray':
-                    report = self.env['scanning.x.ray'].create({
-                        'user_ide': record.user_ide.id,
-                        'doctor_id': record.doctor_id.id,
-                        'patient_name': record.patient_name,
-                        'reference_no': record.reference_no,
-                        'report_details': record.details,
-                        'scan_registered_date': fields.Date.today(),
-                        'patient_id': record.user_ide.id,
-                    })
+                    report = self.env['scanning.x.ray'].create(report_values)
                     record.xray_report_id = report.id
-                    report.register_visible = False
-
                 elif record.scan_type == 'audiology':
-                    report = self.env['audiology.ref'].create({
-                        'user_ide': record.user_ide.id,
-                        'doctor_id': record.doctor_id.id,
-                        'patient_name': record.patient_name,
-                        'reference_no': record.reference_no,
-                        'report_details': record.details,
-                        'scan_registered_date': fields.Date.today(),
-                        'patient_id': record.user_ide.id,
-                    })
+                    report = self.env['audiology.ref'].create(report_values)
                     record.audiology_report_id = report.id
+
+                if report:
                     report.register_visible = False
-
-            else :
-                pass
-
-            print(f"Created Report for {record.scan_type}: {report.id}")
 
 
 class LabReferral(models.Model):
