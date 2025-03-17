@@ -525,6 +525,20 @@ class PrescriptionEntryLine(models.Model):
     morn = fields.Integer("Morn")
     noon = fields.Integer("Noon")
     night = fields.Integer("Night")
+    stock_in_hand = fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
+
+    @api.depends('product_id')
+    def _compute_stock_in_hand(self):
+        """Fetch the total available quantity from stock.entry for the selected product."""
+        for record in self:
+            if record.product_id:
+                total_quantity = sum(self.env['stock.entry'].search([
+                    ('product_id', '=', record.product_id.id)
+                ]).mapped('quantity'))  # Summing up all quantities
+
+                record.stock_in_hand = total_quantity
+            else:
+                record.stock_in_hand = 0.0
 
 
 class DoctorReferral(models.Model):
