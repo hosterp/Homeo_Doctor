@@ -224,6 +224,7 @@ class PatientAppointment(models.Model):
             'patient_id': self.patient_id.id,
             'patient_name': self.patient_name,
             'appointment_id': self.id,
+            'total_fee': self.consultation_fee,
             'doctor_ids': [(6, 0, self.doctor_ids.ids)],
         }
 
@@ -318,25 +319,24 @@ class PatientAppointment(models.Model):
             appointment_ref = self.env['ir.sequence'].next_by_code('patient.appointment.sequence')
             vals['appointment_reference'] = appointment_ref or 'New'
 
-        # Generate token number if doctor is selected
-        if vals.get('doctor_id'):
-            doctor = self.env['doctor.profile'].browse(vals.get('doctor_id'))
+        # For multiple doctors, generate token for each doctor
+        if vals.get('doctor_ids') and isinstance(vals['doctor_ids'], list):
+            token_numbers = []
             appointment_date = fields.Date.from_string(vals.get('appointment_date')) if vals.get(
                 'appointment_date') else None
-            if doctor:
-                vals['token_no'] = doctor.get_next_token_number(appointment_date)
 
-        # For multiple doctors, use the first doctor to generate token
-        elif vals.get('doctor_ids') and isinstance(vals['doctor_ids'], list):
             for cmd in vals['doctor_ids']:
                 if cmd[0] == 6 and cmd[2]:  # Command 6 is set
                     doctor_ids = cmd[2]
-                    if doctor_ids:
-                        doctor = self.env['doctor.profile'].browse(doctor_ids[0])
-                        appointment_date = fields.Date.from_string(vals.get('appointment_date')) if vals.get(
-                            'appointment_date') else None
-                        vals['token_no'] = doctor.get_next_token_number(appointment_date)
-                        break
+                    for doctor_id in doctor_ids:
+                        doctor = self.env['doctor.profile'].browse(doctor_id)
+                        if doctor:
+                            token_number = doctor.get_next_token_number(appointment_date)
+                            if token_number:
+                                token_numbers.append(token_number)
+
+            if token_numbers:
+                vals['token_no'] = ", ".join(token_numbers)
 
         return super(PatientAppointment, self).create(vals)
 
