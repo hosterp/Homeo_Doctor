@@ -9,6 +9,8 @@
                      <header>
                         <button string="Admit Patient" type="object" name="action_admit_patient"
                                 class="oe_highlight"/>
+                         <button string="Move to Pharmacy" type="object" name="action_move_to_pharmacy"
+                                class="oe_highlight"/>
                     </header>
                     <sheet>
                         <group col="3">

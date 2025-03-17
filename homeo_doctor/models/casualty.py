@@ -33,6 +33,7 @@ class PatientRegistration(models.Model):
     prescription_line_ids=fields.One2many('prescription.casualty.entry.lines','prescription_line_id')
     prescription_boolean=fields.Boolean(default=False)
     no_consultation = fields.Boolean(default=False)
+    move_to_pharmacy_clicked=fields.Boolean(default=False)
     @api.model
     def create(self, vals):
         if not vals.get('casualty_no'):
@@ -59,6 +60,32 @@ class PatientRegistration(models.Model):
         # Replace 'patient.admission' with your actual target model
         admission_record = self.env['patient.reg'].create(patient_data)
 
+    def action_move_to_pharmacy(self):
+        self.move_to_pharmacy_clicked = True
+        pharmacy_vals = {
+            'name': self.patient_id,
+            'patient_id': self.casualty_no,
+            'phone_number': self.phone_number,
+            'doctor_name': self.doc_name,
+            'prescription_line_ids': [(0, 0, {
+                'product_id': line.product_id.id,
+                'morn': line.morn,
+                'noon': line.noon,
+                'night': line.night,
+            }) for line in self.prescription_line_ids],
+        }
+
+        pharmacy_record = self.env['pharmacy.description'].create(pharmacy_vals)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Success',
+                'message': 'Pharmacy record sent successfully!',
+                'sticky': False,
+                'warning': False,
+            }
+        }
     def action_fill_prescription(self):
         self.prescription_boolean=True
         # return {
