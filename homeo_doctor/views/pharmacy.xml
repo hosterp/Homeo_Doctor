@@ -180,6 +180,7 @@
                     <field name="name"/>
                     <field name="date" string="Appointment Date"/>
                     <field name="phone_number"/>
+                    <field name="doctor_name"/>
                 </tree>
             </field>
         </record>
