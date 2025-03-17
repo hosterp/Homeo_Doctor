@@ -66,7 +66,7 @@ class PatientAppointment(models.Model):
     def _compute_consultation_fee(self):
         for record in self:
             record.consultation_fee = 0
-            print(f"Initial consultation_fee set to: {record.consultation_fee}")
+            # print(f"Initial consultation_fee set to: {record.consultation_fee}")
 
             for doctor in record.doctor_ids:
                 if record.patient_id and doctor and record.appointment_date:
