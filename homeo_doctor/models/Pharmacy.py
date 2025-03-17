@@ -5,7 +5,7 @@ class PharmacyDescription(models.Model):
     _name = 'pharmacy.description'
     _description = 'Pharmacy Description'
     _order = 'patient_id desc'
-    patient_id = fields.Char(string="Patient ID")
+    patient_id = fields.Many2one('patient.registration',string="Patient ID")
     name = fields.Char(string="Patient Name")
     phone_number = fields.Char(string="Phone Number")
     bill_amount=fields.Integer(string='Bill Amount')
