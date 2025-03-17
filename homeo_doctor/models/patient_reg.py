@@ -250,6 +250,7 @@ class PatientRegistration(models.Model):
             'name': self.patient_name,
             'patient_id': self.patient_id.id,
             'phone_number': self.phone_number,
+            'doctor_name': self.doctor_id,
             'prescription_line_ids': [(0, 0, {
                 'product_id': line.product_id.id,
                 'total_med': line.total_med,

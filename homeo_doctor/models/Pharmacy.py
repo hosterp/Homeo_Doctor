@@ -9,6 +9,7 @@ class PharmacyDescription(models.Model):
     name = fields.Char(string="Patient Name")
     phone_number = fields.Char(string="Phone Number")
     bill_amount=fields.Integer(string='Bill Amount')
+    doctor_name=fields.Char(string='Doctor')
     date= fields.Datetime(string="Date",default=fields.Datetime.now)
     prescription_line_ids = fields.One2many('pharmacy.prescription.line', 'pharmacy_id', string="Prescriptions")
 
