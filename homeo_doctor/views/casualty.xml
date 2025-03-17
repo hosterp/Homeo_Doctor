@@ -6,10 +6,10 @@
             <field name="model">casualty.reg</field>
             <field name="arch" type="xml">
                 <form string="Casualty Registration">
-                     <header>
+                    <header>
                         <button string="Admit Patient" type="object" name="action_admit_patient"
                                 class="oe_highlight"/>
-                         <button string="Move to Pharmacy" type="object" name="action_move_to_pharmacy"
+                        <button string="Move to Pharmacy" type="object" name="action_move_to_pharmacy"
                                 class="oe_highlight"/>
                     </header>
                     <sheet>
@@ -51,6 +51,8 @@
                                         <field name="morn"/>
                                         <field name="noon"/>
                                         <field name="night"/>
+                                        <field name="per_ped" string="Per Med" invisible="1"/>
+                                        <field name="total_med" string="Total Dosage" invisible="1"/>
                                     </tree>
 
                                 </field>
