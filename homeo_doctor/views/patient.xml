@@ -173,6 +173,8 @@
                     <field name="time" string="Appointment Date"/>
                     <field name="age"/>
                     <field name="phone_number"/>
+                    <field name="department_id"/>
+                    <field name="doc_name"/>
                     <field name="walk_in" invisible="1"/>
                 </tree>
             </field>
