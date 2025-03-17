@@ -25,12 +25,12 @@ class PharmacyPrescriptionLine(models.Model):
     morn = fields.Integer("Morning")
     noon = fields.Integer("Noon")
     night = fields.Integer("Night")
-    rate = fields.Float(string='Rate', compute='_compute_rate', store=True)
+    rate = fields.Float(string='Rate', store=True)
 
-    @api.depends('product_id', 'total_med')
-    def _compute_rate(self):
-        for record in self:
-            if record.product_id and record.total_med:
-                record.rate = record.product_id.list_price * record.total_med
-            else:
-                record.rate = 0.0
+    # @api.depends('product_id', 'total_med')
+    # def _compute_rate(self):
+    #     for record in self:
+    #         if record.product_id and record.total_med:
+    #             record.rate = record.product_id.list_price * record.total_med
+    #         else:
+    #             record.rate = 0.0

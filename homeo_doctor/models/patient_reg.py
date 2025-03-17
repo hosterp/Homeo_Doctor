@@ -258,6 +258,7 @@ class PatientRegistration(models.Model):
                 'morn': line.morn,
                 'noon': line.noon,
                 'night': line.night,
+                'rate': line.total_med,
             }) for line in self.med_ids],
         }
 
@@ -520,8 +521,8 @@ class PrescriptionEntryLine(models.Model):
 
     prescription_line_id = fields.Many2one("patient.registration", string="Prescription Entry")
     product_id = fields.Many2one('product.product', string="Medicine")
-    total_med = fields.Integer("Tot Med")
-    per_ped = fields.Integer("Per Med")
+    total_med = fields.Integer("Tot Med", compute="_compute_total_med", store=True)
+    per_ped = fields.Integer(relate='product_id.lst_price',string="Per Med")
     morn = fields.Integer("Morn")
     noon = fields.Integer("Noon")
     night = fields.Integer("Night")
@@ -540,6 +541,17 @@ class PrescriptionEntryLine(models.Model):
             else:
                 record.stock_in_hand = 0.0
 
+
+    @api.depends('morn', 'noon', 'night', 'per_ped')
+    def _compute_total_med(self):
+        for rec in self:
+            rec.total_med = (rec.morn + rec.noon + rec.night) * rec.per_ped if rec.per_ped else 0
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+
+        for rec in self:
+            rec.per_ped = rec.product_id.lst_price if rec.product_id else 0
 
 class DoctorReferral(models.Model):
     _name = 'doctor.referral'
@@ -586,7 +598,7 @@ class DoctorReferral(models.Model):
                     'consultation_fee': record.user_ide.consultation_fee,
                 })
 
-            record.patient_id = patient_registration.id  
+            record.patient_id = patient_registration.id
 
             if record.referral_type == 'scanning':
                 report = None
