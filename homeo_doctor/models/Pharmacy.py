@@ -4,7 +4,7 @@ from odoo import api, fields, models
 class PharmacyDescription(models.Model):
     _name = 'pharmacy.description'
     _description = 'Pharmacy Description'
-    _order = 'patient_id desc'
+    _order = 'date desc'
     patient_id = fields.Many2one('patient.registration',string="Patient ID")
     name = fields.Char(string="Patient Name")
     phone_number = fields.Char(string="Phone Number")
