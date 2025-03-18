@@ -167,10 +167,10 @@
                                         <field name="exp_date"/>
                                         <field name="mfc"/>
                                         <field name="qty"/>
+                                        <field name="per_ped" string="Rate"/>
                                         <field name="gst"/>
                                         <field name="discount"/>
                                         <field name="stock_in_hand"/>
-                                        <field name="per_ped" string="Rate"/>
                                         <field name="rate" sum="Total" string="Amount"/>
                                     </tree>
                                 </field>
