@@ -171,7 +171,7 @@
                                         <field name="discount"/>
                                         <field name="stock_in_hand"/>
                                         <field name="per_ped" string="Rate"/>
-                                        <field name="rate" sum="Total"/>
+                                        <field name="rate" sum="Total" string="Amount"/>
                                     </tree>
                                 </field>
                             </page>

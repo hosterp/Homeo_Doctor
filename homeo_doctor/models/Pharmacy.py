@@ -8,10 +8,16 @@ class PharmacyDescription(models.Model):
     patient_id = fields.Many2one('patient.registration',string="Patient ID")
     name = fields.Char(string="Patient Name")
     phone_number = fields.Char(string="Phone Number")
-    bill_amount=fields.Integer(string='Bill Amount')
+    # bill_amount=fields.Integer(string='Bill Amount')
     doctor_name=fields.Char(string='Doctor')
     date= fields.Datetime(string="Date",default=fields.Datetime.now)
     prescription_line_ids = fields.One2many('pharmacy.prescription.line', 'pharmacy_id', string="Prescriptions")
+    bill_amount = fields.Float(string="Total Bill Amount", compute="_compute_bill_amount", store=True)
+
+    @api.depends('prescription_line_ids.rate', 'prescription_line_ids.gst')
+    def _compute_bill_amount(self):
+        for rec in self:
+            rec.bill_amount = sum(line.rate for line in rec.prescription_line_ids)  # Excluding GST
 
 class PharmacyPrescriptionLine(models.Model):
     _name = 'pharmacy.prescription.line'
@@ -48,8 +54,16 @@ class PharmacyPrescriptionLine(models.Model):
                 ]).mapped('quantity'))  # Summing up all quantities
 
                 record.stock_in_hand = total_quantity
+                record.per_ped = record.product_id.lst_price
+
             else:
                 record.stock_in_hand = 0.0
+
+    @api.onchange('qty')
+    def _onchange_qty(self):
+        for rec in self:
+            if rec.qty:
+                rec.rate = rec.per_ped * rec.qty
     # @api.depends('product_id', 'total_med')
     # def _compute_rate(self):
     #     for record in self:
