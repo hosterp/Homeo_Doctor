@@ -147,8 +147,29 @@ class AccountPayment(models.Model):
         ('posted', 'Posted'),
         ('cancel', 'Cancelled')
     ], default='draft')
+    pharm_id=fields.Many2one('pharmacy.description')
+    name = fields.Char(related='pharm_id.name',string="Patient Name")
+    uhid = fields.Many2one(related='pharm_id.patient_id',string="UHID")
+    pay_mode=fields.Selection([('cash','Cash'),('upi','UPI'),('card','Card')])
+    paid_mount=fields.Integer(string='Paid Amount')
+    balance=fields.Integer(string='Balance Amount')
+
 
     def action_post(self):
-        """Override action_post to set the state to 'posted'."""
         for record in self:
             record.state = 'posted'
+
+    @api.onchange('paid_mount', 'balance')
+    def _onchange_paymode(self):
+        for rec in self:
+            if rec.amount > 0:
+                if rec.paid_mount > 0:
+                    rec.balance = rec.amount - rec.paid_mount
+                    # Ensure amount remains consistent
+                    if rec.balance < 0:
+                        rec.balance = 0
+
+    @api.depends('paid_mount')
+    def _compute_balance(self):
+        for rec in self:
+            rec.balance = max(0, rec.amount - rec.paid_mount)

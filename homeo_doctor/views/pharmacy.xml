@@ -247,9 +247,29 @@
                 <field name="is_internal_transfer" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </field>
+                <field name="partner_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
                 <xpath expr="//header" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
+                <xpath expr="//field[@name='date']" position="replace"/>
+                <xpath expr="//field[@name='amount']" position="replace"/>
+                <xpath expr="//label[@for='amount']" position="replace"/>  <!-- If a label exists -->
+                <xpath expr="//field[@name='partner_bank_id']" position="after">
+                    <field name="amount"/>
+                    <field name="paid_mount" attrs="{'invisible': [('pay_mode', '!=', 'cash')]}"/>
+                    <field name="balance" attrs="{'invisible': [('pay_mode', '!=', 'cash')]}"/>
+                </xpath>
+
+
+                <field name="payment_type" position="before">
+                    <field name="date"/>
+                    <field name="uhid"/>
+                    <field name="name"/>
+                    <field name="pay_mode"/>
+
+                </field>
                 <xpath expr="//form" position="inside">
                     <footer>
                         <button string="Pay" type="object" name="action_post" class="oe_highlight"/>
