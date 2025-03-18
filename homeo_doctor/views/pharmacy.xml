@@ -170,6 +170,7 @@
                                         <field name="qty"/>
                                         <field name="gst"/>
                                         <field name="discount"/>
+                                        <field name="stock_in_hand"/>
                                         <field name="rate" sum="Total"/>
                                     </tree>
                                 </field>

@@ -35,8 +35,21 @@ class PharmacyPrescriptionLine(models.Model):
     qty=fields.Integer(string='QTY')
     gst=fields.Integer(string='GST Rate(%)')
     discount=fields.Float(string='Disc %')
+    stock_in_hand = fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
     rate = fields.Float(string='Rate', store=True)
 
+    @api.depends('product_id')
+    def _compute_stock_in_hand(self):
+        """Fetch the total available quantity from stock.entry for the selected product."""
+        for record in self:
+            if record.product_id:
+                total_quantity = sum(self.env['stock.entry'].search([
+                    ('product_id', '=', record.product_id.id)
+                ]).mapped('quantity'))  # Summing up all quantities
+
+                record.stock_in_hand = total_quantity
+            else:
+                record.stock_in_hand = 0.0
     # @api.depends('product_id', 'total_med')
     # def _compute_rate(self):
     #     for record in self:
