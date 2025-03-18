@@ -218,8 +218,8 @@
                     <field name="gender"/>
                     <field name="phone_number" string="Mobile No"/>
                     <field name="doctor_id"/>
-                    <field name="referred_doctor_ids" widget="many2many_tags" string="Referred Doctors"/>
-                    <field name="referred_department_ids" widget="many2many_tags" string="Referred Department"/>
+<!--                    <field name="referred_doctor_ids" widget="many2many_tags" string="Referred Doctors"/>-->
+<!--                    <field name="referred_department_ids" widget="many2many_tags" string="Referred Department"/>-->
                     <field name="consultation_fee"/>
                     <field name="status"/>
                 </tree>
