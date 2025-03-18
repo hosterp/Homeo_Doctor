@@ -387,3 +387,6 @@ html {
 
 
 
+.pharmacy_description .o_form_sheet_bg > .o_form_sheet {
+	max-width: 93% !important;
+}

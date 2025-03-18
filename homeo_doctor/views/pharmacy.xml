@@ -136,7 +136,7 @@
             <field name="name">pharmacy.description.form</field>
             <field name="model">pharmacy.description</field>
             <field name="arch" type="xml">
-                <form string="Pharmacy Description">
+                <form string="Pharmacy Description" class="pharmacy_description">
                     <sheet>
                         <group>
                             <group>
