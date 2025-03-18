@@ -159,7 +159,6 @@
                                         <field name="morn"/>
                                         <field name="noon"/>
                                         <field name="night"/>
-                                        <field name="per_ped"/>
                                         <field name="category"/>
                                         <field name="hsn"/>
                                         <field name="batch"/>
@@ -171,6 +170,7 @@
                                         <field name="gst"/>
                                         <field name="discount"/>
                                         <field name="stock_in_hand"/>
+                                        <field name="per_ped" string="Rate"/>
                                         <field name="rate" sum="Total"/>
                                     </tree>
                                 </field>
