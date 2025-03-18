@@ -153,13 +153,23 @@
                         <notebook>
                             <page string="Prescriptions">
                                 <field name="prescription_line_ids">
-                                    <tree>
+                                    <tree editable="bottom">
                                         <field name="product_id"/>
                                         <field name="total_med" invisible="1"/>
                                         <field name="morn"/>
                                         <field name="noon"/>
                                         <field name="night"/>
                                         <field name="per_ped"/>
+                                        <field name="category"/>
+                                        <field name="hsn"/>
+                                        <field name="batch"/>
+                                        <field name="manf_date"/>
+                                        <field name="packing"/>
+                                        <field name="exp_date"/>
+                                        <field name="mfc"/>
+                                        <field name="qty"/>
+                                        <field name="gst"/>
+                                        <field name="discount"/>
                                         <field name="rate" sum="Total"/>
                                     </tree>
                                 </field>
