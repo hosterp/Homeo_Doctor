@@ -19,6 +19,25 @@ class PharmacyDescription(models.Model):
         for rec in self:
             rec.bill_amount = sum(line.rate for line in rec.prescription_line_ids)  # Excluding GST
 
+    def action_register_payment(self):
+        return {
+            'name': 'Register Payment',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.payment',
+            'view_mode': 'form',
+            'view_id': self.env.ref('homeo_doctor.view_account_payment_form_inherit').id,  # Custom form view
+            'target': 'new',
+            'context': {
+                'default_partner_id': self.patient_id.id,
+                'default_amount': self.bill_amount,
+                'default_payment_type': 'inbound',
+                'default_communication': self.name,
+                'default_payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+                'default_journal_id': self.env['account.journal'].search([('type', '=', 'bank')], limit=1).id
+            }
+        }
+
+
 class PharmacyPrescriptionLine(models.Model):
     _name = 'pharmacy.prescription.line'
     _description = 'Pharmacy Prescription Line'
@@ -59,6 +78,54 @@ class PharmacyPrescriptionLine(models.Model):
             else:
                 record.stock_in_hand = 0.0
 
+    @api.model
+    def create(self, vals):
+        """Deduct the quantity from stock when a record is created."""
+        record = super(PharmacyPrescriptionLine, self).create(vals)
+        if record.product_id and record.qty:
+            stock_entries = self.env['stock.entry'].search([
+                ('product_id', '=', record.product_id.id)
+            ], order="id asc")
+
+            remaining_qty = record.qty
+            for entry in stock_entries:
+                if remaining_qty <= 0:
+                    break
+                if entry.quantity >= remaining_qty:
+                    entry.quantity -= remaining_qty
+                    remaining_qty = 0
+                else:
+                    remaining_qty -= entry.quantity
+                    entry.quantity = 0
+
+        return record
+
+    def write(self, vals):
+        """Adjust stock when updating records."""
+        for record in self:
+            original_qty = record.qty
+            new_qty = vals.get('quantity', original_qty)
+
+            if original_qty != new_qty:
+                diff = new_qty - original_qty  # If increased, need to deduct more
+
+                stock_entries = self.env['stock.entry'].search([
+                    ('product_id', '=', record.product_id.id)
+                ], order="id asc")
+
+                remaining_qty = diff
+                for entry in stock_entries:
+                    if remaining_qty <= 0:
+                        break
+                    if entry.quantity >= remaining_qty:
+                        entry.quantity -= remaining_qty
+                        remaining_qty = 0
+                    else:
+                        remaining_qty -= entry.quantity
+                        entry.quantity = 0
+
+        return super(PharmacyPrescriptionLine, self).write(vals)
+
     @api.onchange('qty')
     def _onchange_qty(self):
         for rec in self:
@@ -71,3 +138,17 @@ class PharmacyPrescriptionLine(models.Model):
     #             record.rate = record.product_id.list_price * record.total_med
     #         else:
     #             record.rate = 0.0
+
+class AccountPayment(models.Model):
+    _inherit = 'account.payment'
+
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('posted', 'Posted'),
+        ('cancel', 'Cancelled')
+    ], default='draft')
+
+    def action_post(self):
+        """Override action_post to set the state to 'posted'."""
+        for record in self:
+            record.state = 'posted'

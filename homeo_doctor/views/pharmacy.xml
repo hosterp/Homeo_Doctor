@@ -176,6 +176,11 @@
                                 </field>
                             </page>
                         </notebook>
+                        <footer>
+                            <div class="oe_right">
+                                <button name="action_register_payment" type="object" string="Pay" class="oe_highlight"/>
+                            </div>
+                        </footer>
                     </sheet>
                 </form>
             </field>
@@ -210,8 +215,51 @@
                 </p>
             </field>
         </record>
+        <record id="view_account_payment_form_inherit" model="ir.ui.view">
+            <field name="name">account.payment.form.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
 
-        <!-- Menu Items -->
+                <!-- Hide Specific Fields -->
+                <field name="journal_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+
+                <field name="payment_method_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="partner_type" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="payment_type" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="partner_bank_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="destination_account_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="ref" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="is_internal_transfer" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <xpath expr="//header" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form" position="inside">
+                    <footer>
+                        <button string="Pay" type="object" name="action_post" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </xpath>
+            </field>
+        </record>
+
+        <!--        &lt;!&ndash; Menu Items &ndash;&gt;-->
         <menuitem id="menu_pharmacy_root" name="Pharmacy" sequence="5" parent="menu_homeo_head"/>
 
         <menuitem id="menu_pharmacy_description"
