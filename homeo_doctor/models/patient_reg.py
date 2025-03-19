@@ -253,12 +253,12 @@ class PatientRegistration(models.Model):
             'doctor_name': self.doctor_id,
             'prescription_line_ids': [(0, 0, {
                 'product_id': line.product_id.id,
-                'total_med': line.total_med,
+                'qty': line.total_med,
                 'per_ped': line.per_ped,
                 'morn': line.morn,
                 'noon': line.noon,
                 'night': line.night,
-                'rate': line.total_med,
+                'rate': line.per_ped*line.total_med,
             }) for line in self.med_ids],
         }
 
@@ -542,10 +542,25 @@ class PrescriptionEntryLine(models.Model):
                 record.stock_in_hand = 0.0
 
 
-    @api.depends('morn', 'noon', 'night', 'per_ped')
+    # @api.depends('morn', 'noon', 'night', 'per_ped')
+    # def _compute_total_med(self):
+    #     for rec in self:
+    #         rec.total_med = (rec.morn + rec.noon + rec.night) * rec.per_ped if rec.per_ped else 0
+    @api.depends('morn', 'noon', 'night', 'prescription_line_id.medicine_course')
     def _compute_total_med(self):
         for rec in self:
-            rec.total_med = (rec.morn + rec.noon + rec.night) * rec.per_ped if rec.per_ped else 0
+            morn = rec.morn or 0
+            noon = rec.noon or 0
+            night = rec.night or 0
+            medicine_course = rec.prescription_line_id.medicine_course or 0
+
+            # Ensure integer conversion
+            try:
+                total_per_day = int(morn) + int(noon) + int(night)
+                medicine_course = int(medicine_course)
+                rec.total_med = total_per_day * medicine_course
+            except ValueError:
+                rec.total_med = 0
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
