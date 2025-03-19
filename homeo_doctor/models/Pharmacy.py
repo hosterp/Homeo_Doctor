@@ -5,6 +5,8 @@ class PharmacyDescription(models.Model):
     _name = 'pharmacy.description'
     _description = 'Pharmacy Description'
     _order = 'date desc'
+    patient_id = fields.Many2one('patient.registration',string="Patient ID")
+    _order = 'date desc'
     patient_id = fields.Many2one('patient.registration',string="UHID")
     name = fields.Char(string="Patient Name")
     phone_number = fields.Char(string="Phone Number")
@@ -24,13 +26,13 @@ class PharmacyDescription(models.Model):
                 ('name', '=', res.name),
                 # Add other fields to match if needed
             ], limit=1)
-            
+
             if not partner:
                 partner = self.env['res.partner'].create({
                     'name': res.name,
                     # Add other values as needed
                 })
-            
+
             res.partner_id = partner.id
         return res
 
@@ -51,7 +53,7 @@ class PharmacyDescription(models.Model):
                 ('name', '=', self.name),
                 ('phone', '=', self.phone_number)
             ], limit=1)
-            
+
             if not partner:
                 # Create a new partner for this patient
                 partner = self.env['res.partner'].create({
@@ -60,7 +62,7 @@ class PharmacyDescription(models.Model):
                 }).id
             else:
                 partner = partner.id
-        
+
         return {
         'name': 'Register Payment',
         'type': 'ir.actions.act_window',
@@ -76,7 +78,7 @@ class PharmacyDescription(models.Model):
             'default_payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
             'default_journal_id': self.env['account.journal'].search([('type', '=', 'bank')], limit=1).id,
             # Remove the next line to let Odoo handle the sequence
-            'default_name': self.name,  
+            'default_name': self.name,
             'default_uhid': self.patient_id.id if self.patient_id else False,
             'default_partner_id': partner,
             'default_partner_type': 'customer',
@@ -200,7 +202,7 @@ class AccountPayment(models.Model):
     pay_mode = fields.Selection([('cash','Cash'),('upi','UPI'),('card','Card')])
     paid_mount = fields.Integer(string='Paid Amount')
     balance = fields.Integer(string='Balance Amount')
-    
+
     @api.onchange('pharm_id')
     def _onchange_pharm_id(self):
         if self.pharm_id:
@@ -216,33 +218,33 @@ class AccountPayment(models.Model):
                     ('name', '=', self.pharm_id.name),
                     ('phone', '=', self.pharm_id.phone_number)
                 ], limit=1)
-                
+
                 if not partner:
                     # Create a new partner
                     partner = self.env['res.partner'].create({
                         'name': self.pharm_id.name,
                         'phone': self.pharm_id.phone_number,
                     })
-                
+
                 self.partner_id = partner.id
-    
+
     # Override the action_post method to ensure partner_id is set
     def action_post(self):
-    
-    
+
+
         # If this payment is linked to a pharmacy record, generate PDF
         if self.pharm_id:
             # Create report action context
             context = dict(self.env.context)
-            
+
             # Get the pharmacy report action
             report_action = self.env.ref('homeo_doctor.action_pharmacy_report')
-            
+
             # Return the report action with the pharmacy record
-            return report_action.with_context(active_model='pharmacy.description', 
+            return report_action.with_context(active_model='pharmacy.description',
                                             active_ids=[self.pharm_id.id]).report_action(self.pharm_id)
-        
-        return 
+
+        return
 
     @api.onchange('paid_mount', 'balance')
     def _onchange_paymode(self):

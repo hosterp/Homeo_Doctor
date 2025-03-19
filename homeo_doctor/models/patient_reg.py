@@ -157,7 +157,7 @@ class PatientRegistration(models.Model):
             vals['reference_no'] = self.env['ir.sequence'].next_by_code(
                 'patient.registrartion.group') or _('New')
         res = super(PatientRegistration, self).create(vals)
-        print("val", res)
+        # print("val", res)
         return res
 
     def _compute_formatted_date(self):
