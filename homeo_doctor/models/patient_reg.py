@@ -49,6 +49,8 @@ class PatientRegistration(models.Model):
     sugar_level = fields.Integer(string='Sugar Level (mg/dl)')
     ppbs = fields.Integer(string='PPBS (mg/dl)')
     weight = fields.Float(string='Weight (kg)')
+    spo = fields.Char(string='SPO2')
+    pulse_rate = fields.Char(string='Pulse Rate')
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI")
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray")

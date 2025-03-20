@@ -113,7 +113,7 @@
                                         <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Per Time</div>
                                         <div style="display: table-cell; width: 15%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Timing</div>
                                         <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Unit Price</div>
-                                        <div style="display: table-cell; width: 7%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Disc %</div>
+<!--                                        <div style="display: table-cell; width: 7%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Disc %</div>-->
                                         <div style="display: table-cell; width: 7%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">GST (%)</div>
                                         <div style="display: table-cell; width: 10%; padding: 8px; text-align: center;">Total</div>
                                     </div>
@@ -155,9 +155,9 @@
                                                 <td class="text-right" style="width: 8%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
                                                     <span t-field="medicine.per_ped" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
                                                 </td>
-                                                <td class="text-center" style="width: 7%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
-                                                    <span t-field="medicine.discount"/>%
-                                                </td>
+<!--                                                <td class="text-center" style="width: 7%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">-->
+<!--                                                    <span t-field="medicine.discount"/>%-->
+<!--                                                </td>-->
                                                 <td class="text-center" style="width: 7%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
                                                     <span t-field="medicine.gst"/>%
                                                 </td>
@@ -281,7 +281,7 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="patient_id" string="Patient ID"/>
+                                <field name="patient_id" string="UHID"/>
                                 <field name="name" string="Patient Name"/>
                                 <field name="phone_number"/>
                             </group>
@@ -304,13 +304,13 @@
                                         <field name="hsn"/>
                                         <field name="batch"/>
                                         <field name="manf_date"/>
-                                        <field name="packing"/>
+<!--                                        <field name="packing"/>-->
                                         <field name="exp_date"/>
                                         <field name="mfc"/>
                                         <field name="qty"/>
                                         <field name="per_ped" string="Rate"/>
                                         <field name="gst"/>
-                                        <field name="discount"/>
+<!--                                        <field name="discount"/>-->
                                         <field name="stock_in_hand"/>
                                         <field name="rate" sum="Total" string="Amount"/>
                                     </tree>

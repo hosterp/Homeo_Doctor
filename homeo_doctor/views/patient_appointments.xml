@@ -85,13 +85,13 @@
     </record>
 
     <record id="action_patient_appointments" model="ir.actions.act_window">
-        <field name="name">Patient Appointments</field>
+        <field name="name">Patient Revisits</field>
         <field name="res_model">patient.appointment</field>
         <field name="view_mode">tree,form</field>
         <field name="target">current</field>
     </record>
 
-    <menuitem id="menu_patient_appointments" name="Appointments" action="action_patient_appointments"
+    <menuitem id="menu_patient_appointments" name="Revisit" action="action_patient_appointments"
               parent="menu_my_patient_template_root"/>
 
 </odoo>
