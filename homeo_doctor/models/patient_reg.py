@@ -292,8 +292,8 @@ class PatientRegistration(models.Model):
                 raise UserError("Patient not selected.")
 
             # Debugging output
-            print("User  ID:", consultation.user_id)
-            print("User  Reference No:", consultation.user_id.reference_no)
+            # print("User  ID:", consultation.user_id)
+            # print("User  Reference No:", consultation.user_id.reference_no)
             doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
             if not doctor:
                 raise UserError("Doctor not found in the system.")
@@ -383,8 +383,8 @@ class PatientRegistration(models.Model):
                 raise UserError("Patient not selected.")
 
             # Debugging output
-            print("User  ID:", consultation.user_id)
-            print("User  Reference No:", consultation.user_id.reference_no)
+            # print("User  ID:", consultation.user_id)
+            # print("User  Reference No:", consultation.user_id.reference_no)
             doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
             if not doctor:
                 raise UserError("Doctor not found in the system.")
@@ -429,8 +429,8 @@ class PatientRegistration(models.Model):
                 raise UserError("Patient not selected.")
 
             # Debugging output
-            print("User  ID:", consultation.user_id)
-            print("User  Reference No:", consultation.user_id.reference_no)
+            # print("User  ID:", consultation.user_id)
+            # print("User  Reference No:", consultation.user_id.reference_no)
             doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
             if not doctor:
                 raise UserError("Doctor not found in the system.")
