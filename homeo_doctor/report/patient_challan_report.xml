@@ -87,7 +87,7 @@
                                             Registration Fee:
                                         </td>
                                         <td style="padding: 8px; border: 1px solid #000;">
-                                            <t t-esc="doc.registration_fee"/>
+                                            <t t-esc="doc.registration_fee.fee"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -103,7 +103,7 @@
                                             Amount:
                                         </td>
                                         <td style="padding: 8px; border: 1px solid #000;">
-                                            <t t-esc="doc.registration_fee + doc.consultation_fee"/>
+                                            <t t-esc="doc.registration_fee.fee + doc.consultation_fee"/>
                                         </td>
                                     </tr>
 
