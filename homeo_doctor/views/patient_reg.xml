@@ -73,8 +73,25 @@
                             <group class="weight_temp">
                                 <field name="weight" string="Weight (kg)"/>
                             </group>
+<!--                            <group class="weight_temp">-->
+<!--                                <field name="temperature" string="Temperature (°C)"/>-->
+<!--                            </group>-->
+<!--                            <group class="weight_temp">-->
+<!--                                <field name="spo" string="SPO2"/>-->
+<!--                            </group>-->
+<!--                            <group class="weight_temp">-->
+<!--                                <field name="pulse_rate" string="Pulse Rate"/>-->
+<!--                            </group>-->
+                        </group>
+                        <group class="o_vital_signs_group">
                             <group class="weight_temp">
                                 <field name="temperature" string="Temperature (°C)"/>
+                            </group>
+                            <group class="weight_temp">
+                                <field name="spo" string="SPO2 (%)"/>
+                            </group>
+                            <group class="weight_temp">
+                                <field name="pulse_rate" string="Pulse Rate (bpm)"/>
                             </group>
                         </group>
 

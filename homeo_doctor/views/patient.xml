@@ -11,7 +11,7 @@
                                 class="oe_stat_button" invisible="1">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
-                        <button name="action_create_appointment" type="object" string="Create Appointment"/>
+<!--                        <button name="action_create_appointment" type="object" string="Create Appointment"/>-->
 
                     </header>
                     <sheet>
@@ -25,8 +25,8 @@
                             <group>
                                 <field name="token_no" readonly="1"/>
                                 <field name="patient_id"/>
-                                <field name="address" required="1"/>
-                                <field name="pin_code" required="1"/>
+                                <field name="address" />
+                                <field name="pin_code" />
                                 <field name="email" widget="email"/>
                                 <!--                                <field name="registration_fee"/>-->
 

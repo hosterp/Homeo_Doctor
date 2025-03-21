@@ -49,6 +49,8 @@ class PatientRegistration(models.Model):
     sugar_level = fields.Integer(string='Sugar Level (mg/dl)')
     ppbs = fields.Integer(string='PPBS (mg/dl)')
     weight = fields.Float(string='Weight (kg)')
+    spo = fields.Char(string='SPO2')
+    pulse_rate = fields.Char(string='Pulse Rate')
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI")
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray")
@@ -292,8 +294,8 @@ class PatientRegistration(models.Model):
                 raise UserError("Patient not selected.")
 
             # Debugging output
-            print("User  ID:", consultation.user_id)
-            print("User  Reference No:", consultation.user_id.reference_no)
+            # print("User  ID:", consultation.user_id)
+            # print("User  Reference No:", consultation.user_id.reference_no)
             doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
             if not doctor:
                 raise UserError("Doctor not found in the system.")
@@ -383,8 +385,8 @@ class PatientRegistration(models.Model):
                 raise UserError("Patient not selected.")
 
             # Debugging output
-            print("User  ID:", consultation.user_id)
-            print("User  Reference No:", consultation.user_id.reference_no)
+            # print("User  ID:", consultation.user_id)
+            # print("User  Reference No:", consultation.user_id.reference_no)
             doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
             if not doctor:
                 raise UserError("Doctor not found in the system.")
@@ -429,8 +431,8 @@ class PatientRegistration(models.Model):
                 raise UserError("Patient not selected.")
 
             # Debugging output
-            print("User  ID:", consultation.user_id)
-            print("User  Reference No:", consultation.user_id.reference_no)
+            # print("User  ID:", consultation.user_id)
+            # print("User  Reference No:", consultation.user_id.reference_no)
             doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
             if not doctor:
                 raise UserError("Doctor not found in the system.")
