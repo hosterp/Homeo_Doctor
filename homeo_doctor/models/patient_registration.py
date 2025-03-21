@@ -35,7 +35,7 @@ class PatientRegistration(models.Model):
     vssc_id = fields.Char(string="VSSC ID No")
     department_id = fields.Many2one('doctor.department', string='Department')
     doc_name = fields.Many2one('doctor.profile', string='Doctor')
-    registration_fee = fields.Float(string="Registration Fee", default=50.0)
+    registration_fee = fields.Many2one('patient.registration.fee',string="Registration Fee", default=lambda self: self._default_registration_fee())
     remark = fields.Text(string="Remark")
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
@@ -77,6 +77,12 @@ class PatientRegistration(models.Model):
     # ('card', 'Card')
     # ], string='Payment Method')
     # payment_reference = fields.Char(string='Payment Reference')
+
+    def _default_registration_fee(self):
+        """Fetch the first registration fee as the default"""
+        return self.env['patient.registration.fee'].search([], limit=1).id
+
+
     def action_walk_in_patient(self):
         return {
             'type': 'ir.actions.act_window',
@@ -321,3 +327,10 @@ class RoomCategory(models.Model):
     room_category = fields.Char(string='Room Category')
     advance_amount = fields.Integer(string='Advance Amount')
     nursing_fee = fields.Integer(string='Nursing Fee')
+
+
+class PatientRegistrationFee(models.Model):
+    _name='patient.registration.fee'
+    _rec_name='fee'
+
+    fee=fields.Integer(string='Patient Registration Fee')
