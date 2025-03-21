@@ -50,7 +50,7 @@
                                 <field name="doc_name"/>
                                 <field name="time"/>
                                 <field name="consultation_fee"/>
-                                <field name="registration_fee" readonly="1"/>
+                                <field name="registration_fee" />
                                 <field name="admission_boolean" invisible="1"/>
                             </group>
                         </group>
