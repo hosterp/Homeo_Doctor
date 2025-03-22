@@ -390,3 +390,39 @@ html {
 .pharmacy_description .o_form_sheet_bg > .o_form_sheet {
 	max-width: 93% !important;
 }
+
+
+.dropdown-menu a[data-menu="documentation"],
+.dropdown-menu a[data-menu="support"],
+.dropdown-menu a[data-menu="shortcuts"],
+.dropdown-menu a[data-menu="settings"],
+.dropdown-menu a[data-menu="account"],
+.dropdown-menu .dropdown-divider {
+    display: none !important;
+}
+
+ .o_main_navbar .o_switch_company_menu > a .oe_topbar_name {
+	display: inline-block;
+	max-width: 250px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	vertical-align: top;
+	display: none !important;
+}
+
+.o_MessagingMenu {
+    display: none !important;
+}
+
+.o_mail_systray_item {
+    display: none !important;
+}
+
+a[data-menu-xmlid="mail.menu_root_discuss"] {
+    display: none !important;
+}
+
+a[data-menu-xmlid="hr.menu_hr_root"] {
+    display: none !important;
+} 
