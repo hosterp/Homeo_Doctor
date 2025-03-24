@@ -655,8 +655,8 @@ class LabReferral(models.Model):
     user_ide = fields.Many2one('patient.reg', string="Patient", readonly=True)
     patient_id = fields.Many2one('patient.registration', string='Patient')
     patient_name = fields.Char(related='patient_id.patient_name', string='Patient Name')
-    lab_test = fields.Many2many('labtest.type', string='Lab Test')
-    test_type = fields.Many2many('test.type', string='Test Type')
+    lab_test = fields.Many2many('lab.department', string='Lab Test Department')
+    test_type = fields.Many2many('lab.investigation', string='Investigation')
     referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation'), ('lab', 'LAB')],
                                      default='lab')
     details = fields.Text(string="Referral Details")
@@ -665,14 +665,14 @@ class LabReferral(models.Model):
 
     @api.onchange('lab_test', 'test_type')
     def _onchange_tests(self):
-        lab_tests = ', '.join(self.lab_test.exists().mapped('lab_test'))
-        test_types = ', '.join(self.test_type.exists().mapped('test_type'))
+        lab_test_department = ', '.join(self.lab_test.exists().mapped('department_name'))
+        investigation = ', '.join(self.test_type.exists().mapped('investigation_name'))
 
         details_list = []
-        if lab_tests:
-            details_list.append(f"Lab Tests: {lab_tests}")
-        if test_types:
-            details_list.append(f"Test Types: {test_types}")
+        if lab_test_department:
+            details_list.append(f"Lab Test Department: {lab_test_department}")
+        if investigation:
+            details_list.append(f"investigation: {investigation}")
 
         self.details = "\n".join(details_list)
 
