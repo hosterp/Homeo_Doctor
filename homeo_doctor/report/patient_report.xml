@@ -9,12 +9,11 @@
                             <div style="text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 10px;">
                                 <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                      style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px;"/>
-                                <h1 style="font-size: 28px; font-weight: bold; color: #2c3e50; margin: 0;">DPMS HOSPITAL
-                                    GROUP
+                                <h1 style="font-size: 28px; font-weight: bold; color: #2c3e50; margin: 0;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
                                 </h1>
-                                <p style="font-size: 14px; color: #555; margin: 5px 0;">NCC Road, Ambalamukku,
-                                    Thiruvananthapuram
+                                <p style="font-size: 14px; color: #555; margin: 5px 0;">EANIKKARA, KARAKULAM PO THIRUVANANTHAPURAM -695 564
                                 </p>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004,2374004 dpmshospital@gmail.com</p>
                             </div>
 
                             <!-- Patient Details -->
@@ -75,15 +74,15 @@
 
                             <!-- Footer -->
                         </div>
-                        <div style="text-align: center; border-top: 2px solid #2c3e50; padding-top: 10px; margin-top: 20px; font-size: 12px; color: #555;">
-                            <p>
-                                <strong>PH:</strong>
-                                0471-2432121, 9188429198 | <strong>Email:</strong>
-                                <a href="mailto:santhwanatvpm@gmail.com" style="color: #007bff; text-decoration: none;">
-                                    santhwanatvpm@gmail.com
-                                </a>
-                            </p>
-                        </div>
+<!--                        <div style="text-align: center; border-top: 2px solid #2c3e50; padding-top: 10px; margin-top: 20px; font-size: 12px; color: #555;">-->
+<!--                            <p>-->
+<!--                                <strong>PH:</strong>-->
+<!--                                0471-2432121, 9188429198 | <strong>Email:</strong>-->
+<!--                                <a href="mailto:santhwanatvpm@gmail.com" style="color: #007bff; text-decoration: none;">-->
+<!--                                    santhwanatvpm@gmail.com-->
+<!--                                </a>-->
+<!--                            </p>-->
+<!--                        </div>-->
                     </t>
                 </t>
             </t>

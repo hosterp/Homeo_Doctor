@@ -39,7 +39,7 @@ class PatientRegistration(models.Model):
     remark = fields.Text(string="Remark")
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
-    time = fields.Datetime(string="Date & Time")
+    time = fields.Date(string="Date & Time")
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI Reports")
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
