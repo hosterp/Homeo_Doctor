@@ -426,3 +426,28 @@ a[data-menu-xmlid="mail.menu_root_discuss"] {
 a[data-menu-xmlid="hr.menu_hr_root"] {
     display: none !important;
 } 
+.o_menu_entry_lvl_1 span {
+    font-weight: bold !important;
+}
+#menu_lab_root {
+    font-weight: bold !important;
+}
+
+.o_main_navbar .o_menu_sections,
+.o_main_navbar .o_menu_systray span,
+.o_menu_brand {
+    font-weight: bold !important;
+}
+
+
+.o_menu_apps .dropdown-item {
+    font-weight: bold !important;
+}
+
+
+.o_menu_entry_lvl_1 span,
+.o_menu_entry_lvl_2 span,
+.o_menu_entry_lvl_3 span {
+    font-weight: bold !important;
+}
+
