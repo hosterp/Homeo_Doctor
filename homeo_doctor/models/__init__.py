@@ -19,3 +19,4 @@ from .import intent
 from .import casualty
 from .import appointment_payment_wizrad
 from .import lab_department
+from .import purchase_order
