@@ -19,14 +19,29 @@
                         <t t-foreach="docs" t-as="doc">
                             <div class="page" style="width: 80%; margin: auto; padding: 20px; border: 1px solid #000;">
 
-                             <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)" style="width: 45px; height: 45px; border-radius: 50%; margin-right: 8px;"/>
+                                <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
 
-                                <div style="text-align: center; margin-bottom: 20px;">
-                                    <h1 style="font-size: 24px; margin: 0;">SATHWANA HOSPITAL</h1>
-                                    <p style="margin: 0; font-size: 14px;">NCC Road,Ambalamukku,
-                                 Thiruvananthapuraml</p>
-                                    <hr style="border: 1px solid #000;"/>
+                                    <div style="text-align: center;">
+                                        <h1 style="font-size: 30px; margin: 0; font-weight: bold; color: #2c3e50;">DPMS
+                                            HOSPITAL GROUP
+                                        </h1>
+                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">NCC Road, Ambalamukku,
+                                            Thiruvananthapuram
+                                        </p>
+<!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
+<!--                                            <strong>PH:</strong>-->
+<!--                                            0471-2432121, 9188429198 |-->
+<!--                                            <strong>Email:</strong>-->
+<!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
+<!--                                               style="color: #007bff; text-decoration: none;">-->
+<!--                                                santhwanatvpm@gmail.com-->
+<!--                                            </a>-->
+<!--                                        </p>-->
+                                    </div>
                                 </div>
+                                <hr style="border: 2px solid #000; width: 60%; margin: 15px auto;"/>
 
 
                                 <!-- Report Title -->
@@ -117,12 +132,22 @@
                                     <!--                                    </tr>-->
                                 </table>
 
-                                <!-- Footer -->
-                                <!--                                <div style="text-align: center; margin-top: 30px;">-->
-                                <!--                                    <p style="font-size: 14px;">Thank you for visiting-->
-                                <!--                                        <strong>HOSPITAL NAME</strong>-->
-                                <!--                                    </p>-->
-                                <!--                                </div>-->
+                                <table style="width: 100%; text-align: center;">
+                                    <tr>
+                                        <td>
+                                            <p style="margin: 5px 0; font-size: 10px; color: #555;">
+                                                <strong>Ph:</strong>
+                                                0471-2432121, 9188429198 |
+                                                <strong>Email:</strong>
+                                                <a href="mailto:santhwanatvpm@gmail.com"
+                                                   style="color: #007bff; text-decoration: none;">
+                                                    santhwanatvpm@gmail.com
+                                                </a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+
 
                             </div>
                         </t>
