@@ -57,6 +57,7 @@
         "views/casualty.xml",
         "views/stock_entry_view.xml",
         "views/appontment_payment_wizard.xml",
+        "views/master.xml",
 
     ],
     'assets': {

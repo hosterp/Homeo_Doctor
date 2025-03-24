@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_lab_investigation_tree" model="ir.ui.view">
+            <field name="name">lab.investigation.tree</field>
+            <field name="model">lab.investigation</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="lab_department"/>
+                    <field name="investigation_name"/>
+                    <field name="bill_code"/>
+                    <field name="rate"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_lab_investigation_form" model="ir.ui.view">
+            <field name="name">lab.investigation.form</field>
+            <field name="model">lab.investigation</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="lab_department"/>
+                                <field name="investigation_name"/>
+                            </group>
+                            <group>
+                                <field name="bill_code"/>
+                                <field name="rate"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_lab_department_tree" model="ir.ui.view">
+            <field name="name">lab.department.tree</field>
+            <field name="model">lab.department</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="department_name"/>
+                    <field name="order_no"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_lab_department_form" model="ir.ui.view">
+            <field name="name">lab.department.form</field>
+            <field name="model">lab.department</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="department_name"/>
+                            <field name="order_no"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_lab_department" model="ir.actions.act_window">
+            <field name="name">Department</field>
+            <field name="res_model">lab.department</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_lab_investigation" model="ir.actions.act_window">
+            <field name="name">Investigation</field>
+            <field name="res_model">lab.investigation</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_lab_root" name="Master Menu" parent="menu_homeo_head" sequence="11"/>
+        <menuitem id="menu_lab" name="Lab" parent="menu_lab_root" sequence="1"/>
+        <menuitem id="menu_lab_department" name="Department" parent="menu_lab" action="action_lab_department"
+                  sequence="1"/>
+        <menuitem id="menu_lab_investigation" name="Investigation" parent="menu_lab" action="action_lab_investigation"
+                  sequence="2"/>
+
+
+    </data>
+</odoo>
