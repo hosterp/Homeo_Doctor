@@ -428,6 +428,7 @@
                   parent="menu_pharmacy_root"
                   action="action_pharmacy_description"
                   sequence="0"/>
+        <menuitem id="menu_lab_root" name="Lab" sequence="1"/>
 
         <menuitem id="menu_my_product_template"
                   name="Medicines"
