@@ -14,10 +14,31 @@
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
+                <xpath expr="//field[@name='date_order']" position="replace"/>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="date_order"/>
+                </xpath>
                 <xpath expr="//field[@name='date_order']" position="attributes">
                     <attribute name="string">Order Date</attribute>
                 </xpath>
-                <xpath expr="//group/field[@name='date_planned']" position="attributes">
+                <xpath expr="//label[@for='date_planned']" position="replace"/>
+
+                <xpath expr="//field[@name='date_planned']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//label[@for='date_approve']" position="replace"/>
+
+                <xpath expr="//field[@name='date_approve']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_ref']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//div[@name='reminder']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='receipt_reminder_email']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
 
