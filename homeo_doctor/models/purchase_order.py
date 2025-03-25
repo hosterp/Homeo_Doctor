@@ -5,7 +5,7 @@ class PurchaseOrderInherit(models.Model):
 
     custom_note = fields.Char(string="Custom Note")
     supplier_id= fields.Many2one('account.move',string='Supplier No',domain="[('move_type', '=', 'in_invoice')]")
-    supplier_name= fields.Char(related='supplier_id.supplier_name',string='Supplier Name')
+    supplier_name= fields.Many2one('supplier.name',string='Supplier Name')
     partner_id = fields.Many2one(
         "res.partner",
         string="Vendor",
@@ -35,3 +35,9 @@ class PurchaseOrderLine(models.Model):
     _inherit='purchase.order.line'
 
     company=fields.Char(string='Company')
+
+class SupplierCreation(models.Model):
+    _name = 'supplier.name'
+    _rec_name = 'supplier'
+
+    supplier=fields.Char('Supplier')

@@ -7,6 +7,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="store_in_charge"/>
+                    <field name="supplier_name"/>
                     <field name="approved_by"/>
                 </xpath>
                 <xpath expr="//button[@name='action_rfq_send']" position="replace"/>
@@ -130,10 +131,17 @@
                     <attribute name="invisible">1</attribute>
                     <attribute name="optional">hide</attribute>
                 </xpath>
+                <xpath expr="//field[@name='amount_total']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="optional">hide</attribute>
+                </xpath>
                 <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="string">PO Number</attribute>
                 </xpath>
-                <!-- Add New Fields -->
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="date_order" string="Date"/>
+                    <field name="supplier_name" string="Supplier Name"/>
+                </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="store_in_charge"/>
                     <field name="approved_by"/>
@@ -142,6 +150,7 @@
                     <attribute name="invisible">1</attribute>
                     <attribute name="optional">hide</attribute>
                 </xpath>
+
 
             </field>
         </record>
