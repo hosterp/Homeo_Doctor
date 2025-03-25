@@ -175,7 +175,7 @@
             <field name="name">Purchase Orders</field>
             <field name="res_model">purchase.order</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[("state", "=", "purchase")]</field>
+            <field name="domain">[]</field>
         </record>
         <record id="purchase.menu_purchase_rfq" model="ir.ui.menu">
             <field name="active" eval="False"/>

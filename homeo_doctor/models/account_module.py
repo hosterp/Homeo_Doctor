@@ -47,7 +47,7 @@ class AccountMove(models.Model):
                 invoice_lines.append((0, 0, {
                     'product_id': line.product_id.id,
                     'name': line.name,
-                    'quantity': line.product_qty,
+                    'quantity': line.qty_received,
                     'price_unit': line.price_unit,
                     'account_id': line.product_id.property_account_expense_id.id or line.product_id.categ_id.property_account_expense_categ_id.id,
                     'tax_ids': [(6, 0, line.taxes_id.ids)],
