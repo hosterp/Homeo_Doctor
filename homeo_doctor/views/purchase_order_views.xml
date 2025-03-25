@@ -169,6 +169,11 @@
         <record id="purchase.menu_purchase_general_settings" model="ir.ui.menu">
             <field name="active" eval="False"/>
         </record>
+        <record id="account.menu_action_move_in_invoice_type" model="ir.ui.menu">
+            <field name="parent_id" ref="purchase.menu_procurement_management"/>
+            <field name="name">Supplier Invoice</field>
+            <field name="sequence">50</field>
+        </record>
 
     </data>
 </odoo>
