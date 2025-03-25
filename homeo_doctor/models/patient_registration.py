@@ -1,5 +1,5 @@
 import re
-from datetime import date
+from datetime import date, datetime
 
 from gevent.util import print_run_info
 
@@ -242,37 +242,40 @@ class PatientRegistration(models.Model):
 
     @api.model
     def create(self, vals):
+        year_prefix = datetime.today().strftime("%y")  # Get last two digits of the year (e.g., "25" for 2025)
+
+        def format_sequence(sequence):
+            """Ensure sequence has at least 7 digits and prepend year prefix."""
+            sequence_str = str(sequence).zfill(7)  # Ensure at least 7 digits
+            return f"{year_prefix}/{sequence_str}"  # Format as "25/0012332"
+
         # Generate token number if doctor is selected
         if vals.get('no_consultation', False):
             vals['token_no'] = False  # Do not generate token number
             if vals.get('reference_no', _('New')) == _('New'):
-                vals['reference_no'] = self.env['ir.sequence'].next_by_code('patient.reg.group') or _('New')
-                # Skip creating a record in 'patient.registration' for no consultation case
+                sequence = self.env['ir.sequence'].next_by_code('patient.reg.group') or _('New')
+                vals['reference_no'] = format_sequence(sequence)  # Apply formatting
                 return super(PatientRegistration, self).create(vals)
+
         if vals.get('doc_name'):
             doctor = self.env['doctor.profile'].browse(vals.get('doc_name'))
             appointment_date = vals.get('time') if vals.get('time') else fields.Date.context_today(self)
             if doctor:
                 vals['token_no'] = doctor.get_next_token_number(appointment_date)
 
-        # Check if consultation_check is False in the vals dictionary before generating reference_no
-        if not vals.get('consultation_check'):  # Default to True if not set
+        # Check if consultation_check is False before generating reference_no
+        if not vals.get('consultation_check'):
             if vals.get('reference_no', _('New')) == _('New'):
-                vals['reference_no'] = self.env['ir.sequence'].next_by_code('patient.reg.group') or _('New')
+                sequence = self.env['ir.sequence'].next_by_code('patient.reg.group') or _('New')
+                vals['reference_no'] = format_sequence(sequence)  # Apply formatting
         else:
-            # If consultation_check is True, generate a temporary reference number (temp_reference_no)
+            # If consultation_check is True, generate a temporary reference number with formatting
             if vals.get('temp_reference_no', _('New')) == _('New'):
-                vals['temp_reference_no'] = self.env['ir.sequence'].next_by_code('patient.reg.temp') or _('New')
-
-        # # Generate token number if doctor is selected
-        # if vals.get('doc_name'):
-        #     doctor = self.env['doctor.profile'].browse(vals.get('doc_name'))
-        #     if doctor:
-        #         vals['token_no'] = doctor.get_next_token_number()
+                temp_sequence = self.env['ir.sequence'].next_by_code('patient.reg.temp') or _('New')
+                vals['temp_reference_no'] = format_sequence(temp_sequence)  # Apply formatting
 
         # Create the main patient registration record
         record = super(PatientRegistration, self).create(vals)
-
         # After record creation, check if consultation_check is False
         if not vals.get('admission_boolean', False) and not record.consultation_check:
             self.env['patient.registration'].create({
