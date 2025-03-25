@@ -47,6 +47,9 @@
                 <xpath expr="//button[@name='confirm_reminder_mail']" position="attributes">
                     <attribute name="attrs">{'invisible': True}</attribute>
                 </xpath>
+
+                <xpath expr="//button[@name='action_rfq_send' and @states='purchase']" position="replace"/>
+
             </field>
         </record>
 
