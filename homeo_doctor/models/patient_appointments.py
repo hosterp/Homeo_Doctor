@@ -77,7 +77,7 @@ class PatientAppointment(models.Model):
                     print(f"consultation_fee_limit: {consultation_fee_limit}, consultation_fee: {consultation_fee}")
 
                     # Convert appointment_date to date for comparison
-                    appointment_date = record.appointment_date.date()
+                    appointment_date = record.appointment_date
                     print(f"Converted appointment_date to: {appointment_date}")
 
                     # 1. Check last appointment
@@ -88,7 +88,7 @@ class PatientAppointment(models.Model):
                     ], order='appointment_date desc', limit=1)
 
                     if last_appointment:
-                        last_appointment_date = last_appointment.appointment_date.date()
+                        last_appointment_date = last_appointment.appointment_date
                         last_appointment_day = (appointment_date - last_appointment_date).days
                         print(
                             f"Last appointment found. Last appointment date: {last_appointment_date}, days since last appointment: {last_appointment_day}")
