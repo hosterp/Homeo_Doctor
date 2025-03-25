@@ -49,6 +49,10 @@
                 </xpath>
 
                 <xpath expr="//button[@name='action_rfq_send' and @states='purchase']" position="replace"/>
+                <xpath expr="//page[@name='purchase_delivery_invoice']" position="attributes">
+                    <attribute name="attrs">{'invisible': True}</attribute>
+                </xpath>
+
 
             </field>
         </record>
