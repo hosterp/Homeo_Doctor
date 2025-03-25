@@ -65,7 +65,7 @@
         <!-- Create the submenu that references your action -->
         <menuitem id="menu_intent_record"
                   name="Intent Records"
-                  parent="menu_homeo_head"
+                  parent="purchase.menu_purchase_root"
                   action="action_intent_record"
                   sequence="8"/>
     </data>
