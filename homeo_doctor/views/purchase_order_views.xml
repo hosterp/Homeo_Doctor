@@ -6,8 +6,8 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="store_in_charge"/>
                     <field name="supplier_name"/>
+                    <field name="store_in_charge"/>
                     <field name="approved_by"/>
                 </xpath>
                 <xpath expr="//button[@name='action_rfq_send']" position="replace"/>
@@ -155,8 +155,8 @@
                     <attribute name="string">PO Number</attribute>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="before">
-                    <field name="supplier_name" string="Supplier Name"/>
                     <field name="date_order" string="Date"/>
+                    <field name="supplier_name" string="Supplier Name"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="store_in_charge"/>
