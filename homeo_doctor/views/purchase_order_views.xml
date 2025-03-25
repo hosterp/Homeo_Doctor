@@ -21,6 +21,28 @@
             <field name="view_mode">tree,form</field>
             <field name="domain">[("state", "=", "purchase")]</field>
         </record>
+        <record id="purchase.menu_purchase_rfq" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+        <record id="purchase.menu_procurement_management_supplier_name" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+        <record id="purchase.menu_procurement_partner_contact_form" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+        <record id="purchase.purchase_report" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+        <record id="purchase.menu_product_pricelist_action2_purchase" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+        <record id="purchase.menu_product_category_config_purchase" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+        <record id="purchase.menu_purchase_general_settings" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
+
 
     </data>
 </odoo>
