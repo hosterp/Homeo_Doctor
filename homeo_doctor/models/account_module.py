@@ -27,11 +27,37 @@ class AccountMove(models.Model):
     supplier_gst = fields.Char('GST No')
     supplier_dl = fields.Char('DL/REG No')
     supplier_bill_date = fields.Date(string='Bill Date', default=lambda self: date.today())
-
+    po_number=fields.Many2one('purchase.order',string='PO Number')
+    with_po=fields.Boolean()
+    without_po=fields.Boolean()
     invoice_date = fields.Date(
         string="Date",
         default=lambda self: date.today()
     )
+
+    @api.onchange('po_number')
+    def _onchange_po_number(self):
+        """ Fetch purchase order lines and replace the existing invoice lines """
+        if self.po_number:
+            # Clear previous invoice lines
+            self.invoice_line_ids = [(5, 0, 0)]
+
+            invoice_lines = []
+            for line in self.po_number.order_line:
+                invoice_lines.append((0, 0, {
+                    'product_id': line.product_id.id,
+                    'name': line.name,
+                    'quantity': line.product_qty,
+                    'price_unit': line.price_unit,
+                    'account_id': line.product_id.property_account_expense_id.id or line.product_id.categ_id.property_account_expense_categ_id.id,
+                    'tax_ids': [(6, 0, line.taxes_id.ids)],
+                    'product_uom_id': line.product_uom.id,
+                }))
+
+            self.invoice_line_ids = invoice_lines
+        else:
+            # If PO is removed, clear invoice lines
+            self.invoice_line_ids = [(5, 0, 0)]
 
     def _default_partner(self):
         return self.env['res.partner'].search([], limit=1)

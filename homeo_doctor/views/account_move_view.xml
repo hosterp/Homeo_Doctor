@@ -26,6 +26,8 @@
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="patient_name"
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
+                        <field name="po_number"
+                               attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="supplier_name"
                                attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="supplier_invoice"
