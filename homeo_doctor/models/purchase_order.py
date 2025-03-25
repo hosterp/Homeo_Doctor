@@ -14,7 +14,21 @@ class PurchaseOrderInherit(models.Model):
     )
     store_in_charge=fields.Many2one('store.incharge',string='Store in charge')
     approved_by=fields.Many2one('approved.store.person',string='Approved By')
+    STATE_SELECTION = [
+        ('draft', 'Draft'),
+        ('sent', 'Sent'),
+        ('to approve', 'To Approve'),
+        ('purchase', 'Purchase Order'),
+        ('approved', 'Approved'),  # Add the new state
+        ('done', 'Locked'),
+        ('cancel', 'Cancelled'),
+    ]
+    state = fields.Selection(STATE_SELECTION, string='Status', default='draft')
 
+    def action_approve_order(self):
+        """Custom approve button to change state to 'approved'"""
+        for order in self:
+            order.state = 'approved'
 
 class ApprovedPerson(models.Model):
     _name='approved.store.person'

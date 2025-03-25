@@ -53,10 +53,26 @@
                 <xpath expr="//page[@name='purchase_delivery_invoice']" position="attributes">
                     <attribute name="attrs">{'invisible': True}</attribute>
                 </xpath>
-                <xpath expr="//button[@name='action_create_invoice']" position="replace">
-                    <button name="action_create_invoice" string="Approve" type="object"
-                            context="{'create_bill':True}"
-                            attrs="{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}"/>
+                <xpath expr="//button[@name='action_create_invoice']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!--                <xpath expr="//button[@name='action_create_invoice']" position="replace">-->
+                <!--                    <button name="action_create_invoice" string="Approve" type="object"-->
+                <!--                            context="{'create_bill':True}"-->
+                <!--                            attrs="{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}"/>-->
+                <!--                </xpath>-->
+                <xpath expr="//button[@name='action_create_invoice']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <!-- Add Custom Approve Button -->
+                <xpath expr="//button[@name='button_confirm']" position="after">
+                    <button name="action_approve_order"
+                            string="Approve"
+                            type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'purchase')]}"/>
                 </xpath>
                 <xpath expr="//field[@name='product_id']" position="attributes">
                     <attribute name="string">Medicine</attribute>
@@ -139,8 +155,8 @@
                     <attribute name="string">PO Number</attribute>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="before">
-                    <field name="date_order" string="Date"/>
                     <field name="supplier_name" string="Supplier Name"/>
+                    <field name="date_order" string="Date"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="store_in_charge"/>
