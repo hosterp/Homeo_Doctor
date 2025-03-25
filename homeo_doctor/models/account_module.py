@@ -27,7 +27,7 @@ class AccountMove(models.Model):
     supplier_gst = fields.Char('GST No')
     supplier_dl = fields.Char('DL/REG No')
     supplier_bill_date = fields.Date(string='Bill Date', default=lambda self: date.today())
-    po_number=fields.Many2one('purchase.order',string='PO Number', domain="[('state', '=', 'approved')]",)
+    po_number=fields.Many2one('purchase.order',string='PO Number', domain="[('state', '=', 'purchase')]",)
     with_po=fields.Boolean()
     without_po=fields.Boolean()
     invoice_date = fields.Date(
