@@ -53,7 +53,7 @@ class AppointmentPaymentWizard(models.TransientModel):
 
             # Start with base registration values that exist in all cases
             registration_vals = {
-                'user_id': appointment.patient_id.reference_no,
+                'user_id': appointment.patient_id.id,
                 'patient_id': appointment.patient_id.id,
                 'token_no': token_no,  # Assign individual token number
                 'address': appointment.patient_id.address,
