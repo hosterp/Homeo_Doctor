@@ -244,5 +244,137 @@
         </record>
         <menuitem id="menu_patient_reg_form" name="Patient Reg" parent="menu_my_patient_template_root"
                   action="action_patient_reg" sequence="0"/>
+
+
+
+
+    <record id="patient_history_wizard_form" model="ir.ui.view">
+        <field name="name">patient.history.wizard.form</field>
+        <field name="model">patient.history.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Patient History">
+                <sheet>
+                    <group>
+                        <field name="patient_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Consultation History">
+                            <field name="consultation_history_ids">
+                                <tree>
+                                    <field name="date"/>
+                                    <field name="doctor_id"/>
+                                    <field name="presenting_complaints"/>
+                                    <field name="professional_diagnosis"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Lab Reports">
+                            <field name="lab_report_ids">
+                                <tree>
+                                    <field name="date"/>
+                                    <!-- <field name="report_type"/> -->
+                                    <field name="report_details"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="MRI Reports">
+                            <field name="mri_report_ids">
+                                <tree>
+                                    <field name="scan_report_date"/>
+                                    <field name="report_details"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="CT Reports">
+                            <field name="ct_report_ids">
+                                <tree>
+                                    <field name="scan_report_date"/>
+                                    <field name="report_details"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="X-Ray Reports">
+                            <field name="x_ray_report_ids">
+                                <tree>
+                                    <field name="scan_report_date"/>
+                                    <field name="report_details"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Pharmacy History">
+                            <field name="pharmacy_history_ids">
+                                <tree>
+                                    <field name="date"/>
+                                    <field name="doctor_name" string="Prescribed By"/>
+                                    <field name="bill_amount" string="Total Bill"/>
+                                    <button name="view_prescription_details" 
+                                            type="object" 
+                                            icon="fa-search" 
+                                            string="View Prescription"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_patient_history_wizard" model="ir.actions.act_window">
+        <field name="name">Patient History</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">patient.history.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+
+     <!-- Patient List Tree View -->
+    <record id="patient_list_tree_view" model="ir.ui.view">
+        <field name="name">patient.list.tree</field>
+        <field name="model">patient.reg</field>
+        <field name="arch" type="xml">
+            <tree string="Patient List">
+                <field name="reference_no" string="UHID"/>
+                <field name="patient_id" string="Name"/>
+                <field name="address"/>
+                <field name="age"/>
+                <field name="phone_number"/>
+                <field name="time" string="Register Date"/>
+                <button name="open_patient_history" 
+                        type="object" 
+                        icon="fa-history" 
+                        string="View History"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Patient List Action -->
+    <record id="action_patient_list" model="ir.actions.act_window">
+        <field name="name">Patient List</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">patient.reg</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="patient_list_tree_view"/>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem 
+        id="menu_patient_root" 
+        name="Patient Management" 
+        sequence="10"/>
+    
+    <menuitem 
+        id="menu_patient_list" 
+        name="Patient List" 
+        parent="menu_homeo_head" 
+        action="action_patient_list" 
+        sequence="0"/>
+    
+
+
+
+
     </data>
 </odoo>

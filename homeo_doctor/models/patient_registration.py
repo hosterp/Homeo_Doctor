@@ -318,6 +318,26 @@ class PatientRegistration(models.Model):
             'res_id': appointment.id,
             'target': 'current',
         }
+    
+    def open_patient_history(self):
+
+        self.ensure_one()
+        
+        # Create history wizard
+        history_wizard = self.env['patient.history.wizard'].create({
+            'patient_id': self.id
+        })
+        
+        # Return action to open wizard
+        return {
+            'name': f'Patient History - {self.patient_id}',
+            'type': 'ir.actions.act_window',
+            'res_model': 'patient.history.wizard',
+            'res_id': history_wizard.id,
+            'view_mode': 'form',
+            'target': 'new',
+            'context': self.env.context,
+        }
 
 
 class RoomCategory(models.Model):
@@ -334,3 +354,95 @@ class PatientRegistrationFee(models.Model):
     _rec_name='fee'
 
     fee=fields.Integer(string='Patient Registration Fee')
+
+
+
+
+class PatientHistoryWizard(models.TransientModel):
+    _name = 'patient.history.wizard'
+    _description = 'Patient History Wizard'
+
+    patient_id = fields.Many2one('patient.reg', string='Patient', required=True)
+    
+    # Consultation History
+    consultation_history_ids = fields.One2many(
+        'patient.registration', 
+        compute='_compute_consultation_history', 
+        string='Consultation History'
+    )
+    
+    # Lab Reports
+    lab_report_ids = fields.One2many(
+        'doctor.lab.report', 
+        compute='_compute_lab_reports', 
+        string='Lab Reports'
+    )
+    
+    # MRI Reports
+    mri_report_ids = fields.One2many(
+        'scanning.mri', 
+        compute='_compute_mri_reports', 
+        string='MRI Reports'
+    )
+    
+    # CT Reports
+    ct_report_ids = fields.One2many(
+        'scanning.ct', 
+        compute='_compute_ct_reports', 
+        string='CT Reports'
+    )
+    
+    # X-Ray Reports
+    x_ray_report_ids = fields.One2many(
+        'scanning.x.ray', 
+        compute='_compute_x_ray_reports', 
+        string='X-Ray Reports'
+    )
+    # Pharmacy History
+    pharmacy_history_ids = fields.One2many(
+        'pharmacy.description', 
+        compute='_compute_pharmacy_history', 
+        string='Pharmacy History'
+    )
+
+    @api.depends('patient_id')
+    def _compute_consultation_history(self):
+        for record in self:
+            record.consultation_history_ids = self.env['patient.registration'].search([
+                ('user_id', '=', record.patient_id.id)
+            ])
+
+    @api.depends('patient_id')
+    def _compute_lab_reports(self):
+        for record in self:
+            record.lab_report_ids = self.env['doctor.lab.report'].search([
+                ('user_ide', '=', record.patient_id.id)
+            ])
+
+    @api.depends('patient_id')
+    def _compute_mri_reports(self):
+        for record in self:
+            record.mri_report_ids = self.env['scanning.mri'].search([
+                ('user_ide', '=', record.patient_id.id)
+            ])
+
+    @api.depends('patient_id')
+    def _compute_ct_reports(self):
+        for record in self:
+            record.ct_report_ids = self.env['scanning.ct'].search([
+                ('user_ide', '=', record.patient_id.id)
+            ])
+
+    @api.depends('patient_id')
+    def _compute_x_ray_reports(self):
+        for record in self:
+            record.x_ray_report_ids = self.env['scanning.x.ray'].search([
+                ('user_ide', '=', record.patient_id.id)
+            ])
+
+    @api.depends('patient_id')
+    def _compute_pharmacy_history(self):
+        for record in self:
+            record.pharmacy_history_ids = self.env['pharmacy.description'].search([
+                ('patient_id', '=', record.patient_id.id)
+            ])

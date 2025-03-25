@@ -85,6 +85,21 @@ class PharmacyDescription(models.Model):
         }
     }
 
+    def view_prescription_details(self):
+        """
+        Open a view of prescription details for this pharmacy record
+        """
+        self.ensure_one()
+        return {
+            'name': 'Prescription Details',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'res_model': 'pharmacy.prescription.line',
+            'domain': [('pharmacy_id', '=', self.id)],
+            'target': 'new',
+            'context': self.env.context,
+        }
+
 
 class PharmacyPrescriptionLine(models.Model):
     _name = 'pharmacy.prescription.line'
@@ -187,6 +202,8 @@ class PharmacyPrescriptionLine(models.Model):
     #             record.rate = record.product_id.list_price * record.total_med
     #         else:
     #             record.rate = 0.0
+
+    
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
