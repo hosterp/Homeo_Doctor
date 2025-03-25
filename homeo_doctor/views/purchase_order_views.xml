@@ -57,10 +57,23 @@
                             context="{'create_bill':True}"
                             attrs="{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}"/>
                 </xpath>
+                <xpath expr="//field[@name='product_id']" position="attributes">
+                    <attribute name="string">Medicine</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_qty']" position="attributes">
+                    <attribute name="string">Required quantity</attribute>
 
-
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
+                    <field name="company"/>
+                </xpath>
             </field>
         </record>
+
         <record id="view_purchase_order_tree_inherit" model="ir.ui.view">
             <field name="name">purchase.order.tree.inherit</field>
             <field name="model">purchase.order</field>

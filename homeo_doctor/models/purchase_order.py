@@ -29,3 +29,9 @@ class StoreInCharge(models.Model):
 
 
     store_incharge= fields.Char(string='Store In Charge')
+
+
+class PurchaseOrderLine(models.Model):
+    _inherit='purchase.order.line'
+
+    company=fields.Char(string='Company')
