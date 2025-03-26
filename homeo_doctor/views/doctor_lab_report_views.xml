@@ -83,6 +83,9 @@
                         <group name="patient_info" string="Patient Information" col="2">
                             <group name="patient_primary_details">
                                 <field name="date" required="1"/>
+                                <field name="user_ide"
+                                       string="UHID"
+                                       />
 
                                 <!-- Registered Patient Fields -->
                                 <field name="register_visible" invisible="1"/>
@@ -92,11 +95,14 @@
                                 <field name="register_address"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"
                                        string="Address"/>
+                                <field name="register_age"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"
+                                       string="Age"/>
 
                                 <!-- Non-Registered Patient Fields -->
-                                <field name="user_ide"
-                                       string="UHID"
-                                       attrs="{'invisible': [('register_visible', '=', True)]}"/>
+<!--                                <field name="user_ide"-->
+<!--                                       string="UHID"-->
+<!--                                       />-->
                                 <field name="patient_name"
                                        attrs="{'invisible': [('register_visible', '=', True)], 'required': [('register_visible', '=', False)]}"
                                        string="Patient Name"/>
@@ -110,9 +116,9 @@
                                        string="Referring Doctor"/>
 
                                 <!-- Registered Patient Extended Details -->
-                                <field name="register_age"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"
-                                       string="Age"/>
+<!--                                <field name="register_age"-->
+<!--                                       attrs="{'invisible': [('register_visible', '=', False)]}"-->
+<!--                                       string="Age"/>-->
                                 <field name="register_phone_number"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"
                                        string="Phone Number"/>
