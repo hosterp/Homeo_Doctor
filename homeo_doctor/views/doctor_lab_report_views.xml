@@ -95,6 +95,9 @@
                                 <field name="register_address"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"
                                        string="Address"/>
+                                <field name="register_age"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"
+                                       string="Age"/>
 
                                 <!-- Non-Registered Patient Fields -->
 <!--                                <field name="user_ide"-->
@@ -113,9 +116,9 @@
                                        string="Referring Doctor"/>
 
                                 <!-- Registered Patient Extended Details -->
-                                <field name="register_age"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"
-                                       string="Age"/>
+<!--                                <field name="register_age"-->
+<!--                                       attrs="{'invisible': [('register_visible', '=', False)]}"-->
+<!--                                       string="Age"/>-->
                                 <field name="register_phone_number"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"
                                        string="Phone Number"/>

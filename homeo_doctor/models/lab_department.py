@@ -15,7 +15,7 @@ class LabDepartment(models.Model):
 class LabInvestigation(models.Model):
     _name = 'lab.investigation'
     _rec_name = 'investigation_name'
-    _order = 'investigation_name asc'
+    _order = 'lab_department asc'
 
 
 

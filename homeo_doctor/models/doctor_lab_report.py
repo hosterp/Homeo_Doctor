@@ -157,17 +157,17 @@ class DoctorLabReport(models.Model):
 
         return True
 
-    @api.onchange('user_ide')
-    def _onchange_patient_id(self):
-        if self.user_ide:
-            latest_referral = self.env['lab.referral'].search(
-                [('user_ide', '=', self.user_ide.id)],
-                order='create_date desc',
-                limit=1
-            )
-            self.lab_reference_no = latest_referral.id if latest_referral else False
-            self.referral_details=latest_referral.details if latest_referral else False
-            self.patient_id = latest_referral.patient_id if latest_referral else False
+    # @api.onchange('user_ide')
+    # def _onchange_patient_id(self):
+    #     if self.user_ide:
+    #         latest_referral = self.env['lab.referral'].search(
+    #             [('user_ide', '=', self.user_ide.id)],
+    #             order='create_date desc',
+    #             limit=1
+    #         )
+    #         self.lab_reference_no = latest_referral.id if latest_referral else False
+    #         self.referral_details=latest_referral.details if latest_referral else False
+    #         self.patient_id = latest_referral.patient_id if latest_referral else False
 
 
     def print_invoice(self):
