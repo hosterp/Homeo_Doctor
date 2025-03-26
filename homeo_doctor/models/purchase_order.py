@@ -28,7 +28,7 @@ class PurchaseOrderInherit(models.Model):
     def action_approve_order(self):
         """Custom approve button to change state to 'approved'"""
         for order in self:
-            order.state = 'approved'
+            order.state = 'purchase'
 
 class ApprovedPerson(models.Model):
     _name='approved.store.person'

@@ -27,7 +27,7 @@ class AccountMove(models.Model):
     supplier_gst = fields.Char('GST No')
     supplier_dl = fields.Char('DL/REG No')
     supplier_bill_date = fields.Date(string='Bill Date', default=lambda self: date.today())
-    po_number=fields.Many2one('purchase.order',string='PO Number')
+    po_number=fields.Many2one('purchase.order',string='PO Number', domain="[('state', '=', 'purchase')]",)
     with_po=fields.Boolean()
     without_po=fields.Boolean()
     invoice_date = fields.Date(
@@ -39,7 +39,7 @@ class AccountMove(models.Model):
     def _onchange_po_number(self):
         """ Fetch purchase order lines and replace the existing invoice lines """
         if self.po_number:
-            # Clear previous invoice lines
+            self.supplier_name = self.po_number.supplier_name.display_name
             self.invoice_line_ids = [(5, 0, 0)]
 
             invoice_lines = []
@@ -47,7 +47,7 @@ class AccountMove(models.Model):
                 invoice_lines.append((0, 0, {
                     'product_id': line.product_id.id,
                     'name': line.name,
-                    'quantity': line.product_qty,
+                    'quantity': line.qty_received,
                     'price_unit': line.price_unit,
                     'account_id': line.product_id.property_account_expense_id.id or line.product_id.categ_id.property_account_expense_categ_id.id,
                     'tax_ids': [(6, 0, line.taxes_id.ids)],

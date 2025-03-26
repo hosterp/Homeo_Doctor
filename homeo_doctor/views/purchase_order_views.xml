@@ -6,8 +6,8 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="store_in_charge"/>
                     <field name="supplier_name"/>
+                    <field name="store_in_charge"/>
                     <field name="approved_by"/>
                 </xpath>
                 <xpath expr="//button[@name='action_rfq_send']" position="replace"/>
@@ -90,6 +90,7 @@
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='qty_received']" position="attributes">
                     <attribute name="string">Approved Quantity</attribute>
+                    <attribute name="attrs">{'invisible': [('state', 'not in', ['approved', 'purchase'])]}</attribute>
                 </xpath>
 
             </field>
@@ -100,33 +101,27 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
             <field name="arch" type="xml">
-
                 <!-- Hide Fields -->
                 <xpath expr="//field[@name='partner_ref']" position="attributes">
                     <attribute name="invisible">1</attribute>
                     <attribute name="optional">hide</attribute>
                 </xpath>
-
                 <xpath expr="//field[@name='date_order']" position="attributes">
                     <attribute name="invisible">1</attribute>
                     <attribute name="optional">hide</attribute>
                 </xpath>
-
                 <xpath expr="//field[@name='date_approve']" position="attributes">
                     <attribute name="invisible">1</attribute>
                     <attribute name="optional">hide</attribute>
                 </xpath>
-
                 <xpath expr="//field[@name='date_planned']" position="attributes">
                     <attribute name="invisible">1</attribute>
                     <attribute name="optional">hide</attribute>
                 </xpath>
-
                 <xpath expr="//field[@name='origin']" position="attributes">
                     <attribute name="invisible">1</attribute>
                     <attribute name="optional">hide</attribute>
                 </xpath>
-
                 <xpath expr="//field[@name='invoice_status']" position="attributes">
                     <attribute name="invisible">1</attribute>
                     <attribute name="optional">hide</attribute>
@@ -151,23 +146,25 @@
                     <attribute name="invisible">1</attribute>
                     <attribute name="optional">hide</attribute>
                 </xpath>
+                <!-- Change PO Number label -->
                 <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="string">PO Number</attribute>
                 </xpath>
+                <!-- Add custom fields before existing fields -->
                 <xpath expr="//field[@name='name']" position="before">
-                    <field name="supplier_name" string="Supplier Name"/>
                     <field name="date_order" string="Date"/>
+                    <field name="supplier_name" string="Supplier Name"/>
                 </xpath>
+                <!-- Add custom fields after existing fields -->
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="store_in_charge"/>
                     <field name="approved_by"/>
                 </xpath>
+                <!-- Hide invoice_status again if needed -->
                 <xpath expr="//field[@name='invoice_status']" position="attributes">
                     <attribute name="invisible">1</attribute>
                     <attribute name="optional">hide</attribute>
                 </xpath>
-
-
             </field>
         </record>
 
@@ -175,8 +172,10 @@
             <field name="name">Purchase Orders</field>
             <field name="res_model">purchase.order</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[("state", "=", "purchase")]</field>
+            <field name="view_id" ref="view_purchase_order_tree_inherit"/>
+            <field name="domain">[('state', 'in', ['draft', 'approved', 'purchase'])]</field>
         </record>
+
         <record id="purchase.menu_purchase_rfq" model="ir.ui.menu">
             <field name="active" eval="False"/>
         </record>
