@@ -155,17 +155,36 @@ class LabScanLine(models.Model):
     _description = 'Lab Scan Line'
 
     lab_id = fields.Many2one('doctor.lab.report', string='Lab Test')
-    lab_type_id = fields.Many2one('lab.type', string='Lab Test description', required=True)
-    rate_id = fields.Many2one('lab.rate', string='Rate', required=True)
-    total_amount = fields.Float(
+    lab_type_id = fields.Many2one(
+        'lab.investigation',
+        string='Investigation',
+    )
+    rate_id = fields.Monetary(
+        string='Rate',
+        compute='_compute_rate',
+        store=True
+    )
+    total_amount = fields.Monetary(
         string="Total",
         compute='_compute_total_amount',
         store=True
     )
-    lab_result=fields.Char('Result')
+    lab_result = fields.Char('Result')
+    currency_id = fields.Many2one(
+        'res.currency',
+        string='Currency',
+        default=lambda self: self.env.company.currency_id
+    )
+
+    @api.depends('lab_type_id')
+    def _compute_rate(self):
+        for record in self:
+            if record.lab_type_id:
+                record.rate_id = record.lab_type_id.rate
+            else:
+                record.rate_id = 0.0
 
     @api.depends('rate_id')
     def _compute_total_amount(self):
         for record in self:
-            total = sum(record.rate_id.amount for line in record  if line.rate_id)
-            record.total_amount = total
+            record.total_amount = record.rate_id
