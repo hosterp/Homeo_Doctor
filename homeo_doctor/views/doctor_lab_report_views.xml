@@ -63,7 +63,7 @@
             <field name="name">doctor.lab.report.form</field>
             <field name="model">doctor.lab.report</field>
             <field name="arch" type="xml">
-                <form string="Lab Report">
+                <form string="Lab Report" class="lab_form">
                     <header>
                         <button
                             name="print_invoice"
@@ -135,11 +135,11 @@
                         </group>
 
                         <group name="report_details" string="Report Details" col="2">
-                            <group>
-                                <field name="referral_details"
-                                       string="Checkup Details"
-                                       widget="text"/>
-                            </group>
+<!--                            <group>-->
+<!--                                <field name="referral_details"-->
+<!--                                       string="Checkup Details"-->
+<!--                                       widget="text" invisible="1"/>-->
+<!--                            </group>-->
                             <group>
                                 <field name="report_details"
                                        string="Diagnosis Report"
