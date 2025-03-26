@@ -24,7 +24,7 @@ class PurchaseOrderInherit(models.Model):
         ('done', 'Locked'),
         ('cancel', 'Cancelled'),
     ]
-    state = fields.Selection(STATE_SELECTION, string='Status', default='draft')
+    state = fields.Selection(STATE_SELECTION, string='Status', default='draft',store=True)
 
     def action_create_invoice(self):
         super(PurchaseOrderInherit, self).action_create_invoice()
