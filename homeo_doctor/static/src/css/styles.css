@@ -451,3 +451,6 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     font-weight: bold !important;
 }
 
+.lab_form .o_form_sheet_bg > .o_form_sheet {
+	max-width: 93% !important;
+}
