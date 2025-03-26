@@ -35,6 +35,15 @@ class AccountMove(models.Model):
         default=lambda self: date.today()
     )
 
+    @api.model
+    def create(self, vals):
+
+
+        if vals.get('supplier_invoice', '/') == '/':
+            vals['supplier_invoice'] = self.env['ir.sequence'].next_by_code('supplier.invoice') or '/'
+
+
+        return super(AccountMove, self).create(vals)
     @api.onchange('po_number')
     def _onchange_po_number(self):
         """ Fetch purchase order lines and replace the existing invoice lines """
