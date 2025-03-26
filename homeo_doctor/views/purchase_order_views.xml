@@ -6,9 +6,24 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="supplier_name"/>
-                    <field name="store_in_charge"/>
-                    <field name="approved_by"/>
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <span class="o_form_label">Order Date :</span>
+                            <field name="order_date" nolabel="1"/>
+                        </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <span class="o_form_label">Supplier Name :</span>
+                            <field name="supplier_name" nolabel="1"/>
+                        </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <span class="o_form_label">Store in Charge :</span>
+                            <field name="store_in_charge" nolabel="1"/>
+                        </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <span class="o_form_label">Approved By :</span>
+                            <field name="approved_by" nolabel="1"/>
+                        </div>
+                    </div>
                 </xpath>
                 <xpath expr="//button[@name='action_rfq_send']" position="replace"/>
                 <xpath expr="//button[@name='print_quotation']" position="replace"/>
@@ -17,7 +32,7 @@
                 </xpath>
                 <xpath expr="//field[@name='date_order']" position="replace"/>
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="date_order"/>
+                    <field name="date_order" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='date_order']" position="attributes">
                     <attribute name="widget">date</attribute>
@@ -151,7 +166,7 @@
                 </xpath>
                 <!-- Add custom fields before existing fields -->
                 <xpath expr="//field[@name='name']" position="before">
-                    <field name="date_order" string="Date"/>
+                    <field name="order_date" string="Date"/>
                     <field name="supplier_name" string="Supplier Name"/>
                 </xpath>
                 <!-- Add custom fields after existing fields -->
