@@ -147,8 +147,9 @@
                                        widget="one2many_list"
                                        mode="tree">
                                     <tree string="Lab Tests" editable="bottom" create="true" delete="true">
-                                        <field name="lab_type_id" string="Test Type"/>
-                                        <field name="lab_result" string="Result"/>
+                                        <field name="lab_department"/>
+                                        <field name="lab_type_id" string="Investigation"/>
+                                        <field name="lab_result" string="Result" invisible="1"/>
                                         <field name="rate_id" string="Rate"/>
                                         <field name="total_amount" sum="Total Amount"/>
                                     </tree>

@@ -159,6 +159,11 @@ class LabScanLine(models.Model):
         'lab.investigation',
         string='Investigation',
     )
+
+    lab_department = fields.Many2one(
+        'lab.department',
+        string='Department',
+    )
     rate_id = fields.Monetary(
         string='Rate',
         compute='_compute_rate',
