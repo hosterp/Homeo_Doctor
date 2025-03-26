@@ -125,12 +125,12 @@
                                 <field name="register_email"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"
                                        string="Email"/>
-                                <field name="registration_fee"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"
-                                       string="Registration Fee"/>
+<!--                                <field name="registration_fee"-->
+<!--                                       attrs="{'invisible': [('register_visible', '=', False)]}"-->
+<!--                                       string="Registration Fee"/>-->
 
                                 <field name="attachment" filename="attachment_name" string="Medical Document"/>
-                                <field name="bill_amount" string="Total Bill"/>
+                                <field name="bill_amount" string="Total Bill" invisible="1"/>
                             </group>
                         </group>
 
