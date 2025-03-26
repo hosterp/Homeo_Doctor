@@ -25,11 +25,24 @@ class PurchaseOrderInherit(models.Model):
     ]
     state = fields.Selection(STATE_SELECTION, string='Status', default='draft')
 
-    def action_approve_order(self):
-        """Custom approve button to change state to 'approved'"""
-        for order in self:
-            order.state = 'purchase'
+    def action_create_invoice(self):
+        super(PurchaseOrderInherit, self).action_create_invoice()  
 
+        for order in self:
+            if order.invoice_ids:
+                invoice = order.invoice_ids[0]
+
+                # Update invoice fields
+                invoice.write({
+                    'supplier_name': order.supplier_name.display_name,
+                    'po_number': order.id,
+                })
+
+
+                if invoice.state == 'draft':
+                    invoice.action_post()
+
+        return True
 class ApprovedPerson(models.Model):
     _name='approved.store.person'
     _rec_name='approved_by'
