@@ -48,6 +48,7 @@
                             <field name="doctor_id" invisible="1"/>
                             <field name="doctor_ids" widget="many2many_tags"/>
                             <field name="consultation_fee" readonly="1"/>
+                            <field name="registration_fee"/>
                             <field name="reason"/>
 
                             <field name="button_visible" invisible="1"/>
