@@ -663,6 +663,19 @@ class LabReferral(models.Model):
 
     lab_report_id = fields.Many2one('doctor.lab.report', string="Lab Report", readonly=True)
 
+    @api.onchange('lab_test')
+    def _onchange_lab_test(self):
+        """ Update test_type options based on selected lab_test """
+        if self.lab_test:
+            return {
+                'domain': {
+                    'test_type': [('lab_department', 'in', self.lab_test.ids)]
+                }
+            }
+        else:
+            return {
+                'domain': {'test_type': []}
+            }
     @api.onchange('lab_test', 'test_type')
     def _onchange_tests(self):
         lab_test_department = ', '.join(self.lab_test.exists().mapped('department_name'))
@@ -716,14 +729,18 @@ class LabReferral(models.Model):
                 'patient_id': patient_registration.id,
             })
             lab_report.register_visible = False
-    
+
             for lab in record:
-                for lab_test, test_type in zip(lab.lab_test, lab.test_type):
-                    self.env['lab.scan.line'].create({
-                        'lab_id': lab_report.id,
-                        'lab_department': lab_test.id,
-                        'lab_type_id': test_type.id,
-                    })
+                for lab_test in lab.lab_test:
+                    # Get only valid test types related to this department
+                    valid_test_types = lab.test_type.filtered(lambda t: t.lab_department == lab_test)
+
+                    for test_type in valid_test_types:
+                        self.env['lab.scan.line'].create({
+                            'lab_id': lab_report.id,
+                            'lab_department': lab_test.id,
+                            'lab_type_id': test_type.id,
+                        })
 
     @api.model
     def create(self, vals):
