@@ -26,7 +26,7 @@ class PurchaseOrderInherit(models.Model):
     state = fields.Selection(STATE_SELECTION, string='Status', default='draft')
 
     def action_create_invoice(self):
-        super(PurchaseOrderInherit, self).action_create_invoice()  
+        super(PurchaseOrderInherit, self).action_create_invoice()
 
         for order in self:
             if order.invoice_ids:
