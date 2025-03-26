@@ -83,6 +83,9 @@
                         <group name="patient_info" string="Patient Information" col="2">
                             <group name="patient_primary_details">
                                 <field name="date" required="1"/>
+                                <field name="user_ide"
+                                       string="UHID"
+                                       />
 
                                 <!-- Registered Patient Fields -->
                                 <field name="register_visible" invisible="1"/>
@@ -94,9 +97,9 @@
                                        string="Address"/>
 
                                 <!-- Non-Registered Patient Fields -->
-                                <field name="user_ide"
-                                       string="UHID"
-                                       attrs="{'invisible': [('register_visible', '=', True)]}"/>
+<!--                                <field name="user_ide"-->
+<!--                                       string="UHID"-->
+<!--                                       />-->
                                 <field name="patient_name"
                                        attrs="{'invisible': [('register_visible', '=', True)], 'required': [('register_visible', '=', False)]}"
                                        string="Patient Name"/>

@@ -42,6 +42,41 @@ class DoctorLabReport(models.Model):
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
     consultation_check = fields.Boolean(default=True)
 
+    @api.onchange('user_ide')
+    def _onchange_user_ide(self):
+        """
+        Automatically populate patient details when UHID is selected
+        and manage field visibility
+        """
+        if self.user_ide:
+            # Search for patient registration record
+            patient_reg = self.env['patient.reg'].browse(self.user_ide.id)
+
+            if patient_reg:
+                # Switch to non-registered patient view
+                self.register_visible = False
+
+                # Populate patient name for non-registered view
+                self.patient_name = patient_reg.patient_id
+
+                # Optionally, populate other details
+                self.patient_phone = patient_reg.phone_number
+
+                # Optionally, if you want to link to patient registration
+                # patient_registration = self.env['patient.registration'].search([
+                #     ('name', '=', patient_reg.patient_id),
+                #     ('phone_number', '=', patient_reg.phone_number)
+                # ], limit=1)
+
+                # if patient_registration:
+                #     self.patient_id = patient_registration.id
+            else:
+                # Reset fields if no patient found
+                self.register_visible = True
+                self.patient_name = False
+                self.patient_phone = False
+                self.patient_id = False
+
 
     def action_walk_in_patient(self):
         return {
