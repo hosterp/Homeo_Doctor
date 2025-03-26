@@ -5,6 +5,7 @@ from odoo import api, fields, models, _
 class LabDepartment(models.Model):
     _name = 'lab.department'
     _rec_name = 'department_name'
+    _order = 'department_name asc'
 
 
     department_name=fields.Char(string='Department Name')
@@ -14,6 +15,7 @@ class LabDepartment(models.Model):
 class LabInvestigation(models.Model):
     _name = 'lab.investigation'
     _rec_name = 'investigation_name'
+    _order = 'investigation_name asc'
 
 
 
