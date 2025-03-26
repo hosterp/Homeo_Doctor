@@ -63,65 +63,94 @@
             <field name="name">doctor.lab.report.form</field>
             <field name="model">doctor.lab.report</field>
             <field name="arch" type="xml">
-                <form string="Doctor Lab Report">
+                <form string="Lab Report">
                     <header>
-                        <button name="print_invoice"
-                                string="Print Invoice"
-                                type="object"
-                                class="btn-primary"/>
+                        <button
+                            name="print_invoice"
+                            string="Print Invoice"
+                            type="object"
+                            class="btn-primary"
+                            groups="base.group_user"/>
                     </header>
-                    <sheet>
-                        <h1>
-                            <field name="report_reference" readonly="1"/>
-                        </h1>
-                        <group col="3">
-                            <group>
-                                <field name="date"/>
 
-                                <!-- with register -->
-                                <field name="register_visible" string="visibile" invisible="1"/>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="report_reference" readonly="1" placeholder="Report Reference"/>
+                            </h1>
+                        </div>
+
+                        <group name="patient_info" string="Patient Information" col="2">
+                            <group name="patient_primary_details">
+                                <field name="date" required="1"/>
+
+                                <!-- Registered Patient Fields -->
+                                <field name="register_visible" invisible="1"/>
                                 <field name="register_patient_name"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                       string="Patient Name"
+                                       attrs="{'invisible': [('register_visible', '=', False)], 'required': [('register_visible', '=', True)]}"/>
                                 <field name="register_address"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
-                                <field name="user_ide" string="UHID"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"
+                                       string="Address"/>
+
+                                <!-- Non-Registered Patient Fields -->
+                                <field name="user_ide"
+                                       string="UHID"
                                        attrs="{'invisible': [('register_visible', '=', True)]}"/>
-                                <field name="patient_name" attrs="{'invisible': [('register_visible', '=', True)]}"/>
+                                <field name="patient_name"
+                                       attrs="{'invisible': [('register_visible', '=', True)], 'required': [('register_visible', '=', False)]}"
+                                       string="Patient Name"/>
 
                                 <field name="patient_id" invisible="1"/>
-
                             </group>
-                            <group>
-                                <field name="doctor_id" attrs="{'invisible': [('register_visible', '=', True)]}"/>
-                                <field name="lab_reference_no" invisible="1"/>
-                                <field name="register_age" attrs="{'invisible': [('register_visible', '=', False)]}"/>
+
+                            <group name="patient_secondary_details">
+                                <field name="doctor_id"
+                                       attrs="{'invisible': [('register_visible', '=', True)]}"
+                                       string="Referring Doctor"/>
+
+                                <!-- Registered Patient Extended Details -->
+                                <field name="register_age"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"
+                                       string="Age"/>
                                 <field name="register_phone_number"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
-                                <field name="register_email" attrs="{'invisible': [('register_visible', '=', False)]}"/>
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"
+                                       string="Phone Number"/>
+                                <field name="register_email"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"
+                                       string="Email"/>
                                 <field name="registration_fee"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
-                                <field name="attachment" filename="attachment_name"/>
-                                <field name="bill_amount"/>
-                            </group>
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"
+                                       string="Registration Fee"/>
 
-                        </group>
-                        <group col="2">
-                            <group>
-                                <field name="referral_details" string="Checkup Details"/>
-
-                            </group>
-                            <group>
-                                <field name="report_details"/>
+                                <field name="attachment" filename="attachment_name" string="Medical Document"/>
+                                <field name="bill_amount" string="Total Bill"/>
                             </group>
                         </group>
+
+                        <group name="report_details" string="Report Details" col="2">
+                            <group>
+                                <field name="referral_details"
+                                       string="Checkup Details"
+                                       widget="text"/>
+                            </group>
+                            <group>
+                                <field name="report_details"
+                                       string="Diagnosis Report"
+                                       widget="text"/>
+                            </group>
+                        </group>
+
                         <notebook>
-                            <page string="Lab Details">
-                                <field name="lab_line_ids">
-                                    <tree editable="bottom">
-                                        <field name="lab_type_id"/>
-                                        <field name="lab_result"/>
-                                        <field name="rate_id"/>
-                                        <field name="total_amount" sum="Total"/>
+                            <page string="Lab Details" name="lab_details">
+                                <field name="lab_line_ids"
+                                       widget="one2many_list"
+                                       mode="tree">
+                                    <tree string="Lab Tests" editable="bottom" create="true" delete="true">
+                                        <field name="lab_type_id" string="Test Type"/>
+                                        <field name="lab_result" string="Result"/>
+                                        <field name="rate_id" string="Rate"/>
+                                        <field name="total_amount" sum="Total Amount"/>
                                     </tree>
                                 </field>
                             </page>

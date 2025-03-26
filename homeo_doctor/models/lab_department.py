@@ -20,4 +20,4 @@ class LabInvestigation(models.Model):
     lab_department=fields.Many2one('lab.department',string='Lab Department')
     investigation_name= fields.Char(string = 'Investigation Name')
     bill_code = fields.Char(string = 'Bill Code')
-    rate= fields.Char(string='Rate')
+    rate= fields.Float(string='Rate')
