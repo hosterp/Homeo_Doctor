@@ -8,19 +8,19 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <div style="display: flex; gap: 10px;">
                         <div style="flex: 1; min-width: 200px;">
-                            <span class="o_form_label">Order Date :</span>
+                            <span class="o_form_label"  style="font-weight: bold;">Order Date :</span>
                             <field name="order_date" nolabel="1"/>
                         </div>
                         <div style="flex: 1; min-width: 200px;">
-                            <span class="o_form_label">Supplier Name :</span>
+                            <span class="o_form_label"  style="font-weight: bold;">Supplier Name :</span>
                             <field name="supplier_name" nolabel="1"/>
                         </div>
                         <div style="flex: 1; min-width: 200px;">
-                            <span class="o_form_label">Store in Charge :</span>
+                            <span class="o_form_label"  style="font-weight: bold;">Store in Charge :</span>
                             <field name="store_in_charge" nolabel="1"/>
                         </div>
                         <div style="flex: 1; min-width: 200px;">
-                            <span class="o_form_label">Approved By :</span>
+                            <span class="o_form_label"  style="font-weight: bold;">Approved By :</span>
                             <field name="approved_by" nolabel="1"/>
                         </div>
                     </div>
