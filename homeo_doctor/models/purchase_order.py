@@ -12,6 +12,7 @@ class PurchaseOrderInherit(models.Model):
         required=True,
         default=lambda self: self.env["res.partner"].search([], limit=1).id,
     )
+    order_date=fields.Date(string="Order Date",default=lambda self: fields.Date.today())
     store_in_charge=fields.Many2one('store.incharge',string='Store in charge')
     approved_by=fields.Many2one('approved.store.person',string='Approved By')
     STATE_SELECTION = [
@@ -23,7 +24,7 @@ class PurchaseOrderInherit(models.Model):
         ('done', 'Locked'),
         ('cancel', 'Cancelled'),
     ]
-    state = fields.Selection(STATE_SELECTION, string='Status', default='draft')
+    state = fields.Selection(STATE_SELECTION, string='Status', default='draft',store=True)
 
     def action_create_invoice(self):
         super(PurchaseOrderInherit, self).action_create_invoice()
