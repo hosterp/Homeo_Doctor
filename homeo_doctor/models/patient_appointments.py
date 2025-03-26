@@ -1,6 +1,8 @@
 from odoo import api, fields, models, _
 import datetime
 
+from dateutil.relativedelta import relativedelta
+
 from odoo.addons.test_convert.tests.test_env import record
 
 
@@ -32,6 +34,10 @@ class PatientAppointment(models.Model):
     button_visible = fields.Boolean(default=True)
     doctor_ids = fields.Many2many('doctor.profile', string='Doctors')
     consultation_fee_ids = fields.One2many('appointment.fee', 'appointment_id', string='Consultation Fees')
+    registration_fee = fields.Integer(
+        string="Registration Fee",
+        store=True
+    )
     status = fields.Selection(
         [('draft', 'Draft'), ('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')],
         default='draft', string="Status")
@@ -41,6 +47,45 @@ class PatientAppointment(models.Model):
     ('card', 'Card')
     ], string='Payment Method')
     payment_reference = fields.Char(string='Payment Reference')
+
+    @api.onchange('appointment_date')
+    def _compute_registration_fee(self):
+        for record in self:
+            if record.patient_id:
+                # Get the patient's last track registration date
+                last_track_date = record.patient_id.track_registration_date
+                # print("last register day")
+
+                # Calculate the difference between appointment date and last track registration date
+                if last_track_date:
+                    date_difference = relativedelta(record.appointment_date, last_track_date)
+                    # print("difference", date_difference)
+
+                    # Check if the difference is less than 1 year
+                    if date_difference.years < 1:
+                        record.registration_fee = 0
+                        # print("register is 0")
+                    else:
+                        # Get the registration fee from patient.registration.fee model
+                        registration_fee_record = self.env['patient.registration.fee'].search([], limit=1)
+                        record.registration_fee = registration_fee_record.fee if registration_fee_record else 0
+                        # print("register fee", record.registration_fee )
+
+                        # Update track registration date
+                        record.patient_id.track_registration_date = record.appointment_date
+                else:
+                    # If no previous track registration date, get the fee from patient.registration.fee
+                    registration_fee_record = self.env['patient.registration.fee'].search([], limit=1)
+                    record.registration_fee = registration_fee_record.fee if registration_fee_record else 0
+                    # print("If no previous track registration date")
+
+                    # Set track registration date
+                    record.patient_id.track_registration_date = record.appointment_date
+            else:
+                record.registration_fee = 0
+                # print("no id")
+
+
 
     def action_cancel(self):
         for record in self:

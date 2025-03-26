@@ -25,6 +25,7 @@ class PatientRegistration(models.Model):
     token_no = fields.Char(string="Token No")
     date = fields.Date(default=dateutil.utils.today(), readonly=True)
     formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
+    track_registration_date = fields.Date(default=dateutil.utils.today())
     patient_id = fields.Char(string="Name")
     address = fields.Text(string="Address")
     age = fields.Integer(string="Age", store=True)
