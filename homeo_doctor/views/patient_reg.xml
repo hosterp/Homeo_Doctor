@@ -303,7 +303,7 @@
                             </group>
                             <group>
                                 <field name="referral_type" invisible="1"/>
-                                <field name="doctor"/>
+                                <field name="doctor" invisible="1"/>
                             </group>
                             <field name="details"/>
                         </group>
