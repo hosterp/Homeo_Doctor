@@ -22,3 +22,4 @@ from .import lab_department
 from .import purchase_order
 from .import op_category
 from .import lab_payment_wizard
+from .import lab_resultant_confi

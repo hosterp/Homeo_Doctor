@@ -465,3 +465,18 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 .lab_department .o_list_table tbody > tr > td:not(.o_list_record_selector):not(.o_handle_cell):not(.o_list_button) {
     text-align: center !important;
 }
+.lab_resultant .o_form_sheet_bg > .o_form_sheet {
+	max-width: 93% !important;
+}
+
+
+.o_form_view .o_group_col_4 {
+    width: 100%;
+}
+.o_form_view .o_group_col_4 .o_field_widget {
+    margin-bottom: 10px;
+}
+.o_form_view .o_group_col_4 .o_field_label {
+    font-weight: bold;
+    color: #555;
+}
