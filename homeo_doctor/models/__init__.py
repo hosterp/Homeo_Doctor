@@ -20,3 +20,4 @@ from .import casualty
 from .import appointment_payment_wizrad
 from .import lab_department
 from .import purchase_order
+from .import op_category

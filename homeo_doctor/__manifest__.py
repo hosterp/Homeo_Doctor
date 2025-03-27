@@ -59,6 +59,7 @@
         "views/appontment_payment_wizard.xml",
         "views/master.xml",
         "views/purchase_order_views.xml",
+        "views/op_category.xml",
 
     ],
     'assets': {
