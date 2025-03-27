@@ -26,6 +26,7 @@ class DoctorLabReport(models.Model):
     referral_details = fields.Text(string="Referral Details")
     lab_reference_no=fields.Many2one('lab.referral','Reference No')
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_id', string='Lab Lines')
+    vssc_check = fields.Boolean(string="VSSC")
 
     # with register
     register_visible =  fields.Boolean(default=True)
@@ -61,6 +62,7 @@ class DoctorLabReport(models.Model):
 
                 # Optionally, populate other details
                 self.patient_phone = patient_reg.phone_number
+                self.vssc_check = patient_reg.vssc_boolean
 
                 # Optionally, if you want to link to patient registration
                 # patient_registration = self.env['patient.registration'].search([

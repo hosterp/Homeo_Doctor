@@ -18,6 +18,7 @@
                     <field name="date" string="Consultation Date"/>
                     <field name="doctor_id" string="Doctor Name"/>
                     <field name="patient_phone"/>
+                    <field name="vssc_check" string="VSSC"/>
                     <field name="register_visible" invisible="1"/>
                 </tree>
             </field>
@@ -129,6 +130,7 @@
 <!--                                       attrs="{'invisible': [('register_visible', '=', False)]}"-->
 <!--                                       string="Registration Fee"/>-->
 
+                                <field name="vssc_check"  string="VSSC"/>
                                 <field name="attachment" filename="attachment_name" string="Results"/>
                                 <field name="bill_amount" string="Total Bill" invisible="1"/>
                             </group>

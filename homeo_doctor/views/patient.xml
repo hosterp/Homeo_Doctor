@@ -171,6 +171,7 @@
                     <field name="temp_reference_no" invisible="1"/>
                     <field name="formatted_date" string="Registration Date"/>
                     <field name="time" string="Appointment Date"/>
+                    <field name="vssc_boolean" string="VSSC"/>
                     <field name="age"/>
                     <field name="phone_number"/>
                     <field name="department_id"/>

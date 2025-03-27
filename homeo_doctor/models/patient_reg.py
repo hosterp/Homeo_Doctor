@@ -60,6 +60,7 @@ class PatientRegistration(models.Model):
     medicine_course = fields.Char(string='medicine course')
     appointment_date = fields.Date('Appointment Date')
     doctor_remark_ids = fields.One2many('consultation.remark', 'consultation_id', string='Doctor Remarks')
+    vssc_check = fields.Boolean(related='patient_id.vssc_boolean')
     status = fields.Selection(
         [('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')],
         default='confirmed', string="Status")
