@@ -4,6 +4,7 @@ from odoo import api, fields, models, _
 
 class GeneralDepartment(models.Model):
     _name = 'general.department'
+    _rec_name = 'department_name'
 
 
 
