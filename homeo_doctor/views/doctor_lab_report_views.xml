@@ -67,7 +67,7 @@
                 <form string="Lab Report" class="lab_form">
                     <header>
                         <button
-                            name="print_invoice"
+                            name="action_confirm_payment"
                             string="Print Invoice"
                             type="object"
                             class="btn-primary"

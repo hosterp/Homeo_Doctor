@@ -21,3 +21,4 @@ from .import appointment_payment_wizrad
 from .import lab_department
 from .import purchase_order
 from .import op_category
+from .import lab_payment_wizard

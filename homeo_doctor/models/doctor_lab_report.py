@@ -93,6 +93,26 @@ class DoctorLabReport(models.Model):
             'target': 'current',
         }
 
+    def action_confirm_payment(self):
+        """ Open the Lab Payment wizard and pre-fill data from multiple selected records """
+        if len(self) > 1:
+            raise ValueError("Please select only one record at a time.")
+
+        total_amount = sum(self.lab_line_ids.mapped('total_amount'))
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Lab Payment',
+            'res_model': 'lab.payment',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_patient_id': self.user_ide.id if self.user_ide else False,
+                'default_patient_name': self.patient_name,
+                'default_total_amount': total_amount,
+            }
+        }
+
     # @api.model
     # def create(self, vals):
     #     record = super(DoctorLabReport, self).create(vals)
