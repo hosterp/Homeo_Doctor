@@ -4,8 +4,16 @@
         <field name="model">doctor.department</field>
         <field name="arch" type="xml">
             <form string="Department">
-                <group>
-                    <field name="department"/>
+                <group col="3">
+                    <group>
+                        <field name="department"/>
+                    </group>
+                    <group>
+                        <field name="code"/>
+                    </group>
+                    <group>
+                        <field name="validity"/>
+                    </group>
                 </group>
             </form>
         </field>
@@ -42,6 +50,8 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="department"/>
+                <field name="code"/>
+                <field name="validity"/>
             </tree>
         </field>
     </record>
@@ -57,9 +67,10 @@
         <field name="view_mode">tree,form</field>
         <field name="target">current</field>
     </record>
+    <menuitem id="medical_department" name="Medical Department" sequence="3" parent="menu_lab_root"/>
     <menuitem id="menu_doctor_departments"
               name="Departments"
-              parent="menu_doctor_management_root"
+              parent="medical_department"
               action="action_doctor_departments"
               sequence="2"/>
 

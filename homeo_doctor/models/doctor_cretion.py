@@ -109,7 +109,8 @@ class DoctorDepartment(models.Model):
     _rec_name = 'department'
     department = fields.Char(string='Department Name', required=True)
     doctor_ids = fields.One2many('doctor.profile', 'department_id', string="Doctors")
-
+    code=fields.Char(string='Code')
+    validity=fields.Integer(string='Validity')
     def action_show_doctors(self):
         return {
             'type': 'ir.actions.act_window',
