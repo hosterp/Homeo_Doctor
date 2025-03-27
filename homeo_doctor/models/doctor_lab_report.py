@@ -1,7 +1,9 @@
 from email.policy import default
 
 from odoo import api, fields, models, _
-#from odoo.odoo.exceptions import UserError
+
+
+# from odoo.odoo.exceptions import UserError
 
 
 class DoctorLabReport(models.Model):
@@ -13,7 +15,7 @@ class DoctorLabReport(models.Model):
     user_ide = fields.Many2one('patient.reg', string="UHID")
     patient_id = fields.Many2one('patient.registration', string="Consultation ID")
     patient_name = fields.Char(string="Patient Name")
-    patient_phone = fields.Char(related='patient_id.phone_number',string="Patient Mobile Number")
+    patient_phone = fields.Char(related='patient_id.phone_number', string="Patient Mobile Number")
     reference_no = fields.Char(string="Reference No")
     report_reference = fields.Char(string="Report Reference", readonly=True, default=lambda self: _('New'))
     date = fields.Date(string="Report Date", default=fields.Date.context_today)
@@ -21,15 +23,15 @@ class DoctorLabReport(models.Model):
     report_details = fields.Text(string="Report Details")
     attachment = fields.Binary(string="Result")
     attachment_name = fields.Char(string="Result")
-    bill_amount=fields.Integer('Bill Amount')
+    bill_amount = fields.Integer('Bill Amount')
     referral_id = fields.Many2one('lab.referral', string="Referral ID")
     referral_details = fields.Text(string="Referral Details")
-    lab_reference_no=fields.Many2one('lab.referral','Reference No')
+    lab_reference_no = fields.Many2one('lab.referral', 'Reference No')
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_id', string='Lab Lines')
     vssc_check = fields.Boolean(string="VSSC")
 
     # with register
-    register_visible =  fields.Boolean(default=True)
+    register_visible = fields.Boolean(default=True)
     register_patient_name = fields.Char("Patient Name")
     register_address = fields.Text(string="Address")
     register_age = fields.Integer(string="Age", store=True)
@@ -79,7 +81,6 @@ class DoctorLabReport(models.Model):
                 self.patient_phone = False
                 self.patient_id = False
 
-
     def action_walk_in_patient(self):
         return {
             'type': 'ir.actions.act_window',
@@ -91,6 +92,7 @@ class DoctorLabReport(models.Model):
             'domain': [('register_visible', '=', True)],
             'target': 'current',
         }
+
     # @api.model
     # def create(self, vals):
     #     record = super(DoctorLabReport, self).create(vals)
@@ -121,7 +123,7 @@ class DoctorLabReport(models.Model):
                 'email': vals.get('register_email'),
                 'phone_number': vals.get('register_phone_number'),
                 'registration_fee': vals.get('registration_fee', 50.0),
-                'consultation_check': vals.get('consultation_check',True),
+                'consultation_check': vals.get('consultation_check', True),
                 'walk_in': True
 
             }
@@ -171,14 +173,16 @@ class DoctorLabReport(models.Model):
     #         self.referral_details=latest_referral.details if latest_referral else False
     #         self.patient_id = latest_referral.patient_id if latest_referral else False
 
-
     def print_invoice(self):
         return self.env.ref('homeo_doctor.action_report_lab_invoice').report_action(self)
+
+
 class LabType(models.Model):
     _name = 'lab.type'
     _description = 'Type of Lab Test'
 
     name = fields.Char(string='Test Description', required=True)
+
 
 class LabRate(models.Model):
     _name = 'lab.rate'
@@ -186,6 +190,7 @@ class LabRate(models.Model):
     _rec_name = 'amount'  # This will display the amount in Many2one fields
 
     amount = fields.Float(string='Amount', required=True)
+
 
 class LabScanLine(models.Model):
     _name = 'lab.scan.line'
@@ -204,7 +209,8 @@ class LabScanLine(models.Model):
     rate_id = fields.Monetary(
         string='Rate',
         compute='_compute_rate',
-        store=True
+        store=True,
+    readonly = False
     )
     total_amount = fields.Monetary(
         string="Total",
