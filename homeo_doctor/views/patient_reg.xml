@@ -233,6 +233,7 @@
                     <!--                    <field name="appointment_date" string="Appointment Date"/>-->
                     <field name="age"/>
                     <field name="gender"/>
+                    <field name="vssc_check" string="VSSC"/>
                     <field name="phone_number" string="Mobile No"/>
                     <field name="doctor_id"/>
 <!--                    <field name="referred_doctor_ids" widget="many2many_tags" string="Referred Doctors"/>-->
