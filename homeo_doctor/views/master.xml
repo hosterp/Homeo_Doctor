@@ -38,7 +38,7 @@
             <field name="name">lab.department.tree</field>
             <field name="model">lab.department</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree class="lab_department">
                     <field name="department_name"/>
                     <field name="order_no"/>
                 </tree>
