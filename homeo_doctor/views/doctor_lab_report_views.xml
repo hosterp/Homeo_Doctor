@@ -125,9 +125,9 @@
                                 <field name="register_email"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"
                                        string="Email"/>
-                                <field name="registration_fee"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"
-                                       string="Registration Fee"/>
+<!--                                <field name="registration_fee"-->
+<!--                                       attrs="{'invisible': [('register_visible', '=', False)]}"-->
+<!--                                       string="Registration Fee"/>-->
 
                                 <field name="attachment" filename="attachment_name" string="Results"/>
                                 <field name="bill_amount" string="Total Bill"/>
