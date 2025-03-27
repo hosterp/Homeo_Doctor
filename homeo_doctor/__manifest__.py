@@ -61,6 +61,7 @@
         "views/purchase_order_views.xml",
         "views/op_category.xml",
         "views/lab_payment_wizard.xml",
+        "views/general_department.xml",
 
     ],
     'assets': {
