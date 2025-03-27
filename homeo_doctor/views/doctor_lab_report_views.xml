@@ -130,7 +130,7 @@
 <!--                                       string="Registration Fee"/>-->
 
                                 <field name="attachment" filename="attachment_name" string="Results"/>
-                                <field name="bill_amount" string="Total Bill"/>
+                                <field name="bill_amount" string="Total Bill" invisible="1"/>
                             </group>
                         </group>
 
