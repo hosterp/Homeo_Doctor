@@ -454,3 +454,14 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 .lab_form .o_form_sheet_bg > .o_form_sheet {
 	max-width: 93% !important;
 }
+
+.lab_department .o_list_table thead > tr > th:not(.o_list_record_selector).o_list_number_th {
+    text-align: center !important;
+}
+.lab_department .o_list_table .o_column_sortable:not(.o_handle_cell) {
+    text-align: center !important;
+}
+
+.lab_department .o_list_table tbody > tr > td:not(.o_list_record_selector):not(.o_handle_cell):not(.o_list_button) {
+    text-align: center !important;
+}
