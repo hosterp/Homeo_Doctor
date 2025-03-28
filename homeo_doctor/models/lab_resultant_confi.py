@@ -9,14 +9,14 @@ class labResultantConfi(models.Model):
     # _rec_name = 'report_reference'
     # _order = 'date desc'
 
-    test_name_bill_code = fields.Char(string='Select Test Name/Bil Code')
-    main_group = fields.Char(String='Select Main Group')
-    sub_group = fields.Char(string='Select Sub Group')
+    test_name_bill_code = fields.Many2one('lab.investigation',string='Select Test Name/Bill Code')
+    main_group = fields.Many2one('lab.main.group',String='Select Main Group')
+    sub_group = fields.Many2one('lab.sub.group',string='Select Sub Group')
     test_name = fields.Char(string='Test Name')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     order = fields.Char(string='Order')
-    age_from = fields.Integer(string='Age Group From')
-    age_to = fields.Integer(string='Age Group To')
+    age_from = fields.Integer(string='Age From')
+    age_to = fields.Integer(string='Age To')
     type = fields.Selection([('year','Year'),('month','Month'),('day','Day'),('hour','Hour')],string='Type')
     unit = fields.Char(string='Unit')
     referral_range = fields.Char(string='Referral Range')
@@ -27,11 +27,13 @@ class labResultantConfi(models.Model):
 
 class labMainGroup(models.Model):
     _name = 'lab.main.group'
+    _rec_name = 'main_group'
 
     main_group= fields.Char("Name")
 
 
 class labSubGroup(models.Model):
     _name = 'lab.sub.group'
+    _rec_name = 'name'
 
     name =fields.Char("Name")
