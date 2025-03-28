@@ -24,3 +24,4 @@ from .import op_category
 from .import lab_payment_wizard
 from .import general_department
 from .import general_dept_costing
+from .import general_billing
