@@ -61,6 +61,7 @@
         "views/purchase_order_views.xml",
         "views/op_category.xml",
         "views/lab_payment_wizard.xml",
+        "views/lab_resultant_confi.xml",
         "views/general_department.xml",
         "views/general_dept_costing.xml",
         "views/general_billing.xml",

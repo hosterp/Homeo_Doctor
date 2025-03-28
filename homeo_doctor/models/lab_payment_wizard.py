@@ -8,7 +8,7 @@ class LabPaymentWizard(models.Model):
 
     patient_id=fields.Many2one('doctor.lab.report',string='Patient ID')
     patient_name=fields.Char(related='patient_id.patient_name',string='Patient Name')
-    pay_mode = fields.Selection([('cash', 'Cash'), ('card', 'Card'), ('upi', 'UPI')], string='Payment Method',
+    pay_mode = fields.Selection([('cash', 'Cash'), ('card', 'Card'), ('upi', 'UPI'),('credit','Credit')], string='Payment Method',
                                 default='cash')
     total_amount=fields.Integer(string='Payable Amount')
     amount_paid=fields.Integer(string='Amount Paid')
