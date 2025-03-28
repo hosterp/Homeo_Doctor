@@ -658,25 +658,43 @@ class LabReferral(models.Model):
     patient_name = fields.Char(related='patient_id.patient_name', string='Patient Name')
     lab_test = fields.Many2many('lab.department', string='Lab Department')
     test_type = fields.Many2many('lab.investigation', string='Investigation Name')
+    test_names = fields.Text(string='Test Names')
     referral_type = fields.Selection([('scanning', 'Scanning'), ('consultation', 'Consultation'), ('lab', 'LAB')],
                                      default='lab')
     details = fields.Text(string="Referral Details")
 
     lab_report_id = fields.Many2one('doctor.lab.report', string="Lab Report", readonly=True)
 
-    @api.onchange('lab_test')
-    def _onchange_lab_test(self):
-        """ Update test_type options based on selected lab_test """
-        if self.lab_test:
-            return {
-                'domain': {
-                    'test_type': [('lab_department', 'in', self.lab_test.ids)]
-                }
-            }
+
+    @api.onchange('test_type')
+    def _onchange_test_type(self):
+        """ Fetch corresponding test names from lab.resultant.confi """
+        if self.test_type:
+            resultant_tests = self.env['lab.resultant.confi'].search([
+                ('test_name_bill_code', 'in', self.test_type.ids)
+            ])
+
+            print("🔍 Found Tests: %s", resultant_tests)  # Log test records
+
+
+            self.test_names = ', '.join(resultant_tests.mapped('test_name')) if resultant_tests else False
+            print(  self.test_names,'  self.test_names  self.test_names  self.test_names  self.test_names  self.test_names  self.test_names  self.test_names')
         else:
-            return {
-                'domain': {'test_type': []}
-            }
+            self.test_names = False  # Clear field if no test type is selected
+
+    # @api.onchange('lab_test')
+    # def _onchange_lab_test(self):
+    #     """ Update test_type options based on selected lab_test """
+    #     if self.lab_test:
+    #         return {
+    #             'domain': {
+    #                 'test_type': [('lab_department', 'in', self.lab_test.ids)]
+    #             }
+    #         }
+    #     else:
+    #         return {
+    #             'domain': {'test_type': []}
+    #         }
     @api.onchange('lab_test', 'test_type')
     def _onchange_tests(self):
         lab_test_department = ', '.join(self.lab_test.exists().mapped('department_name'))
@@ -731,17 +749,11 @@ class LabReferral(models.Model):
             })
             lab_report.register_visible = False
 
-            for lab in record:
-                for lab_test in lab.lab_test:
-                    # Get only valid test types related to this department
-                    valid_test_types = lab.test_type.filtered(lambda t: t.lab_department == lab_test)
-
-                    for test_type in valid_test_types:
-                        self.env['lab.scan.line'].create({
-                            'lab_id': lab_report.id,
-                            'lab_department': lab_test.id,
-                            'lab_type_id': test_type.id,
-                        })
+            for test in record.test_type:
+                self.env['lab.scan.line'].create({
+                    'lab_id': lab_report.id,
+                    'lab_type_id': test.id,
+                })
 
     @api.model
     def create(self, vals):

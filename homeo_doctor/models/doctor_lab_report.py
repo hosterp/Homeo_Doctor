@@ -245,17 +245,17 @@ class LabScanLine(models.Model):
         default=lambda self: self.env.company.currency_id
     )
 
-    @api.onchange('lab_department')
-    def _onchange_lab_department(self):
-        """Filter Investigations based on selected Lab Department"""
-        if self.lab_department:
-            return {
-                'domain': {'lab_type_id': [('lab_department', '=', self.lab_department.id)]}
-            }
-        else:
-            return {
-                'domain': {'lab_type_id': []}  # No filter when department is not selected
-            }
+    # @api.onchange('lab_department')
+    # def _onchange_lab_department(self):
+    #     """Filter Investigations based on selected Lab Department"""
+    #     if self.lab_department:
+    #         return {
+    #             'domain': {'lab_type_id': [('lab_department', '=', self.lab_department.id)]}
+    #         }
+    #     else:
+    #         return {
+    #             'domain': {'lab_type_id': []}  # No filter when department is not selected
+    #         }
 
     @api.depends('lab_type_id')
     def _compute_rate(self):

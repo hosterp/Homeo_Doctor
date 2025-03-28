@@ -73,15 +73,15 @@
                             <group class="weight_temp">
                                 <field name="weight" string="Weight (kg)"/>
                             </group>
-<!--                            <group class="weight_temp">-->
-<!--                                <field name="temperature" string="Temperature (°C)"/>-->
-<!--                            </group>-->
-<!--                            <group class="weight_temp">-->
-<!--                                <field name="spo" string="SPO2"/>-->
-<!--                            </group>-->
-<!--                            <group class="weight_temp">-->
-<!--                                <field name="pulse_rate" string="Pulse Rate"/>-->
-<!--                            </group>-->
+                            <!--                            <group class="weight_temp">-->
+                            <!--                                <field name="temperature" string="Temperature (°C)"/>-->
+                            <!--                            </group>-->
+                            <!--                            <group class="weight_temp">-->
+                            <!--                                <field name="spo" string="SPO2"/>-->
+                            <!--                            </group>-->
+                            <!--                            <group class="weight_temp">-->
+                            <!--                                <field name="pulse_rate" string="Pulse Rate"/>-->
+                            <!--                            </group>-->
                         </group>
                         <group class="o_vital_signs_group">
                             <group class="weight_temp">
@@ -236,8 +236,8 @@
                     <field name="vssc_check" string="VSSC"/>
                     <field name="phone_number" string="Mobile No"/>
                     <field name="doctor_id"/>
-<!--                    <field name="referred_doctor_ids" widget="many2many_tags" string="Referred Doctors"/>-->
-<!--                    <field name="referred_department_ids" widget="many2many_tags" string="Referred Department"/>-->
+                    <!--                    <field name="referred_doctor_ids" widget="many2many_tags" string="Referred Doctors"/>-->
+                    <!--                    <field name="referred_department_ids" widget="many2many_tags" string="Referred Department"/>-->
                     <field name="consultation_fee"/>
                     <field name="status"/>
                 </tree>
@@ -295,12 +295,15 @@
                         <group col="3">
                             <group>
                                 <field name="patient_name"/>
-                                <field name="lab_test" widget="many2many_tags" style="width: 200px;"/>
+                                <field name="lab_test" widget="many2many_tags" style="width: 200px;" invisible="1"/>
+                                <field name="test_type" widget="many2many_tags" style="width: 300px;"/>
+
                                 <field name="patient_id" invisible="1"/>
                             </group>
                             <group>
                                 <field name="user_ide" string="UHID"/>
-                                <field name="test_type" widget="many2many_tags" style="width: 300px;"/>
+                                <field name="test_names" invisible="1"/>
+
                             </group>
                             <group>
                                 <field name="referral_type" invisible="1"/>
