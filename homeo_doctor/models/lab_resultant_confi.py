@@ -23,3 +23,15 @@ class labResultantConfi(models.Model):
     min_val = fields.Char("Min Val")
     max_val = fields.Char("Max Val")
     remarks = fields.Text("Remarks")
+
+
+class labMainGroup(models.Model):
+    _name = 'lab.main.group'
+
+    main_group= fields.Char("Name")
+
+
+class labSubGroup(models.Model):
+    _name = 'lab.sub.group'
+
+    name =fields.Char("Name")

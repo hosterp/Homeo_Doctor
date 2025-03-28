@@ -125,6 +125,9 @@
                                 <field name="register_phone_number"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"
                                        string="Phone Number"/>
+                                <field name="alternate_phone"
+                                       attrs="{'invisible': [('register_visible', '=', False)]}"
+                                       string="Alternate Phone Number"/>
                                 <field name="register_email"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"
                                        string="Email"/>

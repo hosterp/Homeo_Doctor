@@ -44,6 +44,7 @@ class DoctorLabReport(models.Model):
     # register_doc_name = fields.Many2one('doctor.profile', string='Doctor')
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
     consultation_check = fields.Boolean(default=True)
+    alternate_phone = fields.Char("Alternate Mobile Number")
 
     @api.onchange('user_ide')
     def _onchange_user_ide(self):

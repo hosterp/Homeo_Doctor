@@ -98,6 +98,92 @@
                       (0, 0, {'view_mode': 'form', 'view_id': ref('view_lab_resultant_confi_form')})]"/>
     </record>
 
+
+
+
+    <!-- Tree View for Lab Main Group -->
+        <record id="view_lab_main_group_tree" model="ir.ui.view">
+            <field name="name">lab.main.group.tree</field>
+            <field name="model">lab.main.group</field>
+            <field name="arch" type="xml">
+                <tree string="Lab Main Groups">
+                    <field name="main_group"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View for Lab Main Group -->
+        <record id="view_lab_main_group_form" model="ir.ui.view">
+            <field name="name">lab.main.group.form</field>
+            <field name="model">lab.main.group</field>
+            <field name="arch" type="xml">
+                <form string="Lab Main Group">
+                    <sheet>
+                        <group>
+                            <field name="main_group"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for Lab Main Group -->
+        <record id="action_lab_main_group" model="ir.actions.act_window">
+            <field name="name">Lab Main Groups</field>
+            <field name="res_model">lab.main.group</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+          <!-- Tree View for Lab Sub Group -->
+        <record id="view_lab_sub_group_tree" model="ir.ui.view">
+            <field name="name">lab.sub.group.tree</field>
+            <field name="model">lab.sub.group</field>
+            <field name="arch" type="xml">
+                <tree string="Lab Sub Groups">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View for Lab Sub Group -->
+        <record id="view_lab_sub_group_form" model="ir.ui.view">
+            <field name="name">lab.sub.group.form</field>
+            <field name="model">lab.sub.group</field>
+            <field name="arch" type="xml">
+                <form string="Lab Sub Group">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for Lab Sub Group -->
+        <record id="action_lab_sub_group" model="ir.actions.act_window">
+            <field name="name">Lab Sub Groups</field>
+            <field name="res_model">lab.sub.group</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item for Lab Sub Group -->
+        <menuitem 
+            id="menu_lab_sub_group" 
+            name="Lab Sub Groups" 
+            action="action_lab_sub_group"
+            parent="menu_lab"
+            sequence="4"/>
+
+        <!-- Menu Item for Lab Main Group -->
+        <menuitem 
+            id="menu_lab_main_group" 
+            name="Lab Main Groups" 
+            action="action_lab_main_group"
+            parent="menu_lab"
+            sequence="5"/>
+
     <!-- Menu Item -->
     <menuitem
         id="menu_lab_resultant_confi"
