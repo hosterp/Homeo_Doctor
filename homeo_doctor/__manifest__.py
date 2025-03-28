@@ -65,6 +65,8 @@
         "views/general_department.xml",
         "views/general_dept_costing.xml",
         "views/general_billing.xml",
+        "views/general_billing.xml",
+        "data/ir_sequence_data.xml",
 
     ],
     'assets': {

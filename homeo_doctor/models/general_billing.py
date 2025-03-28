@@ -22,18 +22,21 @@ class GeneralBilling(models.Model):
 
     @api.model
     def create(self, vals):
-        """Generate a unique billing number in the format: 195871/24-25"""
+        """Generate a unique billing number in the format: 000001/24-25"""
         if vals.get('bill_number', 'New') == 'New':
             current_year = datetime.now().year
             next_year = current_year + 1
             year_range = f"{str(current_year)[-2:]}-{str(next_year)[-2:]}"
 
-            # Ensure sequence is generated correctly
+            # Get the next sequence number
             sequence_number = self.env['ir.sequence'].next_by_code('general.billing')
+
+            # Ensure sequence exists
             if not sequence_number:
-                sequence_number = '000001'  # Default if sequence is missing
+                sequence_number = '000001'
 
             vals['bill_number'] = f"{sequence_number}/{year_range}"
+
         return super(GeneralBilling, self).create(vals)
 
 
