@@ -23,3 +23,4 @@ class LabInvestigation(models.Model):
     investigation_name= fields.Char(string = 'Investigation Name')
     bill_code = fields.Char(string = 'Bill Code')
     rate= fields.Float(string='Rate')
+    related_test_ids = fields.Many2many("lab.resultant.confi", string="Related Test Names")

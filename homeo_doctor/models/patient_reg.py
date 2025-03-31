@@ -750,10 +750,32 @@ class LabReferral(models.Model):
             lab_report.register_visible = False
 
             for test in record.test_type:
-                self.env['lab.scan.line'].create({
-                    'lab_id': lab_report.id,
-                    'lab_type_id': test.id,
-                })
+                test_names_list = record.test_names.split(', ') if record.test_names else []
+
+                for test_name in test_names_list:
+                    test_name = test_name.strip()  # Clean whitespace
+                    print(f"🔍 Searching for test_name: {test_name}")
+
+                    # Fetch corresponding test from 'lab.resultant.confi'
+                    test_results = self.env['lab.resultant.confi'].search([
+                        ('test_name', '=', test_name)
+                    ])
+
+                    if test_results:
+                        # Extract referral ranges (if available) and join them
+                        referral_ranges = ', '.join(filter(None, test_results.mapped('referral_range')))
+                        print(f"✅ Found: {test_name} | Referral Range(s): {referral_ranges}")
+                    else:
+                        print(f"❌ No matching test found for: {test_name}")
+                        referral_ranges = "N/A"  # Default if no referral range exists
+
+                    # Create record in lab.scan.line
+                    self.env['lab.scan.line'].create({
+                        'lab_id': lab_report.id,
+                        'lab_type_id': test.id,
+                        'lab_test_name': test_name,
+                        'lab_reference_range': referral_ranges,
+                    })
 
     @api.model
     def create(self, vals):

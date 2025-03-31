@@ -162,10 +162,13 @@
                                        mode="tree">
                                     <tree string="Lab Tests" editable="bottom" create="true" delete="true">
                                         <field name="lab_department" invisible="1"/>
-                                        <field name="lab_type_id" string="Investigation"/>
+                                        <field name="lab_type_id" string='Particulars' invisible="1"/>
+                                        <field name="lab_test_name"/>
+                                        <field name="lab_result"/>
+                                        <field name="lab_reference_range"/>
                                         <field name="lab_result" string="Result" invisible="1"/>
-                                        <field name="rate_id" string="Rate"/>
-                                        <field name="total_amount" sum="Total Amount"/>
+                                        <field name="rate_id" string="Rate" invisible="1"/>
+                                        <field name="total_amount" sum="Total Amount" invisible="1"/>
                                     </tree>
                                 </field>
                             </page>

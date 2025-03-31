@@ -50,6 +50,64 @@ class DoctorLabReport(models.Model):
         ('paid', 'Paid'),
     ], string="Status", default="unpaid", tracking=True)
 
+    grouped_lab_details = fields.Html(compute='_compute_grouped_lab_details', string="Lab Details", sanitize=False)
+
+    @api.depends('lab_line_ids')
+    def _compute_grouped_lab_details(self):
+        for record in self:
+            grouped_data = {}
+            rate_mapping = {}
+            total_amount_mapping = {}
+
+            for line in record.lab_line_ids:
+                lab_type = line.lab_type_id.display_name
+
+                if lab_type not in grouped_data:
+                    grouped_data[lab_type] = []
+                    rate_mapping[lab_type] = f"{line.rate_id} {line.currency_id.symbol}" if line.rate_id else "N/A"
+                    total_amount_mapping[lab_type] = line.total_amount if line.total_amount else "N/A"
+
+                grouped_data[lab_type].append(line)
+
+            html_content = "<table class='o_list_view table table-condensed' style='width:100%; border-collapse: collapse;'>"
+
+            for lab_type, tests in grouped_data.items():
+                # Get Rate and Total Amount for the group
+                rate = rate_mapping.get(lab_type, "N/A")
+                total_amount = total_amount_mapping.get(lab_type, "N/A")
+
+                # Display Lab Type as a Header with Rate and Total Amount
+                html_content += (
+                    f"<tr>"
+                    f"<th colspan='2' style='background-color:#dff0d8; padding: 10px;'>{lab_type}</th>"
+                    f"<th colspan='1' style='background-color:#dff0d8; padding: 10px; text-align:right;'>Rate: {rate}</th>"
+                    f"<th colspan='1' style='background-color:#dff0d8; padding: 10px; text-align:right;'>Total: {total_amount}</th>"
+                    f"</tr>"
+                )
+
+                # Table headers for test details
+                html_content += (
+                    "<tr>"
+                    "<th style='padding: 5px; border: 1px solid #ddd;'>Test Name</th>"
+                    "<th style='padding: 5px; border: 1px solid #ddd;'>Observed Value</th>"
+                    "<th style='padding: 5px; border: 1px solid #ddd;'>Reference range</th>"
+                    "</tr>"
+                )
+
+                for test in tests:
+                    html_content += (
+                        f"<tr>"
+                        f"<td style='padding: 5px; border: 1px solid #ddd;'>{test.lab_test_name or ''}</td>"
+                        f"<td style='padding: 5px; border: 1px solid #ddd;'>{test.lab_result or ''}</td>"
+                        f"<td style='padding: 5px; border: 1px solid #ddd;'>{test.lab_result or ''}</td>"
+                        f"</tr>"
+                    )
+
+            html_content += "</table>"
+
+            record.grouped_lab_details = html_content
+
+
     @api.onchange('user_ide')
     def _onchange_user_ide(self):
         """
@@ -222,32 +280,18 @@ class LabScanLine(models.Model):
     _description = 'Lab Scan Line'
 
     lab_id = fields.Many2one('doctor.lab.report', string='Lab Test')
-    lab_type_id = fields.Many2one(
-        'lab.investigation',
-        string='Investigation',
-    )
+    lab_type_id = fields.Many2one('lab.investigation', string='Investigation')
+    lab_department = fields.Many2one('lab.department', string='Department')
+    lab_test_name = fields.Char(string='Test Name')
 
-    lab_department = fields.Many2one(
-        'lab.department',
-        string='Department',
-    )
-    rate_id = fields.Monetary(
-        string='Rate',
-        compute='_compute_rate',
-        store=True,
-    readonly = False
-    )
-    total_amount = fields.Monetary(
-        string="Total",
-        compute='_compute_total_amount',
-        store=True
-    )
+    rate_id = fields.Monetary(string='Rate', compute='_compute_rate', store=True, readonly=False)
+    total_amount = fields.Monetary(string="Total", compute='_compute_total_amount', store=True)
     lab_result = fields.Char('Result')
-    currency_id = fields.Many2one(
-        'res.currency',
-        string='Currency',
-        default=lambda self: self.env.company.currency_id
-    )
+    lab_reference_range = fields.Char('Reference Range')
+
+    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
+
+
 
     # @api.onchange('lab_department')
     # def _onchange_lab_department(self):
