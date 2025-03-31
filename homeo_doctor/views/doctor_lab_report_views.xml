@@ -20,6 +20,7 @@
                     <field name="patient_phone"/>
                     <field name="vssc_check" string="VSSC"/>
                     <field name="register_visible" invisible="1"/>
+                    <field name="status"/>
                 </tree>
             </field>
         </record>
@@ -127,8 +128,8 @@
                                        attrs="{'invisible': [('register_visible', '=', False)]}"
                                        string="Phone Number"/>
                                 <field name="alternate_phone"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"
-                                       string="Alternate Phone Number"/>
+                                       
+                                       string="Alternate Phone No"/>
                                 <field name="register_email"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"
                                        string="Email"/>

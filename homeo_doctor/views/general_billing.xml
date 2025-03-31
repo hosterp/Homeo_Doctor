@@ -2,38 +2,48 @@
     <data>
 
         <record id="view_general_billing_form" model="ir.ui.view">
-            <field name="name">general.billing.form</field>
-            <field name="model">general.billing</field>
-            <field name="arch" type="xml">
-                <form class="lab_form">
-                    <sheet>
-                        <group col="4">
-                            <field name="bill_number"/>
-                            <group>
-                                <field name="bill_type"/>
-                                <field name="op_category"/>
-                                <field name="patient_name"/>
-                            </group>
-                            <group>
-                                <field name="mrd_no"/>
-                                <field name="doctor"/>
-                                <field name="age"/>
-                            </group>
-                            <group>
-                                <field name="ip_no"/>
-                                <field name="department"/>
-                                <field name="gender"/>
-                            </group>
-                            <group>
-                                <field name="bill_date"/>
-                                <field name="particulars"/>
-                                <field name="mobile"/>
-                            </group>
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+    <field name="name">general.billing.form</field>
+    <field name="model">general.billing</field>
+    <field name="arch" type="xml">
+        <form string="Patient Billing" class="lab_form">
+            <header>
+                <field name="bill_type" widget="statusbar" statusbar_visible="draft,confirmed,paid" options="{'clickable': '1'}"/>
+            </header>
+            <sheet>
+                <div class="oe_title">
+                    <h1>
+                        <field name="bill_number" readonly="1" class="oe_inline" style="font-size: 18px;"/>
+                    </h1>
+                </div>
+                <group>
+                    <group >
+                        <field name="patient_name" required="1"/>
+                        <field name="mrd_no"/>
+                        <field name="age"/>
+                        <field name="gender"/>
+                        <field name="mobile"/>
+                    </group>
+                    <group>
+                        <field name="doctor"/>
+                        <field name="op_category"/>
+                        <field name="department"/>
+                        <field name="particulars"/>
+                    </group>
+                </group>
+                <group >
+                    <group>
+                        <field name="bill_date"/>
+                    </group>
+                    <group>
+                        <field name="ip_no" attrs="{'invisible': [('op_category', '=', 'op')]}"/>
+                    </group>
+                </group>
+            
+            </sheet>
+            
+        </form>
+    </field>
+</record>
 
         <record id="view_general_billing_tree" model="ir.ui.view">
             <field name="name">general.billing.tree</field>
