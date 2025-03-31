@@ -34,7 +34,7 @@
                     <!--                    </notebook>-->
                     <!--                </sheet>-->
                     <footer>
-                        <button name="pay_confirm" type="object" string="Confirm Payment"  class="btn-primary"/>
+                        <button string="Confirm Payment"  class="btn-primary"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </sheet>
