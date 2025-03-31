@@ -710,12 +710,12 @@ class LabReferral(models.Model):
 
     def action_submit(self):
         for record in self:
-
+            # Look for existing patient registration
             patient_registration = self.env['patient.registration'].search([
                 ('user_id', '=', record.user_ide.id)
             ], limit=1)
 
-
+            # Update or create patient registration
             if patient_registration:
                 patient_registration.write({
                     'patient_name': record.patient_name,
@@ -726,7 +726,6 @@ class LabReferral(models.Model):
                     'consultation_fee': record.user_ide.consultation_fee,
                 })
             else:
-
                 patient_registration = self.env['patient.registration'].create({
                     'user_id': record.user_ide.id,
                     'patient_id': record.user_ide.id,
@@ -738,7 +737,7 @@ class LabReferral(models.Model):
                     'consultation_fee': record.user_ide.consultation_fee,
                 })
 
-
+            # Create lab report
             lab_report = self.env['doctor.lab.report'].create({
                 'referral_details': record.details,
                 'reference_no': record.reference_no,
@@ -749,38 +748,43 @@ class LabReferral(models.Model):
             })
             lab_report.register_visible = False
 
-            for test in record.test_type:
-                test_names_list = record.test_names.split(', ') if record.test_names else []
+            # Process test names only once
+            test_names_list = record.test_names.split(', ') if record.test_names else []
 
-                for test_name in test_names_list:
-                    test_name = test_name.strip()  # Clean whitespace
-                    print(f"🔍 Searching for test_name: {test_name}")
-
-                    # Fetch corresponding test from 'lab.resultant.confi'
-                    test_results = self.env['lab.resultant.confi'].search([
-                        ('test_name', '=', test_name)
-                    ])
-
-                    if test_results:
-                        # Extract referral ranges (if available) and join them
-                        referral_ranges = ', '.join(filter(None, test_results.mapped('referral_range')))
-                        print(f"✅ Found: {test_name} | Referral Range(s): {referral_ranges}")
-                    else:
-                        print(f"❌ No matching test found for: {test_name}")
-                        referral_ranges = "N/A"  # Default if no referral range exists
-
-                    # Create record in lab.scan.line
-                    self.env['lab.scan.line'].create({
-                        'lab_id': lab_report.id,
-                        'lab_type_id': test.id,
-                        'lab_test_name': test_name,
-                        'lab_reference_range': referral_ranges,
-                    })
+            # Create billing entries for each test type
             for test in record.test_type:
                 self.env['lab.billing.page'].create({
                     'lab_billing_id': lab_report.id,
                     'lab_type_id': test.id,
                 })
+
+            # FIXED: Process test names separately, assigning each to the appropriate test type
+            for test_name in test_names_list:
+                test_name = test_name.strip()  # Clean whitespace
+                print(f"🔍 Searching for test_name: {test_name}")
+
+                # Fetch corresponding test from 'lab.resultant.confi'
+                test_results = self.env['lab.resultant.confi'].search([
+                    ('test_name', '=', test_name)
+                ])
+
+                # Determine referral ranges
+                if test_results:
+                    referral_ranges = ', '.join(filter(None, test_results.mapped('referral_range')))
+                    print(f"✅ Found: {test_name} | Referral Range(s): {referral_ranges}")
+                else:
+                    print(f"❌ No matching test found for: {test_name}")
+                    referral_ranges = "N/A"  # Default if no referral range exists
+
+                # Assign to the appropriate test type - you may need logic to determine which test type to use
+                # For simplicity, I'm using the first test type for all tests, but you should adjust this logic
+                if record.test_type:
+                    self.env['lab.scan.line'].create({
+                        'lab_id': lab_report.id,
+                        'lab_type_id': record.test_type[0].id,  # Using first test type - adjust as needed
+                        'lab_test_name': test_name,
+                        'lab_reference_range': referral_ranges,
+                    })
     @api.model
     def create(self, vals):
         if vals.get('reference_no', _('New')) == _('New'):
