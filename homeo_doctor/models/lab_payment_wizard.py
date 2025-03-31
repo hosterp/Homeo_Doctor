@@ -23,3 +23,17 @@ class LabPaymentWizard(models.Model):
                 rec.balance = rec.amount_paid -  rec.total_amount
 
 
+    def action_confirm_payment(self):
+        # Get the related doctor.lab.report record
+        lab_report = self.patient_id
+        
+        # Update the status to 'paid'
+        if lab_report:
+            lab_report.write({
+                'status': 'paid'
+            })
+        
+        # Close the wizard
+        return {'type': 'ir.actions.act_window_close'}
+
+
