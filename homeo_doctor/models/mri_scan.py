@@ -63,7 +63,7 @@ class MRI_Scan(models.Model):
                 'age': vals.get('register_age'),
                 'email': vals.get('register_email'),
                 'phone_number': vals.get('register_phone_number'),
-                'registration_fee': vals.get('registration_fee', 50.0),
+                # 'registration_fee': vals.get('registration_fee', 50.0),
                 'consultation_check': vals.get('consultation_check', True),
                 'walk_in': True
 

@@ -29,7 +29,7 @@
                     <field name="register_patient_name" string="Patient Name"/>
                     <field name="register_age" string="Age"/>
                     <field name="register_phone_number" string="Mobile"/>
-                    <field name="registration_fee" string="Fee"/>
+<!--                    <field name="registration_fee" string="Fee"/>-->
                     <field name="register_visible" invisible="1"/>
                 </tree>
             </field>
@@ -78,8 +78,8 @@
                                 <field name="register_phone_number"
                                        attrs="{'invisible': [('register_visible', '=', False)]}"/>
                                 <field name="register_email" attrs="{'invisible': [('register_visible', '=', False)]}"/>
-                                <field name="registration_fee"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
+<!--                                <field name="registration_fee"-->
+<!--                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>-->
                             </group>
                             <group>
                                 <field name="file_report" filename="file_report_name"/>

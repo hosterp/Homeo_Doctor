@@ -28,7 +28,7 @@
                     <field name="register_patient_name" string="Patient Name"/>
                     <field name="register_age" string="Age"/>
                     <field name="register_phone_number" string="Mobile"/>
-                    <field name="registration_fee" string="Fee"/>
+<!--                    <field name="registration_fee" string="Fee"/>-->
                     <field name="register_visible" invisible="1"/>
                 </tree>
             </field>
@@ -80,8 +80,8 @@
                             </group>
                             <group>
                                 <field name="referral_id" invisible="1"/>
-                                <field name="registration_fee"
-                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>
+<!--                                <field name="registration_fee"-->
+<!--                                       attrs="{'invisible': [('register_visible', '=', False)]}"/>-->
                                 <field name="scan_registered_date"/>
                                 <field name="scan_report_date"/>
                                 <field name="investigation"/>
