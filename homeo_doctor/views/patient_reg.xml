@@ -302,7 +302,7 @@
                             </group>
                             <group>
                                 <field name="user_ide" string="UHID"/>
-                                <field name="test_names" />
+                                <field name="test_names" invisible="1"/>
 
                             </group>
                             <group>
