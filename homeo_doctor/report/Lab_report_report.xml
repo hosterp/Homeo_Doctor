@@ -4,8 +4,14 @@
         <t t-call="web.basic_layout">
             <div class="header">
                 <div class="text-center">
-                    <h2 style="text-decoration: underline; margin-bottom: 10px;">Hospital Management</h2>
-                    <p>Trivandrum | Phone No: 0001-123456 </p>
+                    <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
+                        </h1>
+                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO
+                            THIRUVANANTHAPURAM -695 564
+                        </p>
+                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004,2374004
+                            dpmshospital@gmail.com
+                        </p>
                 </div>
             </div>
             <t t-raw="0"/>
@@ -20,7 +26,7 @@
                         <!-- Header Section -->
                         <div class="row">
                             <div class="col-12 text-center">
-                                <h3 class="mt-2 mb-4">LAB TEST INVOICE</h3>
+                                <h5 class="mt-2 mb-4">LAB</h5>
                             </div>
                         </div>
 
@@ -32,31 +38,30 @@
                                         <td class="pl-0"><strong>Invoice Date:</strong></td>
                                         <td><span t-field="o.date"/></td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                         <td class="pl-0"><strong>Referral ID:</strong></td>
                                         <td><span t-field="o.referral_id"/></td>
-                                    </tr>
+                                    </tr> -->
                                 </table>
                             </div>
                         </div>
 
-                        <!-- Patient and Doctor Information -->
+                         <!-- Patient and Doctor Information with reduced spacing -->
                         <div class="row mb-4">
                             <div class="col-6">
                                 <div class="p-3" style="border: 1px solid #ddd; border-radius: 4px;">
-                                    <h5 class="mb-3">Patient Information</h5>
-                                    <table class="table table-borderless mb-0">
-                                        <tr>
-                                            <td class="pl-0"><strong>Patient ID:</strong></td>
-                                            <td><span t-field="o.user_ide"/></td>
+                                    <table class="table table-borderless mb-0" style="margin-bottom: 0;">
+                                        <tr style="line-height: 1.2;">
+                                            <td class="pl-0 py-1"><strong>Patient ID:</strong></td>
+                                            <td class="py-1"><span t-field="o.user_ide"/></td>
                                         </tr>
-                                        <tr>
-                                            <td class="pl-0"><strong>Name:</strong></td>
-                                            <td><span t-field="o.user_ide.patient_id"/></td>
+                                        <tr style="line-height: 1.2;">
+                                            <td class="pl-0 py-1"><strong>Name:</strong></td>
+                                            <td class="py-1"><span t-field="o.user_ide.patient_id"/></td>
                                         </tr>
-                                        <tr>
-                                            <td class="pl-0"><strong>Age/Gender:</strong></td>
-                                            <td>
+                                        <tr style="line-height: 1.2;">
+                                            <td class="pl-0 py-1"><strong>Age/Gender:</strong></td>
+                                            <td class="py-1">
                                                 <span t-field="o.patient_id.age"/> /
                                                 <span t-field="o.patient_id.gender"/>
                                             </td>
@@ -66,29 +71,26 @@
                             </div>
                             <div class="col-6">
                                 <div class="p-3" style="border: 1px solid #ddd; border-radius: 4px;">
-                                    <h5 class="mb-3">Doctor Information</h5>
-                                    <table class="table table-borderless mb-0">
-                                        <tr>
-                                            <td class="pl-0"><strong>Name:</strong></td>
-                                            <td><span t-field="o.doctor_id.name"/></td>
+                                    <table class="table table-borderless mb-0" style="margin-bottom: 0;">
+                                        <tr style="line-height: 1.2;">
+                                            <td class="pl-0 py-1"><strong>Name:</strong></td>
+                                            <td class="py-1"><span t-field="o.doctor_id.name"/></td>
                                         </tr>
-                                        <tr>
-                                            <td class="pl-0"><strong>Department:</strong></td>
-                                            <td><span t-field="o.doctor_id.department_id"/></td>
+                                        <tr style="line-height: 1.2;">
+                                            <td class="pl-0 py-1"><strong>Department:</strong></td>
+                                            <td class="py-1"><span t-field="o.doctor_id.department_id"/></td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
                         </div>
-
                         <!-- Scan Details Table -->
                         <div class="mt-4">
-                            <h5>Scan Details</h5>
                             <table class="table table-bordered">
                                 <thead class="thead-light">
                                     <tr>
                                         <th class="text-center">No.</th>
-                                        <th>Lab Test Description</th>
+                                        <th>PARTICULARS</th>
                                         <th class="text-right">Amount (₹)</th>
                                     </tr>
                                 </thead>
@@ -99,9 +101,9 @@
                                             <span t-esc="counter"/>
                                             <t t-set="counter" t-value="counter + 1"/>
                                         </td>
-                                        <td style="width: 35%;"><span t-field="line.lab_type_id.name"/></td>
+                                        <td style="width: 35%;"><span t-field="line.lab_type_id"/></td>
                                         <td class="text-right" style="width: 25%;">
-                                            ₹ <span t-field="line.rate_id.amount" t-options='{"widget": "float", "precision": 2}'/></td>
+                                            ₹ <span t-field="line.rate_id" t-options='{"widget": "float", "precision": 2}'/></td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
@@ -123,32 +125,20 @@
                             </table>
                         </div>
 
-                        <!-- Additional Notes -->
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <div class="p-3" style="border: 1px solid #ddd; border-radius: 4px;">
-                                    <h6>Investigation Details:</h6>
-                                    <p t-field="o.report_details"/>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Terms and Signature -->
                         <div class="row mt-5">
                             <div class="col-8">
-                                <p class="text-muted small">
-                                    Terms &amp; Conditions:<br/>
-                                    1. Payment is due upon receipt of invoice<br/>
-                                    2. Please quote invoice number for all correspondences<br/>
-                                    3. This is a computer generated invoice
+                                <p class="mt-5">
+                                    Prepared By
                                 </p>
                             </div>
                             <div class="col-4 text-center">
                                 <p class="mt-5">
-                                    _______________________<br/>
-                                    Authorized Signature
+                                    Checked By
                                 </p>
                             </div>
+                        
                         </div>
                     </div>
                 </t>
