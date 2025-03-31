@@ -60,24 +60,24 @@ class DoctorLabReport(models.Model):
             rate_mapping = {}
             total_amount_mapping = {}
 
-            # print("line 63")
+            print("line 63")
 
             for line in record.lab_line_ids:
                 lab_type = line.lab_type_id.display_name
-                # print("line 67")
+                print("line 67")
 
                 if lab_type not in grouped_data:
                     grouped_data[lab_type] = []
                     rate_mapping[lab_type] = f"{line.rate_id} {line.currency_id.symbol}" if line.rate_id else "N/A"
                     total_amount_mapping[lab_type] = line.total_amount if line.total_amount else "N/A"
-                    # print("line 73")
+                    print("line 73")
                 grouped_data[lab_type].append(line)
-                # print("line 75")
+                print("line 75")
 
             html_content = "<table class='o_list_view table table-condensed' style='width:100%; border-collapse: collapse;'>"
-            # print("line 78")
+            print("line 78")
             for lab_type, tests in grouped_data.items():
-                # print("line 80")
+                print("line 80")
                 # Get Rate and Total Amount for the group
                 rate = rate_mapping.get(lab_type, "N/A")
                 total_amount = total_amount_mapping.get(lab_type, "N/A")
@@ -101,7 +101,7 @@ class DoctorLabReport(models.Model):
                 )
                 # print("line 102")
                 for test in tests:
-                    # print("line 104")
+                    print("line 104")
                     html_content += (
                         f"<tr>"
                         f"<td style='padding: 5px; border: 1px solid #ddd;'>{test.lab_test_name or ''}</td>"
@@ -168,7 +168,7 @@ class DoctorLabReport(models.Model):
         if len(self) > 1:
             raise ValueError("Please select only one record at a time.")
 
-        total_amount = sum(self.lab_line_ids.mapped('total_amount'))
+        total_amount = sum(self.lab_billing_ids.mapped('total_amount'))
 
         return {
             'type': 'ir.actions.act_window',
