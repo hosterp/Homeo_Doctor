@@ -6,7 +6,7 @@ from odoo import api, fields, models, _
 class labResultantConfi(models.Model):
     _name = 'lab.resultant.confi'
     _description = 'Lab Resultant Configuration'
-    _rec_name = 'test_name_bill_code'
+    _rec_name = 'test_name'
     # _order = 'date desc'
 
     test_name_bill_code = fields.Many2one('lab.investigation',string='Select Test Name/Bill Code')
