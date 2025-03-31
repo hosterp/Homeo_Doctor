@@ -22,3 +22,4 @@ class LabPaymentWizard(models.Model):
             elif(rec.amount_paid > rec.total_amount and rec.amount_paid >    0):
                 rec.balance = rec.amount_paid -  rec.total_amount
 
+

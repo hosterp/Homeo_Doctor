@@ -66,14 +66,15 @@
             <field name="arch" type="xml">
                 <form string="Lab Report" class="lab_form">
                     <header>
+                        <field name="status" widget="statusbar"/>
                         <button
                             name="action_confirm_payment"
                             string="Print Invoice"
                             type="object"
                             class="btn-primary"
-                            groups="base.group_user" />
-                        <button string="Paid"  class="btn-primary"/>
-                        <button string="Unpaid"  class="btn-primary"/>
+                            groups="base.group_user" invisible="1"/>
+                        <button name='action_confirm_payment'  type="object" string="Pay"  class="btn-primary"/>
+                        <button  string="Unpaid"  class="btn-primary"/>
                     </header>
 
                     <sheet>

@@ -45,6 +45,10 @@ class DoctorLabReport(models.Model):
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
     consultation_check = fields.Boolean(default=True)
     alternate_phone = fields.Char("Alternate Mobile Number")
+    status = fields.Selection([
+        ('unpaid', 'Unpaid'),
+        ('paid', 'Paid'),
+    ], string="Status", default="unpaid", tracking=True)
 
     @api.onchange('user_ide')
     def _onchange_user_ide(self):
