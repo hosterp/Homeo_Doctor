@@ -14,7 +14,7 @@ class GeneralBilling(models.Model):
     bill_date = fields.Datetime(string='Bill Date')
     op_category = fields.Many2one('op.category', string='OP Category')
     doctor = fields.Many2one('doctor.profile', string='Doctor')
-    department = fields.Many2one('general.dept.costing', string='Department')
+    department = fields.Many2one('general.department', string='Department')
     particulars = fields.Many2one('general.dept.costing', string='Select Particulars')
     bill_type = fields.Many2one('bill.type', string='Bill Type')
     mrd_no = fields.Char(string='MRD No')
