@@ -776,7 +776,11 @@ class LabReferral(models.Model):
                         'lab_test_name': test_name,
                         'lab_reference_range': referral_ranges,
                     })
-
+            for test in record.test_type:
+                self.env['lab.billing.page'].create({
+                    'lab_billing_id': lab_report.id,
+                    'lab_type_id': test.id,
+                })
     @api.model
     def create(self, vals):
         if vals.get('reference_no', _('New')) == _('New'):

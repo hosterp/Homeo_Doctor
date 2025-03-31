@@ -155,7 +155,19 @@
                                        widget="text"/>
                             </group>
                         </group>
-
+                        <notebook>
+                              <page string="Lab  Billing Details">
+                                   <field name="lab_billing_ids"
+                                       widget="one2many_list"
+                                       mode="tree">
+                                    <tree string="Lab  Billing Details" editable="bottom" create="true" delete="true">
+                                        <field name="lab_type_id" />
+                                        <field name="rate_id" />
+                                        <field name="total_amount" sum="Total Amount"/>
+                                    </tree>
+                                </field>
+                              </page>
+                        </notebook>
                         <notebook>
                             <page string="Lab Details" name="lab_details">
                                 <field name="lab_line_ids"

@@ -28,6 +28,7 @@ class DoctorLabReport(models.Model):
     referral_details = fields.Text(string="Referral Details")
     lab_reference_no = fields.Many2one('lab.referral', 'Reference No')
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_id', string='Lab Lines')
+    lab_billing_ids = fields.One2many('lab.billing.page', 'lab_billing_id', string='Lab billing Lines')
     vssc_check = fields.Boolean(string="VSSC")
 
     # with register
@@ -273,6 +274,28 @@ class LabRate(models.Model):
     _rec_name = 'amount'  # This will display the amount in Many2one fields
 
     amount = fields.Float(string='Amount', required=True)
+
+
+class LabBillingpage(models.Model):
+    _name = 'lab.billing.page'
+    _description = 'Lab Billing Page'
+
+    lab_type_id = fields.Many2one('lab.investigation', string='Investigation', required=True)
+    lab_billing_id = fields.Many2one('doctor.lab.report', string='Lab Test', required=True)
+
+    rate_id = fields.Monetary(string='Rate', compute='_compute_rate', store=True, readonly=False)
+    total_amount = fields.Monetary(string="Total", compute='_compute_total_amount', store=True)
+    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
+
+    @api.depends('lab_type_id')
+    def _compute_rate(self):
+        for record in self:
+            record.rate_id = record.lab_type_id.rate if record.lab_type_id else 0.0
+
+    @api.depends('rate_id')
+    def _compute_total_amount(self):
+        for record in self:
+            record.total_amount = record.rate_id
 
 
 class LabScanLine(models.Model):
