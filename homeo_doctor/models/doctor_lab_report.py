@@ -32,11 +32,19 @@ class DoctorLabReport(models.Model):
     vssc_check = fields.Boolean(string="VSSC")
     admitted_check =  fields.Boolean(string="Admitted")
     bill_type = fields.Selection([
-        ('op','OP'),('ip','IP'),('others','Others')],string="Bill Type")
+        ('op','OP'),('admitted','Admitted Patient'),('others','Others')],string="Bill Type")
     age=fields.Integer('Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     remarks = fields.Text("Remarks")
     staff_name = fields.Char("Staff Name")
+    o_c_percentage = fields.Char("OC%")
+    o_c = fields.Char("OC")
+    mode_of_payment = fields.Selection([('cash', 'Cash'),
+                                        ('card', 'Card'),
+                                        ('upi', 'UPI'),('credit','Credit')], string='Payment Method',default='cash')
+    staff_passwor = fields.Char("Staff Password")
+    c_o = fields.Boolean("C/O")
+    b_o = fields.Boolean("B/O")
 
     # with register
     register_visible = fields.Boolean(default=True)
@@ -59,6 +67,13 @@ class DoctorLabReport(models.Model):
     ], string="Status", default="unpaid", tracking=True)
 
     grouped_lab_details = fields.Html(compute='_compute_grouped_lab_details', string="Lab Details", sanitize=False)
+    total_bill_amount = fields.Integer("Total Amount",compute="_onchange_lab_billing_ids")
+    # display_amount = fields.Integer('Bill Amount')
+
+    @api.depends('lab_billing_ids')
+    def _onchange_lab_billing_ids(self):
+        self.total_bill_amount = sum(self.lab_billing_ids.mapped('total_amount'))
+        # self.display_amount = self.total_bill_amount
 
     @api.depends('lab_line_ids')
     def _compute_grouped_lab_details(self):
@@ -190,6 +205,7 @@ class DoctorLabReport(models.Model):
                 'default_patient_id': self.id,
                 'default_patient_name': self.patient_name,
                 'default_total_amount': total_amount,
+                'default_pay_mode': self.mode_of_payment,
             }
         }
 
