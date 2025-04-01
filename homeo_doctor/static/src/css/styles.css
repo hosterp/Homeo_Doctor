@@ -480,3 +480,34 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     font-weight: bold;
     color: #555;
 }
+
+
+
+.lab_form .oe_title h1 {
+    font-size: 22px;
+    margin-bottom: 16px;
+}
+.lab_form .form-section {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+.lab_form .form-group {
+    margin-bottom: 12px;
+}
+.lab_form .col-form-label {
+    color: #4c4c4c;
+	white-space: nowrap;
+}
+.lab_form .field-container {
+    padding: 2px;
+    margin-left: 14px;
+}
+.lab_form .o_notebook {
+    margin-top: 16px;
+}
+.lab_form .o_form_sheet {
+    max-width: 100%;
+    width: 100%;
+}
+

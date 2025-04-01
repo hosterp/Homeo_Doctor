@@ -117,6 +117,6 @@
         <!-- Menu Item -->
         <menuitem id="menu_scanning_root" name="Scanning" parent="menu_hospital_root" sequence="7"/>
         <menuitem id="menu_scanning_ct" name="CT Scan" parent="menu_lab_reports_root" action="action_ct_scan"
-                  sequence="1"/>
+                  sequence="3"/>
     </data>
 </odoo>

@@ -15,7 +15,7 @@ class DoctorLabReport(models.Model):
     user_ide = fields.Many2one('patient.reg', string="UHID")
     patient_id = fields.Many2one('patient.registration', string="Consultation ID")
     patient_name = fields.Char(string="Patient Name")
-    patient_phone = fields.Char(related='patient_id.phone_number', string="Patient Mobile Number")
+    patient_phone = fields.Char(related='patient_id.phone_number', string="Mobile No")
     reference_no = fields.Char(string="Reference No")
     report_reference = fields.Char(string="Report Reference", readonly=True, default=lambda self: _('New'))
     date = fields.Date(string="Report Date", default=fields.Date.context_today)
@@ -30,6 +30,13 @@ class DoctorLabReport(models.Model):
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_id', string='Lab Lines')
     lab_billing_ids = fields.One2many('lab.billing.page', 'lab_billing_id', string='Lab billing Lines')
     vssc_check = fields.Boolean(string="VSSC")
+    admitted_check =  fields.Boolean(string="Admitted")
+    bill_type = fields.Selection([
+        ('op','OP'),('ip','IP'),('others','Others')],string="Bill Type")
+    age=fields.Integer('Age')
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
+    remarks = fields.Text("Remarks")
+    staff_name = fields.Char("Staff Name")
 
     # with register
     register_visible = fields.Boolean(default=True)
@@ -45,7 +52,7 @@ class DoctorLabReport(models.Model):
     # register_doc_name = fields.Many2one('doctor.profile', string='Doctor')
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
     consultation_check = fields.Boolean(default=True)
-    alternate_phone = fields.Char("Alternate Mobile Number")
+    alternate_phone = fields.Char("Alternate Mobile No")
     status = fields.Selection([
         ('unpaid', 'Unpaid'),
         ('paid', 'Paid'),
@@ -135,6 +142,9 @@ class DoctorLabReport(models.Model):
                 # Optionally, populate other details
                 self.patient_phone = patient_reg.phone_number
                 self.vssc_check = patient_reg.vssc_boolean
+                self.admitted_check = patient_reg.admission_boolean
+                self.age = patient_reg.age
+                self.gender = patient_reg.gender
 
                 # Optionally, if you want to link to patient registration
                 # patient_registration = self.env['patient.registration'].search([
@@ -288,6 +298,7 @@ class LabBillingpage(models.Model):
 
     lab_type_id = fields.Many2one('lab.investigation', string='Investigation', required=True)
     lab_billing_id = fields.Many2one('doctor.lab.report', string='Lab Test', required=True)
+    test_code = fields.Char(related='lab_type_id.bill_code', string='Bill Code', store=True)
 
     rate_id = fields.Monetary(string='Rate', compute='_compute_rate', store=True, readonly=False)
     total_amount = fields.Monetary(string="Total", compute='_compute_total_amount', store=True)
