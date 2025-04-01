@@ -116,6 +116,6 @@
         <!-- Menu Item -->
         <menuitem id="menu_scanning_root" name="Scanning" parent="menu_hospital_root" sequence="7"/>
         <menuitem id="menu_audiology" name="Audiology" parent="menu_lab_reports_root" action="action_audiology"
-                  sequence="4"/>
+                  sequence="6"/>
     </data>
 </odoo>

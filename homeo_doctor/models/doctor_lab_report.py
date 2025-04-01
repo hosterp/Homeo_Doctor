@@ -33,6 +33,10 @@ class DoctorLabReport(models.Model):
     admitted_check =  fields.Boolean(string="Admitted")
     bill_type = fields.Selection([
         ('op','OP'),('ip','IP'),('others','Others')],string="Bill Type")
+    age=fields.Integer('Age')
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
+    remarks = fields.Text("Remarks")
+    staff_name = fields.Char("Staff Name")
 
     # with register
     register_visible = fields.Boolean(default=True)
@@ -48,7 +52,7 @@ class DoctorLabReport(models.Model):
     # register_doc_name = fields.Many2one('doctor.profile', string='Doctor')
     registration_fee = fields.Float(string="Registration Fee", default=50.0)
     consultation_check = fields.Boolean(default=True)
-    alternate_phone = fields.Char("Alternate Mobile Number")
+    alternate_phone = fields.Char("Alternate Mobile No")
     status = fields.Selection([
         ('unpaid', 'Unpaid'),
         ('paid', 'Paid'),
@@ -138,6 +142,9 @@ class DoctorLabReport(models.Model):
                 # Optionally, populate other details
                 self.patient_phone = patient_reg.phone_number
                 self.vssc_check = patient_reg.vssc_boolean
+                self.admitted_check = patient_reg.admission_boolean
+                self.age = patient_reg.age
+                self.gender = patient_reg.gender
 
                 # Optionally, if you want to link to patient registration
                 # patient_registration = self.env['patient.registration'].search([
