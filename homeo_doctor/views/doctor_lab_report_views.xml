@@ -230,23 +230,47 @@
                     </notebook>
                 </div>
 
-                        <div class="col-md-2">
-                            <div class="form-group row">
-                                <label for="remarks" class="col-md-2 col-form-label">Remarks</label>
-                                <div class="col-md-10 field-container">
-                                    <field name="remarks" width="40px"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group row">
-                                <label for="staff_name" class="col-md-4 col-form-label">Staff</label>
-                                <div class="col-md-8 field-container">
-                                    <field name="staff_name"/>
-                                </div>
+
+                <div class="row left_colum" style="display:block;">
+                    <!-- First row: bill_amount and mode_of_payment -->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="bill_amount" class="col-md-4 col-form-label">Bill Amount</label>
+                            <div class="col-md-8 field-container">
+                                <field name="bill_amount"/>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="remarks" class="col-md-4 col-form-label">Remarks</label>
+                            <div class="col-md-8 field-container">
+                                <field name="remarks"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row right_colum" style="display:block;">
+                    <!-- Second row: remarks and staff_name -->
+                     <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="mode_of_payment" class="col-md-4 col-form-label">Mode of Payment</label>
+                            <div class="col-md-8 field-container">
+                                <field name="mode_of_payment"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="staff_name" class="col-md-4 col-form-label">Staff</label>
+                            <div class="col-md-8 field-container">
+                                <field name="staff_name"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
             <notebook>
                         <page string="Lab Details" name="lab_details" invisible="1">
                             <field name="lab_line_ids"

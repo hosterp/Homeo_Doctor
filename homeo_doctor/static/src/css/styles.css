@@ -533,3 +533,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 .custom_notebook .o_list_view td {
     white-space: normal;
 }
+
+.left_colum{
+    margin-left: 10px;
+}
