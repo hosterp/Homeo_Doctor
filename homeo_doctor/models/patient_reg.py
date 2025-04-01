@@ -758,7 +758,7 @@ class LabReferral(models.Model):
                     'lab_type_id': test.id,
                 })
 
-            # FIXED: Process test names separately, assigning each to the appropriate test type
+            # FIXED: Process test names separately, assigning each to the appropriate test type and unit
             for test_name in test_names_list:
                 test_name = test_name.strip()  # Clean whitespace
                 print(f"🔍 Searching for test_name: {test_name}")
@@ -768,23 +768,27 @@ class LabReferral(models.Model):
                     ('test_name', '=', test_name)
                 ])
 
-                # Determine referral ranges
+                # Determine referral ranges and unit
                 if test_results:
                     referral_ranges = ', '.join(filter(None, test_results.mapped('referral_range')))
-                    print(f"✅ Found: {test_name} | Referral Range(s): {referral_ranges}")
+                    unit = test_results[
+                        0].unit  # Get the unit from the first result (assuming multiple results could exist)
+                    print(f"✅ Found: {test_name} | Referral Range(s): {referral_ranges} | Unit: {unit}")
                 else:
                     print(f"❌ No matching test found for: {test_name}")
                     referral_ranges = "N/A"  # Default if no referral range exists
+                    unit = "N/A"  # Default if no unit exists
 
                 # Assign to the appropriate test type - you may need logic to determine which test type to use
-                # For simplicity, I'm using the first test type for all tests, but you should adjust this logic
                 if record.test_type:
                     self.env['lab.scan.line'].create({
                         'lab_id': lab_report.id,
                         'lab_type_id': record.test_type[0].id,  # Using first test type - adjust as needed
                         'lab_test_name': test_name,
                         'lab_reference_range': referral_ranges,
+                        'unit': unit,  # Add the unit here
                     })
+
     @api.model
     def create(self, vals):
         if vals.get('reference_no', _('New')) == _('New'):

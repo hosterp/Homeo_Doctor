@@ -19,6 +19,7 @@ class LabResultPage(models.Model):
     lab_technician = fields.Many2one('lab.technician',string='Select Lab Technician')
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_result_id', string='Lab Result')
     staff=fields.Char(string='staff')
+
     @api.onchange('bill_number')
     def _onchange_bill_number(self):
         self.patient_id = False
@@ -49,6 +50,7 @@ class LabResultPage(models.Model):
                     'lab_result_id': self.id,
                     'lab_test_name': lab_line.lab_test_name,
                     'lab_result': lab_line.lab_result,
+                    'unit':lab_line.unit,
                 }))
 
 

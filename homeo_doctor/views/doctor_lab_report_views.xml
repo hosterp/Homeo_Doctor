@@ -179,6 +179,7 @@
                                         <field name="lab_test_name"/>
                                         <field name="lab_result" string="Observed Value"/>
                                         <field name="lab_reference_range"/>
+                                        <field name="unit"/>
                                         <field name="lab_result" string="Result" invisible="1"/>
                                         <field name="rate_id" string="Rate" invisible="1"/>
                                         <field name="total_amount" sum="Total Amount" invisible="1"/>
