@@ -161,7 +161,8 @@
                                        widget="one2many_list"
                                        mode="tree">
                                     <tree string="Lab  Billing Details" editable="bottom" create="true" delete="true">
-                                        <field name="lab_type_id" string='Particulars'/>
+                                        <field name="test_code" string='Test Code'/>
+                                        <field name="lab_type_id" string='Test Name'/>
                                         <field name="rate_id" />
                                         <field name="total_amount" sum="Total Amount"/>
                                     </tree>

@@ -30,6 +30,9 @@ class DoctorLabReport(models.Model):
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_id', string='Lab Lines')
     lab_billing_ids = fields.One2many('lab.billing.page', 'lab_billing_id', string='Lab billing Lines')
     vssc_check = fields.Boolean(string="VSSC")
+    admitted_check =  fields.Boolean(string="Admitted")
+    bill_type = fields.Selection([
+        ('op','OP'),('ip','IP'),('others','Others')],string="Bill Type")
 
     # with register
     register_visible = fields.Boolean(default=True)
@@ -288,6 +291,7 @@ class LabBillingpage(models.Model):
 
     lab_type_id = fields.Many2one('lab.investigation', string='Investigation', required=True)
     lab_billing_id = fields.Many2one('doctor.lab.report', string='Lab Test', required=True)
+    test_code = fields.Char(related='lab_type_id.bill_code', string='Bill Code', store=True)
 
     rate_id = fields.Monetary(string='Rate', compute='_compute_rate', store=True, readonly=False)
     total_amount = fields.Monetary(string="Total", compute='_compute_total_amount', store=True)
