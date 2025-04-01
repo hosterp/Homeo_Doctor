@@ -19,6 +19,18 @@ class LabResultPage(models.Model):
     lab_technician = fields.Many2one('lab.technician',string='Select Lab Technician')
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_result_id', string='Lab Result')
     staff=fields.Char(string='staff')
+    from_date = fields.Date(string="From Date")
+    to_date = fields.Date(string="To Date")
+
+    @api.onchange('from_date', 'to_date')
+    def _onchange_date_filter(self):
+        domain = [('status', '=', 'paid')]
+        if self.from_date:
+            domain.append(('date', '>=', self.from_date))
+        if self.to_date:
+            domain.append(('date', '<=', self.to_date))
+
+        return {'domain': {'bill_number': domain}}
 
     @api.onchange('bill_number')
     def _onchange_bill_number(self):

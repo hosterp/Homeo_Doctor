@@ -12,6 +12,7 @@
                                 class="oe_highlight"/>
                     </header>
                     <field name="patient_id" invisible="1"/>
+                    <field name="report_reference" string="Bill Number"/>
                     <field name="patient_name"/>
                     <field name="user_ide" string="Patient ID"/>
                     <field name="report_reference" invisible="1"/>
