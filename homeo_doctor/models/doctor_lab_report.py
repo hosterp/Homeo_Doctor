@@ -328,7 +328,7 @@ class LabScanLine(models.Model):
     total_amount = fields.Monetary(string="Total", compute='_compute_total_amount', store=True)
     lab_result = fields.Char('Result')
     lab_reference_range = fields.Char('Reference Range')
-
+    lab_result_id=fields.Many2one('lab.result.page',string='Lab Result')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
 
 

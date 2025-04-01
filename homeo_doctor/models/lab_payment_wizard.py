@@ -22,18 +22,44 @@ class LabPaymentWizard(models.Model):
             elif(rec.amount_paid > rec.total_amount and rec.amount_paid >    0):
                 rec.balance = rec.amount_paid -  rec.total_amount
 
-
     def action_confirm_payment(self):
-        # Get the related doctor.lab.report record
+
         lab_report = self.patient_id
-        
-        # Update the status to 'paid'
+
         if lab_report:
+
             lab_report.write({
                 'status': 'paid'
             })
-        
-        # Close the wizard
+
+
+            lab_result_page = self.env['lab.result.page'].create({
+                'bill_number': lab_report.id,
+                'patient_id': lab_report.user_ide.id,
+                'patient_name': lab_report.patient_name,
+                'doctor': lab_report.doctor_id.id,
+                'sample_collected': fields.Datetime.now(),
+                'lab_collection': fields.Datetime.now(),
+                'test_on': fields.Datetime.now(),
+            })
+
+
+            lab_lines = []
+            for lab_line in lab_report.lab_line_ids:
+                lab_lines.append((0, 0, {
+                    'lab_result_id': lab_result_page.id,
+                    'lab_test_name': lab_line.lab_test_name,
+                    'lab_result': lab_line.lab_result,
+
+
+                }))
+
+
+            if lab_lines:
+                lab_result_page.write({'lab_line_ids': lab_lines})
+
+
         return {'type': 'ir.actions.act_window_close'}
+
 
 
