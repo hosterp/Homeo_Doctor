@@ -12,6 +12,7 @@
                                 class="oe_highlight"/>
                     </header>
                     <field name="patient_id" invisible="1"/>
+                    <field name="report_reference" string="Bill Number"/>
                     <field name="patient_name"/>
                     <field name="user_ide" string="Patient ID"/>
                     <field name="report_reference" invisible="1"/>
@@ -256,6 +257,7 @@
                                     <field name="lab_type_id" string='Particulars' invisible="1"/>
                                     <field name="lab_test_name"/>
                                     <field name="lab_result" string="Observed Value"/>
+                                    <field name="unit"/>
                                     <field name="lab_reference_range"/>
                                     <field name="lab_result" string="Result" invisible="1"/>
                                     <field name="rate_id" string="Rate" invisible="1"/>

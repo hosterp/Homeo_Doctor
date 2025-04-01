@@ -334,7 +334,7 @@ class LabScanLine(models.Model):
     lab_reference_range = fields.Char('Reference Range')
     lab_result_id=fields.Many2one('lab.result.page',string='Lab Result')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
-
+    unit=fields.Char(string='Unit')
 
 
     # @api.onchange('lab_department')

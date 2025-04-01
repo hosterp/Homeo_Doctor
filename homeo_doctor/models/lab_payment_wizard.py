@@ -50,8 +50,7 @@ class LabPaymentWizard(models.Model):
                     'lab_result_id': lab_result_page.id,
                     'lab_test_name': lab_line.lab_test_name,
                     'lab_result': lab_line.lab_result,
-
-
+                    'unit':lab_line.unit
                 }))
 
 

@@ -6,6 +6,17 @@
             <field name="arch" type="xml">
                 <form string="Lab Result Form" class="lab_form">
                     <sheet>
+
+                        <group col="2">
+                            <group>
+                                <field name="from_date"/>
+                            </group>
+                            <group>
+                                <field name="to_date"/>
+                            </group>
+
+                        </group>
+
                         <group col="3">
                             <group>
                                 <field name="bill_number"/>
@@ -24,7 +35,7 @@
                                 <field name="lab_technician"/>
                             </group>
                         </group>
-                         <notebook>
+                        <notebook>
                             <page string="Lab Details" name="lab_details">
                                 <field name="lab_line_ids"
                                        widget="one2many_list"
@@ -34,6 +45,7 @@
                                         <field name="lab_type_id" string='Particulars' invisible="1"/>
                                         <field name="lab_test_name"/>
                                         <field name="lab_result" string="Result"/>
+                                        <field name="unit" readonly="1"/>
                                         <field name="lab_reference_range"/>
                                         <field name="lab_result" string="Result" invisible="1"/>
                                         <field name="rate_id" string="Rate" invisible="1"/>
