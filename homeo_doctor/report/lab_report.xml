@@ -8,4 +8,12 @@
         name="homeo_doctor.report_lab_invoice"
         file="homeo_doctor.report_lab_invoice"
     />
+    <report
+        id="report_lab_result_report"
+        string="Lab Result"
+        model="lab.result.page"
+        report_type="qweb-pdf"
+        name="homeo_doctor.report_lab_result_report_template"
+        file="homeo_doctor.report_lab_result_report_template"
+    />
 </odoo>
