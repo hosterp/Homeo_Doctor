@@ -18,7 +18,7 @@ class LabResultPage(models.Model):
     lab_incharge =fields.Many2one('lab.incharge',string='Select Lab In-charge')
     lab_technician = fields.Many2one('lab.technician',string='Select Lab Technician')
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_result_id', string='Lab Result')
-
+    staff=fields.Char(string='staff')
     @api.onchange('bill_number')
     def _onchange_bill_number(self):
         self.patient_id = False
@@ -41,7 +41,7 @@ class LabResultPage(models.Model):
             self.patient_name = lab_report.patient_name
             self.doctor = lab_report.doctor_id.id
             self.sample_collected = lab_report.date
-            
+
 
             lab_lines = []
             for lab_line in lab_report.lab_line_ids:

@@ -245,6 +245,24 @@
                     </field>
                 </page>
             </notebook>
+            <notebook>
+                        <page string="Lab Details" name="lab_details" invisible="1">
+                            <field name="lab_line_ids"
+                                   widget="one2many_list"
+                                   mode="tree">
+                                <tree string="Lab Tests" editable="bottom" create="true" delete="true">
+                                    <field name="lab_department" invisible="1"/>
+                                    <field name="lab_type_id" string='Particulars' invisible="1"/>
+                                    <field name="lab_test_name"/>
+                                    <field name="lab_result" string="Observed Value"/>
+                                    <field name="lab_reference_range"/>
+                                    <field name="lab_result" string="Result" invisible="1"/>
+                                    <field name="rate_id" string="Rate" invisible="1"/>
+                                    <field name="total_amount" sum="Total Amount" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
             </sheet>
         </form>
     </field>
@@ -262,6 +280,6 @@
         <menuitem id="menu_lab_reports_root" name="Transactions" parent="menu_homeo_head" sequence="2"/>
         <menuitem id="menu_lab_reports" name="Lab" parent="menu_lab_reports_root" sequence="1"/>
         <menuitem id="menu_lab_reports_billing" name="Lab Billing" parent="menu_lab_reports" action="action_lab_report"
-                  sequence="2"/>
+                  sequence="1"/>
     </data>
 </odoo>
