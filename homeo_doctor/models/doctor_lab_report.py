@@ -15,7 +15,7 @@ class DoctorLabReport(models.Model):
     user_ide = fields.Many2one('patient.reg', string="UHID")
     patient_id = fields.Many2one('patient.registration', string="Consultation ID")
     patient_name = fields.Char(string="Patient Name")
-    patient_phone = fields.Char(related='patient_id.phone_number', string="Patient Mobile Number")
+    patient_phone = fields.Char(related='patient_id.phone_number', string="Mobile No")
     reference_no = fields.Char(string="Reference No")
     report_reference = fields.Char(string="Report Reference", readonly=True, default=lambda self: _('New'))
     date = fields.Date(string="Report Date", default=fields.Date.context_today)
