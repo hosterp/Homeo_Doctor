@@ -11,16 +11,37 @@
                                 <field name="bill_number"/>
                                 <field name="patient_id"/>
                                 <field name="patient_name"/>
+                                <field name="internal_doctor"/>
                             </group>
                             <group>
                                 <field name="doctor"/>
                                 <field name="sample_collected"/>
+                                <field name="lab_incharge"/>
                             </group>
                             <group>
                                 <field name="lab_collection"/>
                                 <field name="test_on"/>
+                                <field name="lab_technician"/>
                             </group>
                         </group>
+                         <notebook>
+                            <page string="Lab Details" name="lab_details">
+                                <field name="lab_line_ids"
+                                       widget="one2many_list"
+                                       mode="tree">
+                                    <tree string="Lab Tests" editable="bottom" create="true" delete="true">
+                                        <field name="lab_department" invisible="1"/>
+                                        <field name="lab_type_id" string='Particulars' invisible="1"/>
+                                        <field name="lab_test_name"/>
+                                        <field name="lab_result" string="Observed Value"/>
+                                        <field name="lab_reference_range"/>
+                                        <field name="lab_result" string="Result" invisible="1"/>
+                                        <field name="rate_id" string="Rate" invisible="1"/>
+                                        <field name="total_amount" sum="Total Amount" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
