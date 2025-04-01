@@ -96,7 +96,7 @@
                                 </thead>
                                 <tbody>
                                     <t t-set="counter" t-value="1"/>
-                                    <tr t-foreach="o.lab_line_ids" t-as="line">
+                                    <tr t-foreach="o.lab_billing_ids" t-as="line">
                                         <td class="text-center" style="width: 5%;">
                                             <span t-esc="counter"/>
                                             <t t-set="counter" t-value="counter + 1"/>
@@ -117,7 +117,7 @@
                                         <td colspan="2" class="text-right"><strong>Total Amount</strong></td>
                                         <td class="text-right">
                                             <strong>
-                                             ₹ <span t-esc="'%.2f'% sum(o.lab_line_ids.mapped('total_amount'))"/>
+                                             ₹ <span t-esc="'%.2f'% sum(o.lab_billing_ids.mapped('total_amount'))"/>
                                             </strong>
                                         </td>
                                     </tr>
