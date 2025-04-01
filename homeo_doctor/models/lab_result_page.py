@@ -6,6 +6,7 @@ from odoo import api, fields, models, _
 class LabResultPage(models.Model):
     _name='lab.result.page'
     _rec_name = 'bill_number'
+    _order = 'test_on desc'
 
     bill_number=fields.Many2one('doctor.lab.report',string='Bill Number', domain=[('status', '=', 'paid')])
     patient_id=fields.Many2one(related='bill_number.user_ide',string='UHID')

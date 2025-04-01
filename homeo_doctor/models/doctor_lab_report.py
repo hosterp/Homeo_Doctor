@@ -10,7 +10,7 @@ class DoctorLabReport(models.Model):
     _name = 'doctor.lab.report'
     _description = 'Doctor Lab Report'
     _rec_name = 'report_reference'
-    _order = 'date desc'
+    _order = 'report_reference desc'
 
     user_ide = fields.Many2one('patient.reg', string="UHID")
     patient_id = fields.Many2one('patient.registration', string="Consultation ID")
