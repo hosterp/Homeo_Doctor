@@ -33,7 +33,7 @@
                                         <field name="lab_department" invisible="1"/>
                                         <field name="lab_type_id" string='Particulars' invisible="1"/>
                                         <field name="lab_test_name"/>
-                                        <field name="lab_result" string="Observed Value"/>
+                                        <field name="lab_result" string="Result"/>
                                         <field name="lab_reference_range"/>
                                         <field name="lab_result" string="Result" invisible="1"/>
                                         <field name="rate_id" string="Rate" invisible="1"/>
@@ -54,6 +54,8 @@
                     <field name="bill_number"/>
                     <field name="patient_id"/>
                     <field name="patient_name"/>
+                    <field name="test_on"/>
+                    <field name="staff"/>
                 </tree>
             </field>
         </record>
