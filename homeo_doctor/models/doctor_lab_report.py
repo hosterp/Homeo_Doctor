@@ -63,6 +63,13 @@ class DoctorLabReport(models.Model):
     ], string="Status", default="unpaid", tracking=True)
 
     grouped_lab_details = fields.Html(compute='_compute_grouped_lab_details', string="Lab Details", sanitize=False)
+    total_bill_amount = fields.Integer("Total Amount",compute="_onchange_lab_billing_ids")
+    # display_amount = fields.Integer('Bill Amount')
+
+    @api.depends('lab_billing_ids')
+    def _onchange_lab_billing_ids(self):
+        self.total_bill_amount = sum(self.lab_billing_ids.mapped('total_amount'))
+        # self.display_amount = self.total_bill_amount
 
     @api.depends('lab_line_ids')
     def _compute_grouped_lab_details(self):

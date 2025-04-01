@@ -235,9 +235,9 @@
                     <!-- First row: bill_amount and mode_of_payment -->
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label for="bill_amount" class="col-md-4 col-form-label">Bill Amount</label>
+                            <label for="total_bill_amount" class="col-md-4 col-form-label">Bill Amount</label>
                             <div class="col-md-8 field-container">
-                                <field name="bill_amount"/>
+                                <field name="total_bill_amount"/>
                             </div>
                         </div>
                     </div>
