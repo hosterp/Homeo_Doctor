@@ -37,6 +37,10 @@ class DoctorLabReport(models.Model):
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     remarks = fields.Text("Remarks")
     staff_name = fields.Char("Staff Name")
+    mode_of_payment = fields.Selection([('cash', 'Cash'),
+                                        ('card', 'Card'),
+                                        ('upi', 'UPI'),('credit','Credit')], string='Payment Method',default='cash')
+    staff_passwor = fields.Char("Staff Password")
 
     # with register
     register_visible = fields.Boolean(default=True)

@@ -511,3 +511,25 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     width: 100%;
 }
 
+
+
+
+.custom_notebook {
+    width: 60% !important;
+
+}
+
+.custom_notebook .o_list_view {
+    width: 100% !important;
+    overflow: visible !important;
+}
+
+/* Make sure columns adapt to the narrower width */
+.custom_notebook .o_list_view thead th {
+    white-space: nowrap;
+}
+
+/* Ensure cell content doesn't cause horizontal scrolling */
+.custom_notebook .o_list_view td {
+    white-space: normal;
+}

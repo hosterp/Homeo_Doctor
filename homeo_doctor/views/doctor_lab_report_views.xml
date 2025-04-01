@@ -137,6 +137,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-2">
+                            <div class="form-group row">
+                                <label for="vssc_check" class="col-md-4 col-form-label">VSSC</label>
+                                <div class="col-md-8 field-container">
+                                    <field name="vssc_check" style="width: 20px;"/>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Row 2: Patient Name, Age, Gender -->
@@ -200,29 +208,36 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group row">
-                                <label for="vssc_check" class="col-md-4 col-form-label">VSSC</label>
-                                <div class="col-md-8 field-container">
-                                    <field name="vssc_check" style="width: 20px;"/>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
+                </div>
 
+                <!-- Lab Billing Details Section -->
+                <div class="row">
+                <div class="custom_notebook">
+                       <notebook>
+                        <page>
+                            <field name="lab_billing_ids" widget="one2many_list" mode="tree">
+                                <tree string="Lab Billing Details" editable="bottom" create="true" delete="true" class="o_list_view table table-bordered">
+                                    <field name="test_code" string='Test Code' width="15%"/>
+                                    <field name="lab_type_id" string='Test Name' width="65%"/>
+                                    <field name="rate_id" invisible="1"/>
+                                    <field name="total_amount" string="Amount" sum="Total Amount" width="20%"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </div>
 
-
-                    <!-- Row 5: Remarks, Staff Name -->
-                    <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-2">
                             <div class="form-group row">
                                 <label for="remarks" class="col-md-2 col-form-label">Remarks</label>
                                 <div class="col-md-10 field-container">
-                                    <field name="remarks"/>
+                                    <field name="remarks" width="40px"/>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group row">
                                 <label for="staff_name" class="col-md-4 col-form-label">Staff</label>
                                 <div class="col-md-8 field-container">
@@ -231,21 +246,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Lab Billing Details Section -->
-               <notebook>
-                <page>
-                    <field name="lab_billing_ids" widget="one2many_list" mode="tree">
-                        <tree string="Lab Billing Details" editable="bottom" create="true" delete="true" class="o_list_view table table-bordered">
-                            <field name="test_code" string='Test Code' width="15%"/>
-                            <field name="lab_type_id" string='Test Name' width="65%"/>
-                            <field name="rate_id" invisible="1"/>
-                            <field name="total_amount" string="Amount" sum="Total Amount" width="20%"/>
-                        </tree>
-                    </field>
-                </page>
-            </notebook>
             <notebook>
                         <page string="Lab Details" name="lab_details" invisible="1">
                             <field name="lab_line_ids"
