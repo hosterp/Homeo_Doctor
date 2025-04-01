@@ -1,0 +1,48 @@
+<odoo>
+    <data>
+        <record id="view_lab_result_form" model="ir.ui.view">
+            <field name="name">doctor.lab.result.form</field>
+            <field name="model">lab.result.page</field>
+            <field name="arch" type="xml">
+                <form string="Lab Result Form" class="lab_form">
+                    <sheet>
+                        <group col="3">
+                            <group>
+                                <field name="bill_number"/>
+                                <field name="patient_id"/>
+                                <field name="patient_name"/>
+                            </group>
+                            <group>
+                                <field name="doctor"/>
+                                <field name="sample_collected"/>
+                            </group>
+                            <group>
+                                <field name="lab_collection"/>
+                                <field name="test_on"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_lab_result_tree" model="ir.ui.view">
+            <field name="name">doctor.lab.result.tree</field>
+            <field name="model">lab.result.page</field>
+            <field name="arch" type="xml">
+                <tree string="Doctor Lab Reports">
+                    <field name="bill_number"/>
+                    <field name="patient_id"/>
+                    <field name="patient_name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_lab_result_page" model="ir.actions.act_window">
+            <field name="name">Lab Result</field>
+            <field name="res_model">lab.result.page</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_lab_result_tree"/>
+        </record>
+        <menuitem id="menu_lab_result_page" name="Lab Result" parent="menu_lab_reports" action="action_lab_result_page"
+                  sequence="2"/>
+    </data>
+</odoo>

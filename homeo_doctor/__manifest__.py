@@ -66,6 +66,7 @@
         "views/general_dept_costing.xml",
         "views/general_billing.xml",
         "views/general_billing.xml",
+        "views/lab_result_page.xml",
         "data/ir_sequence_data.xml",
 
     ],
