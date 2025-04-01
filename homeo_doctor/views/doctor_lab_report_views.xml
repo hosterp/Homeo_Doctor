@@ -130,19 +130,28 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group row">
-                                <label for="attachment" class="col-md-4 col-form-label">Results</label>
-                                <div class="col-md-8 field-container">
-                                    <field name="attachment" filename="attachment_name"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
+
+                        <div class="col-md-1">
                             <div class="form-group row">
                                 <label for="vssc_check" class="col-md-4 col-form-label">VSSC</label>
                                 <div class="col-md-8 field-container">
                                     <field name="vssc_check" style="width: 20px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group row">
+                                <label for="c_o" class="col-md-4 col-form-label">VSSC</label>
+                                <div class="col-md-8 field-container">
+                                    <field name="c_o" style="width: 20px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group row">
+                                <label for="b_o" class="col-md-4 col-form-label">VSSC</label>
+                                <div class="col-md-8 field-container">
+                                    <field name="b_o" style="width: 20px;"/>
                                 </div>
                             </div>
                         </div>
@@ -243,12 +252,21 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
+                            <label for="o_c_percentage" class="col-md-4 col-form-label">OC%</label>
+                            <div class="col-md-8 field-container">
+                                <field name="o_c_percentage"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
                             <label for="remarks" class="col-md-4 col-form-label">Remarks</label>
                             <div class="col-md-8 field-container">
                                 <field name="remarks"/>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <div class="row right_colum" style="display:block;">
@@ -263,12 +281,21 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
+                            <label for="o_c" class="col-md-4 col-form-label">OC</label>
+                            <div class="col-md-8 field-container">
+                                <field name="o_c"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
                             <label for="staff_name" class="col-md-4 col-form-label">Staff</label>
                             <div class="col-md-8 field-container">
                                 <field name="staff_name"/>
                             </div>
                         </div>
                     </div>
+
                 </div>
                 </div>
             <notebook>
