@@ -745,6 +745,8 @@ class LabReferral(models.Model):
                 'doctor_id': record.doctor.id,
                 'patient_name': record.patient_name,
                 'patient_id': patient_registration.id,
+                'age': record.user_ide.age,
+                'gender': record.user_ide.gender,
             })
             lab_report.register_visible = False
 
