@@ -70,7 +70,7 @@
         </record>
 
 <!--        <menuitem id="menu_general_billing_main_menu" name="General Billing" parent="menu_homeo_head" sequence="6"/>-->
-        <menuitem id="menu_general_billing_main" name="General Billing" parent="menu_lab_reports_root"
+        <menuitem id="menu_general_billing_main" name="General Billing" parent="menu_lab_reports_root_billing"
                   action="action_general_billing" sequence="0"/>
     </data>
 </odoo>
