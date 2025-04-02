@@ -19,7 +19,7 @@ class LabResultPage(models.Model):
     lab_incharge =fields.Many2one('lab.incharge',string='Select Lab In-charge')
     lab_technician = fields.Many2one('lab.technician',string='Select Lab Technician')
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_result_id', string='Lab Result')
-    staff=fields.Char(string='staff')
+    staff=fields.Char(string='Staff')
     from_date = fields.Date(string="From Date")
     to_date = fields.Date(string="To Date")
     status = fields.Selection([
