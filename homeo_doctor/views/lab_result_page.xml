@@ -5,6 +5,11 @@
             <field name="model">lab.result.page</field>
             <field name="arch" type="xml">
                 <form string="Lab Result Form" class="lab_form">
+                    <header>
+                        <field name="status" widget="statusbar"/>
+                          <button name="action_sample_collected" type="object" string="Sample Collected" class="btn-primary"/>
+                          <button name="action_result_ready" type="object" string="Result Ready" class="btn-primary"/>
+                    </header>
                     <sheet>
 
                         <group col="2">
@@ -68,6 +73,7 @@
                     <field name="patient_name"/>
                     <field name="test_on"/>
                     <field name="staff"/>
+                    <field name="status"/>
                 </tree>
             </field>
         </record>

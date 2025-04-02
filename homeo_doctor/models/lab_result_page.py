@@ -22,6 +22,20 @@ class LabResultPage(models.Model):
     staff=fields.Char(string='staff')
     from_date = fields.Date(string="From Date")
     to_date = fields.Date(string="To Date")
+    status = fields.Selection([
+        ('pending', 'Result Pending'),
+        ('sample_collected', 'Sample Collected'),
+        ('result_ready', 'Result Ready'),
+    ], string="Status", default="pending", tracking=True)
+
+    def action_sample_collected(self):
+        """Change status to 'Sample Collected' when the button is clicked."""
+        for record in self:
+            record.status = 'sample_collected'
+    def action_result_ready(self):
+        """Change status to 'Sample Collected' when the button is clicked."""
+        for record in self:
+            record.status = 'result_ready'
 
     @api.onchange('from_date', 'to_date')
     def _onchange_date_filter(self):

@@ -64,11 +64,17 @@ class DoctorLabReport(models.Model):
     status = fields.Selection([
         ('unpaid', 'Unpaid'),
         ('paid', 'Paid'),
+        ('sample_collected', 'Sample Collected'),
     ], string="Status", default="unpaid", tracking=True)
 
     grouped_lab_details = fields.Html(compute='_compute_grouped_lab_details', string="Lab Details", sanitize=False)
     total_bill_amount = fields.Integer("Total Amount",compute="_onchange_lab_billing_ids")
     # display_amount = fields.Integer('Bill Amount')
+
+    def action_sample_collected(self):
+        """Change status to 'Sample Collected' when the button is clicked."""
+        for record in self:
+            record.status = 'sample_collected'
 
     @api.depends('lab_billing_ids')
     def _onchange_lab_billing_ids(self):

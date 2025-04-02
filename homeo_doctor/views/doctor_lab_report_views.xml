@@ -73,6 +73,7 @@
                         class="btn-primary" groups="base.group_user" invisible="1"/>
                 <button name='action_confirm_payment' type="object" string="Pay" class="btn-primary"/>
                 <button string="Unpaid" class="btn-primary"/>
+                <button name="action_sample_collected" type="object" string="Sample Collected" class="btn-primary"/>
             </header>
 
             <sheet>
