@@ -14,11 +14,12 @@
                     <field name="patient_id" invisible="1"/>
                     <field name="report_reference" string="Bill Number"/>
                     <field name="patient_name"/>
+                    <field name="patient_phone"/>
                     <field name="user_ide" string="Patient ID"/>
                     <field name="report_reference" invisible="1"/>
                     <field name="date" string="Bill Date"/>
                     <field name="doctor_id" string="Doctor Name"/>
-                    <field name="patient_phone"/>
+                    <field name="staff_name"/>
                     <field name="vssc_check" string="VSSC"/>
                     <field name="register_visible" invisible="1"/>
                     <field name="status"/>

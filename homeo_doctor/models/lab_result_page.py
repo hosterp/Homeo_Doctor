@@ -23,6 +23,7 @@ class LabResultPage(models.Model):
     from_date = fields.Date(string="From Date")
     to_date = fields.Date(string="To Date")
     status =  fields.Char("Status")
+    patient_phone = fields.Char(string="Mobile No")
 
     @api.onchange('from_date', 'to_date')
     def _onchange_date_filter(self):

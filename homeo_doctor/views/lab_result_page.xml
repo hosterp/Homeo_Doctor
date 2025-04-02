@@ -66,6 +66,7 @@
                     <field name="bill_number"/>
                     <field name="patient_id"/>
                     <field name="patient_name"/>
+                    <field name="patient_phone"/>
                     <field name="test_on"/>
                     <field name="staff"/>
                     <field name="status"/>
