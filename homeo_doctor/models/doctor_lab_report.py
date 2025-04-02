@@ -189,23 +189,52 @@ class DoctorLabReport(models.Model):
         }
 
     def action_confirm_payment(self):
-        """ Open the Lab Payment wizard and pre-fill data from multiple selected records """
-        if len(self) > 1:
-            raise ValueError("Please select only one record at a time.")
+        """Create lab result record directly without going through the payment wizard"""
 
+        # Update the lab report status to 'paid'
+        self.write({
+            'status': 'paid'
+        })
+
+        # Calculate total amount from billing lines
         total_amount = sum(self.lab_billing_ids.mapped('total_amount'))
 
+        # Create the lab result page record directly
+        lab_result_page = self.env['lab.result.page'].create({
+            'bill_number': self.id,
+            'patient_id': self.user_ide.id,
+            'patient_name': self.patient_name,
+            'doctor': self.doctor_id.id,
+            'staff': self.staff_name,
+            'status': self.status,
+            'sample_collected': fields.Datetime.now(),
+            'lab_collection': fields.Datetime.now(),
+            'test_on': fields.Datetime.now(),
+        })
+
+        # Create lab lines for the result page
+        lab_lines = []
+        for lab_line in self.lab_line_ids:
+            lab_lines.append((0, 0, {
+                'lab_result_id': lab_result_page.id,
+                'lab_test_name': lab_line.lab_test_name,
+                'lab_result': lab_line.lab_result,
+                'unit': lab_line.unit
+            }))
+
+        # Add the lab lines to the result page
+        if lab_lines:
+            lab_result_page.write({'lab_line_ids': lab_lines})
+
+        # Return a notification message instead of opening a wizard
         return {
-            'type': 'ir.actions.act_window',
-            'name': 'Lab Payment',
-            'res_model': 'lab.payment',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {
-                'default_patient_id': self.id,
-                'default_patient_name': self.patient_name,
-                'default_total_amount': total_amount,
-                'default_pay_mode': self.mode_of_payment,
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Payment Confirmed',
+                'message': f'Payment has been confirmed for {self.patient_name}',
+                'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
             }
         }
 

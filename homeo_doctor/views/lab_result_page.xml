@@ -68,6 +68,7 @@
                     <field name="patient_name"/>
                     <field name="test_on"/>
                     <field name="staff"/>
+                    <field name="status"/>
                 </tree>
             </field>
         </record>
