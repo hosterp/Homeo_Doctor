@@ -65,6 +65,7 @@ class DoctorLabReport(models.Model):
         ('unpaid', 'Unpaid'),
         ('paid', 'Paid'),
         ('sample_collected', 'Sample Collected'),
+        ('result_ready', 'Result Ready'),
     ], string="Status", default="unpaid", tracking=True)
 
     grouped_lab_details = fields.Html(compute='_compute_grouped_lab_details', string="Lab Details", sanitize=False)

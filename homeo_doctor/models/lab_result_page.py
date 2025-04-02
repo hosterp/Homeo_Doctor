@@ -30,13 +30,18 @@ class LabResultPage(models.Model):
     ], string="Status", default="pending", tracking=True)
 
     def action_sample_collected(self):
-        """Change status to 'Sample Collected' when the button is clicked."""
+        """Change status to 'Sample Collected' and update billing."""
         for record in self:
             record.status = 'sample_collected'
+            if record.bill_number:
+                record.bill_number.status = 'sample_collected'  # Update billing status
+
     def action_result_ready(self):
-        """Change status to 'Sample Collected' when the button is clicked."""
+        """Change status to 'Result Ready' and update billing."""
         for record in self:
             record.status = 'result_ready'
+            if record.bill_number:
+                record.bill_number.status = 'result_ready'
 
     @api.onchange('from_date', 'to_date')
     def _onchange_date_filter(self):
