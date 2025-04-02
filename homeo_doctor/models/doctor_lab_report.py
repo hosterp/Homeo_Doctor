@@ -96,8 +96,8 @@ class DoctorLabReport(models.Model):
             lab_result = self.env['lab.result.page'].search([('bill_number', '=', record.id)], limit=1)
 
             if lab_result:
-                lab_result.write({'status': 'sample_collected'})
-             
+                lab_result.write({'sample_status': 'sample_collected'})
+
 
     @api.depends('lab_billing_ids')
     def _onchange_lab_billing_ids(self):
