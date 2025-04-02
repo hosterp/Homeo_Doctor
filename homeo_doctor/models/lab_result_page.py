@@ -27,6 +27,7 @@ class LabResultPage(models.Model):
         ('pending', 'Result Pending'),
         ('sample_collected', 'Sample Collected'),
         ('result_ready', 'Result Ready'),
+        ('paid', 'Paid'),
     ], string="Status", default="pending", tracking=True)
 
     def action_sample_collected(self):
@@ -34,14 +35,14 @@ class LabResultPage(models.Model):
         for record in self:
             record.status = 'sample_collected'
             if record.bill_number:
-                record.bill_number.status = 'sample_collected'  # Update billing status
+                record.bill_number.sample_status = 'sample_collected'  # Update billing status
 
     def action_result_ready(self):
         """Change status to 'Result Ready' and update billing."""
         for record in self:
             record.status = 'result_ready'
             if record.bill_number:
-                record.bill_number.status = 'result_ready'
+                record.bill_number.result_status = 'result_ready'
 
     @api.onchange('from_date', 'to_date')
     def _onchange_date_filter(self):
