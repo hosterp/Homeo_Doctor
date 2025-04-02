@@ -13,7 +13,7 @@ class labResultantConfi(models.Model):
     main_group = fields.Many2one('lab.main.group',String='Select Main Group')
     sub_group = fields.Many2one('lab.sub.group',string='Select Sub Group')
     test_name = fields.Char(string='Test Name')
-    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female'),('both','Both')], string="Gender")
     order = fields.Char(string='Order')
     age_from = fields.Integer(string='Age From')
     age_to = fields.Integer(string='Age To')
