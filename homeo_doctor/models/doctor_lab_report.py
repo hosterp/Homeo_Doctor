@@ -69,6 +69,18 @@ class DoctorLabReport(models.Model):
     grouped_lab_details = fields.Html(compute='_compute_grouped_lab_details', string="Lab Details", sanitize=False)
     total_bill_amount = fields.Integer("Total Amount",compute="_onchange_lab_billing_ids")
     # display_amount = fields.Integer('Bill Amount')
+    amount_paid = fields.Integer(string='Amount Paid')
+    balance = fields.Integer(string='Balance')
+
+    @api.onchange('amount_paid')
+    def _onchage_amount_paid(self):
+        for rec in self:
+            if (rec.amount_paid < rec.total_bill_amount and rec.amount_paid > 0):
+                rec.balance = rec.total_bill_amount - rec.amount_paid
+            elif (rec.amount_paid > rec.total_bill_amount and rec.amount_paid > 0):
+                rec.balance = rec.amount_paid - rec.total_bill_amount
+            else:
+                rec.balance =0
 
     @api.depends('lab_billing_ids')
     def _onchange_lab_billing_ids(self):

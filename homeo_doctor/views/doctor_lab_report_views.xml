@@ -260,6 +260,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
+                            <label for="amount_paid" class="col-md-4 col-form-label">Amount Paid</label>
+                            <div class="col-md-8 field-container">
+                                <field name="amount_paid"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
                             <label for="remarks" class="col-md-4 col-form-label">Remarks</label>
                             <div class="col-md-8 field-container">
                                 <field name="remarks"/>
@@ -284,6 +292,14 @@
                             <label for="o_c" class="col-md-4 col-form-label">OC</label>
                             <div class="col-md-8 field-container">
                                 <field name="o_c"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label for="balance" class="col-md-4 col-form-label">Balance</label>
+                            <div class="col-md-8 field-container">
+                                <field name="balance"/>
                             </div>
                         </div>
                     </div>
