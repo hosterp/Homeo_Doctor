@@ -87,7 +87,7 @@
                                             </td>
                                         </tr>
 
-                                         <tr style="line-height: 1.2;">
+                                        <tr style="line-height: 1.2;">
                                             <td class="pl-0 py-1">
                                                 <strong>Doctor Name:</strong>
                                             </td>
@@ -148,62 +148,78 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Scan Details Table -->
-                        <!--                        <div class="mt-4">-->
-                        <!--                            <table class="table table-bordered">-->
-                        <!--                                <thead class="thead-light">-->
-                        <!--                                    <tr>-->
-                        <!--                                        <th class="text-center">No.</th>-->
-                        <!--                                        <th>PARTICULARS</th>-->
-                        <!--                                        <th class="text-right">Amount (₹)</th>-->
-                        <!--                                    </tr>-->
-                        <!--                                </thead>-->
-                        <!--                                <tbody>-->
-                        <!--                                    <t t-set="counter" t-value="1"/>-->
-                        <!--                                    <tr t-foreach="o.lab_billing_ids" t-as="line">-->
-                        <!--                                        <td class="text-center" style="width: 5%;">-->
-                        <!--                                            <span t-esc="counter"/>-->
-                        <!--                                            <t t-set="counter" t-value="counter + 1"/>-->
-                        <!--                                        </td>-->
-                        <!--                                        <td style="width: 35%;"><span t-field="line.lab_type_id"/></td>-->
-                        <!--                                        <td class="text-right" style="width: 25%;">-->
-                        <!--                                            ₹ <span t-field="line.rate_id" t-options='{"widget": "float", "precision": 2}'/></td>-->
-                        <!--                                    </tr>-->
-                        <!--                                </tbody>-->
-                        <!--                                <tfoot>-->
-                        <!--&lt;!&ndash;                                    <tr>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <td colspan="2" class="text-right"><strong>Sub Total</strong></td>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        <td class="text-right">&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                            ₹ <span t-esc="'%.2f'% sum(o.lab_line_ids.mapped('total_amount'))"/>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                        </td>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                    </tr>&ndash;&gt;-->
-                        <!--                                    <tr>-->
-                        <!--                                        <td colspan="2" class="text-right"><strong>Total Amount</strong></td>-->
-                        <!--                                        <td class="text-right">-->
-                        <!--                                            <strong>-->
-                        <!--                                             ₹ <span t-esc="'%.2f'% sum(o.lab_billing_ids.mapped('total_amount'))"/>-->
-                        <!--                                            </strong>-->
-                        <!--                                        </td>-->
-                        <!--                                    </tr>-->
-                        <!--                                </tfoot>-->
-                        <!--                            </table>-->
-                        <!--                        </div>-->
+
+                        <div class="mt-4">
+                            <table class="table table-bordered">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="text-center">No.</th>
+                                        <th>Test Name</th>
+                                        <th>Result</th>
+                                        <th>Unit</th>
+                                        <th>Reference Range</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="counter" t-value="1"/>
+                                    <tr t-foreach="o.lab_line_ids" t-as="line">
+                                        <td class="text-center" style="width: 5%;">
+                                            <span t-esc="counter"/>
+                                            <t t-set="counter" t-value="counter + 1"/>
+                                        </td>
+                                        <td style="width: 35%;">
+                                            <span t-field="line.lab_test_name"/>
+                                        </td>
+                                        <td style="width: 35%;">
+                                            <span t-field="line.lab_result"/>
+                                        </td>
+                                         <td style="width: 35%;">
+                                            <span t-field="line.unit"/>
+                                        </td>
+                                        <td style="width: 35%;">
+                                            <span t-field="line.lab_reference_range"/>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <!--                                    <tr>-->
+                                    <!--                                        <td colspan="2" class="text-right"><strong>Sub Total</strong></td>-->
+                                    <!--                                        <td class="text-right">-->
+                                    <!--                                            ₹ <span t-esc="'%.2f'% sum(o.lab_line_ids.mapped('total_amount'))"/>-->
+                                    <!--                                        </td>-->
+                                    <!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td colspan="2" class="text-right">-->
+<!--                                            <strong>Total Amount</strong>-->
+<!--                                        </td>-->
+<!--                                        <td class="text-right">-->
+<!--                                            <strong>-->
+<!--                                                ₹-->
+<!--                                                <span t-esc="'%.2f'% sum(o.lab_billing_ids.mapped('total_amount'))"/>-->
+<!--                                            </strong>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+                                </tfoot>
+                            </table>
+                        </div>
 
 
-                        <!-- Terms and Signature -->
-                        <!--                        <div class="row mt-5">-->
-                        <!--                            <div class="col-8">-->
-                        <!--                                <p class="mt-5">-->
-                        <!--                                    Prepared By-->
-                        <!--                                </p>-->
-                        <!--                            </div>-->
-                        <!--                            <div class="col-4 text-center">-->
-                        <!--                                <p class="mt-5">-->
-                        <!--                                    Checked By-->
-                        <!--                                </p>-->
-                        <!--                            </div>-->
-                        <!--                        -->
-                        <!--                        </div>-->
+                        Terms and Signature
+                        <div class="row mt-5">
+                            <div class="col-8">
+                                <p class="mt-5">
+                                    Prepared By
+                                </p>
+                            </div>
+                            <div class="col-4 text-center">
+                                <p class="mt-5">
+                                    Checked By
+                                </p>
+                            </div>
+
+                        </div>
                     </div>
                 </t>
             </t>
