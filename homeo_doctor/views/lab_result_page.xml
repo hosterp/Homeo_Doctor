@@ -7,15 +7,33 @@
                 <form string="Lab Result Form" class="lab_form">
                     <sheet>
 
-                        <group col="2">
-                            <group>
-                                <field name="from_date"/>
-                            </group>
-                            <group>
-                                <field name="to_date"/>
-                            </group>
+<!--                        <group col="2">-->
+<!--                            <group>-->
+<!--                                <field name="from_date" style="width:150px;"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="to_date" style="width:150px;"/>-->
+<!--                            </group>-->
 
-                        </group>
+<!--                        </group>-->
+                        <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group row">
+                                <label for="from_date" class="col-md-4 col-form-label">From Date</label>
+                                <div class="col-md-8 field-container">
+                                    <field name="from_date"/>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-md-2">
+                            <div class="form-group row">
+                                <label for="to_date" class="col-md-4 col-form-label">To Date</label>
+                                <div class="col-md-8 field-container">
+                                    <field name="to_date"/>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
 
                         <group col="3">
                             <group>
