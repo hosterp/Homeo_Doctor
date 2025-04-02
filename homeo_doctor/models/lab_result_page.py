@@ -22,6 +22,7 @@ class LabResultPage(models.Model):
     staff=fields.Char(string='Staff')
     from_date = fields.Date(string="From Date")
     to_date = fields.Date(string="To Date")
+    patient_phone = fields.Char(string="Mobile No")
     status = fields.Selection([
         ('pending', 'Result Pending'),
         ('sample_collected', 'Sample Collected'),
