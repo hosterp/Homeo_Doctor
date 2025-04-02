@@ -6,6 +6,8 @@
             <field name="arch" type="xml">
                 <form string="Lab Result Form" class="lab_form">
                     <header>
+                        <field name="result_status" widget="statusbar"/>
+                        <field name="sample_status" widget="statusbar"/>
                         <field name="status" widget="statusbar"/>
                           <button name="action_sample_collected" type="object" string="Sample Collected" class="btn-primary"/>
                           <button name="action_result_ready" type="object" string="Result Ready" class="btn-primary"/>
@@ -92,7 +94,9 @@
                     <field name="patient_phone"/>
                     <field name="test_on"/>
                     <field name="staff"/>
-                    <field name="status"/>
+                    <field name="status" string="Payment Status"/>
+                    <field name="sample_status" string="Sample Collected Status"/>
+                    <field name="result_status" string="Result Status"/>
                 </tree>
             </field>
         </record>

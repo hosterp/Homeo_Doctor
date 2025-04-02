@@ -24,23 +24,28 @@ class LabResultPage(models.Model):
     to_date = fields.Date(string="To Date")
     patient_phone = fields.Char(string="Mobile No")
     status = fields.Selection([
-        ('pending', 'Result Pending'),
-        ('sample_collected', 'Sample Collected'),
-        ('result_ready', 'Result Ready'),
         ('paid', 'Paid'),
+    ], string="Status", tracking=True)
+    sample_status = fields.Selection([
+        ('pending', 'Pending'),
+        ('sample_collected', 'Sample Collected'),
+    ], string="Status", default="pending", tracking=True)
+    result_status = fields.Selection([
+        ('pending', 'Result Pending'),
+        ('result_ready', 'Result Ready'),
     ], string="Status", default="pending", tracking=True)
 
     def action_sample_collected(self):
         """Change status to 'Sample Collected' and update billing."""
         for record in self:
-            record.status = 'sample_collected'
+            record.sample_status = 'sample_collected'
             if record.bill_number:
                 record.bill_number.sample_status = 'sample_collected'  # Update billing status
 
     def action_result_ready(self):
         """Change status to 'Result Ready' and update billing."""
         for record in self:
-            record.status = 'result_ready'
+            record.result_status = 'result_ready'
             if record.bill_number:
                 record.bill_number.result_status = 'result_ready'
 
