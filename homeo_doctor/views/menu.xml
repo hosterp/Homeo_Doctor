@@ -66,7 +66,7 @@
                 name='Consultation Details'
                 parent="menu_homeo_head"
                 action="action_patient_registration"
-                sequence="2"/>
+                sequence="3"/>
 
         <menuitem
                 id="menu_stock_root"
@@ -74,7 +74,7 @@
                 parent="menu_homeo_head"
                 sequence="6"/>
 
-        <menuitem id="menu_my_patient_template_root" name="Patient Registration" parent="menu_homeo_head" sequence="1"/>
+        <menuitem id="menu_my_patient_template_root" name="Patient Registration" parent="menu_homeo_head" sequence="2"/>
 
 
     </data>

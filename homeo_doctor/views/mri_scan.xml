@@ -116,7 +116,7 @@
 
         <!-- Menu Item -->
         <menuitem id="menu_scanning_root" name="Scanning" parent="menu_hospital_root" sequence="7"/>
-        <menuitem id="menu_scanning_mri" name="MRI Scan" parent="menu_lab_reports_root" action="action_mri_scan"
+        <menuitem id="menu_scanning_mri" name="MRI Billing" parent="menu_lab_reports_root_billing" action="action_mri_scan"
                   sequence="4"/>
     </data>
 </odoo>

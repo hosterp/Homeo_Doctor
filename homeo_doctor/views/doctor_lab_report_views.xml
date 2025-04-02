@@ -331,9 +331,10 @@
         </record>
 
         <!-- Menu Item -->
-        <menuitem id="menu_lab_reports_root" name="Transactions" parent="menu_homeo_head" sequence="2"/>
+        <menuitem id="menu_lab_reports_root" name="Test Results" parent="menu_homeo_head" sequence="4"/>
+        <menuitem id="menu_lab_reports_root_billing" name="Billing" parent="menu_homeo_head" sequence="0"/>
         <menuitem id="menu_lab_reports" name="Lab" parent="menu_lab_reports_root" sequence="1"/>
-        <menuitem id="menu_lab_reports_billing" name="Lab Billing" parent="menu_lab_reports" action="action_lab_report"
+        <menuitem id="menu_lab_reports_billing" name="Lab Billing" parent="menu_lab_reports_root_billing" action="action_lab_report"
                   sequence="1"/>
     </data>
 </odoo>

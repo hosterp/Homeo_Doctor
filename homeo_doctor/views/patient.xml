@@ -371,7 +371,7 @@
         name="Patient List" 
         parent="menu_homeo_head" 
         action="action_patient_list" 
-        sequence="0"/>
+        sequence="1"/>
     
 
 
