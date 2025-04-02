@@ -244,7 +244,8 @@ class DoctorLabReport(models.Model):
                 'lab_result_id': lab_result_page.id,
                 'lab_test_name': lab_line.lab_test_name,
                 'lab_result': lab_line.lab_result,
-                'unit': lab_line.unit
+                'unit': lab_line.unit,
+                'lab_reference_range': lab_line.lab_reference_range
             }))
 
         # Add the lab lines to the result page

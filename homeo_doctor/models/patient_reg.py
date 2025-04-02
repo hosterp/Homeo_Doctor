@@ -770,11 +770,9 @@ class LabReferral(models.Model):
                     ('test_name', '=', test_name)
                 ])
 
-                # Determine referral ranges and unit
                 if test_results:
                     referral_ranges = ', '.join(filter(None, test_results.mapped('referral_range')))
-                    unit = test_results[
-                        0].unit  # Get the unit from the first result (assuming multiple results could exist)
+                    unit = test_results[0].unit  # Get the unit from the first result
                     print(f"✅ Found: {test_name} | Referral Range(s): {referral_ranges} | Unit: {unit}")
                 else:
                     print(f"❌ No matching test found for: {test_name}")
