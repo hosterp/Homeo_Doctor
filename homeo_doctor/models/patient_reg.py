@@ -761,33 +761,37 @@ class LabReferral(models.Model):
                 })
 
             # FIXED: Process test names separately, assigning each to the appropriate test type and unit
+            # Inside the loop for test_names_list
+            # Inside the loop for test_names_list
             for test_name in test_names_list:
                 test_name = test_name.strip()  # Clean whitespace
                 print(f"🔍 Searching for test_name: {test_name}")
 
-                # Fetch corresponding test from 'lab.resultant.confi'
+                # Search for test configs that either match the patient's gender OR are gender-neutral
                 test_results = self.env['lab.resultant.confi'].search([
-                    ('test_name', '=', test_name)
-                ])
+                    ('test_name', '=', test_name),
+                    '|',
+                    ('gender', '=', record.user_ide.gender),
+                    ('gender', '=', False)
+                ], limit=1)
 
-                if test_results:
-                    referral_ranges = ', '.join(filter(None, test_results.mapped('referral_range')))
-                    unit = test_results[0].unit  # Get the unit from the first result
-                    print(f"✅ Found: {test_name} | Referral Range(s): {referral_ranges} | Unit: {unit}")
-                else:
-                    print(f"❌ No matching test found for: {test_name}")
-                    referral_ranges = "N/A"  # Default if no referral range exists
-                    unit = "N/A"  # Default if no unit exists
+                # Only create a lab scan line if we found a matching test configuration
+                if test_results and record.test_type:
+                    referral_range = test_results.referral_range
+                    unit = test_results.unit
+                    print(f"✅ Found: {test_name} | Referral Range: {referral_range} | Unit: {unit}")
 
-                # Assign to the appropriate test type - you may need logic to determine which test type to use
-                if record.test_type:
+                    # Create the lab scan line
                     self.env['lab.scan.line'].create({
                         'lab_id': lab_report.id,
-                        'lab_type_id': record.test_type[0].id,  # Using first test type - adjust as needed
+                        'lab_type_id': record.test_type[0].id,
                         'lab_test_name': test_name,
-                        'lab_reference_range': referral_ranges,
-                        'unit': unit,  # Add the unit here
+                        'lab_reference_range': referral_range,
+                        'unit': unit,
                     })
+                else:
+                    print(f"❌ Skipping test: {test_name} - No configuration matching gender: {record.user_ide.gender}")
+                    # No lab scan line is created for this test
 
     @api.model
     def create(self, vals):
