@@ -5,7 +5,7 @@
             <field name="name">general.billing.form</field>
             <field name="model">general.billing</field>
             <field name="arch" type="xml">
-                <form string="Patient Billing" class="lab_form">
+                <form string="Patient Billing" class="lab_form general_form">
                     <header>
                         <field name="status" widget="statusbar"/>
                         <button name="action_pay_button" type="object" string="Pay" class="oe_highlight"/>
