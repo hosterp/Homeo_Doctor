@@ -329,7 +329,7 @@ html {
 
 
 .o_form_view .o_form_sheet .consultation_details_section .o_form_label {
-      white-space: nowrap !important;
+ 
       padding: 10px !important;
   }
 
@@ -579,6 +579,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     align-items: center !important;
     margin-bottom: 10px !important;
     flex-wrap: wrap !important;
+    width: 65% !important;
 }
 
 /* Label styling - fixed width for alignment */
