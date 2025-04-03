@@ -3,7 +3,7 @@ from num2words import num2words
 from odoo import models, fields, api
 from datetime import datetime
 
-from odoo.odoo.exceptions import UserError
+# from odoo.odoo.exceptions import UserError
 
 
 class GeneralBilling(models.Model):
