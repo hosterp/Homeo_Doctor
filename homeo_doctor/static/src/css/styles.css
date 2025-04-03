@@ -509,6 +509,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 .lab_form .field-container {
     padding: 2px;
     margin-left: 14px;
+    width:25px !important;
 }
 .lab_form .o_notebook {
     margin-top: 16px;
@@ -710,4 +711,8 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 .o_menu_brand {
     display: none !important;
+}
+
+.column_one{
+    margin-left: 30px;
 }
