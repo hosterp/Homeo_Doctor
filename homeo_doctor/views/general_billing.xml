@@ -111,14 +111,6 @@
                                 </div>
                             <div class="col-md-2">
                                     <div class="form-group row">
-                                        <label for="bill_date" class="col-md-4 col-form-label">Bill Date</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="bill_date"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
                                         <label for="ip_no" class="col-md-4 col-form-label">IP No</label>
                                         <div class="col-md-8 field-container">
                                             <field name="ip_no"/>
@@ -169,14 +161,6 @@
                                             <label for="oc_type" class="col-md-4 col-form-label">OC Type</label>
                                             <div class="col-md-8 field-container">
                                                 <field name="oc_type"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <label for="reference" class="col-md-4 col-form-label">Reference</label>
-                                            <div class="col-md-8 field-container">
-                                                <field name="reference"/>
                                             </div>
                                         </div>
                                     </div>
@@ -233,6 +217,14 @@
                                             <label for="total_amount" class="col-md-4 col-form-label">Total Amount</label>
                                             <div class="col-md-8 field-container">
                                                 <field name="total_amount"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="reference" class="col-md-4 col-form-label">Reference</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="reference"/>
                                             </div>
                                         </div>
                                     </div>
