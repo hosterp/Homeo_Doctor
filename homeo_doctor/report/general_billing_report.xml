@@ -1,11 +1,12 @@
 <odoo>
+
     <template id="report_general_Bill">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <div class="page" style="font-family: 'Arial', sans-serif; color: #2c3e50;">
 
                     <!-- Custom Header -->
-                    <div class="header"
+                    <div class="raw"
                          style="text-align: center; padding-bottom: 15px; border-bottom: 2px solid #000;">
                         <h1 style="font-size: 26px; font-weight: bold; margin: 0; color: #2c3e50;">
                             Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
@@ -18,22 +19,22 @@
                             <span style="color: #007bff;">dpmshospital@gmail.com</span>
                         </p>
                     </div>
-
                     <!-- Title Section -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding: 5px 0;">
                         <!-- Left Side -->
-                        <div style="text-align: left; font-size: 14px; font-weight: bold;">
+                        <div style="font-size: 14px; font-weight: bold; flex: 1; text-align: left;">
                             Department:
                             <t t-esc="o.department.display_name"/>
                         </div>
 
                         <!-- Center -->
-                        <div style="text-align: center;font-weight: bold;font-size: 14px;  flex-grow: 1;">
-                            <t t-esc="o.mode_pay.upper()"/>BILL
+                        <div style="font-size: 14px; font-weight: bold; flex: 1; text-align: center;">
+                            <t t-esc="o.mode_pay.upper()"/>
+                            BILL
                         </div>
 
                         <!-- Right Side -->
-                        <div style="text-align: right; font-size: 14px; font-weight: bold;">
+                        <div style="font-size: 14px; font-weight: bold; flex: 1; text-align: right;">
                             Bill No:
                             <t t-esc="o.bill_number"/>
                         </div>
@@ -153,24 +154,24 @@
                             <!--                            </tr>-->
                         </tfoot>
                     </table>
-                    
+
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
                         <!-- Left Side -->
                         <div style="text-align: left; font-size: 14px; font-weight: bold;">
                             Prepared By
-<!--                            <t t-esc="o.department.display_name"/>-->
+                            <!--                            <t t-esc="o.department.display_name"/>-->
                         </div>
 
                         <!-- Center -->
                         <div style="text-align: center;font-weight: bold;font-size: 14px;  flex-grow: 1;">
-<!--                            <t t-esc="o.mode_pay.upper()"/>BILL-->
+                            <!--                            <t t-esc="o.mode_pay.upper()"/>BILL-->
                             Checked By
                         </div>
 
                         <!-- Right Side -->
                         <div style="text-align: right; font-size: 14px; font-weight: bold;">
-                           Casher
-<!--                            <t t-esc="o.bill_number"/>-->
+                            Casher
+                            <!--                            <t t-esc="o.bill_number"/>-->
                         </div>
                     </div>
 
