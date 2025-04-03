@@ -21,6 +21,25 @@ class GeneralBilling(models.Model):
 
     ip_no = fields.Char(string='IP No')
     general_bill_line_ids = fields.One2many('general.bill.line','bill_line_id')
+    total_item=fields.Char(string='Total Item')
+    total_qty=fields.Char(string='Total Qty')
+    total_tax=fields.Char(string='Total Tax')
+    total_amount = fields.Integer(string='Total Amount')
+    discount_type =fields.Selection([('amount','Amount'),('percentage','Percentage')],default='amount')
+    discount = fields.Integer(string='Discount')
+    oc_type=fields.Selection([('amount','Amount'),('percentage','Percentage')],default='amount',string='O.C Type')
+    oc=fields.Integer(string='O.C')
+    reference=fields.Selection([('no','No'),('yes','YES')],default='no',string='reference')
+    mode_pay=fields.Selection([('cash', 'Cash'),
+                                ('credit', 'Credit'),
+                                ('card', 'Card'),
+                                ('cheque', 'Cheque'),
+                                ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
+    net_amount=fields.Integer(string='Net Bill Amount')
+    bill_by=fields.Char(string='Bill By')
+    remarks =fields.Char(string='Remarks')
+    staff_pwd=fields.Char(string='Staff Password')
+    staff_name=fields.Char(string='Staff Name')
 
     @api.onchange('mrd_no')
     def _onchange_mrd_no(self):

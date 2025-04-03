@@ -48,12 +48,34 @@
                                         <field name="rate"/>
                                         <field name="tax"/>
                                         <field name="quantity"/>
-                                        <field name="total_amt"/>
+                                        <field name="total_amt" sum="total amt"/>
                                     </tree>
                                 </field>
                             </page>
                         </notebook>
+                        <group>
 
+                            <group>
+                                <field name="total_item"/>
+                                <field name="total_qty"/>
+                                <field name="total_tax"/>
+                                <field name="total_amount"/>
+                                <field name="discount_type"/>
+                                <field name="discount"/>
+                                <field name="oc_type"/>
+                                <field name="oc"/>
+                            </group>
+                            <group>
+                                <field name="reference"/>
+                                <field name="mode_pay"/>
+                                <field name="net_amount"/>
+                                <field name="bill_by"/>
+                                <field name="remarks"/>
+                                <field name="staff_pwd"/>
+                                <field name="staff_name"/>
+                            </group>
+
+                        </group>
                     </sheet>
 
                 </form>
