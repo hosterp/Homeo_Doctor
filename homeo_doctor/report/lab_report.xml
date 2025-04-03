@@ -16,4 +16,13 @@
         name="homeo_doctor.report_lab_result_report_template"
         file="homeo_doctor.report_lab_result_report_template"
     />
+    <report
+        id="report_general_bill_report"
+        string="General Bill"
+        model="general.billing"
+        report_type="qweb-pdf"
+        name="homeo_doctor.report_general_Bill"
+        file="homeo_doctor.report_general_Bill"
+    />
+
 </odoo>

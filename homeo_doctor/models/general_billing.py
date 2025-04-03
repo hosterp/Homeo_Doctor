@@ -1,3 +1,5 @@
+from num2words import num2words
+
 from odoo import models, fields, api
 from datetime import datetime
 
@@ -15,7 +17,7 @@ class GeneralBilling(models.Model):
     age = fields.Integer(string='Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')])
     mobile = fields.Char(string='Mobile')
-    bill_date = fields.Datetime(string='Bill Date')
+    bill_date = fields.Datetime(string='Bill Date',default=fields.Date.context_today)
     op_category = fields.Many2one('op.category', string='OP Category')
     doctor = fields.Many2one('doctor.profile', string='Doctor')
     department = fields.Many2one('general.department', string='Department')
@@ -47,6 +49,13 @@ class GeneralBilling(models.Model):
         ('unpaid', 'Unpaid'),
         ('paid', 'Paid'),
     ], string="Status", default="unpaid", tracking=True)
+
+    amount_in_words = fields.Char("Total in Words", compute="_compute_amount_in_words")
+
+    @api.depends('total_amount')
+    def _compute_amount_in_words(self):
+        for record in self:
+            record.amount_in_words = num2words(record.total_amount, lang='en').title() + " Only"
 
     def action_pay_button(self):
         for record in self:
