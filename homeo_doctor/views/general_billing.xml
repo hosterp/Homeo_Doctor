@@ -7,8 +7,8 @@
             <field name="arch" type="xml">
                 <form string="Patient Billing" class="lab_form">
                     <header>
-                        <!--                        <field name="bill_type" widget="statusbar" statusbar_visible="draft,confirmed,paid"-->
-                        <!--                               options="{'clickable': '1'}"/>-->
+                        <field name="status" widget="statusbar"/>
+                        <button name="action_pay_button" type="object" string="Pay" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -96,6 +96,7 @@
                     <field name="patient_name"/>
                     <field name="gender"/>
                     <field name="doctor"/>
+                    <field name="status" string="Payment Status"/>
                 </tree>
             </field>
         </record>

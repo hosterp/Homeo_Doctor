@@ -1,6 +1,9 @@
 from odoo import models, fields, api
 from datetime import datetime
 
+from odoo.odoo.exceptions import UserError
+
+
 class GeneralBilling(models.Model):
     _name = 'general.billing'
     _description = 'General Billing'
@@ -40,6 +43,24 @@ class GeneralBilling(models.Model):
     remarks =fields.Char(string='Remarks')
     staff_pwd=fields.Char(string='Staff Password')
     staff_name=fields.Char(string='Staff Name')
+    status = fields.Selection([
+        ('unpaid', 'Unpaid'),
+        ('paid', 'Paid'),
+    ], string="Status", default="unpaid", tracking=True)
+
+    def action_pay_button(self):
+        for record in self:
+            record.status = 'paid'
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Payment Confirmed',
+                'message': f'Payment has been confirmed for {self.patient_name}',
+                'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
+            }
+        }
 
     @api.depends('general_bill_line_ids.quantity', 'general_bill_line_ids.total_amt', 'general_bill_line_ids.tax')
     def _compute_totals(self):
