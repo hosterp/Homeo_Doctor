@@ -337,11 +337,13 @@ html {
     border-width: 3px !important;
     border-color: #34495e !important;
     width:auto !important;
+    height: 40px !important;
 }
 
 .o_form_view .o_form_sheet .consultation_details_section .o_datepicker_input{
     border-width: 3px !important;
     border-color: #34495e !important;
+    width: auto !important;
 }
 .o_form_view .o_form_sheet .medicine_course .o_input{
     border-width: 1px !important;
@@ -578,8 +580,8 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     flex-direction: row !important;
     align-items: center !important;
     margin-bottom: 10px !important;
-    flex-wrap: wrap !important;
-    width: 65% !important;
+    flex:1 1 auto !important;
+    width: 95% !important;
 }
 
 /* Label styling - fixed width for alignment */
@@ -587,7 +589,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     color: #34495e !important;
     font-weight: 600 !important;
     font-size: 14px !important;
-    width: 140px !important;
+    width: 260px !important;
     min-width: 140px !important;
     flex-shrink: 0 !important;
     margin-right: 10px !important;
@@ -672,6 +674,10 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     }
 
     .consultation_details_section .field_container .o_field_widget {
-        width: 100% !important;
+
     }
+}
+
+.o_main_navbar > ul > li > a, .o_main_navbar > ul > li > a:hover, .o_main_navbar > ul > li > a:focus {
+	font-size: 13px !important;
 }
