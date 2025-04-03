@@ -7,6 +7,7 @@ class GeneralBilling(models.Model):
     _rec_name = 'bill_number'
 
     bill_number = fields.Char(string='Bill Number',  copy=False, default='New')
+    mrd_no = fields.Many2one('patient.reg', string='MRD No')
     patient_name = fields.Char(string='Patient Name')
     age = fields.Integer(string='Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')])
@@ -17,11 +18,37 @@ class GeneralBilling(models.Model):
     department = fields.Many2one('general.department', string='Department')
     particulars = fields.Many2one('general.dept.costing', string='Select Particulars')
     bill_type = fields.Many2one('bill.type', string='Bill Type')
-    mrd_no = fields.Char(string='MRD No')
+
     ip_no = fields.Char(string='IP No')
     general_bill_line_ids = fields.One2many('general.bill.line','bill_line_id')
+    total_item=fields.Char(string='Total Item')
+    total_qty=fields.Char(string='Total Qty')
+    total_tax=fields.Char(string='Total Tax')
+    total_amount = fields.Integer(string='Total Amount')
+    discount_type =fields.Selection([('amount','Amount'),('percentage','Percentage')],default='amount')
+    discount = fields.Integer(string='Discount')
+    oc_type=fields.Selection([('amount','Amount'),('percentage','Percentage')],default='amount',string='O.C Type')
+    oc=fields.Integer(string='O.C')
+    reference=fields.Selection([('no','No'),('yes','YES')],default='no',string='reference')
+    mode_pay=fields.Selection([('cash', 'Cash'),
+                                ('credit', 'Credit'),
+                                ('card', 'Card'),
+                                ('cheque', 'Cheque'),
+                                ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
+    net_amount=fields.Integer(string='Net Bill Amount')
+    bill_by=fields.Char(string='Bill By')
+    remarks =fields.Char(string='Remarks')
+    staff_pwd=fields.Char(string='Staff Password')
+    staff_name=fields.Char(string='Staff Name')
 
-
+    @api.onchange('mrd_no')
+    def _onchange_mrd_no(self):
+        if self.mrd_no:
+            self.patient_name = self.mrd_no.patient_id
+            self.age = self.mrd_no.age
+            self.gender = self.mrd_no.gender
+            self.mobile = self.mrd_no.phone_number
+            self.doctor = self.mrd_no.doc_name
     @api.model
     def create(self, vals):
         """Generate a unique billing number in the format: 000001/24-25"""
