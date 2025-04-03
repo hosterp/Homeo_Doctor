@@ -313,8 +313,10 @@ html {
 	min-width: 70px !important;
 }
 
+/* Date hide*/
 .patient_consulattaion_page .oe_title {
 	margin-bottom: -40px !important;
+	display: none !important;
 }
 .reduced_height textarea {
     height: 50px !important;
@@ -680,4 +682,8 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 .o_main_navbar > ul > li > a, .o_main_navbar > ul > li > a:hover, .o_main_navbar > ul > li > a:focus {
 	font-size: 13px !important;
+}
+
+.o_menu_brand {
+    display: none !important;
 }
