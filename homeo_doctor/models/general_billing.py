@@ -20,6 +20,8 @@ class GeneralBilling(models.Model):
     mrd_no = fields.Char(string='MRD No')
     ip_no = fields.Char(string='IP No')
 
+
+
     @api.model
     def create(self, vals):
         """Generate a unique billing number in the format: 000001/24-25"""
@@ -39,6 +41,12 @@ class GeneralBilling(models.Model):
 
         return super(GeneralBilling, self).create(vals)
 
+    @api.onchange('department')
+    def _onchange_department(self):
+        if self.department:
+            return {'domain': {'particulars': [('department', '=', self.department.id)]}}
+        else:
+            return {'domain': {'particulars': []}}
 
 class BillTYpe(models.Model):
     _name ='bill.type'
