@@ -21,8 +21,8 @@ class GeneralBilling(models.Model):
 
     ip_no = fields.Char(string='IP No')
     general_bill_line_ids = fields.One2many('general.bill.line','bill_line_id')
-    total_item=fields.Char(string='Total Item')
-    total_qty=fields.Char(string='Total Qty')
+    total_item=fields.Char(string='Total Item',compute="_compute_totals")
+    total_qty=fields.Char(string='Total Qty',compute="_compute_totals")
     total_tax=fields.Char(string='Total Tax')
     total_amount = fields.Integer(string='Total Amount')
     discount_type =fields.Selection([('amount','Amount'),('percentage','Percentage')],default='amount')
@@ -40,6 +40,18 @@ class GeneralBilling(models.Model):
     remarks =fields.Char(string='Remarks')
     staff_pwd=fields.Char(string='Staff Password')
     staff_name=fields.Char(string='Staff Name')
+
+    @api.depends('general_bill_line_ids.quantity', 'general_bill_line_ids.total_amt', 'general_bill_line_ids.tax')
+    def _compute_totals(self):
+        for record in self:
+            record.total_item = len(record.general_bill_line_ids)
+            record.total_qty = sum(record.general_bill_line_ids.mapped('quantity'))
+            record.total_amount = sum(record.general_bill_line_ids.mapped('total_amt'))
+
+            record.total_tax = sum(
+                line.tax.tax * line.total_amt / 100 for line in record.general_bill_line_ids if line.tax)
+
+            record.net_amount = sum(record.general_bill_line_ids.mapped('total_amt'))
 
     @api.onchange('mrd_no')
     def _onchange_mrd_no(self):
@@ -111,8 +123,8 @@ class GeneralBillLine(models.Model):
     bill_line_id=fields.Many2one('general.billing')
     particulars = fields.Many2one('general.dept.costing',string='Select particulars')
     rate = fields.Integer(string='Rate')
-    tax = fields.Many2one('dept.tax', string='Tax')
-    quantity = fields.Integer(string='Quantity')
+    tax = fields.Many2one('dept.tax', string='Tax(%)')
+    quantity = fields.Integer(string='Qty')
     total_amt=fields.Integer(string='Amount',compute="_compute_total", store=True)
 
     @api.depends('rate', 'tax', 'quantity')
