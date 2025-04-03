@@ -19,7 +19,7 @@ class GeneralBilling(models.Model):
     bill_type = fields.Many2one('bill.type', string='Bill Type')
     mrd_no = fields.Char(string='MRD No')
     ip_no = fields.Char(string='IP No')
-
+    general_bill_line_ids = fields.One2many('general.bill.line','bill_line_id')
 
 
     @api.model
@@ -48,9 +48,48 @@ class GeneralBilling(models.Model):
         else:
             return {'domain': {'particulars': []}}
 
+    @api.onchange('particulars')
+    def _onchange_particulars(self):
+        if self.particulars:
+            rate = self.particulars.amount if self.particulars.amount else 0.0
+            tax_amount = self.particulars.tax.tax if self.particulars.tax else 0.0
+            tax_type = self.particulars.tax_type
+
+
+            if tax_type == 'inclusive':
+                total = rate
+            else:
+                total = rate + (rate * tax_amount / 100)
+
+            self.general_bill_line_ids = [(0, 0, {
+                'particulars': self.particulars.id,
+                'rate': rate,
+                'tax': self.particulars.tax.id,
+                'quantity': 1,
+                'total_amt': total,
+            })]
+
+
 class BillTYpe(models.Model):
     _name ='bill.type'
     _rec_name = 'bill_type'
 
 
     bill_type = fields.Char(string='Bill Type')
+
+
+class GeneralBillLine(models.Model):
+    _name = 'general.bill.line'
+
+    bill_line_id=fields.Many2one('general.billing')
+    particulars = fields.Many2one('general.dept.costing',string='Select particulars')
+    rate = fields.Integer(string='Rate')
+    tax = fields.Many2one('dept.tax', string='Tax')
+    quantity = fields.Integer(string='Quantity')
+    total_amt=fields.Integer(string='Amount',compute="_compute_total", store=True)
+
+    @api.depends('rate', 'tax', 'quantity')
+    def _compute_total(self):
+        for line in self:
+            tax_amount = line.tax.tax if line.tax else 0.0
+            line.total_amt = line.rate * line.quantity * (1 + tax_amount / 100)
