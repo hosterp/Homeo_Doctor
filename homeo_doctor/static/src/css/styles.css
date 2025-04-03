@@ -524,6 +524,10 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     width: 100%;
 }
 
+.lab_doctor .o_form_sheet_bg > .o_form_sheet .row.left_colum, .lab_doctor .o_form_sheet_bg > .o_form_sheet .row.right_colum {
+    max-width: 20% !important;
+}
+
 
 
 
