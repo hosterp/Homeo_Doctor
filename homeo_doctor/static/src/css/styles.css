@@ -542,9 +542,33 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     white-space: normal;
 }
 
+
 .left_colum{
     margin-left: 10px;
 }
+
+
+.custom_general_notebook {
+    width: 60% !important;
+    margin-left : 25px !important;
+
+}
+
+.custom_general_notebook .o_list_view {
+    width: 100% !important;
+    overflow: visible !important;
+}
+
+/* Make sure columns adapt to the narrower width */
+.custom_general_notebook .o_list_view thead th {
+    white-space: nowrap;
+}
+
+/* Ensure cell content doesn't cause horizontal scrolling */
+.custom_general_notebook .o_list_view td {
+    white-space: normal;
+}
+
 
 
 /* Responsive Clinical Assessment Section */
