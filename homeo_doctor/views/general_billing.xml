@@ -7,8 +7,8 @@
             <field name="arch" type="xml">
                 <form string="Patient Billing" class="lab_form">
                     <header>
-                        <field name="bill_type" widget="statusbar" statusbar_visible="draft,confirmed,paid"
-                               options="{'clickable': '1'}"/>
+                        <!--                        <field name="bill_type" widget="statusbar" statusbar_visible="draft,confirmed,paid"-->
+                        <!--                               options="{'clickable': '1'}"/>-->
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -18,8 +18,9 @@
                         </div>
                         <group>
                             <group>
-                                <field name="patient_name" required="1"/>
+                                <field name="bill_type"/>
                                 <field name="mrd_no"/>
+                                <field name="patient_name" required="1"/>
                                 <field name="age"/>
                                 <field name="gender"/>
                                 <field name="mobile"/>

@@ -7,6 +7,7 @@ class GeneralBilling(models.Model):
     _rec_name = 'bill_number'
 
     bill_number = fields.Char(string='Bill Number',  copy=False, default='New')
+    mrd_no = fields.Many2one('patient.reg', string='MRD No')
     patient_name = fields.Char(string='Patient Name')
     age = fields.Integer(string='Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')])
@@ -17,11 +18,18 @@ class GeneralBilling(models.Model):
     department = fields.Many2one('general.department', string='Department')
     particulars = fields.Many2one('general.dept.costing', string='Select Particulars')
     bill_type = fields.Many2one('bill.type', string='Bill Type')
-    mrd_no = fields.Char(string='MRD No')
+
     ip_no = fields.Char(string='IP No')
     general_bill_line_ids = fields.One2many('general.bill.line','bill_line_id')
 
-
+    @api.onchange('mrd_no')
+    def _onchange_mrd_no(self):
+        if self.mrd_no:
+            self.patient_name = self.mrd_no.patient_id
+            self.age = self.mrd_no.age
+            self.gender = self.mrd_no.gender
+            self.mobile = self.mrd_no.phone_number
+            self.doctor = self.mrd_no.doc_name
     @api.model
     def create(self, vals):
         """Generate a unique billing number in the format: 000001/24-25"""
