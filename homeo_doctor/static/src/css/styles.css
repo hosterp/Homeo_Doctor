@@ -310,11 +310,14 @@ html {
 
 .o_form_view .o_group.o_inner_group > tbody > tr > td.o_td_label {
 	padding: 0px 15px 0px 9px !important;
-	min-width: 112px !important;
+	min-width: 70px !important;
 }
 
 .patient_consulattaion_page .oe_title {
 	margin-bottom: -40px !important;
+}
+.reduced_height textarea {
+    height: 50px !important;
 }
 
 .btn {
@@ -537,4 +540,137 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 .left_colum{
     margin-left: 10px;
+}
+
+
+/* Responsive Clinical Assessment Section */
+.consultation_details_section {
+    padding: 20px !important;
+    background-color: #f9f9f9 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 24px !important;
+}
+
+.consultation_details_section .clinical_assessment_grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 15px !important;
+}
+
+/* For tablets */
+@media (max-width: 1024px) {
+    .consultation_details_section .clinical_assessment_grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* For mobile */
+@media (max-width: 768px) {
+    .consultation_details_section .clinical_assessment_grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Field container styling - label and input in same line */
+.consultation_details_section .field_container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
+    flex-wrap: wrap !important;
+}
+
+/* Label styling - fixed width for alignment */
+.consultation_details_section .field_container label {
+    color: #34495e !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    width: 140px !important;
+    min-width: 140px !important;
+    flex-shrink: 0 !important;
+    margin-right: 10px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Field styling - grow to fill remaining space */
+.consultation_details_section .field_container .o_field_widget {
+    flex-grow: 1 !important;
+    width: calc(100% - 150px) !important;
+}
+
+/* Style for the group title */
+.consultation_details_section .o_horizontal_separator {
+    grid-column: 1 / -1 !important;
+    color: #2c3e50 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    border-bottom: 2px solid #3498db !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 16px !important;
+}
+
+/* Field styling */
+.consultation_details_section .o_field_widget.o_field_text textarea {
+    width: 100% !important;
+    border: 1px solid #dde2e6 !important;
+    border-radius: 4px !important;
+    padding: 10px !important;
+    min-height: 50px !important;
+    transition: all 0.2s ease !important;
+}
+
+.consultation_details_section .o_field_widget.o_field_text textarea:focus {
+    border-color: #3498db !important;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15) !important;
+    outline: none !important;
+}
+
+/* Different styling for different field types */
+.consultation_details_section .clinical_findings textarea {
+    border-left: 4px solid #27ae60 !important;
+}
+
+.consultation_details_section .medical_history textarea {
+    border-left: 4px solid #e74c3c !important;
+}
+
+.consultation_details_section .medication_field textarea {
+    border-left: 4px solid #f39c12 !important;
+}
+
+.consultation_details_section .examination_field textarea {
+    border-left: 4px solid #9b59b6 !important;
+}
+
+.consultation_details_section .diagnosis_field textarea {
+    border-left: 4px solid #3498db !important;
+    font-weight: 500 !important;
+}
+
+.consultation_details_section .date_field .o_datepicker .o_datepicker_input {
+    width: 100% !important;
+    border-radius: 4px !important;
+    border: 1px solid #dde2e6 !important;
+    border-left: 4px solid #3498db !important;
+    height: 36px !important;
+}
+
+/* Handle responsiveness for label-field pairs */
+@media (max-width: 1366px) {
+    .consultation_details_section .field_container {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .consultation_details_section .field_container label {
+        width: 100% !important;
+        margin-bottom: 5px !important;
+    }
+
+    .consultation_details_section .field_container .o_field_widget {
+        width: 100% !important;
+    }
 }
