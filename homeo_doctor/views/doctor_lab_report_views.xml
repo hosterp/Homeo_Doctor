@@ -91,6 +91,12 @@
                                         <field name="report_reference" readonly="1" placeholder="Report Reference"/>
                                     </h1>
                                 </div>
+                                <div class="col-md-12"
+                                     style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 10px;">
+                                    <button string="Lab" class="oe_highlight"/>
+                                    <button string="MRI" class="oe_highlight"/>
+                                    <button string="X RAY" class="oe_highlight"/>
+                                </div>
                             </div>
                         </div>
 
