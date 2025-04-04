@@ -45,7 +45,7 @@
                     <div style="display: flex; justify-content: space-between; margin-top: 20px;">
                         <div>
                             <p>
-                                <strong>MRD No:</strong>
+                                <strong>UHID:</strong>
                                 <t t-esc="o.mrd_no.display_name"/>
                             </p>
                             <p>
