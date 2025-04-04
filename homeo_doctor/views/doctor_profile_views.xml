@@ -61,7 +61,7 @@
 
         <menuitem id="menu_doctor_management_root"
                   name="Doctor Management"
-                   parent="menu_homeo_head"
+                   parent="menu_lab_root"
                   sequence="5"/>
 
         <menuitem id="menu_doctor_profile"
