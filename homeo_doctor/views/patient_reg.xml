@@ -51,7 +51,7 @@
 
                         <group name="vital_signs"  class="o_vital_signs_group single_row_vitals">
                             <div class="vital_signs_header_container">
-                                <h3 class="vital_signs_title">Vital Signs</h3>
+                                <h3 class="vital_signs_title">Vital Signs &#8594;</h3>
                                 <div class="vitals_inline_container">
                                     <!-- Blood pressure with high/low -->
                                     <div class="vital_field_container bp_container">
@@ -154,12 +154,12 @@
                             <field name="review_note" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
                         </div>
                         <div class="field_container">
-                            <label for="professional_diagnosis" string="Clinical Diagnosis and Assessment"/>
+                            <label for="professional_diagnosis" string="C.D.A"/>
                             <field name="professional_diagnosis" class="diagnosis_field reduced_height" widget="text" nolabel="1"/>
                         </div>
                     </div>
                     </group>
-
+<!--                    <div class="row custom_prescription">-->
                         <group name="prescription" class="prescription" string="Prescription">
                             <field name="med_ids" nolabel="1">
                                 <tree editable="bottom" decoration-warning="total_med == 0">
@@ -167,7 +167,7 @@
                                     <field name="morn" string="Morning"/>
                                     <field name="noon" string="Noon"/>
                                     <field name="night" string="Night"/>
-                                    <field name="stock_in_hand" string="In Stock"/>
+                                    <field name="stock_in_hand" string="Stock"/>
                                     <field name="per_ped" string="Per Med" invisible="1"/>
                                     <field name="total_med" string="Total Dosage" invisible="1"/>
                                 </tree>
@@ -176,6 +176,7 @@
                             <!--                                <field name="medicine_course" style="width:100px;" string="Medicine Course"/>-->
                             <!--                            </group>-->
                         </group>
+<!--                     </div>-->
 
                         <group name="additional_info" class="additional_info" col="16">
                             <!-- <field name="medicine_course" string="Medicine Course"/> -->

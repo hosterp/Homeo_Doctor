@@ -752,7 +752,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 }
 
 /* Update responsive breakpoints for 4 columns */
-@media (max-width: 1200px) {
+@media (max-width: 900px) {
     .consultation_details_section .clinical_assessment_grid {
         grid-template-columns: repeat(2, 1fr) !important;
     }
@@ -777,11 +777,11 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 }
 
 .vital_signs_title {
-    font-size: 16px;
+    font-size: 19px;
     font-weight: 600;
     color: #34495e;
     white-space: nowrap;
-    margin: 0 15px 0 0;
+    margin: 0 15px 6px 0;
     min-width: 90px;
 }
 
@@ -879,3 +879,15 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
   margin-bottom: 20px;
 }
 
+
+.patient_consulattaion_page .o_group {
+	margin: 0px 0 !important;
+}
+
+.prescription {
+    width:60% ! important;
+}
+
+.prescription .o_list_table .o_column_sortable {
+	text-align: center !important;
+}
