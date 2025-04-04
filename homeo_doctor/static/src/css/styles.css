@@ -561,6 +561,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 .custom_general_notebook {
     width: 60% !important;
     margin-left : 25px !important;
+    border-style: double;
 
 }
 
@@ -724,4 +725,14 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 .column_one{
     margin-left: 30px;
+}
+
+.custom_border {
+	margin-left: 4%;
+	border-color: black !important;
+	border-style: groove !important;
+}
+
+.narrow_tax_column {
+    width: 80px !important;
 }

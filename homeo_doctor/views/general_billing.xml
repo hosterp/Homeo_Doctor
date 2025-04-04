@@ -28,9 +28,17 @@
                                 </div>
                             <div class="col-md-2">
                                     <div class="form-group row">
-                                        <label for="mrd_no" class="col-md-4 col-form-label">MRD No</label>
+                                        <label for="mrd_no" class="col-md-4 col-form-label">UHID</label>
                                         <div class="col-md-8 field-container">
                                             <field name="mrd_no"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="ip_no" class="col-md-4 col-form-label">IP No</label>
+                                        <div class="col-md-8 field-container">
+                                            <field name="ip_no"/>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +66,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            <div class="col-md-2">
+                        </div>
+                        <div class="col-md-2">
                                     <div class="form-group row">
                                         <label for="mobile" class="col-md-4 col-form-label">Mobile</label>
                                         <div class="col-md-8 field-container">
@@ -66,8 +75,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                        </div>
                         <div class="row">
                             <div class="col-md-2">
                                     <div class="form-group row">
@@ -109,14 +116,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="ip_no" class="col-md-4 col-form-label">IP No</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="ip_no"/>
-                                        </div>
-                                    </div>
-                                </div>
+
 
 
                         </div>
@@ -128,7 +128,7 @@
                                             <tree editable="bottom">
                                                 <field name="particulars"/>
                                                 <field name="rate"/>
-                                                <field name="tax"/>
+                                                <field name="tax" class="narrow_tax_column"/>
                                                 <field name="quantity"/>
                                                 <field name="total_amt" sum="total amt"/>
                                             </tree>
@@ -136,7 +136,7 @@
                                     </page>
                                 </notebook>
                             </div>
-
+                        <div class ="custom_border">
                             <div class="row">
                                 <!-- First column -->
                                 <div class="row column_one" style="display:block; width: 33%;">
@@ -238,6 +238,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
                         </div>
                         <div class="row">
