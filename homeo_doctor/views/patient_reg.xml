@@ -49,111 +49,102 @@
                             <field name="doctor_id" string="Consulting Doctor" colspan="1" required="1"/>
                         </group>
 
-                        <group name="vital_signs" string="Vital Signs" class="o_vital_signs_group">
-                            <group class="pressure_sugar">
-                                <div class="o_field_widget blood_class">
-                                    <label class="o_form_label" for="blood_pressure">Blood Pressure (mmHg)</label>
-                                    <span style="margin: 0 5px;">(High)</span>
-                                    <field name="blood_pressure" string="Blood Pressure (mmHg)" class="oe_inline"/>
-                                    <span style="margin: 0 5px;">-</span>
-                                    <span style="margin: 0 5px;">(Low)</span>
-                                    <field name="blood_pressure_low" string="Blood Pressure low (mmHg)" nolabel="1"
-                                           class="oe_inline"/>
-                                </div>
-                                <div class="o_field_widget sugar_class">
-                                    <label class="o_form_label" for="sugar_level">Blood Sugar (mg/dL)</label>
-                                    <span style="margin: 0 5px;">(FBS)</span>
-                                    <field name="sugar_level" string="Blood Sugar (mg/dL)"
-                                           class="oe_inline sugar_level"/>
-                                    <span style="margin: 0 5px;">-</span>
-                                    <span style="margin: 0 5px;">(PPBS)</span>
-                                    <field name="ppbs" nolabel="1" class="oe_inline ppbs"/>
-                                </div>
-                            </group>
-                            <group class="weight_temp">
-                                <field name="weight" string="Weight (kg)"/>
-                            </group>
-                            <!--                            <group class="weight_temp">-->
-                            <!--                                <field name="temperature" string="Temperature (°C)"/>-->
-                            <!--                            </group>-->
-                            <!--                            <group class="weight_temp">-->
-                            <!--                                <field name="spo" string="SPO2"/>-->
-                            <!--                            </group>-->
-                            <!--                            <group class="weight_temp">-->
-                            <!--                                <field name="pulse_rate" string="Pulse Rate"/>-->
-                            <!--                            </group>-->
-                        </group>
-                        <group class="o_vital_signs_group">
-                            <group class="weight_temp">
-                                <field name="temperature" string="Temperature (°C)"/>
-                            </group>
-                            <group class="weight_temp">
-                                <field name="spo" string="SPO2 (%)"/>
-                            </group>
-                            <group class="weight_temp">
-                                <field name="pulse_rate" string="Pulse Rate (bpm)"/>
-                            </group>
-                        </group>
+                        <group name="vital_signs" string="Vital Signs" class="o_vital_signs_group single_row_vitals">
+    <div class="vitals_container">
+        <!-- Blood pressure with high/low -->
+        <div class="vital_field_container bp_container">
+            <label class="o_form_label" for="blood_pressure">Blood Pressure (mmHg)</label>
+            <div class="bp_inputs">
+                <span>(High)</span>
+                <field name="blood_pressure" class="oe_inline small_input"/>
+                <span>-</span>
+                <span>(Low)</span>
+                <field name="blood_pressure_low" nolabel="1" class="oe_inline small_input"/>
+            </div>
+        </div>
+
+        <!-- Weight -->
+        <div class="vital_field_container">
+            <label class="o_form_label" for="weight">Weight (kg)</label>
+            <field name="weight" class="small_input"/>
+        </div>
+
+        <!-- Temperature -->
+        <div class="vital_field_container">
+            <label class="o_form_label" for="temperature">Temperature (°C)</label>
+            <field name="temperature" class="small_input"/>
+        </div>
+
+        <!-- SPO2 -->
+        <div class="vital_field_container">
+            <label class="o_form_label" for="spo">SPO2 (%)</label>
+            <field name="spo" class="small_input"/>
+        </div>
+
+        <!-- Pulse Rate -->
+        <div class="vital_field_container">
+            <label class="o_form_label" for="pulse_rate">Pulse Rate (bpm)</label>
+            <field name="pulse_rate" class="small_input"/>
+        </div>
+    </div>
+</group>
 
                         <group name="consultation_details" string="Clinical Assessment" class="consultation_details_section">
     <div class="clinical_assessment_grid">
-        <!-- First row -->
-        <div class="field_container">
-            <label for="symptoms" string="Symptoms"/>
-            <field name="symptoms" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
-        </div>
-        <div class="field_container">
-            <label for="presenting_complaints" string="Presenting Complaints"/>
-            <field name="presenting_complaints" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
-        </div>
-        <div class="field_container">
-            <label for="allergies" string="Allergies"/>
-            <field name="allergies" class="medical_history reduced_height" widget="text" nolabel="1"/>
-        </div>
-
-        <!-- Repeat the same pattern for other rows -->
-        <!-- Second row -->
-        <div class="field_container">
-            <label for="general_examination" string="General Examination"/>
-            <field name="general_examination" class="examination_field reduced_height" widget="text" nolabel="1"/>
-        </div>
-        <div class="field_container">
-            <label for="present_medications" string="Present Medications"/>
-            <field name="present_medications" class="medication_field reduced_height" widget="text" nolabel="1"/>
-        </div>
-        <div class="field_container">
-            <label for="local_and_systemic" string="Local and Systemic"/>
-            <field name="local_and_systemic" class="examination_field reduced_height" widget="text" nolabel="1"/>
-        </div>
-
-        <!-- Third row -->
-        <div class="field_container">
-            <label for="investigation" string="Investigation"/>
-            <field name="investigation" class="examination_field reduced_height" widget="text" nolabel="1"/>
-        </div>
-        <div class="field_container">
-            <label for="endoscopy_finding" string="Endoscopy Finding"/>
-            <field name="endoscopy_finding" class="examination_field reduced_height" widget="text" nolabel="1"/>
-        </div>
-        <div class="field_container">
-            <label for="review_date" string="Scheduled Follow-up Date"/>
-            <field name="review_date" class="date_field" nolabel="1"/>
-        </div>
-
-        <!-- Fourth row -->
-        <div class="field_container">
-            <label for="checkup_reports" string="Checkup Reports"/>
-            <field name="checkup_reports" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
-        </div>
-        <div class="field_container">
-            <label for="review_note" string="Review Note"/>
-            <field name="review_note" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
-        </div>
-        <div class="field_container">
-            <label for="professional_diagnosis" string="Clinical Diagnosis and Assessment"/>
-            <field name="professional_diagnosis" class="diagnosis_field reduced_height" widget="text" nolabel="1"/>
-        </div>
+    <!-- First row -->
+    <div class="field_container">
+        <label for="symptoms" string="Symptoms"/>
+        <field name="symptoms" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
     </div>
+    <div class="field_container">
+        <label for="presenting_complaints" string="Presenting Complaints"/>
+        <field name="presenting_complaints" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
+    </div>
+    <div class="field_container">
+        <label for="allergies" string="Allergies"/>
+        <field name="allergies" class="medical_history reduced_height" widget="text" nolabel="1"/>
+    </div>
+    <div class="field_container">
+        <label for="general_examination" string="General Examination"/>
+        <field name="general_examination" class="examination_field reduced_height" widget="text" nolabel="1"/>
+    </div>
+
+    <!-- Second row -->
+    <div class="field_container">
+        <label for="present_medications" string="Present Medications"/>
+        <field name="present_medications" class="medication_field reduced_height" widget="text" nolabel="1"/>
+    </div>
+    <div class="field_container">
+        <label for="local_and_systemic" string="Local and Systemic"/>
+        <field name="local_and_systemic" class="examination_field reduced_height" widget="text" nolabel="1"/>
+    </div>
+    <div class="field_container">
+        <label for="investigation" string="Investigation"/>
+        <field name="investigation" class="examination_field reduced_height" widget="text" nolabel="1"/>
+    </div>
+    <div class="field_container">
+        <label for="endoscopy_finding" string="Endoscopy Finding"/>
+        <field name="endoscopy_finding" class="examination_field reduced_height" widget="text" nolabel="1"/>
+    </div>
+
+    <!-- Third row -->
+    <div class="field_container">
+        <label for="review_date" string="Scheduled Follow-up Date"/>
+        <field name="review_date" class="date_field" nolabel="1"/>
+    </div>
+    <div class="field_container">
+        <label for="checkup_reports" string="Checkup Reports"/>
+        <field name="checkup_reports" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
+    </div>
+    <div class="field_container">
+        <label for="review_note" string="Review Note"/>
+        <field name="review_note" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
+    </div>
+    <div class="field_container">
+        <label for="professional_diagnosis" string="Clinical Diagnosis and Assessment"/>
+        <field name="professional_diagnosis" class="diagnosis_field reduced_height" widget="text" nolabel="1"/>
+    </div>
+</div>
 </group>
 
                         <group name="prescription" class="prescription" string="Prescription">
