@@ -54,7 +54,7 @@ class PatientRegistration(models.Model):
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI")
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray")
-    lab_report_ids = fields.One2many('doctor.lab.report', 'patient_id', string="Lab")
+    lab_report_ids = fields.One2many('lab.result.page', 'patient_id_name', string="Lab")
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
     temperature = fields.Char(string='Temperature')
     medicine_course = fields.Char(string='medicine course')

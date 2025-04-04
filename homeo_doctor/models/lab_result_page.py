@@ -34,6 +34,15 @@ class LabResultPage(models.Model):
         ('pending', 'Result Pending'),
         ('result_ready', 'Result Ready'),
     ], string="Status", default="pending", tracking=True)
+    patient_id_name = fields.Many2one('patient.registration', string="Patient")
+
+    @api.model
+    def create(self, vals):
+        if vals.get('bill_number'):
+            bill = self.env['doctor.lab.report'].browse(vals['bill_number'])
+            if bill and bill.patient_id:
+                vals['patient_id_name'] = bill.patient_id.id 
+        return super(LabResultPage, self).create(vals)
 
     def action_sample_collected(self):
         """Change status to 'Sample Collected' and update billing."""
