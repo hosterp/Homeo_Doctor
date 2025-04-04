@@ -112,6 +112,31 @@ class DoctorLabReport(models.Model):
                         'unit': test_result.unit,
                     })
 
+    def generate_lab_scan_lines(self):
+        for record in self:
+            existing_lab_types = set(record.lab_line_ids.mapped('lab_type_id.id'))
+
+            for billing_line in record.lab_billing_ids:
+                lab_test = billing_line.lab_type_id
+
+                if lab_test.id in existing_lab_types:
+                    continue
+
+                test_results = self.env['lab.resultant.confi'].search([
+                    ('test_name_bill_code', '=', lab_test.id),
+                    '|',
+                    ('gender', '=', record.gender),
+                    ('gender', '=', False)
+                ])
+
+                for test_result in test_results:
+                    self.env['lab.scan.line'].create({
+                        'lab_id': record.id,
+                        'lab_type_id': lab_test.id,
+                        'lab_test_name': test_result.test_name,
+                        'lab_reference_range': test_result.referral_range,
+                        'unit': test_result.unit,
+                    })
     @api.onchange('amount_paid')
     def _onchage_amount_paid(self):
         for rec in self:
@@ -280,6 +305,7 @@ class DoctorLabReport(models.Model):
         for lab_line in self.lab_line_ids:
             lab_lines.append((0, 0, {
                 'lab_result_id': lab_result_page.id,
+                'lab_type_id':lab_line.lab_type_id.id,
                 'lab_test_name': lab_line.lab_test_name,
                 'lab_result': lab_line.lab_result,
                 'unit': lab_line.unit,
@@ -321,7 +347,7 @@ class DoctorLabReport(models.Model):
         # Generate report reference if not provided
         if vals.get('report_reference', _('New')) == _('New'):
             vals['report_reference'] = self.env['ir.sequence'].next_by_code('doctor.lab.report') or _('New')
-
+        self._onchange_lab_billing_ids_generate_lines()
         # Check if registration is visible and patient name is provided
         if vals.get('register_visible', True) and vals.get('register_patient_name'):
             # Prepare patient registration values
