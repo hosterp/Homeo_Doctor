@@ -79,6 +79,39 @@ class DoctorLabReport(models.Model):
     amount_paid = fields.Integer(string='Amount Paid')
     balance = fields.Integer(string='Balance')
 
+    @api.onchange('lab_billing_ids')
+    def _onchange_lab_billing_ids_generate_lines(self):
+        """Create lab_line_ids when lab_billing_ids are manually added or modified"""
+        # Get the existing lab type IDs from lab_line_ids
+        existing_lab_types = set(self.lab_line_ids.mapped('lab_type_id.id'))
+
+        # Find newly added lab billing entries
+        for billing_line in self.lab_billing_ids:
+            lab_test = billing_line.lab_type_id
+
+            # Skip if this lab type already has scan lines
+            if lab_test.id in existing_lab_types:
+                continue
+
+            if lab_test:
+                # Search for test configurations
+                test_results = self.env['lab.resultant.confi'].search([
+                    ('test_name_bill_code', '=', lab_test.id),
+                    '|',
+                    ('gender', '=', self.gender),
+                    ('gender', '=', False)
+                ])
+
+                # Create lab scan lines for each test configuration
+                for test_result in test_results:
+                    self.env['lab.scan.line'].create({
+                        'lab_id': self.id,
+                        'lab_type_id': lab_test.id,
+                        'lab_test_name': test_result.test_name,
+                        'lab_reference_range': test_result.referral_range,
+                        'unit': test_result.unit,
+                    })
+
     @api.onchange('amount_paid')
     def _onchage_amount_paid(self):
         for rec in self:
