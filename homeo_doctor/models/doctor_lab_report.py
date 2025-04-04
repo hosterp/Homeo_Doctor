@@ -47,7 +47,7 @@ class DoctorLabReport(models.Model):
     b_o = fields.Boolean("B/O")
 
     # with register
-    register_visible = fields.Boolean(default=True)
+    register_visible = fields.Boolean(default=False)
     register_patient_name = fields.Char("Patient Name")
     register_address = fields.Text(string="Address")
     register_age = fields.Integer(string="Age", store=True)

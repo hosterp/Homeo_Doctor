@@ -362,7 +362,7 @@
         </record>
         <!-- Lab Report Action -->
         <record id="action_lab_report" model="ir.actions.act_window">
-            <field name="name">Doctor Lab Reports</field>
+            <field name="name">Lab Billing</field>
             <field name="res_model">doctor.lab.report</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_lab_report_tree"/>
