@@ -736,3 +736,30 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 .narrow_tax_column {
     width: 80px !important;
 }
+
+
+
+
+
+
+
+
+
+.consultation_details_section .clinical_assessment_grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 15px !important;
+}
+
+/* Update responsive breakpoints for 4 columns */
+@media (max-width: 1200px) {
+    .consultation_details_section .clinical_assessment_grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .consultation_details_section .clinical_assessment_grid {
+        grid-template-columns: 1fr !important;
+    }
+}
