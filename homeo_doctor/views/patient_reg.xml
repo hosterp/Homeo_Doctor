@@ -206,8 +206,9 @@
                             <page string="Lab Reports" name="lab_reports">
                                 <field name="lab_report_ids">
                                     <tree>
-                                        <field name="date"/>
-                                        <field name="report_details"/>
+                                        <field name="bill_number" invisible="1"/>
+                                        <field name="test_on"/>
+                                        <field name="result_status"/>
                                     </tree>
                                 </field>
                             </page>
