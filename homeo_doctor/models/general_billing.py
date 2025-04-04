@@ -12,7 +12,7 @@ class GeneralBilling(models.Model):
     _rec_name = 'bill_number'
 
     bill_number = fields.Char(string='Bill Number',  copy=False, default='New')
-    mrd_no = fields.Many2one('patient.reg', string='MRD No')
+    mrd_no = fields.Many2one('patient.reg', string='UHID')
     patient_name = fields.Char(string='Patient Name')
     age = fields.Integer(string='Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')])
