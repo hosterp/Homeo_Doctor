@@ -69,7 +69,7 @@
             <field name="name">doctor.lab.report.form</field>
             <field name="model">doctor.lab.report</field>
             <field name="arch" type="xml">
-                <form string="Lab Report" class="lab_form">
+                <form string="Lab Report" class="lab_form lab_doctor">
                     <header>
                         <field name="sample_status" widget="statusbar"/>
                         <field name="result_status" widget="statusbar"/>
