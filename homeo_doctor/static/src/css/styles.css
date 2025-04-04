@@ -766,79 +766,116 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 
 
-/* Vital Signs in Single Row */
-.o_vital_signs_group.single_row_vitals {
-    margin-bottom: 15px;
+/* Vital Signs in Single Line with Title */
+.vital_signs_header_container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: -30px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
 }
 
-.o_vital_signs_group .vitals_container {
+.vital_signs_title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #34495e;
+    white-space: nowrap;
+    margin: 0 15px 0 0;
+    min-width: 90px;
+}
+
+.vitals_inline_container {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     width: 100%;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    padding-bottom: 5px; /* For scrollbar space */
 }
 
-.o_vital_signs_group .vital_field_container {
+.vital_field_container {
     display: flex;
-    flex-direction: column;
-    min-width: 120px;
-    flex: 1;
+    min-width: 100px;
+    margin-right: 5px;
+}
+
+/* New style for horizontal alignment */
+.vital_field_row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
 }
 
 /* Blood pressure special layout */
-.o_vital_signs_group .vital_field_container.bp_container {
-    flex: 2;
-    min-width: 240px;
+.vital_field_container.bp_container {
+    min-width: 180px;
 }
 
-.o_vital_signs_group .bp_inputs {
+.bp_inputs {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 2px;
 }
 
-.o_vital_signs_group .bp_inputs span {
-    font-size: 0.9em;
+.bp_inputs span {
+    font-size: 0.8em;
     color: #666;
 }
 
 /* Ensure inputs have consistent width */
-.o_vital_signs_group .small_input {
+.vital_field_container .small_input {
     width: 100% !important;
-    min-width: 80px;
+    min-width: 60px;
+    max-width: 80px;
 }
 
-.o_vital_signs_group .bp_inputs .small_input {
-    width: 60px !important;
+.bp_inputs .small_input {
+    width: 55px !important;
+    min-width: 40px;
 }
 
 /* Label styling */
-.o_vital_signs_group .o_form_label {
-    margin-bottom: 5px;
+.vital_field_container .o_form_label {
+    font-size: 13px;
     font-weight: 600;
     color: #34495e;
+    white-space: nowrap;
+    margin-bottom: 0; /* Remove bottom margin */
 }
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
-    .o_vital_signs_group .vitals_container {
-        flex-wrap: wrap;
+    .vital_signs_header_container {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
-    .o_vital_signs_group .vital_field_container {
+    .vital_signs_title {
+        margin-bottom: 10px;
+    }
+
+    .vitals_inline_container {
         width: 100%;
-        flex: 1 1 45%;
     }
 
-    .o_vital_signs_group .vital_field_container.bp_container {
-        flex: 1 1 100%;
+    /* Maintain horizontal alignment on small screens */
+    .vital_field_row {
+        flex-direction: row;
     }
 }
 
-@media (max-width: 576px) {
-    .o_vital_signs_group .vital_field_container {
-        flex: 1 1 100%;
-    }
+.o_form_view .o_form_sheet .o_vital_signs_group:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #3498db;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
+
