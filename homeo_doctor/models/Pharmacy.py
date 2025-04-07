@@ -16,7 +16,26 @@ class PharmacyDescription(models.Model):
     prescription_line_ids = fields.One2many('pharmacy.prescription.line', 'pharmacy_id', string="Prescriptions")
     bill_amount = fields.Float(string="Total Bill Amount", compute="_compute_bill_amount", store=True)
     partner_id = fields.Many2one('res.partner', string="Related Partner")
+    total_item=fields.Integer(string='Total Item', compute="_compute_totals")
+    total_qty=fields.Integer(string='Total Qty', compute="_compute_totals")
+    total_amount=fields.Integer(string='Total Amount', compute="_compute_totals")
+    payment_mathod=fields.Selection([('cash', 'Cash'), ('card', 'Card'), ('upi', 'UPI'),('credit','Credit')],string='Payment Method')
+    paid_amount = fields.Integer(string='Paid Amount')
+    balance = fields.Integer(string='Balance Amount')
+    status=fields.Selection([('unpaid','Unpaid'),('paid','Paid')],default='unpaid')
 
+    @api.onchange('paid_amount')
+    def _onchange_paymode(self):
+        for rec in self:
+            if rec.total_amount and rec.paid_amount:
+                rec.balance = abs(rec.total_amount - rec.paid_amount)
+
+    @api.depends('prescription_line_ids')
+    def _compute_totals(self):
+        for rec in self:
+            rec.total_item = len(rec.prescription_line_ids)
+            rec.total_qty = sum(line.qty for line in rec.prescription_line_ids)
+            rec.total_amount = sum(line.rate for line in rec.prescription_line_ids)
     @api.model
     def create(self, vals):
         # When creating a patient, also create or find a partner
@@ -43,47 +62,73 @@ class PharmacyDescription(models.Model):
             rec.bill_amount = sum(line.rate for line in rec.prescription_line_ids)  # Excluding GST
 
     def action_register_payment(self):
-    # First, ensure there's a partner_id for this patient
-        partner = False
-        if self.patient_id and hasattr(self.patient_id, 'partner_id') and self.patient_id.partner_id:
-            partner = self.patient_id.partner_id.id
-        else:
-            # Look for existing partner with same name/phone
-            partner = self.env['res.partner'].search([
-                ('name', '=', self.name),
-                ('phone', '=', self.phone_number)
-            ], limit=1)
+        for record in self:
+            if record.prescription_line_ids.product_id and record.prescription_line_ids.qty:
+                stock_entries = self.env['stock.entry'].search([
+                    ('product_id', '=', record.prescription_line_ids.product_id.id)
+                ], order="id asc")
 
-            if not partner:
-                # Create a new partner for this patient
-                partner = self.env['res.partner'].create({
-                    'name': self.name,
-                    'phone': self.phone_number,
-                }).id
-            else:
-                partner = partner.id
-
+                remaining_qty = record.prescription_line_ids.qty
+                for entry in stock_entries:
+                    if remaining_qty <= 0:
+                        break
+                    if entry.quantity >= remaining_qty:
+                        entry.quantity -= remaining_qty
+                        remaining_qty = 0
+                    else:
+                        remaining_qty -= entry.quantity
+                        entry.quantity = 0
+            record.status = 'paid'
         return {
-        'name': 'Register Payment',
-        'type': 'ir.actions.act_window',
-        'res_model': 'account.payment',
-        'view_mode': 'form',
-        'view_id': self.env.ref('homeo_doctor.view_account_payment_form_inherit').id,
-        'target': 'new',
-        'context': {
-            'default_pharm_id': self.id,
-            'default_amount': self.bill_amount,
-            'default_payment_type': 'inbound',
-            'default_communication': self.name,  # This is fine, communication isn't used for sequence
-            'default_payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
-            'default_journal_id': self.env['account.journal'].search([('type', '=', 'bank')], limit=1).id,
-            # Remove the next line to let Odoo handle the sequence
-            'default_name': self.name,
-            'default_uhid': self.patient_id.id if self.patient_id else False,
-            'default_partner_id': partner,
-            'default_partner_type': 'customer',
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Payment Confirmed',
+                'message': f'Payment has been confirmed for {self.name}',
+                'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
+            }
         }
-    }
+        # partner = False
+        # if self.patient_id and hasattr(self.patient_id, 'partner_id') and self.patient_id.partner_id:
+        #     partner = self.patient_id.partner_id.id
+        # else:
+        #     # Look for existing partner with same name/phone
+        #     partner = self.env['res.partner'].search([
+        #         ('name', '=', self.name),
+        #         ('phone', '=', self.phone_number)
+        #     ], limit=1)
+        #
+        #     if not partner:
+        #         # Create a new partner for this patient
+        #         partner = self.env['res.partner'].create({
+        #             'name': self.name,
+        #             'phone': self.phone_number,
+        #         }).id
+        #     else:
+        #         partner = partner.id
+        #
+        # return {
+        # 'name': 'Register Payment',
+        # 'type': 'ir.actions.act_window',
+        # 'res_model': 'account.payment',
+        # 'view_mode': 'form',
+        # 'view_id': self.env.ref('homeo_doctor.view_account_payment_form_inherit').id,
+        # 'target': 'new',
+        # 'context': {
+        #     'default_pharm_id': self.id,
+        #     'default_amount': self.bill_amount,
+        #     'default_payment_type': 'inbound',
+        #     'default_communication': self.name,  # This is fine, communication isn't used for sequence
+        #     'default_payment_method_id': self.env.ref('account.account_payment_method_manual_in').id,
+        #     'default_journal_id': self.env['account.journal'].search([('type', '=', 'bank')], limit=1).id,
+        #     # Remove the next line to let Odoo handle the sequence
+        #     'default_name': self.name,
+        #     'default_uhid': self.patient_id.id if self.patient_id else False,
+        #     'default_partner_id': partner,
+        #     'default_partner_type': 'customer',
+        # }
+    # }
 
     def view_prescription_details(self):
         """
@@ -142,27 +187,27 @@ class PharmacyPrescriptionLine(models.Model):
             else:
                 record.stock_in_hand = 0.0
 
-    @api.model
-    def create(self, vals):
-        """Deduct the quantity from stock when a record is created."""
-        record = super(PharmacyPrescriptionLine, self).create(vals)
-        if record.product_id and record.qty:
-            stock_entries = self.env['stock.entry'].search([
-                ('product_id', '=', record.product_id.id)
-            ], order="id asc")
-
-            remaining_qty = record.qty
-            for entry in stock_entries:
-                if remaining_qty <= 0:
-                    break
-                if entry.quantity >= remaining_qty:
-                    entry.quantity -= remaining_qty
-                    remaining_qty = 0
-                else:
-                    remaining_qty -= entry.quantity
-                    entry.quantity = 0
-
-        return record
+    # @api.model
+    # def create(self, vals):
+    #     """Deduct the quantity from stock when a record is created."""
+    #     record = super(PharmacyPrescriptionLine, self).create(vals)
+    #     if record.product_id and record.qty:
+    #         stock_entries = self.env['stock.entry'].search([
+    #             ('product_id', '=', record.product_id.id)
+    #         ], order="id asc")
+    #
+    #         remaining_qty = record.qty
+    #         for entry in stock_entries:
+    #             if remaining_qty <= 0:
+    #                 break
+    #             if entry.quantity >= remaining_qty:
+    #                 entry.quantity -= remaining_qty
+    #                 remaining_qty = 0
+    #             else:
+    #                 remaining_qty -= entry.quantity
+    #                 entry.quantity = 0
+    #
+    #     return record
 
     def write(self, vals):
         """Adjust stock when updating records."""

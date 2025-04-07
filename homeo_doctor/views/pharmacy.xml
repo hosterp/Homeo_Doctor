@@ -1,283 +1,333 @@
 <odoo>
     <data>
-            <!-- QWeb Template for Pharmacy Description Report -->
-            <template id="pharmacy_minimal_layout">
-        <t t-call="web.basic_layout">
-            <div class="header" style="border-bottom: 2px solid #1a73e8; padding-bottom: 10px;">
-                <div class="row">
-                    <div class="col-3">
-                        <img src="/web/binary/company_logo" style="max-height: 70px;" alt="Logo"/>
-                    </div>
-                    <div class="col-6 text-center">
-                        <h2 style="color: #1a73e8; font-weight: bold; margin-bottom: 5px;">Hospital Management System</h2>
-                        <p style="color: #555; font-size: 14px;">Comprehensive Healthcare Solutions</p>
-                    </div>
-                    <div class="col-3 text-right" style="font-size: 12px; color: #777;">
-                        <div>Trivandrum Medical District</div>
-                        <div>Phone: 0001-123456</div>
-                        <div>Email: contact@hospitalmanagement.com</div>
+        <!-- QWeb Template for Pharmacy Description Report -->
+        <template id="pharmacy_minimal_layout">
+            <t t-call="web.basic_layout">
+                <div class="header" style="border-bottom: 2px solid #1a73e8; padding-bottom: 10px;">
+                    <div class="row">
+                        <div class="col-3">
+                            <img src="/web/binary/company_logo" style="max-height: 70px;" alt="Logo"/>
+                        </div>
+                        <div class="col-6 text-center">
+                            <h2 style="color: #1a73e8; font-weight: bold; margin-bottom: 5px;">Hospital Management
+                                System
+                            </h2>
+                            <p style="color: #555; font-size: 14px;">Comprehensive Healthcare Solutions</p>
+                        </div>
+                        <div class="col-3 text-right" style="font-size: 12px; color: #777;">
+                            <div>Trivandrum Medical District</div>
+                            <div>Phone: 0001-123456</div>
+                            <div>Email: contact@hospitalmanagement.com</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <t t-raw="0"/>
-            <div class="footer" style="border-top: 1px solid #ddd; padding-top: 10px; font-size: 9pt; color: #777;">
-                <div class="row">
-                    <div class="col-6 text-left">
-                        <span>Prescription #</span>
-                        <span t-esc="context.get('active_id', '')"/>
-                    </div>
-                    <div class="col-6 text-right">
-                        <span>Page: </span>
-                        <span class="page"/> / <span class="topage"/>
+                <t t-raw="0"/>
+                <div class="footer" style="border-top: 1px solid #ddd; padding-top: 10px; font-size: 9pt; color: #777;">
+                    <div class="row">
+                        <div class="col-6 text-left">
+                            <span>Prescription #</span>
+                            <span t-esc="context.get('active_id', '')"/>
+                        </div>
+                        <div class="col-6 text-right">
+                            <span>Page:</span>
+                            <span class="page"/>
+                            /
+                            <span class="topage"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </t>
-    </template>
+            </t>
+        </template>
 
-    <template id="pharmacy_report_template">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="o">
-                <t t-call="homeo_doctor.pharmacy_minimal_layout">
-                    <div class="page">
-                        <!-- Document Title -->
-                        <div class="row mb-4">
-                            <div class="col-12 text-center">
-                                <h3 style="background-color: #1a73e8; color: white; padding: 10px; border-radius: 5px;">
-                                    <i class="fa fa-medkit mr-2"></i>Prescription Details
-                                </h3>
-                            </div>
-                        </div>
-
-                        <!-- Patient Information Section -->
-                        <div class="row mb-4">
-                            <div class="col-12" style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
-                                <div style="background-color: #f5f5f5; padding: 8px 15px; border-bottom: 1px solid #ddd;">
-                                    <strong style="color: #333; font-size: 16px;">Patient Information</strong>
-                                    <span style="float: right; color: #777; font-size: 12px;">
-                                        <i class="fa fa-calendar mr-1"></i>Date: 
-                                        <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %b, %Y')" />
-                                    </span>
-                                </div>
-                                <div class="row p-3">
-                                    <div class="col-6">
-                                        <table class="table table-sm table-borderless mb-0">
-                                            <tr>
-                                                <td style="width: 100px; color: #666;">Patient ID:</td>
-                                                <td style="font-weight: bold; color: #333;">
-                                                    <span t-field="o.patient_id"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="color: #666;">Patient Name:</td>
-                                                <td style="font-weight: bold; color: #333;">
-                                                    <span t-field="o.name"/>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="col-6">
-                                        <table class="table table-sm table-borderless mb-0">
-                                            <tr>
-                                                <td style="width: 100px; color: #666;">Phone:</td>
-                                                <td style="font-weight: bold; color: #333;">
-                                                    <span t-field="o.phone_number"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="color: #666;">Doctor:</td>
-                                                <td style="font-weight: bold; color: #333;">
-                                                    <span t-field="o.doctor_name"/>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
+        <template id="pharmacy_report_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="homeo_doctor.pharmacy_minimal_layout">
+                        <div class="page">
+                            <!-- Document Title -->
+                            <div class="row mb-4">
+                                <div class="col-12 text-center">
+                                    <h3 style="background-color: #1a73e8; color: white; padding: 10px; border-radius: 5px;">
+                                        <i class="fa fa-medkit mr-2"></i>Prescription Details
+                                    </h3>
                                 </div>
                             </div>
-                        </div>
 
-                       <!-- Prescription Table -->
+                            <!-- Patient Information Section -->
+                            <div class="row mb-4">
+                                <div class="col-12"
+                                     style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+                                    <div style="background-color: #f5f5f5; padding: 8px 15px; border-bottom: 1px solid #ddd;">
+                                        <strong style="color: #333; font-size: 16px;">Patient Information</strong>
+                                        <span style="float: right; color: #777; font-size: 12px;">
+                                            <i class="fa fa-calendar mr-1"></i>Date:
+                                            <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %b, %Y')"/>
+                                        </span>
+                                    </div>
+                                    <div class="row p-3">
+                                        <div class="col-6">
+                                            <table class="table table-sm table-borderless mb-0">
+                                                <tr>
+                                                    <td style="width: 100px; color: #666;">Patient ID:</td>
+                                                    <td style="font-weight: bold; color: #333;">
+                                                        <span t-field="o.patient_id"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #666;">Patient Name:</td>
+                                                    <td style="font-weight: bold; color: #333;">
+                                                        <span t-field="o.name"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-6">
+                                            <table class="table table-sm table-borderless mb-0">
+                                                <tr>
+                                                    <td style="width: 100px; color: #666;">Phone:</td>
+                                                    <td style="font-weight: bold; color: #333;">
+                                                        <span t-field="o.phone_number"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #666;">Doctor:</td>
+                                                    <td style="font-weight: bold; color: #333;">
+                                                        <span t-field="o.doctor_name"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Prescription Table -->
                             <div class="mb-4">
                                 <div style="background-color: #f5f5f5; padding: 8px 15px; border: 1px solid #ddd; border-top-left-radius: 5px; border-top-right-radius: 5px;">
                                     <strong style="color: #333; font-size: 16px;">Prescribed Medications</strong>
                                 </div>
-                                
+
                                 <!-- Header Row as a separate div with grid styling -->
                                 <div style="display: table; width: 100%; background: #1a73e8; color: white; font-weight: bold; border: 1px solid #ddd;">
                                     <div style="display: table-row;">
-                                        <div style="display: table-cell; width: 4%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">#</div>
-                                        <div style="display: table-cell; width: 15%; padding: 8px; border-right: 1px solid #ddd;">Medicine</div>
-                                        <div style="display: table-cell; width: 6%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Qty</div>
-                                        <div style="display: table-cell; width: 6%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Batch</div>
-                                        <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Expiry</div>
-                                        <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Per Time</div>
-                                        <div style="display: table-cell; width: 15%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Timing</div>
-                                        <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Unit Price</div>
-<!--                                        <div style="display: table-cell; width: 7%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Disc %</div>-->
-                                        <div style="display: table-cell; width: 7%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">GST (%)</div>
-                                        <div style="display: table-cell; width: 10%; padding: 8px; text-align: center;">Total</div>
+                                        <div style="display: table-cell; width: 4%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
+                                            #
+                                        </div>
+                                        <div style="display: table-cell; width: 15%; padding: 8px; border-right: 1px solid #ddd;">
+                                            Medicine
+                                        </div>
+                                        <div style="display: table-cell; width: 6%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
+                                            Qty
+                                        </div>
+                                        <div style="display: table-cell; width: 6%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
+                                            Batch
+                                        </div>
+                                        <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
+                                            Expiry
+                                        </div>
+                                        <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
+                                            Per Time
+                                        </div>
+                                        <div style="display: table-cell; width: 15%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
+                                            Timing
+                                        </div>
+                                        <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
+                                            Unit Price
+                                        </div>
+                                        <!--                                        <div style="display: table-cell; width: 7%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Disc %</div>-->
+                                        <div style="display: table-cell; width: 7%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
+                                            GST (%)
+                                        </div>
+                                        <div style="display: table-cell; width: 10%; padding: 8px; text-align: center;">
+                                            Total
+                                        </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Table for the data rows -->
-                                <table class="table table-bordered table-sm" style="border: 1px solid #ddd; margin-top: 0; width: 100%;">
+                                <table class="table table-bordered table-sm"
+                                       style="border: 1px solid #ddd; margin-top: 0; width: 100%;">
                                     <tbody>
                                         <t t-set="counter" t-value="1"/>
                                         <t t-foreach="o.prescription_line_ids" t-as="medicine">
                                             <tr t-att-style="'background-color: ' + ('rgba(245, 245, 245, 0.5)' if counter % 2 == 0 else 'white')">
-                                                <td class="text-center" style="width: 4%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-center"
+                                                    style="width: 4%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
                                                     <span t-esc="counter"/>
                                                     <t t-set="counter" t-value="counter + 1"/>
                                                 </td>
                                                 <td style="width: 15%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
                                                     <strong t-field="medicine.product_id.display_name"/>
                                                 </td>
-                                                <td class="text-center" style="width: 6%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-center"
+                                                    style="width: 6%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
                                                     <span t-field="medicine.qty"/>
                                                 </td>
-                                                <td class="text-center" style="width: 6%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-center"
+                                                    style="width: 6%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
                                                     <span t-field="medicine.batch"/>
                                                 </td>
-                                                <td class="text-center" style="width: 8%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
-                                                    <span t-field="medicine.exp_date" t-options='{"widget": "date", "format": "MM/yy"}'/>
+                                                <td class="text-center"
+                                                    style="width: 8%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                    <span t-field="medicine.exp_date"
+                                                          t-options='{"widget": "date", "format": "MM/yy"}'/>
                                                 </td>
-                                                <td class="text-center" style="width: 8%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-center"
+                                                    style="width: 8%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
                                                     <span t-field="medicine.per_ped"/>
                                                 </td>
-                                                <td class="text-center" style="width: 15%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
-                                                    <span t-if="medicine.morn" class="badge badge-pill badge-primary mr-1"
-                                                        style="background-color: #1a73e8;">Morning</span>
-                                                    <span t-if="medicine.noon" class="badge badge-pill badge-success mr-1"
-                                                        style="background-color: #28a745;">Noon</span>
+                                                <td class="text-center"
+                                                    style="width: 15%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                    <span t-if="medicine.morn"
+                                                          class="badge badge-pill badge-primary mr-1"
+                                                          style="background-color: #1a73e8;">Morning
+                                                    </span>
+                                                    <span t-if="medicine.noon"
+                                                          class="badge badge-pill badge-success mr-1"
+                                                          style="background-color: #28a745;">Noon
+                                                    </span>
                                                     <span t-if="medicine.night" class="badge badge-pill badge-info"
-                                                        style="background-color: #17a2b8;">Night</span>
+                                                          style="background-color: #17a2b8;">Night
+                                                    </span>
                                                 </td>
-                                                <td class="text-right" style="width: 8%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
-                                                    <span t-field="medicine.per_ped" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
+                                                <td class="text-right"
+                                                    style="width: 8%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                    <span t-field="medicine.per_ped"
+                                                          t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
                                                 </td>
-<!--                                                <td class="text-center" style="width: 7%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">-->
-<!--                                                    <span t-field="medicine.discount"/>%-->
-<!--                                                </td>-->
-                                                <td class="text-center" style="width: 7%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <!--                                                <td class="text-center" style="width: 7%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">-->
+                                                <!--                                                    <span t-field="medicine.discount"/>%-->
+                                                <!--                                                </td>-->
+                                                <td class="text-center"
+                                                    style="width: 7%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
                                                     <span t-field="medicine.gst"/>%
                                                 </td>
-                                                <td class="text-right" style="width: 10%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
-                                                    <span t-field="medicine.rate" t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
+                                                <td class="text-right"
+                                                    style="width: 10%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                    <span t-field="medicine.rate"
+                                                          t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
                                                 </td>
                                             </tr>
                                         </t>
                                         <!-- Subtotal Row -->
                                         <tr style="background-color: #f8f9fa;">
-                                            <td colspan="10" class="text-right" style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">
+                                            <td colspan="10" class="text-right"
+                                                style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">
                                                 Subtotal:
                                             </td>
-                                            <td class="text-right" style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">
+                                            <td class="text-right"
+                                                style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">
                                                 <span t-esc="sum(o.prescription_line_ids.mapped('rate'))"
-                                                    t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
+                                                      t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
 
-                        <!-- Payment Information -->
-                        <div class="row">
-                            <div class="col-7">
-                                <!-- Instructions Section -->
-                                <div style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
-                                    <div style="background-color: #f5f5f5; padding: 8px 15px; border-bottom: 1px solid #ddd;">
-                                        <strong style="color: #333; font-size: 16px;">Instructions</strong>
+                            <!-- Payment Information -->
+                            <div class="row">
+                                <div class="col-7">
+                                    <!-- Instructions Section -->
+                                    <div style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+                                        <div style="background-color: #f5f5f5; padding: 8px 15px; border-bottom: 1px solid #ddd;">
+                                            <strong style="color: #333; font-size: 16px;">Instructions</strong>
+                                        </div>
+                                        <div class="p-3">
+                                            <ul style="padding-left: 20px; margin-bottom: 0;">
+                                                <li>Take medicines as prescribed with sufficient water</li>
+                                                <li>Keep medicines away from children and direct sunlight</li>
+                                                <li>Complete the full course of medicine even if feeling better</li>
+                                                <li>Report any side effects to your doctor immediately</li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="p-3">
-                                        <ul style="padding-left: 20px; margin-bottom: 0;">
-                                            <li>Take medicines as prescribed with sufficient water</li>
-                                            <li>Keep medicines away from children and direct sunlight</li>
-                                            <li>Complete the full course of medicine even if feeling better</li>
-                                            <li>Report any side effects to your doctor immediately</li>
-                                        </ul>
+                                </div>
+                                <div class="col-5">
+                                    <!-- Total Section -->
+                                    <div style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+                                        <div style="background-color: #f5f5f5; padding: 8px 15px; border-bottom: 1px solid #ddd;">
+                                            <strong style="color: #333; font-size: 16px;">Summary</strong>
+                                        </div>
+                                        <div class="p-3">
+                                            <table class="table table-sm table-borderless mb-0">
+                                                <tr>
+                                                    <td style="width: 60%; color: #666;">Total Items:</td>
+                                                    <td class="text-right" style="font-weight: bold; color: #333;">
+                                                        <span t-esc="len(o.prescription_line_ids)"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #666;">Total Quantity:</td>
+                                                    <td class="text-right" style="font-weight: bold; color: #333;">
+                                                        <span t-esc="sum(o.prescription_line_ids.mapped('qty'))"/>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-top: 1px dashed #ddd;">
+                                                    <td style="color: #333; font-weight: bold;">Total Amount:</td>
+                                                    <td class="text-right"
+                                                        style="font-weight: bold; color: #1a73e8; font-size: 16px;">
+                                                        <span t-field="o.bill_amount"
+                                                              t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-5">
-                                <!-- Total Section -->
-                                <div style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
-                                    <div style="background-color: #f5f5f5; padding: 8px 15px; border-bottom: 1px solid #ddd;">
-                                        <strong style="color: #333; font-size: 16px;">Summary</strong>
-                                    </div>
-                                    <div class="p-3">
-                                        <table class="table table-sm table-borderless mb-0">
-                                            <tr>
-                                                <td style="width: 60%; color: #666;">Total Items:</td>
-                                                <td class="text-right" style="font-weight: bold; color: #333;">
-                                                    <span t-esc="len(o.prescription_line_ids)"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="color: #666;">Total Quantity:</td>
-                                                <td class="text-right" style="font-weight: bold; color: #333;">
-                                                    <span t-esc="sum(o.prescription_line_ids.mapped('qty'))"/>
-                                                </td>
-                                            </tr>
-                                            <tr style="border-top: 1px dashed #ddd;">
-                                                <td style="color: #333; font-weight: bold;">Total Amount:</td>
-                                                <td class="text-right" style="font-weight: bold; color: #1a73e8; font-size: 16px;">
-                                                    <span t-field="o.bill_amount"
-                                                        t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Doctor Signature -->
-                        <div class="row mt-5">
-                            <div class="col-7">
+                            <!-- Doctor Signature -->
+                            <div class="row mt-5">
+                                <div class="col-7">
+                                </div>
+                                <div class="col-5 text-center">
+                                    <div style="border-top: 1px solid #777; padding-top: 10px; margin-top: 50px;">
+                                        <p style="margin-bottom: 0;">Doctor's Signature</p>
+                                        <p t-if="o.doctor_name" style="margin-bottom: 0; font-weight: bold;">
+                                            <span t-field="o.doctor_name"/>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-5 text-center">
-                                <div style="border-top: 1px solid #777; padding-top: 10px; margin-top: 50px;">
-                                    <p style="margin-bottom: 0;">Doctor's Signature</p>
-                                    <p t-if="o.doctor_name" style="margin-bottom: 0; font-weight: bold;">
-                                        <span t-field="o.doctor_name"/>
+
+                            <!-- Footer Note -->
+                            <div class="row mt-5">
+                                <div class="col-12">
+                                    <p class="text-center"
+                                       style="font-style: italic; color: #777; font-size: 12px; border-top: 1px solid #ddd; padding-top: 10px;">
+                                        This prescription is generated electronically and is valid without signature.
+                                        For any clarification, please contact hospital pharmacy at 0001-123456.
                                     </p>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Footer Note -->
-                        <div class="row mt-5">
-                            <div class="col-12">
-                                <p class="text-center" style="font-style: italic; color: #777; font-size: 12px; border-top: 1px solid #ddd; padding-top: 10px;">
-                                    This prescription is generated electronically and is valid without signature.
-                                    For any clarification, please contact hospital pharmacy at 0001-123456.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    </t>
                 </t>
             </t>
-        </t>
-    </template>
+        </template>
 
-    <!-- Report Action -->
-    <record id="action_pharmacy_report" model="ir.actions.report">
-        <field name="name">Pharmacy Prescription</field>
-        <field name="model">pharmacy.description</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">homeo_doctor.pharmacy_report_template</field>
-        <field name="report_file">homeo_doctor.pharmacy_report_template</field>
-        <field name="print_report_name">'Prescription - ' + object.name</field>
-        <field name="binding_model_id" ref="model_pharmacy_description"/>
-        <field name="binding_type">report</field>
-        <field name="paperformat_id" ref="base.paperformat_euro"/>
-    </record>
+        <!-- Report Action -->
+        <record id="action_pharmacy_report" model="ir.actions.report">
+            <field name="name">Pharmacy Prescription</field>
+            <field name="model">pharmacy.description</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">homeo_doctor.pharmacy_report_template</field>
+            <field name="report_file">homeo_doctor.pharmacy_report_template</field>
+            <field name="print_report_name">'Prescription - ' + object.name</field>
+            <field name="binding_model_id" ref="model_pharmacy_description"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="base.paperformat_euro"/>
+        </record>
         <!-- Form View -->
         <record id="view_pharmacy_description_form" model="ir.ui.view">
             <field name="name">pharmacy.description.form</field>
             <field name="model">pharmacy.description</field>
             <field name="arch" type="xml">
                 <form string="Pharmacy Description" class="pharmacy_description">
+                    <header>
+                        <field name="status" widget="statusbar"/>
+                    </header>
                     <sheet>
                         <group>
                             <group>
@@ -304,19 +354,33 @@
                                         <field name="hsn"/>
                                         <field name="batch"/>
                                         <field name="manf_date"/>
-<!--                                        <field name="packing"/>-->
+                                        <!--                                        <field name="packing"/>-->
                                         <field name="exp_date"/>
                                         <field name="mfc"/>
                                         <field name="qty"/>
                                         <field name="per_ped" string="Rate"/>
                                         <field name="gst"/>
-<!--                                        <field name="discount"/>-->
+                                        <!--                                        <field name="discount"/>-->
                                         <field name="stock_in_hand"/>
                                         <field name="rate" sum="Total" string="Amount"/>
                                     </tree>
                                 </field>
                             </page>
                         </notebook>
+                        <group col="3">
+                            <group>
+                                <field name="total_item"/>
+                                <field name="total_qty"/>
+                            </group>
+                            <group>
+                                <field name="payment_mathod"/>
+                                <field name="paid_amount"/>
+                            </group>
+                            <group>
+                                <field name="balance"/>
+                                <field name="total_amount"/>
+                            </group>
+                        </group>
                         <footer>
                             <div class="oe_right">
                                 <button name="action_register_payment" type="object" string="Pay" class="oe_highlight"/>
@@ -338,6 +402,7 @@
                     <field name="date" string="Appointment Date"/>
                     <field name="phone_number"/>
                     <field name="doctor_name"/>
+                    <field name="status"/>
                 </tree>
             </field>
         </record>
