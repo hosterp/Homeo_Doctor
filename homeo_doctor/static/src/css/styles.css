@@ -38,7 +38,7 @@ html .o_web_client > .o_action_manager {
 }
 
 .patient_consulattaion_page .o_form_sheet_bg > .o_form_sheet {
-    max-width: 93% !important;
+    max-width: 100% !important;
 }
 
 
@@ -310,11 +310,16 @@ html {
 
 .o_form_view .o_group.o_inner_group > tbody > tr > td.o_td_label {
 	padding: 0px 15px 0px 9px !important;
-	min-width: 112px !important;
+	min-width: 70px !important;
 }
 
+/* Date hide*/
 .patient_consulattaion_page .oe_title {
 	margin-bottom: -40px !important;
+	display: none !important;
+}
+.reduced_height textarea {
+    height: 50px !important;
 }
 
 .btn {
@@ -326,7 +331,7 @@ html {
 
 
 .o_form_view .o_form_sheet .consultation_details_section .o_form_label {
-      white-space: nowrap !important;
+ 
       padding: 10px !important;
   }
 
@@ -334,11 +339,13 @@ html {
     border-width: 3px !important;
     border-color: #34495e !important;
     width:auto !important;
+    height: 40px !important;
 }
 
 .o_form_view .o_form_sheet .consultation_details_section .o_datepicker_input{
     border-width: 3px !important;
     border-color: #34495e !important;
+    width: auto !important;
 }
 .o_form_view .o_form_sheet .medicine_course .o_input{
     border-width: 1px !important;
@@ -502,6 +509,12 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 .lab_form .field-container {
     padding: 2px;
     margin-left: 14px;
+
+}
+.general_form .field-container {
+    padding: 2px;
+    margin-left: 14px;
+    width:25px !important;
 }
 .lab_form .o_notebook {
     margin-top: 16px;
@@ -509,6 +522,10 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 .lab_form .o_form_sheet {
     max-width: 100%;
     width: 100%;
+}
+
+.lab_doctor .o_form_sheet_bg > .o_form_sheet .row.left_colum, .lab_doctor .o_form_sheet_bg > .o_form_sheet .row.right_colum {
+    max-width: 20% !important;
 }
 
 
@@ -535,6 +552,342 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     white-space: normal;
 }
 
+
 .left_colum{
     margin-left: 10px;
+}
+
+
+.custom_general_notebook {
+    width: 60% !important;
+    margin-left : 25px !important;
+    border-style: double;
+
+}
+
+.custom_general_notebook .o_list_view {
+    width: 100% !important;
+    overflow: visible !important;
+}
+
+/* Make sure columns adapt to the narrower width */
+.custom_general_notebook .o_list_view thead th {
+    white-space: nowrap;
+}
+
+/* Ensure cell content doesn't cause horizontal scrolling */
+.custom_general_notebook .o_list_view td {
+    white-space: normal;
+}
+
+
+
+/* Responsive Clinical Assessment Section */
+.consultation_details_section {
+    padding: 20px !important;
+    background-color: #f9f9f9 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 24px !important;
+}
+
+.consultation_details_section .clinical_assessment_grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 15px !important;
+}
+
+/* For tablets */
+@media (max-width: 1024px) {
+    .consultation_details_section .clinical_assessment_grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* For mobile */
+@media (max-width: 768px) {
+    .consultation_details_section .clinical_assessment_grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Field container styling - label and input in same line */
+.consultation_details_section .field_container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
+    flex:1 1 auto !important;
+    width: 95% !important;
+}
+
+/* Label styling - fixed width for alignment */
+.consultation_details_section .field_container label {
+    color: #34495e !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    width: 260px !important;
+    min-width: 140px !important;
+    flex-shrink: 0 !important;
+    margin-right: 10px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Field styling - grow to fill remaining space */
+.consultation_details_section .field_container .o_field_widget {
+    flex-grow: 1 !important;
+    width: calc(100% - 150px) !important;
+}
+
+/* Style for the group title */
+.consultation_details_section .o_horizontal_separator {
+    grid-column: 1 / -1 !important;
+    color: #2c3e50 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    border-bottom: 2px solid #3498db !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 16px !important;
+}
+
+/* Field styling */
+.consultation_details_section .o_field_widget.o_field_text textarea {
+    width: 100% !important;
+    border: 1px solid #dde2e6 !important;
+    border-radius: 4px !important;
+    padding: 10px !important;
+    min-height: 50px !important;
+    transition: all 0.2s ease !important;
+}
+
+.consultation_details_section .o_field_widget.o_field_text textarea:focus {
+    border-color: #3498db !important;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15) !important;
+    outline: none !important;
+}
+
+/* Different styling for different field types */
+.consultation_details_section .clinical_findings textarea {
+    border-left: 4px solid #27ae60 !important;
+}
+
+.consultation_details_section .medical_history textarea {
+    border-left: 4px solid #e74c3c !important;
+}
+
+.consultation_details_section .medication_field textarea {
+    border-left: 4px solid #f39c12 !important;
+}
+
+.consultation_details_section .examination_field textarea {
+    border-left: 4px solid #9b59b6 !important;
+}
+
+.consultation_details_section .diagnosis_field textarea {
+    border-left: 4px solid #3498db !important;
+    font-weight: 500 !important;
+}
+
+.consultation_details_section .date_field .o_datepicker .o_datepicker_input {
+    width: 100% !important;
+    border-radius: 4px !important;
+    border: 1px solid #dde2e6 !important;
+    border-left: 4px solid #3498db !important;
+    height: 36px !important;
+}
+
+/* Handle responsiveness for label-field pairs */
+@media (max-width: 1366px) {
+    .consultation_details_section .field_container {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .consultation_details_section .field_container label {
+        width: 100% !important;
+        margin-bottom: 5px !important;
+    }
+
+    .consultation_details_section .field_container .o_field_widget {
+
+    }
+}
+
+.o_main_navbar > ul > li > a, .o_main_navbar > ul > li > a:hover, .o_main_navbar > ul > li > a:focus {
+	font-size: 16px !important;
+}
+
+.o_menu_brand {
+    display: none !important;
+}
+
+.column_one{
+    margin-left: 30px;
+}
+
+.custom_border {
+	margin-left: 4%;
+	border-color: black !important;
+	border-style: groove !important;
+}
+
+.narrow_tax_column {
+    width: 80px !important;
+}
+
+
+
+
+
+
+
+
+
+.consultation_details_section .clinical_assessment_grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 15px !important;
+}
+
+/* Update responsive breakpoints for 4 columns */
+@media (max-width: 900px) {
+    .consultation_details_section .clinical_assessment_grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .consultation_details_section .clinical_assessment_grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+
+
+/* Vital Signs in Single Line with Title */
+.vital_signs_header_container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: -30px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.vital_signs_title {
+    font-size: 19px;
+    font-weight: 600;
+    color: #34495e;
+    white-space: nowrap;
+    margin: 0 15px 6px 0;
+    min-width: 90px;
+}
+
+.vitals_inline_container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    padding-bottom: 5px; /* For scrollbar space */
+}
+
+.vital_field_container {
+    display: flex;
+    min-width: 100px;
+    margin-right: 5px;
+}
+
+/* New style for horizontal alignment */
+.vital_field_row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+}
+
+/* Blood pressure special layout */
+.vital_field_container.bp_container {
+    min-width: 180px;
+}
+
+.bp_inputs {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.bp_inputs span {
+    font-size: 0.8em;
+    color: #666;
+}
+
+/* Ensure inputs have consistent width */
+.vital_field_container .small_input {
+    width: 100% !important;
+    min-width: 60px;
+    max-width: 80px;
+}
+
+.bp_inputs .small_input {
+    width: 55px !important;
+    min-width: 40px;
+}
+
+/* Label styling */
+.vital_field_container .o_form_label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #34495e;
+    white-space: nowrap;
+    margin-bottom: 0; /* Remove bottom margin */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .vital_signs_header_container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .vital_signs_title {
+        margin-bottom: 10px;
+    }
+
+    .vitals_inline_container {
+        width: 100%;
+    }
+
+    /* Maintain horizontal alignment on small screens */
+    .vital_field_row {
+        flex-direction: row;
+    }
+}
+
+.o_form_view .o_form_sheet .o_vital_signs_group:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #3498db;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.patient_consulattaion_page .o_group {
+	margin: 0px 0 !important;
+}
+
+.prescription {
+    width:60% ! important;
+}
+
+.prescription .o_list_table .o_column_sortable {
+	text-align: center !important;
 }

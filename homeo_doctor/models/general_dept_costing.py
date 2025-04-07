@@ -12,7 +12,7 @@ class GeneralDeptCosting(models.Model):
     code = fields.Char(string='Code')
     particular_name = fields.Char(string='Particular Name')
     amount=fields.Float(string='Amount')
-    tax= fields.Many2one('dept.tax',string='Tax')
+    tax= fields.Many2one('dept.tax',string='Tax(%)')
     tax_type= fields.Selection([('inclusive','Inclusive'),('exclusive','Exclusive')],default='inclusive')
 
 

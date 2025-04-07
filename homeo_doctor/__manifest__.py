@@ -51,6 +51,7 @@
         "report/patient_challan_report.xml",
         "report/intent_report.xml",
         "report/lab_result_report.xml",
+        "report/general_billing_report.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",

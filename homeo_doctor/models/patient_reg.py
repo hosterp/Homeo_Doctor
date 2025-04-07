@@ -44,8 +44,8 @@ class PatientRegistration(models.Model):
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
     move_to_pharmacy_clicked = fields.Boolean(string="Move to Pharmacy Clicked", default=False)
     move_to_admission_clicked = fields.Boolean(string="Move to Patient Reg  Clicked", default=False)
-    blood_pressure = fields.Char(string='Blood Pressure')
-    blood_pressure_low = fields.Char(string='Blood Pressure')
+    blood_pressure = fields.Char(string='BP')
+    blood_pressure_low = fields.Char(string='BP')
     sugar_level = fields.Integer(string='Sugar Level (mg/dl)')
     ppbs = fields.Integer(string='PPBS (mg/dl)')
     weight = fields.Float(string='Weight (kg)')
@@ -54,9 +54,9 @@ class PatientRegistration(models.Model):
     mri_report_ids = fields.One2many('scanning.mri', 'patient_id', string="MRI")
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray")
-    lab_report_ids = fields.One2many('doctor.lab.report', 'patient_id', string="Lab")
+    lab_report_ids = fields.One2many('lab.result.page', 'patient_id_name', string="Lab")
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
-    temperature = fields.Char(string='Temperature')
+    temperature = fields.Char(string='Temp')
     medicine_course = fields.Char(string='medicine course')
     appointment_date = fields.Date('Appointment Date')
     doctor_remark_ids = fields.One2many('consultation.remark', 'consultation_id', string='Doctor Remarks')
@@ -759,39 +759,42 @@ class LabReferral(models.Model):
                     'lab_billing_id': lab_report.id,
                     'lab_type_id': test.id,
                 })
+            lab_report.generate_lab_scan_lines()
 
-            # FIXED: Process test names separately, assigning each to the appropriate test type and unit
-            # Inside the loop for test_names_list
-            # Inside the loop for test_names_list
-            for test_name in test_names_list:
-                test_name = test_name.strip()  # Clean whitespace
-                print(f"🔍 Searching for test_name: {test_name}")
-
-                # Search for test configs that either match the patient's gender OR are gender-neutral
-                test_results = self.env['lab.resultant.confi'].search([
-                    ('test_name', '=', test_name),
-                    '|',
-                    ('gender', '=', record.user_ide.gender),
-                    ('gender', '=', False)
-                ], limit=1)
-
-                # Only create a lab scan line if we found a matching test configuration
-                if test_results and record.test_type:
-                    referral_range = test_results.referral_range
-                    unit = test_results.unit
-                    print(f"✅ Found: {test_name} | Referral Range: {referral_range} | Unit: {unit}")
-
-                    # Create the lab scan line
-                    self.env['lab.scan.line'].create({
-                        'lab_id': lab_report.id,
-                        'lab_type_id': record.test_type[0].id,
-                        'lab_test_name': test_name,
-                        'lab_reference_range': referral_range,
-                        'unit': unit,
-                    })
-                else:
-                    print(f"❌ Skipping test: {test_name} - No configuration matching gender: {record.user_ide.gender}")
-                    # No lab scan line is created for this test
+            # Optional: Link the report to the referral
+            record.lab_report_id = lab_report.id
+            # # FIXED: Process test names separately, assigning each to the appropriate test type and unit
+            # # Inside the loop for test_names_list
+            # # Inside the loop for test_names_list
+            # for test_name in test_names_list:
+            #     test_name = test_name.strip()  # Clean whitespace
+            #     print(f"🔍 Searching for test_name: {test_name}")
+            #
+            #     # Search for test configs that either match the patient's gender OR are gender-neutral
+            #     test_results = self.env['lab.resultant.confi'].search([
+            #         ('test_name', '=', test_name),
+            #         '|',
+            #         ('gender', '=', record.user_ide.gender),
+            #         ('gender', '=', False)
+            #     ], limit=1)
+            #
+            #     # Only create a lab scan line if we found a matching test configuration
+            #     if test_results and record.test_type:
+            #         referral_range = test_results.referral_range
+            #         unit = test_results.unit
+            #         print(f"✅ Found: {test_name} | Referral Range: {referral_range} | Unit: {unit}")
+            #
+            #         # Create the lab scan line
+            #         self.env['lab.scan.line'].create({
+            #             'lab_id': lab_report.id,
+            #             'lab_type_id': record.test_type[0].id,
+            #             'lab_test_name': test_name,
+            #             'lab_reference_range': referral_range,
+            #             'unit': unit,
+            #         })
+            #     else:
+            #         print(f"❌ Skipping test: {test_name} - No configuration matching gender: {record.user_ide.gender}")
+            #         # No lab scan line is created for this test
 
     @api.model
     def create(self, vals):

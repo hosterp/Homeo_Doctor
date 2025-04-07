@@ -1,0 +1,182 @@
+<odoo>
+
+    <template id="report_general_Bill">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page" style="font-family: 'Arial', sans-serif; color: #2c3e50;">
+
+                    <!-- Custom Header -->
+                    <div class="raw"
+                         style="text-align: center; padding-bottom: 15px; border-bottom: 2px solid #000;">
+                        <h1 style="font-size: 26px; font-weight: bold; margin: 0; color: #2c3e50;">
+                            Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
+                        </h1>
+                        <p style="margin: 5px 0; font-size: 14px; color: #555;">
+                            EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564
+                        </p>
+                        <p style="margin: 5px 0; font-size: 14px; color: #555;">
+                            Phone: 0471-2373004, 2374004 | Email:
+                            <span style="color: #007bff;">dpmshospital@gmail.com</span>
+                        </p>
+                    </div>
+                    <!-- Title Section -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding: 5px 0;">
+                        <!-- Left Side -->
+                        <div style="font-size: 14px; font-weight: bold; flex: 1; text-align: left;">
+                            Department:
+                            <t t-esc="o.department.display_name"/>
+                        </div>
+
+                        <!-- Center -->
+                        <div style="font-size: 14px; font-weight: bold; flex: 1; text-align: center;">
+                            <t t-esc="o.mode_pay.upper()"/>
+                            BILL
+                        </div>
+
+                        <!-- Right Side -->
+                        <div style="font-size: 14px; font-weight: bold; flex: 1; text-align: right;">
+                            Bill No:
+                            <t t-esc="o.bill_number"/>
+                        </div>
+                    </div>
+
+
+                    <!-- Patient & Invoice Details -->
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                        <div>
+                            <p>
+                                <strong>UHID:</strong>
+                                <t t-esc="o.mrd_no.display_name"/>
+                            </p>
+                            <p>
+                                <strong>Patient Name:</strong>
+                                <t t-esc="o.patient_name"/>
+                            </p>
+                            <p>
+                                <strong>Doctor:</strong>
+                                <t t-esc="o.doctor.display_name"/>
+                            </p>
+                        </div>
+                        <div style="text-align: right;">
+                            <p>
+                                <strong>Date &amp; Time:</strong>
+                                <t t-esc="o.bill_date"/>
+                            </p>
+                            <p>
+                                <strong>Mode of Payment:</strong>
+                                <t t-esc="o.mode_pay"/>
+                            </p>
+                            <p>
+                                <strong>Mobile:</strong>
+                                <t t-esc="o.mobile"/>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Table Styling -->
+                    <style>
+                        table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 15px;
+                        font-size: 14px;
+                        }
+                        th {
+                        background: #007bff;
+                        color: white;
+                        padding: 10px;
+                        text-align: left;
+                        }
+                        td {
+                        padding: 8px;
+                        border-bottom: 1px solid #ddd;
+                        }
+                        tr:nth-child(even) {
+                        background: #f9f9f9;
+                        }
+                        tfoot td {
+                        font-weight: bold;
+                        background: #f1f1f1;
+                        }
+                    </style>
+
+                    <!-- Table Section -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">Sl No</th>
+                                <th style="width: 40%;">Test Name</th>
+                                <th style="width: 20%;">Rate</th>
+                                <th style="width: 10%;">Qty</th>
+                                <th style="width: 15%;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="slno" t-value="0"/>
+                            <t t-foreach="o.general_bill_line_ids" t-as="line">
+                                <t t-set="slno" t-value="slno + 1"/>
+                                <tr>
+                                    <td>
+                                        <t t-esc="slno"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.particulars.particular_name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.rate"/>
+                                    </td>  <!-- Removed ₹ -->
+                                    <td>
+                                        <t t-esc="line.quantity"/>
+                                    </td>
+                                    <td>₹
+                                        <t t-esc="line.total_amt"/>
+                                    </td>  <!-- ₹ only for total -->
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" style="text-align: left; font-size: 14px; font-weight: bold;">
+                                    <t t-esc="o.amount_in_words"/>
+                                </td>
+                                <td colspan="1"></td>
+                                <td style="text-align: right; font-weight: bold;">Total:</td>
+                                <td style="text-align: right; font-weight: bold;">
+                                    ₹
+                                    <t t-esc="o.total_amount"/>
+                                </td>
+                            </tr>
+
+                            <!--                            <tr>-->
+                            <!--                                <td colspan="5" style="text-align: right; font-size: 14px; font-weight: bold;">-->
+                            <!--                                    <t t-esc="o.amount_in_words"/>-->
+                            <!--                                </td>-->
+                            <!--                            </tr>-->
+                        </tfoot>
+                    </table>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                        <!-- Left Side -->
+                        <div style="text-align: left; font-size: 14px; font-weight: bold;">
+                            Prepared By
+                            <!--                            <t t-esc="o.department.display_name"/>-->
+                        </div>
+
+                        <!-- Center -->
+                        <div style="text-align: center;font-weight: bold;font-size: 14px;  flex-grow: 1;">
+                            <!--                            <t t-esc="o.mode_pay.upper()"/>BILL-->
+                            Checked By
+                        </div>
+
+                        <!-- Right Side -->
+                        <div style="text-align: right; font-size: 14px; font-weight: bold;">
+                            Casher
+                            <!--                            <t t-esc="o.bill_number"/>-->
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -162,27 +162,50 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <t t-set="seen_lab_types" t-value="[]"/>
                                     <t t-set="counter" t-value="1"/>
-                                    <tr t-foreach="o.lab_line_ids" t-as="line">
-                                        <td class="text-center" style="width: 5%;">
-                                            <span t-esc="counter"/>
-                                            <t t-set="counter" t-value="counter + 1"/>
-                                        </td>
-                                        <td style="width: 35%;">
-                                            <span t-field="line.lab_test_name"/>
-                                        </td>
-                                        <td style="width: 35%;">
-                                            <span t-field="line.lab_result"/>
-                                        </td>
-                                         <td style="width: 35%;">
-                                            <span t-field="line.unit"/>
-                                        </td>
-                                        <td style="width: 35%;">
-                                            <span t-field="line.lab_reference_range"/>
-                                        </td>
 
-                                    </tr>
+                                    <t t-foreach="o.lab_line_ids" t-as="line">
+                                        <t t-if="line.lab_type_id.id not in seen_lab_types">
+                                            <!-- Render Subheading -->
+                                            <tr>
+                                                <td colspan="6" style="font-weight: bold; background-color: #f0f0f0;">
+                                                    <span t-esc="line.lab_type_id.display_name"/>
+                                                </td>
+                                            </tr>
+
+                                            <!-- Loop again to show all matching test lines for this lab_type -->
+                                            <t t-foreach="o.lab_line_ids.filtered(lambda l: l.lab_type_id.id == line.lab_type_id.id)"
+                                               t-as="subline">
+                                                <tr>
+                                                    <td class="text-center" style="width: 5%;">
+                                                        <span t-esc="counter"/>
+                                                        <t t-set="counter" t-value="counter + 1"/>
+                                                    </td>
+<!--                                                    <td style="width: 35%;">-->
+<!--                                                        <span t-field="subline.lab_type_id"/>-->
+<!--                                                    </td>-->
+                                                    <td style="width: 35%;">
+                                                        <span t-field="subline.lab_test_name"/>
+                                                    </td>
+                                                    <td style="width: 35%;">
+                                                        <span t-field="subline.lab_result"/>
+                                                    </td>
+                                                    <td style="width: 35%;">
+                                                        <span t-field="subline.unit"/>
+                                                    </td>
+                                                    <td style="width: 35%;">
+                                                        <span t-field="subline.lab_reference_range"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+                                            <!-- Add lab_type_id to seen list to avoid repeating group -->
+                                            <t t-set="seen_lab_types" t-value="seen_lab_types + [line.lab_type_id.id]"/>
+                                        </t>
+                                    </t>
                                 </tbody>
+
                                 <tfoot>
                                     <!--                                    <tr>-->
                                     <!--                                        <td colspan="2" class="text-right"><strong>Sub Total</strong></td>-->
@@ -190,17 +213,17 @@
                                     <!--                                            ₹ <span t-esc="'%.2f'% sum(o.lab_line_ids.mapped('total_amount'))"/>-->
                                     <!--                                        </td>-->
                                     <!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <td colspan="2" class="text-right">-->
-<!--                                            <strong>Total Amount</strong>-->
-<!--                                        </td>-->
-<!--                                        <td class="text-right">-->
-<!--                                            <strong>-->
-<!--                                                ₹-->
-<!--                                                <span t-esc="'%.2f'% sum(o.lab_billing_ids.mapped('total_amount'))"/>-->
-<!--                                            </strong>-->
-<!--                                        </td>-->
-<!--                                    </tr>-->
+                                    <!--                                    <tr>-->
+                                    <!--                                        <td colspan="2" class="text-right">-->
+                                    <!--                                            <strong>Total Amount</strong>-->
+                                    <!--                                        </td>-->
+                                    <!--                                        <td class="text-right">-->
+                                    <!--                                            <strong>-->
+                                    <!--                                                ₹-->
+                                    <!--                                                <span t-esc="'%.2f'% sum(o.lab_billing_ids.mapped('total_amount'))"/>-->
+                                    <!--                                            </strong>-->
+                                    <!--                                        </td>-->
+                                    <!--                                    </tr>-->
                                 </tfoot>
                             </table>
                         </div>

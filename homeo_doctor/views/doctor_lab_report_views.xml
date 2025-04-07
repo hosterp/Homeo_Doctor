@@ -69,7 +69,7 @@
             <field name="name">doctor.lab.report.form</field>
             <field name="model">doctor.lab.report</field>
             <field name="arch" type="xml">
-                <form string="Lab Report" class="lab_form">
+                <form string="Lab Report" class="lab_form lab_doctor">
                     <header>
                         <field name="sample_status" widget="statusbar"/>
                         <field name="result_status" widget="statusbar"/>
@@ -90,6 +90,12 @@
                                     <h1>
                                         <field name="report_reference" readonly="1" placeholder="Report Reference"/>
                                     </h1>
+                                </div>
+                                <div class="col-md-12" invisible="1"
+                                     style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 10px;">
+                                    <button string="Lab" class="oe_highlight"/>
+                                    <button string="MRI" class="oe_highlight"/>
+                                    <button string="X RAY" class="oe_highlight"/>
                                 </div>
                             </div>
                         </div>

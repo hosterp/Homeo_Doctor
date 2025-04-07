@@ -48,6 +48,7 @@ class LabPaymentWizard(models.Model):
             for lab_line in lab_report.lab_line_ids:
                 lab_lines.append((0, 0, {
                     'lab_result_id': lab_result_page.id,
+                    'lab_type_id': lab_line.lab_type_id.id,
                     'lab_test_name': lab_line.lab_test_name,
                     'lab_result': lab_line.lab_result,
                     'unit':lab_line.unit,
