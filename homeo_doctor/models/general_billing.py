@@ -37,7 +37,7 @@ class GeneralBilling(models.Model):
     discount = fields.Integer(string='Discount')
     oc_type=fields.Selection([('amount','Amount'),('percentage','Percentage')],default='amount',string='O.C Type')
     oc=fields.Integer(string='O.C')
-    reference=fields.Selection([('no','No'),('yes','YES')],default='no',string='reference')
+    reference=fields.Selection([('no','No'),('yes','YES')],default='no',string='Reference')
     mode_pay=fields.Selection([('cash', 'Cash'),
                                 ('credit', 'Credit'),
                                 ('card', 'Card'),
@@ -48,12 +48,25 @@ class GeneralBilling(models.Model):
     remarks =fields.Char(string='Remarks')
     staff_pwd=fields.Char(string='Staff Password')
     staff_name=fields.Char(string='Staff Name')
+    amount_paid = fields.Integer(string="Amount Paid")
+    balance = fields.Integer(string="Balance")
     status = fields.Selection([
         ('unpaid', 'Unpaid'),
         ('paid', 'Paid'),
     ], string="Status", default="unpaid", tracking=True)
 
     amount_in_words = fields.Char("Total in Words", compute="_compute_amount_in_words")
+
+    @api.onchange('amount_paid')
+    def onchange_amount_paid(self):
+        for rec in self:
+            if (rec.amount_paid < rec.total_amount and rec.amount_paid > 0):
+                rec.balance = rec.total_amount - rec.amount_paid
+            elif (rec.amount_paid > rec.total_amount and rec.amount_paid > 0):
+                rec.balance = rec.amount_paid - rec.total_amount
+            else:
+                rec.balance =0
+
 
     @api.depends('total_amount')
     def _compute_amount_in_words(self):
