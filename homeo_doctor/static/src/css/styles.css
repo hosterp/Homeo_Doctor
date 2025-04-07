@@ -332,7 +332,7 @@ html {
 
 .o_form_view .o_form_sheet .consultation_details_section .o_form_label {
  
-      padding: 10px !important;
+      padding: 0px !important;
   }
 
 .o_form_view .o_form_sheet .consultation_details_section .o_field_text{
@@ -616,7 +616,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 0px !important;
     flex:1 1 auto !important;
     width: 95% !important;
 }
@@ -638,7 +638,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 /* Field styling - grow to fill remaining space */
 .consultation_details_section .field_container .o_field_widget {
     flex-grow: 1 !important;
-    width: calc(100% - 150px) !important;
+    width: auto !important;
 }
 
 /* Style for the group title */
@@ -699,7 +699,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 }
 
 /* Handle responsiveness for label-field pairs */
-@media (max-width: 1366px) {
+@media (max-width: 1924px) {
     .consultation_details_section .field_container {
         flex-direction: column !important;
         align-items: flex-start !important;
@@ -890,4 +890,124 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 .prescription .o_list_table .o_column_sortable {
 	text-align: center !important;
+}
+
+
+/* Prescription column styling */
+.prescription {
+    width: 100% !important;
+}
+
+.prescription .o_list_view th[data-name="product_id"],
+.prescription .o_list_view td[data-name="product_id"] {
+    width: 30% !important;
+}
+
+.prescription .o_list_view th[data-name="stock_in_hand"],
+.prescription .o_list_view td[data-name="stock_in_hand"] {
+    width: 10% !important;
+}
+
+.prescription .o_list_table .o_column_sortable {
+    text-align: center !important;
+}
+
+.prescription_additional_section {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.prescription_column {
+    width: 60%;
+    padding-right: 15px;
+}
+
+.additional_column {
+    width: 40%;
+}
+
+/* Additional info styling */
+.additional_info_group {
+    height: 100%;
+}
+
+.additional_row {
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Field container styling for additional info */
+.additional_info_group .field_container {
+    width: 50%;
+    padding: 0 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.additional_info_group .field_container label {
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.additional_info_group .remark_container {
+    width: 100%;
+}
+
+/* Specific adjustments */
+.medicine_course_container field {
+    width: 70px;
+}
+
+.button_container .button_wrapper {
+    margin-top: 5px;
+}
+
+.button_container button {
+    background-color: #34495e !important;
+    color: white !important;
+}
+
+/* Input styling */
+.o_form_view .o_form_sheet .additional_info_group input,
+.o_form_view .o_form_sheet .additional_info_group textarea {
+    border-width: 1px !important;
+    border-color: #34495e !important;
+}
+
+/* Prescription styling (unchanged) */
+.prescription {
+    width: 100% !important;
+}
+
+.prescription .o_list_view th[data-name="product_id"],
+.prescription .o_list_view td[data-name="product_id"] {
+    width: 30% !important;
+}
+
+.prescription .o_list_view th[data-name="stock_in_hand"],
+.prescription .o_list_view td[data-name="stock_in_hand"] {
+    width: 10% !important;
+}
+
+.prescription .o_list_table .o_column_sortable {
+    text-align: center !important;
+}
+
+.field_container.medicine_course_container {
+	width: 36% !important;
+}
+
+
+
+.patient_consulattaion_page .paitent_details .o_field_widget {
+	width: 115px !important;
+}
+
+
+.custom_general_notebook .o_list_view th[data-name="tax"],
+.custom_general_notebook .o_list_view td[data-name="tax"] {
+    width: 10% !important;
 }
