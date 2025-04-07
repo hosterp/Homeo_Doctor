@@ -99,6 +99,19 @@
                                 </div>
                             </div>
                         </div>
+                         <!-- Investigation Filter Buttons -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <field name="active_investigation_type" invisible="1"/>
+                        <button name="filter_xray_investigations" string="X-Ray Only" type="object"
+                                class="btn btn-secondary" attrs="{'invisible': [('active_investigation_type', '=', 'xray')]}"/>
+                        <button name="filter_mri_investigations" string="MRI Only" type="object"
+                                class="btn btn-secondary" attrs="{'invisible': [('active_investigation_type', '=', 'mri')]}"/>
+                        <button name="filter_lab_investigations" string="Lab Only" type="object"
+                                class="btn btn-secondary" attrs="{'invisible': [('active_investigation_type', '=', 'lab')]}"/>
+                    </div>
+                </div>
+
 
                         <!-- Main Content Container -->
                         <div class="form-section">

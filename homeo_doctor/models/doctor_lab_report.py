@@ -78,6 +78,51 @@ class DoctorLabReport(models.Model):
     # display_amount = fields.Integer('Bill Amount')
     amount_paid = fields.Integer(string='Amount Paid')
     balance = fields.Integer(string='Balance')
+    active_investigation_type = fields.Selection([
+        ('all', 'All'),
+        ('xray', 'X-Ray'),
+        ('mri', 'MRI'),
+        ('lab', 'Lab')
+    ], string="Active Investigation Type", default='all')
+
+    def filter_xray_investigations(self):
+        """Button action to filter X-Ray investigations"""
+        self.active_investigation_type = 'xray'
+        # Return action to reload the view
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'doctor.lab.report',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'current',
+            'context': {'default_active_investigation_type': 'xray'}
+        }
+
+    def filter_mri_investigations(self):
+        """Button action to filter MRI investigations"""
+        self.active_investigation_type = 'mri'
+        # Return action to reload the view
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'doctor.lab.report',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'current',
+            'context': {'default_active_investigation_type': 'mri'}
+        }
+
+    def filter_lab_investigations(self):
+        """Button action to filter Lab investigations (excluding X-Ray and MRI)"""
+        self.active_investigation_type = 'lab'
+        # Return action to reload the view
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'doctor.lab.report',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'current',
+            'context': {'default_active_investigation_type': 'lab'}
+        }
 
     @api.onchange('lab_billing_ids')
     def _onchange_lab_billing_ids_generate_lines(self):
@@ -438,6 +483,21 @@ class LabBillingpage(models.Model):
     rate_id = fields.Monetary(string='Rate', compute='_compute_rate', store=True, readonly=False)
     total_amount = fields.Monetary(string="Total", compute='_compute_total_amount', store=True)
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
+
+    @api.onchange('lab_billing_id')
+    def _onchange_lab_billing_id(self):
+        """Filter investigation based on active filter in parent form"""
+        if self.lab_billing_id and self.lab_billing_id.active_investigation_type:
+            domain = []
+            if self.lab_billing_id.active_investigation_type == 'xray':
+                domain = [('name', 'ilike', 'ray')]
+            elif self.lab_billing_id.active_investigation_type == 'mri':
+                domain = [('name', 'ilike', 'mri')]
+            elif self.lab_billing_id.active_investigation_type == 'lab':
+                domain = ['&', ('name', 'not ilike', 'ray'), ('name', 'not ilike', 'mri')]
+
+            return {'domain': {'lab_type_id': domain}}
+        return {}
 
     @api.depends('lab_type_id')
     def _compute_rate(self):

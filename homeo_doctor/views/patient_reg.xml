@@ -159,7 +159,9 @@
                         </div>
                     </div>
                     </group>
-<!--                    <div class="row custom_prescription">-->
+                  <!-- Modified layout for Prescription and Additional Info section -->
+                <div class="prescription_additional_section">
+                    <div class="prescription_column">
                         <group name="prescription" class="prescription" string="Prescription">
                             <field name="med_ids" nolabel="1">
                                 <tree editable="bottom" decoration-warning="total_med == 0">
@@ -172,35 +174,53 @@
                                     <field name="total_med" string="Total Dosage" invisible="1"/>
                                 </tree>
                             </field>
-                            <!--                            <group class="medicine_course">-->
-                            <!--                                <field name="medicine_course" style="width:100px;" string="Medicine Course"/>-->
-                            <!--                            </group>-->
                         </group>
-<!--                     </div>-->
+                    </div>
+                    <div class="additional_column">
+    <group string="Additional Information" class="additional_info_group">
+        <!-- First row - with proper label for attributes -->
+        <div class="additional_row">
+            <div class="field_container medicine_course_container">
+                <label for="medicine_course" string="Medicine Course"/>
+                <field name="medicine_course" nolabel="1"/>
+            </div>
+            <div class="field_container department_container">
+                <label for="referred_department_ids" string="Referred Departments"/>
+                <field name="referred_department_ids" widget="many2many_tags" nolabel="1"/>
+            </div>
+        </div>
+        
+        <!-- Second row - with proper label for attributes -->
+        <div class="additional_row">
+            <div class="field_container doctor_container">
+                <label for="referred_doctor_ids" string="Referred Doctors"/>
+                <field name="referred_doctor_ids" widget="many2many_tags" nolabel="1"/>
+            </div>
+            <div class="field_container button_container">
+                <!-- For button container, we need a valid for attribute or use span instead -->
+                <span class="label_text">Action</span>
+                <div class="button_wrapper">
+                    <button name="action_reffer_move" type="object" string="GO"/>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Remarks field -->
+        <div class="field_container remark_container">
+            <label for="remark" string="Additional Remarks"/>
+            <field name="remark" placeholder="Additional Remarks" nolabel="1"/>
+        </div>
+    </group>
+</div>
+                </div>
 
-                        <group name="additional_info" class="additional_info" col="16">
-                            <!-- <field name="medicine_course" string="Medicine Course"/> -->
-                            <group class="medicine_course">
-                                <field name="medicine_course" style="width:70px;" string="Medicine Course"/>
-                            </group>
-                            <group>
-                                <field name="referred_department_ids" widget="many2many_tags"/>
-                            </group>
-                            <group>
-                                <field name="referred_doctor_ids" widget="many2many_tags"/>
-                            </group>
-                            <group>
-                                <button name="action_reffer_move" type="object" string="GO"/>
-                            </group>
-                            <field name="remark" placeholder="Additional Remarks"/>
-                        </group>
-                        <field name="remark_boolean" invisible="1"/>
-                        <field name="doctor_remark_ids" attrs="{'invisible': [('remark_boolean', '=', False)]}">
-                            <tree editable="bottom">
-                                <field name="doctor_id"/>
-                                <field name="remark" placeholder="Remark for this doctor"/>
-                            </tree>
-                        </field>
+                <field name="remark_boolean" invisible="1"/>
+                <field name="doctor_remark_ids" attrs="{'invisible': [('remark_boolean', '=', False)]}">
+                    <tree editable="bottom">
+                        <field name="doctor_id"/>
+                        <field name="remark" placeholder="Remark for this doctor"/>
+                    </tree>
+                </field>
                         <notebook>
                             <!-- Notebook content remains unchanged -->
                             <page string="Lab Reports" name="lab_reports">
