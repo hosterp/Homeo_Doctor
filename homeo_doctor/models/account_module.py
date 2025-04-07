@@ -88,6 +88,8 @@ class AccountMove(models.Model):
                         'invoice_id': move.id,
                         'product_id': line.product_id.id,
                         'quantity': line.quantity,
+                        'manf_date': line.manufacturing_date,
+                        'exp_date': line.expiry_date,
                         'uom_id': line.product_uom_id.id,
                         'rate':line.price_unit,
                         'state': 'confirmed',
@@ -251,7 +253,11 @@ class StockEntry(models.Model):
     name = fields.Char(string="Reference", required=True, copy=False, default=lambda self: _('New'))
     invoice_id = fields.Many2one('account.move', string="Invoice", domain=[('type', '=', 'in_invoice'), ('state', '=', 'posted')])
     product_id = fields.Many2one('product.product', string="Product", required=True)
-    quantity = fields.Float(string="Quantity", required=True)
+    quantity = fields.Float(string="Stock In Hand", required=True)
+    manf_date=fields.Char(string='M.Date')
+    exp_date=fields.Char(string='Exp.date')
+    rack=fields.Char(string='Rack Position')
+    batch=fields.Char(string='Batch Number')
     rate = fields.Float(string="Rate", required=True)
     uom_id = fields.Many2one('uom.uom', string="Unit of Measure")
     state = fields.Selection([
