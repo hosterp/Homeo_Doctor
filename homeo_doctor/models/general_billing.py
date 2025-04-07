@@ -3,6 +3,9 @@ from num2words import num2words
 from odoo import models, fields, api
 from datetime import datetime
 
+from odoo.odoo.tools.safe_eval import dateutil
+
+from datetime import datetime
 # from odoo.odoo.exceptions import UserError
 
 
@@ -17,7 +20,7 @@ class GeneralBilling(models.Model):
     age = fields.Integer(string='Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')])
     mobile = fields.Char(string='Mobile')
-    bill_date = fields.Datetime(string='Bill Date',default=fields.Date.context_today)
+    bill_date = fields.Datetime(string='Bill Date',default=lambda self: datetime.today())
     op_category = fields.Many2one('op.category', string='OP Category')
     doctor = fields.Many2one('doctor.profile', string='Doctor')
     department = fields.Many2one('general.department', string='Department')
