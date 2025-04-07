@@ -8,7 +8,11 @@
                 <field name="invoice_id" invisible="1"/>
                 <field name="product_id" string="Medicine"/>
                 <field name="quantity"/>
+                <field name="manf_date"/>
+                <field name="exp_date"/>
+                <field name="batch"/>
                 <field name="rate" />
+                <field name="rack" />
                 <field name="uom_id" invisible="1"/>
                 <field name="state" invisible="1"/>
             </tree>
