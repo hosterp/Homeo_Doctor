@@ -285,14 +285,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="o_c_percentage" class="col-md-4 col-form-label">OC%</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="o_c_percentage"/>
-                                        </div>
-                                    </div>
-                                </div>
+<!--                                <div class="col-md-6">-->
+<!--                                    <div class="form-group row">-->
+<!--                                        <label for="o_c_percentage" class="col-md-4 col-form-label">OC%</label>-->
+<!--                                        <div class="col-md-8 field-container">-->
+<!--                                            <field name="o_c_percentage"/>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <div class="col-md-6">
                                     <div class="form-group row">
                                         <label for="amount_paid" class="col-md-4 col-form-label">Amount Paid</label>
@@ -323,14 +323,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="o_c" class="col-md-4 col-form-label">OC</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="o_c"/>
-                                        </div>
-                                    </div>
-                                </div>
+<!--                                <div class="col-md-6">-->
+<!--                                    <div class="form-group row">-->
+<!--                                        <label for="o_c" class="col-md-4 col-form-label">OC</label>-->
+<!--                                        <div class="col-md-8 field-container">-->
+<!--                                            <field name="o_c"/>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <div class="col-md-6">
                                     <div class="form-group row">
                                         <label for="balance" class="col-md-4 col-form-label">Balance</label>
