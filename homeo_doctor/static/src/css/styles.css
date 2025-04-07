@@ -398,6 +398,11 @@ html {
 	max-width: 93% !important;
 }
 
+.general_form .o_form_sheet_bg > .o_form_sheet {
+	max-width: 100% !important;
+}
+
+
 
 .dropdown-menu a[data-menu="documentation"],
 .dropdown-menu a[data-menu="support"],
@@ -459,7 +464,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 }
 
 .lab_form .o_form_sheet_bg > .o_form_sheet {
-	max-width: 93% !important;
+	max-width: 100% !important;
 }
 
 .lab_department .o_list_table thead > tr > th:not(.o_list_record_selector).o_list_number_th {
@@ -473,7 +478,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     text-align: center !important;
 }
 .lab_resultant .o_form_sheet_bg > .o_form_sheet {
-	max-width: 93% !important;
+	max-width: 100% !important;
 }
 
 
@@ -555,6 +560,9 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 .left_colum{
     margin-left: 10px;
+}
+.custom_notebook{
+    border-style: double;
 }
 
 
@@ -729,6 +737,11 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 .custom_border {
 	margin-left: 4%;
+	border-color: black !important;
+	border-style: groove !important;
+}
+.custom_border_lab {
+
 	border-color: black !important;
 	border-style: groove !important;
 }

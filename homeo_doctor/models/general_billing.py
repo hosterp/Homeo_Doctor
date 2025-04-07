@@ -3,7 +3,7 @@ from num2words import num2words
 from odoo import models, fields, api
 from datetime import datetime
 
-from odoo.odoo.tools.safe_eval import dateutil
+# from odoo.odoo.tools.safe_eval import dateutil
 
 from datetime import datetime
 # from odoo.odoo.exceptions import UserError

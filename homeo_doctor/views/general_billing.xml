@@ -156,19 +156,11 @@
                                             </div>
                                         </div>
                                     </div>
-<!--                                    <div class="col-md-12">-->
-<!--                                        <div class="form-group row">-->
-<!--                                            <label for="discount_type" class="col-md-4 col-form-label">Discount Type</label>-->
-<!--                                            <div class="col-md-8 field-container">-->
-<!--                                                <field name="discount_type"/>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <label for="total_tax" class="col-md-4 col-form-label">Total Tax</label>
+                                            <label for="discount_type" class="col-md-4 col-form-label">Discount Type</label>
                                             <div class="col-md-8 field-container">
-                                                <field name="total_tax"/>
+                                                <field name="discount_type"/>
                                             </div>
                                         </div>
                                     </div>
