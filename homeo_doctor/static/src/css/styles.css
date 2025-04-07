@@ -1011,3 +1011,16 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 .custom_general_notebook .o_list_view td[data-name="tax"] {
     width: 10% !important;
 }
+
+.pharmacy-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 16px;
+    background: #fefefe;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-top: 10px;
+}
+.pharmacy-card .o_form_label {
+    font-weight: bold;
+}
+
