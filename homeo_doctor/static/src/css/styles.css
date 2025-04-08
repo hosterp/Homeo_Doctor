@@ -750,11 +750,10 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 .narrow_tax_column {
     width: 80px !important;
 }
-.o_form_view .o_field_widget {
-	margin-bottom: 5px;
-	border: solid 2px !important;
+.o_form_editable .o_form_view .o_field_widget {
+  margin-bottom: 5px;
+  border: solid 2px !important;
 }
-
 
 
 
@@ -1041,3 +1040,12 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     font-weight: bold;
 }
 
+.second_row_general{
+    margin-left: 0.5% !important;
+}
+
+
+.o_input {
+	border: 2px solid #000 !important;
+
+}
