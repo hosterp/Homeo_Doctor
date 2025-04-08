@@ -84,18 +84,23 @@ class AccountMove(models.Model):
         for move in self:
             if move.move_type == 'in_invoice':
                 for line in move.invoice_line_ids:
+                    total_qty = line.quantity or 0
+                    if line.free_qty:
+                        total_qty += line.free_qty  
+
                     self.env['stock.entry'].create({
                         'invoice_id': move.id,
                         'product_id': line.product_id.id,
-                        'quantity': line.quantity,
+                        'quantity': total_qty,
                         'manf_date': line.manufacturing_date,
                         'exp_date': line.expiry_date,
                         'batch': line.batch,
                         'uom_id': line.product_uom_id.id,
-                        'rate':line.price_unit,
+                        'rate': line.price_unit,
                         'state': 'confirmed',
                     })
         return res
+
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
