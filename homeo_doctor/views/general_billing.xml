@@ -11,115 +11,107 @@
                         <button name="action_pay_button" type="object" string="Pay" class="oe_highlight"/>
                     </header>
                     <sheet>
-                        <div class="oe_title" invisible="1">
+                        <div class="oe_title" style="display:none;">
                             <h1>
                                 <field name="bill_number" readonly="1" class="oe_inline" style="font-size: 18px;"/>
                             </h1>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="bill_type" class="col-md-4 col-form-label">Bill Type</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="bill_type"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="mrd_no" class="col-md-4 col-form-label">UHID</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="mrd_no"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="ip_no" class="col-md-4 col-form-label">IP No</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="ip_no"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="patient_name" class="col-md-4 col-form-label">Patient Name</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="patient_name"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="age" class="col-md-4 col-form-label">Age</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="age"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="gender" class="col-md-4 col-form-label">Gender</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="gender"/>
-                                        </div>
-                                    </div>
-                                </div>
+                    <!-- First row with adjusted column sizes -->
+                    <div class="col-md-1 col-lg-1">
+                        <div class="form-group row">
+                            <label for="bill_type" class="col-md-5 col-form-label">Bill Type</label>
+                            <div class="col-md-7 field-container">
+                                <field name="bill_type"/>
+                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="mobile" class="col-md-4 col-form-label">Mobile</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="mobile"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="doctor" class="col-md-4 col-form-label">Doctor</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="doctor"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="op_category" class="col-md-4 col-form-label">OP Category</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="op_category"/>
-                                        </div>
-                                    </div>
-                                </div>
-                             <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="department" class="col-md-4 col-form-label">Department</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="department"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="particulars" class="col-md-4 col-form-label">Select Particulars</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="particulars"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="bill_date" class="col-md-4 col-form-label">Bill Date</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="bill_date"/>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <div class="form-group row">
+                            <label for="bill_date" class="col-md-5 col-form-label">Bill Date</label>
+                            <div class="col-md-7 field-container">
+                                <field name="bill_date"/>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-md-1 col-lg-1">
+                        <div class="form-group row">
+                            <label for="mrd_no" class="col-md-5 col-form-label">UHID</label>
+                            <div class="col-md-7 field-container">
+                                <field name="mrd_no"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <div class="form-group row">
+                            <label for="patient_name" class="col-md-5 col-form-label">Patient</label>
+                            <div class="col-md-7 field-container">
+                                <field name="patient_name"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-lg-1">
+                        <div class="form-group row">
+                            <label for="age" class="col-md-5 col-form-label">Age</label>
+                            <div class="col-md-7 field-container">
+                                <field name="age"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <div class="form-group row">
+                            <label for="gender" class="col-md-5 col-form-label">Gender</label>
+                            <div class="col-md-7 field-container">
+                                <field name="gender"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <div class="form-group row">
+                            <label for="mobile" class="col-md-5 col-form-label">Mobile</label>
+                            <div class="col-md-7 field-container">
+                                <field name="mobile"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second row - for remaining fields -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group row">
+                            <label for="doctor" class="col-md-3 col-form-label">Doctor</label>
+                            <div class="col-md-9 field-container">
+                                <field name="doctor"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group row">
+                            <label for="op_category" class="col-md-4 col-form-label">OP Category</label>
+                            <div class="col-md-8 field-container">
+                                <field name="op_category"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group row">
+                            <label for="department" class="col-md-4 col-form-label">Department</label>
+                            <div class="col-md-8 field-container">
+                                <field name="department"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group row">
+                            <label for="particulars" class="col-md-4 col-form-label">Particulars</label>
+                            <div class="col-md-8 field-container">
+                                <field name="particulars"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                         <div class="row">
                             <div class="custom_general_notebook">
                                 <notebook>
@@ -270,14 +262,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="remarks" class="col-md-4 col-form-label">Remarks</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="remarks"/>
-                                        </div>
-                                    </div>
-                                </div>
+
                             <div class="col-md-2">
                                     <div class="form-group row">
                                         <label for="staff_name" class="col-md-4 col-form-label">Staff Name</label>
@@ -291,6 +276,14 @@
                                         <label for="staff_pwd" class="col-md-4 col-form-label">Staff Password</label>
                                         <div class="col-md-8 field-container">
                                             <field name="staff_pwd"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="col-md-2">
+                                    <div class="form-group row">
+                                        <label for="remarks" class="col-md-4 col-form-label">Remarks</label>
+                                        <div class="col-md-8 field-container">
+                                            <field name="remarks"/>
                                         </div>
                                     </div>
                                 </div>
