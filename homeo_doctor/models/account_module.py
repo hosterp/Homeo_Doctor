@@ -88,7 +88,7 @@ class AccountMove(models.Model):
                         'invoice_id': move.id,
                         'product_id': line.product_id.id,
                         'quantity': line.quantity,
-                        'manf_date': line.date_maturity,
+                        'manf_date': line.manufacturing_date,
                         'exp_date': line.expiry_date,
                         'uom_id': line.product_uom_id.id,
                         'rate':line.price_unit,
