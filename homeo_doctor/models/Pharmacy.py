@@ -171,6 +171,23 @@ class PharmacyPrescriptionLine(models.Model):
     stock_in_hand = fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
     rate = fields.Float(string='Rate', store=True)
 
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        for line in self:
+            if line.product_id:
+                stock_entry = self.env['stock.entry'].search([
+                    ('product_id', '=', line.product_id.id),
+                    ('quantity', '>', 0),
+                    ('state', '=', 'confirmed'),
+                    ('exp_date', '>', fields.Date.today()),
+                ], order='exp_date asc', limit=1)
+
+                if stock_entry:
+                    line.batch = stock_entry.batch
+                    line.manf_date = stock_entry.manf_date
+                    line.exp_date = stock_entry.exp_date
+                    line.rate = stock_entry.rate
+                    # line.uom_id = stock_entry.uom_id.id
 
     @api.depends('product_id')
     def _compute_stock_in_hand(self):
