@@ -810,6 +810,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     width: 100%;
     overflow-x: auto; /* Allow horizontal scrolling if needed */
     padding-bottom: 5px; /* For scrollbar space */
+    gap: 7%;
 }
 
 .vital_field_container {

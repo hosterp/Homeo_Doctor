@@ -39,13 +39,13 @@
                             </div>
                         </div>
 
-                        <group name="patient_info" string="Patient Information" col="12" class="paitent_details">
-                            <field name="patient_id" string="UHID" readonly="1" colspan="1" required="1"/>
-                            <field name="patient_name" string="Name" colspan="1" required="1"/>
+                        <group name="patient_info" string="Patient Information" col="12" class="paitent_details" style="border-bottom: 2px solid #007bff; padding: 15px 0; margin-bottom: 15px;">
+                            <field name="patient_id" string="UHID" readonly="1" colspan="1" required="0"/>
+                            <field name="patient_name" string="Name" colspan="1" required="0"/>
                             <field name="age" string="Age" colspan="1" required="1"/>
                             <field name="gender" string="Gender" colspan="1"/>
                             <field name="phone_number" widget="phone" string="Mobile No" colspan="1" required="0"/>
-                            <field name="address" style="margin-right:10px;" string="Address" colspan="1" required="1"/>
+<!--                            <field name="address" style="margin-right:10px;" string="Address" colspan="1" required="1"/>-->
                             <field name="doctor_id" string="Consulting Doctor" colspan="1" required="1"/>
                         </group>
 
