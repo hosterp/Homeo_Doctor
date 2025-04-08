@@ -273,7 +273,7 @@
                                 </notebook>
                             </div>
 
-
+                        <div class="custom_lab_row">
                             <div class="row left_colum" style="display:block;">
                                 <!-- First row: bill_amount and mode_of_payment -->
                                 <div class="col-md-6">
@@ -349,6 +349,7 @@
                                 </div>
 
                             </div>
+                        </div>
                         </div>
                         <notebook>
                             <page string="Lab Details" name="lab_details" invisible="1">

@@ -530,7 +530,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 }
 
 .lab_doctor .o_form_sheet_bg > .o_form_sheet .row.left_colum, .lab_doctor .o_form_sheet_bg > .o_form_sheet .row.right_colum {
-    max-width: 20% !important;
+    max-width: 50% !important;
 }
 
 
@@ -740,16 +740,20 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 	border-color: black !important;
 	border-style: groove !important;
 }
-.custom_border_lab {
-
+.custom_lab_row {
+    display: flex !important;
 	border-color: black !important;
 	border-style: groove !important;
+	margin-left: 2%;
 }
 
 .narrow_tax_column {
     width: 80px !important;
 }
-
+.o_form_view .o_field_widget {
+	margin-bottom: 5px;
+	border: solid 2px !important;
+}
 
 
 
