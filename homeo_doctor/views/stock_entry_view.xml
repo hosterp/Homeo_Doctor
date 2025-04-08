@@ -12,11 +12,24 @@
                 <field name="manf_date"/>
                 <field name="exp_date"/>
                 <field name="batch"/>
-                <field name="rate" />
-                <field name="rack" />
+                <field name="rate"/>
+                <field name="rack"/>
                 <field name="uom_id" invisible="1"/>
                 <field name="state" invisible="1"/>
             </tree>
+        </field>
+    </record>
+    <record id="view_stock_entry_search" model="ir.ui.view">
+        <field name="name">stock.entry.search</field>
+        <field name="model">stock.entry</field>
+        <field name="arch" type="xml">
+            <search string="Search Stock Entries">
+                <field name="product_id"/>
+                <field name="batch"/>
+                <field name="manf_date"/>
+                <field name="exp_date"/>
+                <filter string="Group by Medicine" name="group_by_product" context="{'group_by': 'product_id'}"/>
+            </search>
         </field>
     </record>
 
@@ -27,6 +40,7 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_sm">No stock entries yet.</p>
         </field>
+        <field name="search_view_id" ref="view_stock_entry_search"/>
     </record>
 
     <menuitem id="stock_entry_menu" name="Stock" sequence="41"/>
