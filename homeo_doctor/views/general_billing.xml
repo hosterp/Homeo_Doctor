@@ -17,101 +17,106 @@
                             </h1>
                         </div>
 
-                        <div class="row">
-                    <!-- First row with adjusted column sizes -->
-                    <div class="col-md-1 col-lg-1">
-                        <div class="form-group row">
-                            <label for="bill_type" class="col-md-5 col-form-label">Bill Type</label>
-                            <div class="col-md-7 field-container">
-                                <field name="bill_type"/>
+                       <div class="row mx-n1">
+                        <!-- First row with uniform column sizes (all fields same size as patient name) -->
+                        <div class="col-12">
+                            <div class="row mx-n1">
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="bill_type" class="col-md-5 col-form-label py-0 small">Bill Type</label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="bill_type"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="bill_date" class="col-md-5 col-form-label py-0 small">Bill Date</label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="bill_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="mrd_no" class="col-md-5 col-form-label py-0 small">UHID</label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="mrd_no"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="patient_name" class="col-md-5 col-form-label py-0 small">Patient</label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="patient_name"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="age" class="col-md-5 col-form-label py-0 small">Age</label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="age"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="gender" class="col-md-5 col-form-label py-0 small">Gender</label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="gender"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="mobile" class="col-md-5 col-form-label py-0 small">Mobile</label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="mobile"/>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-lg-2">
-                        <div class="form-group row">
-                            <label for="bill_date" class="col-md-5 col-form-label">Bill Date</label>
-                            <div class="col-md-7 field-container">
-                                <field name="bill_date"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-lg-1">
-                        <div class="form-group row">
-                            <label for="mrd_no" class="col-md-5 col-form-label">UHID</label>
-                            <div class="col-md-7 field-container">
-                                <field name="mrd_no"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-lg-2">
-                        <div class="form-group row">
-                            <label for="patient_name" class="col-md-5 col-form-label">Patient</label>
-                            <div class="col-md-7 field-container">
-                                <field name="patient_name"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-1 col-lg-1">
-                        <div class="form-group row">
-                            <label for="age" class="col-md-5 col-form-label">Age</label>
-                            <div class="col-md-7 field-container">
-                                <field name="age"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-lg-2">
-                        <div class="form-group row">
-                            <label for="gender" class="col-md-5 col-form-label">Gender</label>
-                            <div class="col-md-7 field-container">
-                                <field name="gender"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-lg-2">
-                        <div class="form-group row">
-                            <label for="mobile" class="col-md-5 col-form-label">Mobile</label>
-                            <div class="col-md-7 field-container">
-                                <field name="mobile"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Second row - for remaining fields -->
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group row">
-                            <label for="doctor" class="col-md-3 col-form-label">Doctor</label>
-                            <div class="col-md-9 field-container">
-                                <field name="doctor"/>
+                    <!-- Second row - for remaining fields with reduced gaps -->
+                    <div class="row mx-n1 second_row_general">
+                        <div class="col-md-3 px-1">
+                            <div class="form-group row my-1">
+                                <label for="doctor" class="col-md-3 col-form-label py-0">Doctor</label>
+                                <div class="col-md-9 field-container py-0">
+                                    <field name="doctor"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 px-1">
+                            <div class="form-group row my-1">
+                                <label for="op_category" class="col-md-4 col-form-label py-0">OP Category</label>
+                                <div class="col-md-8 field-container py-0">
+                                    <field name="op_category"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 px-1">
+                            <div class="form-group row my-1">
+                                <label for="department" class="col-md-4 col-form-label py-0">Department</label>
+                                <div class="col-md-8 field-container py-0">
+                                    <field name="department"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 px-1">
+                            <div class="form-group row my-1">
+                                <label for="particulars" class="col-md-4 col-form-label py-0">Particulars</label>
+                                <div class="col-md-8 field-container py-0">
+                                    <field name="particulars"/>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group row">
-                            <label for="op_category" class="col-md-4 col-form-label">OP Category</label>
-                            <div class="col-md-8 field-container">
-                                <field name="op_category"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group row">
-                            <label for="department" class="col-md-4 col-form-label">Department</label>
-                            <div class="col-md-8 field-container">
-                                <field name="department"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group row">
-                            <label for="particulars" class="col-md-4 col-form-label">Particulars</label>
-                            <div class="col-md-8 field-container">
-                                <field name="particulars"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                         <div class="row">
                             <div class="custom_general_notebook">
                                 <notebook>
