@@ -11,7 +11,7 @@
                         <button name="action_pay_button" type="object" string="Pay" class="oe_highlight"/>
                     </header>
                     <sheet>
-                        <div class="oe_title">
+                        <div class="oe_title" invisible="1">
                             <h1>
                                 <field name="bill_number" readonly="1" class="oe_inline" style="font-size: 18px;"/>
                             </h1>
@@ -150,20 +150,28 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group row">
+<!--                                            <label for="total_item" class="col-md-4 col-form-label">Total Item</label>-->
+                                            <div class="col-md-8 field-container">
+                                                <p><b>Discount</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
                                             <label for="mode_pay" class="col-md-4 col-form-label">Payment Method</label>
                                             <div class="col-md-8 field-container">
                                                 <field name="mode_pay"/>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <label for="discount_type" class="col-md-4 col-form-label">Discount Type</label>
-                                            <div class="col-md-8 field-container">
-                                                <field name="discount_type"/>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                    <div class="col-md-12">-->
+<!--                                        <div class="form-group row">-->
+<!--                                            <label for="discount_type" class="col-md-4 col-form-label">Discount Type</label>-->
+<!--                                            <div class="col-md-8 field-container">-->
+<!--                                                <field name="discount_type"/>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
 
                                 </div>
 
@@ -187,20 +195,21 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group row">
+
+                                            <div class="col-md-8 field-container">
+                                                <field name="discount"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
                                             <label for="amount_paid" class="col-md-4 col-form-label">Amount Paid</label>
                                             <div class="col-md-8 field-container">
                                                 <field name="amount_paid"/>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <label for="discount" class="col-md-4 col-form-label">Discount</label>
-                                            <div class="col-md-8 field-container">
-                                                <field name="discount"/>
-                                            </div>
-                                        </div>
-                                    </div>
+
 
 
                                 </div>
@@ -213,6 +222,13 @@
                                             <label for="total_amount" class="col-md-4 col-form-label">Total Amount</label>
                                             <div class="col-md-8 field-container">
                                                 <field name="total_amount"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <div class="col-md-8 field-container">
+                                                <field name="net_amount"/>
                                             </div>
                                         </div>
                                     </div>

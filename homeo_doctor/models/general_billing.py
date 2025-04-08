@@ -33,7 +33,7 @@ class GeneralBilling(models.Model):
     total_qty=fields.Char(string='Total Qty',compute="_compute_totals")
     total_tax=fields.Char(string='Total Tax')
     total_amount = fields.Integer(string='Total Amount')
-    discount_type =fields.Selection([('amount','Amount'),('percentage','Percentage')],default='amount')
+    discount_type =fields.Selection([('amount','Amount'),('percentage','Percentage')],default='percentage')
     discount = fields.Integer(string='Discount')
     oc_type=fields.Selection([('amount','Amount'),('percentage','Percentage')],default='amount',string='O.C Type')
     oc=fields.Integer(string='O.C')
@@ -56,14 +56,31 @@ class GeneralBilling(models.Model):
     ], string="Status", default="unpaid", tracking=True)
 
     amount_in_words = fields.Char("Total in Words", compute="_compute_amount_in_words")
+    discount_amount = fields.Integer(string="Discount amount")
+
+    @api.onchange('discount', 'discount_type', 'total_amount')
+    def _onchange_discount(self):
+        """Calculate discount amount and net payable amount based on discount"""
+        if self.total_amount:
+            if self.discount_type == 'percentage' and self.discount:
+                self.discount_amount = (self.total_amount * self.discount) / 100
+            elif self.discount_type == 'amount' and self.discount:
+                self.discount_amount = self.discount
+            else:
+                self.discount_amount = 0
+
+            # Calculate net amount (payable amount after discount)
+            self.net_amount = self.total_amount - self.discount_amount
+
+
 
     @api.onchange('amount_paid')
     def onchange_amount_paid(self):
         for rec in self:
-            if (rec.amount_paid < rec.total_amount and rec.amount_paid > 0):
-                rec.balance = rec.total_amount - rec.amount_paid
-            elif (rec.amount_paid > rec.total_amount and rec.amount_paid > 0):
-                rec.balance = rec.amount_paid - rec.total_amount
+            if (rec.amount_paid < rec.net_amount and rec.amount_paid > 0):
+                rec.balance = rec.net_amount - rec.amount_paid
+            elif (rec.amount_paid > rec.net_amount and rec.amount_paid > 0):
+                rec.balance = rec.amount_paid - rec.net_amount
             else:
                 rec.balance =0
 
