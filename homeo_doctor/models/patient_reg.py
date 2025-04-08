@@ -218,6 +218,7 @@ class PatientRegistration(models.Model):
         # mri_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
         # ct_record = self.env['patient.reg'].search([('reference_no', '=', self.patient_id)], limit=1)
         admission_record.admission_boolean = True
+        admission_record.status='admitted'
         # if admission_record:
 
         # for line_vals in admission_vals['prescription_line_ids']:

@@ -97,6 +97,7 @@ class AccountMove(models.Model):
                         'batch': line.batch,
                         'uom_id': line.product_uom_id.id,
                         'rate': line.price_unit,
+                        'date': move.invoice_date,
                         'state': 'confirmed',
                     })
         return res
@@ -266,6 +267,7 @@ class StockEntry(models.Model):
     batch=fields.Char(string='Batch Number')
     rate = fields.Float(string="Rate", required=True)
     uom_id = fields.Many2one('uom.uom', string="Unit of Measure")
+    date=fields.Date(string='Date')
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
