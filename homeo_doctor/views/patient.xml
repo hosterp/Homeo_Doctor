@@ -176,6 +176,7 @@
                     <field name="phone_number"/>
                     <field name="department_id"/>
                     <field name="doc_name"/>
+                    <field name="status" class="text-danger"/>
                     <field name="walk_in" invisible="1"/>
                 </tree>
             </field>
@@ -308,9 +309,9 @@
                                     <field name="date"/>
                                     <field name="doctor_name" string="Prescribed By"/>
                                     <field name="bill_amount" string="Total Bill"/>
-                                    <button name="view_prescription_details" 
-                                            type="object" 
-                                            icon="fa-search" 
+                                    <button name="view_prescription_details"
+                                            type="object"
+                                            icon="fa-search"
                                             string="View Prescription"/>
                                 </tree>
                             </field>
@@ -343,9 +344,9 @@
                 <field name="age"/>
                 <field name="phone_number"/>
                 <field name="time" string="Register Date"/>
-                <button name="open_patient_history" 
-                        type="object" 
-                        icon="fa-history" 
+                <button name="open_patient_history"
+                        type="object"
+                        icon="fa-history"
                         string="View History"/>
             </tree>
         </field>
@@ -361,18 +362,18 @@
     </record>
 
     <!-- Menu Item -->
-    <menuitem 
-        id="menu_patient_root" 
-        name="Patient Management" 
+    <menuitem
+        id="menu_patient_root"
+        name="Patient Management"
         sequence="10"/>
-    
-    <menuitem 
-        id="menu_patient_list" 
-        name="Patient List" 
-        parent="menu_homeo_head" 
-        action="action_patient_list" 
+
+    <menuitem
+        id="menu_patient_list"
+        name="Patient List"
+        parent="menu_homeo_head"
+        action="action_patient_list"
         sequence="1"/>
-    
+
 
 
 
