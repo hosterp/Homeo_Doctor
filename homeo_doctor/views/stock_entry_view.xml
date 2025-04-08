@@ -6,6 +6,7 @@
             <tree string="Stock Entries">
                 <field name="name" invisible="1"/>
                 <field name="invoice_id" invisible="1"/>
+                <field name="date"/>
                 <field name="product_id" string="Medicine"/>
                 <field name="quantity"/>
                 <field name="manf_date"/>
