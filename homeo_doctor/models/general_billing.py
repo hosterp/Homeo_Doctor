@@ -42,7 +42,7 @@ class GeneralBilling(models.Model):
                                 ('credit', 'Credit'),
                                 ('card', 'Card'),
                                 ('cheque', 'Cheque'),
-                                ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
+                                ('upi', 'UPI'),], string='Payment Method',default='cash')
     net_amount=fields.Integer(string='Net Bill Amount')
     bill_by=fields.Char(string='Bill By')
     remarks =fields.Char(string='Remarks')
