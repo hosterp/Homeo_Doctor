@@ -90,6 +90,7 @@ class AccountMove(models.Model):
                         'quantity': line.quantity,
                         'manf_date': line.manufacturing_date,
                         'exp_date': line.expiry_date,
+                        'batch': line.batch,
                         'uom_id': line.product_uom_id.id,
                         'rate':line.price_unit,
                         'state': 'confirmed',
