@@ -12,7 +12,7 @@
 }
 .o_form_view .o_form_sheet_bg > .o_form_sheet {
 	min-width: 650px;
-	max-width: 1800px !important;
+	max-width:  2500px !important;
 
 }
 html .o_web_client > .o_action_manager {
@@ -1056,11 +1056,20 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 
 .o_input {
-	border: 2px solid #1d4797 !important;
+	border: 1px solid #1d4797 !important;
 
 }
 
 .second_row_admission{
     margin-left: 0.5% !important;
     width: 85%;
+}
+
+.second_row_register {
+	width: 87%;
+	margin-left: .5% !important;
+}
+
+.Register_details {
+	border-bottom: solid 2px #007bff;
 }

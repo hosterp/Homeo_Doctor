@@ -23,7 +23,6 @@
                         </h5>
                         <div class="Register_details" >
 
-<!--                        <group col="4" string="Admission Details" attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
                                     <div class="row mx-n1">
                                             <!-- First row with uniform column sizes -->
                                             <div class="col-12">
@@ -70,123 +69,159 @@
                                                     </div>
                                                     <div class="col px-1" style="max-width: 14.28%;">
                                                         <div class="form-group row my-1">
-                                                            <label for="vssc_boolean" class="col-md-5 col-form-label py-0 small text-nowrap">VSSC</label>
-                                                            <div class="col-md-9 field-container py-0">
-                                                                <field name="vssc_boolean"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col px-1" attrs="{'invisible': [('vssc_boolean', '=', False)]}" style="max-width: 14.28%;">
-                                                        <div class="form-group row my-1">
-                                                            <label for="vssc_id" class="col-md-5 col-form-label py-0 small text-nowrap">VSSC ID No</label>
-                                                            <div class="col-md-9 field-container py-0">
-                                                                <field name="vssc_id"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Second row for remaining fields - adjusted to fit all on one line -->
-                                        <div class="row mx-n1 second_row_rgister" >
-                                            <div class="col-md-2 px-1" attrs="{'invisible': [('vssc_boolean', '=', False)]}">
-                                                <div class="form-group row my-1">
-                                                    <label for="id_proof" class="col-md-4 col-form-label py-0 text-nowrap">Upload VSSC ID Proof</label>
-                                                    <div class="col-md-9 field-container py-0">
-                                                        <field name="id_proof" widget='binary'/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2 px-1" >
-                                                <div class="form-group row my-1">
                                                     <label for="dob" class="col-md-5 col-form-label py-0 text-nowrap">DOB</label>
                                                     <div class="col-md-9 field-container py-0">
                                                         <field name="dob" attrs="{'required': [('age', '=', False)]}" widget="date" options="{'datepicker': {'changeYear': true, 'yearRange': '1900:2100'}}"/>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 px-1">
-                                                <div class="form-group row my-1">
+                                            <div class="col px-1" style="max-width: 14.28%;">
+                                                        <div class="form-group row my-1">
                                                     <label for="age" class="col-md-5 col-form-label py-0 text-nowrap">Age</label>
                                                     <div class="col-md-9 field-container py-0">
                                                         <field name="age" widget="float_no_default"  attrs="{'required': [('dob', '=', False)]}"/>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 px-1">
-                                                <div class="form-group row my-1">
+                                            <div class="col px-1" style="max-width: 14.28%;">
+                                                        <div class="form-group row my-1">
                                                     <label for="gender" class="col-md-4 col-form-label py-0 text-nowrap">Gender</label>
                                                     <div class="col-md-9 field-container py-0">
                                                         <field name="gender"/>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 px-1">
-                                                <div class="form-group row my-1">
-                                                    <label for="phone_number" class="col-md-4 col-form-label py-0 text-nowrap">Mobile No</label>
-                                                    <div class="col-md-8 field-container py-0">
-                                                        <field name="phone_number" style="width:60%;" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 px-1">
-                                                <div class="form-group row my-1">
-                                                    <label for="department_id" class="col-md-4 col-form-label py-0 text-nowrap">Department</label>
-                                                    <div class="col-md-8 field-container py-0">
-                                                        <field name="department_id" style="width:60%;" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 px-1">
-                                                <div class="form-group row my-1">
-                                                    <label for="doc_name" class="col-md-4 col-form-label py-0 text-nowrap">Doctor</label>
-                                                    <div class="col-md-8 field-container py-0">
-                                                        <field name="doc_name" style="width:60%;" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 px-1">
-                                                <div class="form-group row my-1">
-                                                    <label for="time" class="col-md-4 col-form-label py-0 text-nowrap">Date</label>
-                                                    <div class="col-md-8 field-container py-0">
-                                                        <field name="time" style="width:60%;" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 px-1">
-                                                <div class="form-group row my-1">
-                                                    <label for="consultation_fee" class="col-md-4 col-form-label py-0 text-nowrap">Consultation Fee</label>
-                                                    <div class="col-md-8 field-container py-0">
-                                                        <field name="consultation_fee" style="width:60%;" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 px-1">
-                                                <div class="form-group row my-1">
-                                                    <label for="registration_fee" class="col-md-4 col-form-label py-0 text-nowrap">Register Fee</label>
-                                                    <div class="col-md-8 field-container py-0">
-                                                        <field name="registration_fee" style="width:60%;" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 px-1" invisible="1">
-                                                <div class="form-group row my-1">
-                                                    <label for="admission_boolean" class="col-md-4 col-form-label py-0 text-nowrap">Admission Boolean</label>
-                                                    <div class="col-md-8 field-container py-0">
-                                                        <field name="admission_boolean" style="width:60%;" />
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Second row for remaining fields - adjusted to fit all on one line -->
+                                       <div class="row mx-n1 second_row_register">
+                                                <!-- Mobile Number -->
+                                                <div class="col px-1" style="max-width: 14.28%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="phone_number" class="col-md-5 col-form-label py-0 small text-nowrap">Mobile No</label>
+                                                        <div class="col-md-9 field-container py-0">
+                                                            <field name="phone_number"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- VSSC Boolean -->
+                                                <div class="col px-1" style="max-width: 14.28%%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="vssc_boolean" class="col-md-5 col-form-label py-0 small text-nowrap">VSSC</label>
+                                                        <div class="col-md-7 field-container py-0">
+                                                            <field name="vssc_boolean"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- VSSC ID No (conditionally visible) -->
+                                                <div class="col px-1" attrs="{'invisible': [('vssc_boolean', '=', False)]}" style="max-width: 14.28%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="vssc_id" class="col-md-5 col-form-label py-0 small text-nowrap">VSSC ID</label>
+                                                        <div class="col-md-9 field-container py-0">
+                                                            <field name="vssc_id"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Upload VSSC ID Proof (conditionally visible) -->
+                                                <div class="col px-1" attrs="{'invisible': [('vssc_boolean', '=', False)]}" style="max-width: 14.28%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="id_proof" class="col-md-5 col-form-label py-0 small text-nowrap">ID Proof</label>
+                                                        <div class="col-md-9 field-container py-0">
+                                                            <field name="id_proof" widget='binary'/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Department -->
+                                                <div class="col px-1" style="max-width: 14.28%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="department_id" class="col-md-5 col-form-label py-0 small text-nowrap">Dept</label>
+                                                        <div class="col-md-9 field-container py-0">
+                                                            <field name="department_id"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Doctor -->
+                                                <div class="col px-1" style="max-width: 14.28%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="doc_name" class="col-md-5 col-form-label py-0 small text-nowrap">Doctor</label>
+                                                        <div class="col-md-9 field-container py-0">
+                                                            <field name="doc_name"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Date -->
+                                                <div class="col px-1" style="max-width: 14.28%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="time" class="col-md-5 col-form-label py-0 small text-nowrap">Date</label>
+                                                        <div class="col-md-9 field-container py-0">
+                                                            <field name="time"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Consultation Fee (conditionally moved) -->
+                                                <div class="col px-1" attrs="{'invisible': [('vssc_boolean', '=', True)]}" style="max-width: 14.28%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="consultation_fee" class="col-md-5 col-form-label py-0 small text-nowrap">Cons Fee</label>
+                                                        <div class="col-md-7 field-container py-0">
+                                                            <field name="consultation_fee"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Register Fee (conditionally moved) -->
+                                                <div class="col px-1" attrs="{'invisible': [('vssc_boolean', '=', True)]}" style="max-width: 14.28%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="registration_fee" class="col-md-5 col-form-label py-0 small text-nowrap">Reg Fee</label>
+                                                        <div class="col-md-9 field-container py-0">
+                                                            <field name="registration_fee"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Admission Boolean (invisible) -->
+                                                <div class="col px-1" style="max-width: 14.28%; display: none;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="admission_boolean" class="col-md-5 col-form-label py-0 small text-nowrap">Admission</label>
+                                                        <div class="col-md-7 field-container py-0">
+                                                            <field name="admission_boolean"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Third row for fees (only visible when VSSC fields are visible) -->
+                                            <div class="row mx-n1" attrs="{'invisible': [('vssc_boolean', '=', False)]}">
+                                                <!-- Consultation Fee -->
+                                                <div class="col px-1" style="max-width: 14.28%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="consultation_fee" class="col-md-5 col-form-label py-0 small text-nowrap">Cons Fee</label>
+                                                        <div class="col-md-7 field-container py-0">
+                                                            <field name="consultation_fee"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Register Fee -->
+                                                <div class="col px-1" style="max-width: 14.28%;">
+                                                    <div class="form-group row my-1">
+                                                        <label for="registration_fee" class="col-md-5 col-form-label py-0 small text-nowrap">Reg Fee</label>
+                                                        <div class="col-md-7 field-container py-0">
+                                                            <field name="registration_fee"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                         </div>
-
-
-
-
-
-
-
 
 
 <!--                        <group col="3" style="border-bottom: 2px solid #007bff; padding: 15px 0; margin-bottom: 15px;">-->

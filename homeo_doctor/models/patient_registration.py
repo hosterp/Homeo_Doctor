@@ -32,7 +32,7 @@ class PatientRegistration(models.Model):
     phone_number = fields.Char(string="Mobile No", size=12)
     email = fields.Char(string="Email ID")
     pin_code = fields.Char(string="PIN Code")
-    id_proof = fields.Binary(string='Upload VSSC ID Proof')
+    id_proof = fields.Binary(string='VSSC ID Proof')
     vssc_id = fields.Char(string="VSSC ID No")
     department_id = fields.Many2one('doctor.department', string='Department')
     doc_name = fields.Many2one('doctor.profile', string='Doctor')
