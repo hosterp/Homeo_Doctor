@@ -72,6 +72,24 @@ class PatientRegistration(models.Model):
     temp_reference_no = fields.Char(string=" Temporary Reference")
     no_consultation = fields.Boolean(default=True)
     walk_in=fields.Boolean(default=False)
+    op_category = fields.Many2one('op.category', string='OP Category')
+    doctor = fields.Many2one('doctor.profile', string='Doctor')
+    block = fields.Many2one('block',string='Block')
+    room_number = fields.Integer(string="Room No")
+    room_transfer_date = fields.Datetime(string="Transfer Date")
+    transferred_block = fields.Many2one('block',string='Block')
+    transferred_room_category = fields.Many2one('room.category', string='Room Category')
+    transferred_room_number = fields.Integer(string='Room No')
+    transferred_bed_number = fields.Integer(string='Bed Number')
+    amount_in_advance =  fields.Integer(string="Advance Amount")
+    advance_mode_payment = fields.Selection([('cash', 'Cash'),
+                                ('card', 'Card'),
+                                ('cheque', 'Cheque'),
+                                ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
+    advance_remark = fields.Text(string="Remarks")
+    advance_date = fields.Datetime(string="Date")
+
+
     # payment_method = fields.Selection([
     # ('cash', 'Cash'),
     # ('upi', 'UPI'),
@@ -450,3 +468,12 @@ class PatientHistoryWizard(models.TransientModel):
             record.pharmacy_history_ids = self.env['pharmacy.description'].search([
                 ('patient_id', '=', record.patient_id.id)
             ])
+
+
+class OpCategory(models.Model):
+    _name = 'block'
+    _rec_name = 'block'
+
+
+
+    block = fields.Char(string='block')

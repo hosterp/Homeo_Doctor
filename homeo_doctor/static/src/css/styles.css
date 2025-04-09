@@ -6,7 +6,15 @@
 .patient_reg_form .o_form_sheet_bg > .o_form_sheet {
     max-width: 97% !important;
 }
+.o_form_view .o_form_sheet_bg .o_form_sheet {
+    max-width: 98% !important;  /* Almost full width but with small margins */
+    width: 100% !important;
+}
+.o_form_view .o_form_sheet_bg > .o_form_sheet {
+	min-width: 650px;
+	max-width: 1800px !important;
 
+}
 html .o_web_client > .o_action_manager {
     color: #181717 !important;
 }
@@ -1043,10 +1051,16 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 .second_row_general{
     margin-left: 0.5% !important;
+    width: 56%;
 }
 
 
 .o_input {
-	border: 2px solid #000 !important;
+	border: 2px solid #1d4797 !important;
 
+}
+
+.second_row_admission{
+    margin-left: 0.5% !important;
+    width: 85%;
 }
