@@ -1069,3 +1069,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 	width: 87%;
 	margin-left: .5% !important;
 }
+
+.Register_details {
+	border-block: solid 2px #1d4797;
+}
