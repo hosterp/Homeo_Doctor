@@ -25,7 +25,7 @@ class PurchaseOrderInherit(models.Model):
         ('cancel', 'Cancelled'),
     ]
     state = fields.Selection(STATE_SELECTION, string='Status', default='draft',store=True)
-
+    intent_priority=fields.Char(string='Priority')
     def action_create_invoice(self):
         super(PurchaseOrderInherit, self).action_create_invoice()
 
@@ -40,8 +40,8 @@ class PurchaseOrderInherit(models.Model):
                 })
 
 
-                if invoice.state == 'draft':
-                    invoice.action_post()
+                # if invoice.state == 'draft':
+                #     invoice.action_post()
 
         return True
 class ApprovedPerson(models.Model):

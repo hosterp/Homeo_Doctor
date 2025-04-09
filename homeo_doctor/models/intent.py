@@ -1,7 +1,7 @@
 from odoo import models, fields,api
 
 
-class intent(models.Model):
+class Intent(models.Model):
     _name = 'intent.record'
     _rec_name = 'doctor_name'
 
@@ -15,6 +15,41 @@ class intent(models.Model):
     current_stock = fields.Text(string='Current Stock', store=False)
     stock_in_hand = fields.Float(string="Total Stock in Hand", compute="_compute_stock_in_hand", store=True)
     stock_in_hand_display = fields.Text(string="Stock Breakdown", compute="_compute_stock_in_hand", store=True)
+    department=fields.Many2one('doctor.department',string='Department')
+    priority=fields.Char(string='Priority')
+
+    @api.model
+    def create(self, vals):
+        # Create the intent record
+        record = super(Intent, self).create(vals)
+
+        # Determine priority text based on boolean fields
+        priority = ''
+        if record.urgent:
+            priority = 'Urgent'
+        elif record.very_urgent:
+            priority = 'Very Urgent'
+        elif record.normal:
+            priority = 'Normal'
+
+        # Create Purchase Order if medicines are selected
+        if record.medicine:
+            order_lines = []
+            for med in record.medicine:
+                order_lines.append((0, 0, {
+                    'product_id': med.id,
+                    'name': med.name,
+                    'product_qty': record.quantity or 1,
+                    'date_planned': fields.Date.context_today(self),
+                }))
+
+            self.env['purchase.order'].create({
+                'order_line': order_lines,
+                'origin': f"Intent by {record.doctor_name.name}",
+                'intent_priority': priority,
+            })
+
+        return record
 
     @api.depends('medicine')
     def _compute_stock_in_hand(self):
@@ -54,6 +89,6 @@ class intent(models.Model):
                 record.stock_in_hand_display = "\n".join(stock_lines)
                 record.stock_in_hand = total_quantity
             else:
-                record.stock_in_hand_display = "No medicine selected"
+                record.stock_in_hand_display = 0
                 record.stock_in_hand = 0.0
 

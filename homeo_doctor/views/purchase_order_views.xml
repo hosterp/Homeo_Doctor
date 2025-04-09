@@ -179,6 +179,7 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="store_in_charge"/>
                     <field name="approved_by"/>
+                    <field name="intent_priority"/>
                 </xpath>
                 <!-- Hide invoice_status again if needed -->
                 <xpath expr="//field[@name='invoice_status']" position="attributes">
