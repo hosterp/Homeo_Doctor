@@ -25,20 +25,22 @@
             <field name="model">intent.record</field>
             <field name="arch" type="xml">
                 <form string="Intent Record">
-<!--                    <header>-->
-<!--                        <button name="action_confirm" type="object" string="Confirm Intent"-->
-<!--                                class="btn-primary"/>-->
-<!--                    </header>-->
+                    <!--                    <header>-->
+                    <!--                        <button name="action_confirm" type="object" string="Confirm Intent"-->
+                    <!--                                class="btn-primary"/>-->
+                    <!--                    </header>-->
                     <sheet>
                         <group>
                             <group>
                                 <field name="date"/>
                                 <field name="doctor_name"/>
-                                <field name="medicine"/>
+                                <field name="medicine" widget="many2many_tags"/>
                                 <field name="quantity"/>
                             </group>
                             <group>
-                                <field name="current_stock"/>
+                                <field name="current_stock" invisible="1"/>
+                                <field name="stock_in_hand" invisible="1"/>
+                                <field name="stock_in_hand_display" string="Current Stock"/>
                                 <field name="urgent"/>
                                 <field name="very_urgent"/>
                                 <field name="normal"/>

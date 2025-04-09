@@ -7,10 +7,53 @@ class intent(models.Model):
 
     date = fields.Date(default=fields.Date.context_today, readonly=True)
     doctor_name = fields.Many2one('doctor.profile','Doctor Name')
-    medicine = fields.Char("Medicine")
+    medicine = fields.Many2many('product.product',string="Medicine")
     quantity = fields.Integer('Required Quantity')
     urgent = fields.Boolean('Urgent')
     very_urgent = fields.Boolean('Very Urgent')
     normal = fields.Boolean('Normal')
-    current_stock = fields.Integer(store=True)
+    current_stock = fields.Text(string='Current Stock', store=False)
+    stock_in_hand = fields.Float(string="Total Stock in Hand", compute="_compute_stock_in_hand", store=True)
+    stock_in_hand_display = fields.Text(string="Stock Breakdown", compute="_compute_stock_in_hand", store=True)
+
+    @api.depends('medicine')
+    def _compute_stock_in_hand(self):
+        for record in self:
+            stock_lines = []
+            total_quantity = 0.0
+
+            if record.medicine:
+                print("Selected Medicine IDs:", record.medicine.ids)
+
+
+                entries = self.env['stock.entry'].search([
+                    ('product_id', 'in', record.medicine.ids),
+                ])
+                print("Stock Entries Found:", entries)
+
+
+                product_totals = {}
+
+                for entry in entries:
+                    product_id = entry.product_id.id
+                    product_name = entry.product_id.name
+                    qty = entry.quantity
+
+                    if product_id in product_totals:
+                        product_totals[product_id]['qty'] += qty
+                    else:
+                        product_totals[product_id] = {'name': product_name, 'qty': qty}
+
+
+                for product_id, data in product_totals.items():
+                    line = f"{data['name']}: {data['qty']}"
+                    stock_lines.append(line)
+                    total_quantity += data['qty']
+                    print(line)
+
+                record.stock_in_hand_display = "\n".join(stock_lines)
+                record.stock_in_hand = total_quantity
+            else:
+                record.stock_in_hand_display = "No medicine selected"
+                record.stock_in_hand = 0.0
 
