@@ -5,6 +5,9 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
+                 <xpath expr="//form" position="attributes">
+                    <attribute name="class">purchase_order_custom_form</attribute>
+                </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <div style="display: flex; gap: 10px;">
                         <div style="flex: 1; min-width: 200px;">

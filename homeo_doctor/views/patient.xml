@@ -64,7 +64,7 @@
                             <!--                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>-->
 
                         </group>
-                        <div class="admission_details" style="border-bottom: 2px solid #007bff; padding: 15px 0; margin-bottom: 15px;margin-top: -38px;">
+                        <div class="admission_details" attrs="{'invisible': [('admission_boolean', '=', False)]}" style="border-bottom: 2px solid #007bff; padding: 15px 0; margin-bottom: 15px;margin-top: -38px;">
                             <h3 class="admission_details_title">Admission Details</h3>
 <!--                        <group col="4" string="Admission Details" attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
                                     <div class="row mx-n1">
@@ -132,7 +132,7 @@
                                         </div>
 
                                         <!-- Second row for remaining fields - adjusted to fit all on one line -->
-                                        <div class="row mx-n1 second_row_admission">
+                                        <div class="row mx-n1 second_row_admission" >
                                             <div class="col-md-2 px-1">
                                                 <div class="form-group row my-1">
                                                     <label for="block" class="col-md-4 col-form-label py-0 text-nowrap">Block</label>
@@ -179,7 +179,7 @@
 
 
 
-                        <div class="admission_transfer">
+                        <div class="admission_transfer" attrs="{'invisible': [('admission_boolean', '=', False)]}">
                             <h3 class="admission_details_title">Room Transfer</h3>
 <!--                        <group col="4" string="Admission Details" attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
                                     <div class="row mx-n1">

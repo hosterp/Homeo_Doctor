@@ -6,7 +6,15 @@
 .patient_reg_form .o_form_sheet_bg > .o_form_sheet {
     max-width: 97% !important;
 }
+.o_form_view .o_form_sheet_bg .o_form_sheet {
+    max-width: 98% !important;  /* Almost full width but with small margins */
+    width: 100% !important;
+}
+.o_form_view .o_form_sheet_bg > .o_form_sheet {
+	min-width: 650px;
+	max-width: 1800px !important;
 
+}
 html .o_web_client > .o_action_manager {
     color: #181717 !important;
 }
