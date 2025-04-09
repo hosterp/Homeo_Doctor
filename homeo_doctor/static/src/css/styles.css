@@ -1043,10 +1043,16 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 .second_row_general{
     margin-left: 0.5% !important;
+    width: 56%;
 }
 
 
 .o_input {
-	border: 2px solid #000 !important;
+	border: 2px solid #1d4797 !important;
 
+}
+
+.second_row_admission{
+    margin-left: 0.5% !important;
+    width: 85%;
 }
