@@ -15,12 +15,137 @@
 
                     </header>
                     <sheet>
-                        <h1 class="oe_left">
+                        <h5 class="oe_left">
                             <field name="reference_no" readonly="1"/>
-                        </h1>
-                        <h3 class="oe_right">
+                        </h5>
+                        <h5 class="oe_right">
                             <field name="formatted_date" readonly="1" string="Date"/>
-                        </h3>
+                        </h5>
+
+
+
+
+
+                        <div class="Register_details" >
+
+<!--                        <group col="4" string="Admission Details" attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
+                                    <div class="row mx-n1">
+                                            <!-- First row with uniform column sizes -->
+                                            <div class="col-12">
+                                                <div class="row mx-n1">
+                                                    <div class="col px-1" style="max-width: 14.28%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="token_no" class="col-md-5 col-form-label py-0 small text-nowrap">Token No</label>
+                                                            <div class="col-md-9 field-container py-0">
+                                                                <field name="token_no"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 14.28%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="patient_id" class="col-md-5 col-form-label py-0 small text-nowrap">Name</label>
+                                                            <div class="col-md-9 field-container py-0">
+                                                                <field name="patient_id"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 14.28%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="address" class="col-md-5 col-form-label py-0 small text-nowrap">Address</label>
+                                                            <div class="col-md-9 field-container py-0">
+                                                                <field name="address"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 14.28%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="pin_code" class="col-md-5 col-form-label py-0 small text-nowrap">PIN Code</label>
+                                                            <div class="col-md-9 field-container py-0">
+                                                                <field name="pin_code"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 14.28%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="email" class="col-md-5 col-form-label py-0 small text-nowrap">Email</label>
+                                                            <div class="col-md-9 field-container py-0">
+                                                                <field name="email" widget="email"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 14.28%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="vssc_boolean" class="col-md-5 col-form-label py-0 small text-nowrap">VSSC</label>
+                                                            <div class="col-md-9 field-container py-0">
+                                                                <field name="vssc_boolean"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 14.28%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="doctor" class="col-md-5 col-form-label py-0 small text-nowrap">Doctor</label>
+                                                            <div class="col-md-9 field-container py-0">
+                                                                <field name="doctor"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Second row for remaining fields - adjusted to fit all on one line -->
+                                        <div class="row mx-n1 second_row_admission" >
+                                            <div class="col-md-2 px-1">
+                                                <div class="form-group row my-1">
+                                                    <label for="block" class="col-md-4 col-form-label py-0 text-nowrap">Block</label>
+                                                    <div class="col-md-9 field-container py-0">
+                                                        <field name="block"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 px-1">
+                                                <div class="form-group row my-1">
+                                                    <label for="room_category" class="col-md-5 col-form-label py-0 text-nowrap">Room</label>
+                                                    <div class="col-md-9 field-container py-0">
+                                                        <field name="room_category"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 px-1">
+                                                <div class="form-group row my-1">
+                                                    <label for="room_number" class="col-md-5 col-form-label py-0 text-nowrap">Room#</label>
+                                                    <div class="col-md-9 field-container py-0">
+                                                        <field name="room_number"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 px-1">
+                                                <div class="form-group row my-1">
+                                                    <label for="bed_number" class="col-md-4 col-form-label py-0 text-nowrap">Bed#</label>
+                                                    <div class="col-md-9 field-container py-0">
+                                                        <field name="bed_number"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 px-1">
+                                                <div class="form-group row my-1">
+                                                    <label for="admitted_date" class="col-md-4 col-form-label py-0 text-nowrap">Admitted Date</label>
+                                                    <div class="col-md-8 field-container py-0">
+                                                        <field name="admitted_date" style="width:60%;" attrs="{'required': [('admission_boolean', '=', True)]}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                        </div>
+
+
+
+
+
+
+
+
+
                         <group col="3" style="border-bottom: 2px solid #007bff; padding: 15px 0; margin-bottom: 15px;">
                             <group>
                                 <field name="token_no" readonly="1"/>
