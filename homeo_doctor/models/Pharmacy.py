@@ -19,7 +19,7 @@ class PharmacyDescription(models.Model):
     total_item=fields.Integer(string='Total Item', compute="_compute_totals")
     total_qty=fields.Integer(string='Total Qty', compute="_compute_totals")
     total_amount=fields.Integer(string='Total Amount', compute="_compute_totals")
-    payment_mathod=fields.Selection([('cash', 'Cash'), ('card', 'Card'), ('upi', 'UPI'),('credit','Credit')],string='Payment Method')
+    payment_mathod=fields.Selection([('cash', 'Cash'), ('card', 'Card'), ('upi', 'UPI'),('credit','Credit')],string='Payment Method',default='cash')
     paid_amount = fields.Integer(string='Paid Amount')
     balance = fields.Integer(string='Balance Amount')
     status=fields.Selection([('unpaid','Unpaid'),('paid','Paid')],default='unpaid')
