@@ -19,10 +19,14 @@ class PharmacyDescription(models.Model):
     total_item=fields.Integer(string='Total Item', compute="_compute_totals")
     total_qty=fields.Integer(string='Total Qty', compute="_compute_totals")
     total_amount=fields.Integer(string='Total Amount', compute="_compute_totals")
-    payment_mathod=fields.Selection([('cash', 'Cash'), ('card', 'Card'), ('upi', 'UPI'),('credit','Credit')],string='Payment Method')
+    payment_mathod=fields.Selection([('cash', 'Cash'), ('card', 'Card'), ('upi', 'UPI'),('credit','Credit')],string='Payment Method',default='cash')
     paid_amount = fields.Integer(string='Paid Amount')
     balance = fields.Integer(string='Balance Amount')
     status=fields.Selection([('unpaid','Unpaid'),('paid','Paid')],default='unpaid')
+    bill_by = fields.Char(string='Bill By')
+    remarks = fields.Char(string='Remarks')
+    staff_pwd = fields.Char(string='Staff Password')
+    staff_name = fields.Char(string='Staff Name')
 
     @api.onchange('paid_amount')
     def _onchange_paymode(self):
@@ -63,22 +67,26 @@ class PharmacyDescription(models.Model):
 
     def action_register_payment(self):
         for record in self:
-            if record.prescription_line_ids.product_id and record.prescription_line_ids.qty:
-                stock_entries = self.env['stock.entry'].search([
-                    ('product_id', '=', record.prescription_line_ids.product_id.id)
-                ], order="id asc")
+            for line in record.prescription_line_ids:
+                if line.product_id and line.qty:
 
-                remaining_qty = record.prescription_line_ids.qty
-                for entry in stock_entries:
-                    if remaining_qty <= 0:
-                        break
-                    if entry.quantity >= remaining_qty:
-                        entry.quantity -= remaining_qty
-                        remaining_qty = 0
-                    else:
-                        remaining_qty -= entry.quantity
-                        entry.quantity = 0
+                    stock_entries = self.env['stock.entry'].search([
+                        ('product_id', '=', line.product_id.id)
+                    ], order="id asc")
+
+                    remaining_qty = line.qty
+                    for entry in stock_entries:
+                        if remaining_qty <= 0:
+                            break
+                        if entry.quantity >= remaining_qty:
+                            entry.quantity -= remaining_qty
+                            remaining_qty = 0
+                        else:
+                            remaining_qty -= entry.quantity
+                            entry.quantity = 0
+                    line.stock_in_hand = sum(stock_entries.mapped('quantity'))
             record.status = 'paid'
+
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
@@ -89,6 +97,7 @@ class PharmacyDescription(models.Model):
                 'next': {'type': 'ir.actions.act_window_close'},
             }
         }
+
         # partner = False
         # if self.patient_id and hasattr(self.patient_id, 'partner_id') and self.patient_id.partner_id:
         #     partner = self.patient_id.partner_id.id
