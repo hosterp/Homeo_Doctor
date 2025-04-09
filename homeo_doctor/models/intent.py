@@ -1,7 +1,7 @@
 from odoo import models, fields,api
 
 
-class intent(models.Model):
+class Intent(models.Model):
     _name = 'intent.record'
     _rec_name = 'doctor_name'
 
@@ -16,6 +16,29 @@ class intent(models.Model):
     stock_in_hand = fields.Float(string="Total Stock in Hand", compute="_compute_stock_in_hand", store=True)
     stock_in_hand_display = fields.Text(string="Stock Breakdown", compute="_compute_stock_in_hand", store=True)
     department=fields.Many2one('doctor.department',string='Department')
+
+    @api.model
+    def create(self, vals):
+        # Create intent record first
+        record = super(Intent, self).create(vals)
+
+        # Create Purchase Order (PO) if needed
+        if record.medicine:
+            order_lines = []
+            for med in record.medicine:
+                order_lines.append((0, 0, {
+                    'product_id': med.id,
+                    'name': med.name,
+                    'product_qty': record.quantity or 1,
+                    'date_planned': fields.Date.context_today(self),
+                }))
+
+            self.env['purchase.order'].create({
+                'order_line': order_lines,
+                'origin': f"Intent by {record.doctor_name.name}"
+            })
+
+        return record
     @api.depends('medicine')
     def _compute_stock_in_hand(self):
         for record in self:

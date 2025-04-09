@@ -40,8 +40,8 @@ class PurchaseOrderInherit(models.Model):
                 })
 
 
-                if invoice.state == 'draft':
-                    invoice.action_post()
+                # if invoice.state == 'draft':
+                #     invoice.action_post()
 
         return True
 class ApprovedPerson(models.Model):

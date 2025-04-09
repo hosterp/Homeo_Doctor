@@ -9,7 +9,7 @@
                 <tree string="Intent Records">
                     <field name="date"/>
                     <field name="doctor_name"/>
-                    <field name="medicine"/>
+                    <field name="medicine"  widget="many2many_tags"/>
                     <field name="quantity"/>
                     <field name="current_stock"/>
                     <field name="urgent"/>
