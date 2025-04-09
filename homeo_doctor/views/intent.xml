@@ -38,6 +38,7 @@
                                 <field name="quantity"/>
                             </group>
                             <group>
+                                <field name="department"/>
                                 <field name="current_stock" invisible="1"/>
                                 <field name="stock_in_hand" invisible="1"/>
                                 <field name="stock_in_hand_display" string="Current Stock"/>

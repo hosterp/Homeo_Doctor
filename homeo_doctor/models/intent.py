@@ -15,7 +15,7 @@ class intent(models.Model):
     current_stock = fields.Text(string='Current Stock', store=False)
     stock_in_hand = fields.Float(string="Total Stock in Hand", compute="_compute_stock_in_hand", store=True)
     stock_in_hand_display = fields.Text(string="Stock Breakdown", compute="_compute_stock_in_hand", store=True)
-
+    department=fields.Many2one('doctor.department',string='Department')
     @api.depends('medicine')
     def _compute_stock_in_hand(self):
         for record in self:
@@ -54,6 +54,6 @@ class intent(models.Model):
                 record.stock_in_hand_display = "\n".join(stock_lines)
                 record.stock_in_hand = total_quantity
             else:
-                record.stock_in_hand_display = "No medicine selected"
+                record.stock_in_hand_display = 0
                 record.stock_in_hand = 0.0
 
