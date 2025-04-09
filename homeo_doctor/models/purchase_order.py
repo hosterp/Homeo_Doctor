@@ -63,6 +63,22 @@ class PurchaseOrderLine(models.Model):
     _inherit='purchase.order.line'
 
     company=fields.Char(string='Company')
+    current_stock=fields.Char(string='Current Stock',compute='_compute_stock_in_hand')
+
+    @api.depends('product_id')
+    def _compute_stock_in_hand(self):
+        """Fetch the total available quantity from stock.entry for the selected product."""
+        for record in self:
+            if record.product_id:
+                total_quantity = sum(self.env['stock.entry'].search([
+                    ('product_id', '=', record.product_id.id)
+                ]).mapped('quantity'))
+
+                record.current_stock = total_quantity
+
+
+            else:
+                record.current_stock = 0.0
 
 class SupplierCreation(models.Model):
     _name = 'supplier.name'
