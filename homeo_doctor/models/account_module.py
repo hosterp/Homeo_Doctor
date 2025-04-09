@@ -146,11 +146,15 @@ class AccountMoveLine(models.Model):
             else:
                 record.stock_in_hand = 0.0
 
-    @api.onchange('ord_qty', 'quantity')
+    @api.onchange('quantity')
     def _onchange_ord_qty_quantity(self):
         for line in self:
             if line.ord_qty is not None and line.quantity is not None:
                 line.to_be_received = line.ord_qty - line.quantity
+
+            if line.ord_qty < line.quantity:
+                line.free_qty = line.quantity - line.ord_qty
+                line.quantity = line.ord_qty
             else:
                 line.to_be_received = 0  # Reset if either field is empty
 
