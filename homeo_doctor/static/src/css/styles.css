@@ -1056,7 +1056,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 
 .o_input {
-	border: 2px solid #1d4797 !important;
+	border: 1px solid #1d4797 !important;
 
 }
 
@@ -1071,5 +1071,5 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 }
 
 .Register_details {
-	border-block: solid 2px #1d4797;
+	border-bottom: solid 2px #007bff;
 }
