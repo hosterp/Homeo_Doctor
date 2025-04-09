@@ -37,13 +37,20 @@ class AccountMove(models.Model):
 
     @api.model
     def create(self, vals):
-
-
         if vals.get('supplier_invoice', '/') == '/':
-            vals['supplier_invoice'] = self.env['ir.sequence'].next_by_code('supplier.invoice') or '/'
+            # Get the next number (e.g., '0024')
+            raw_seq = self.env['ir.sequence'].next_by_code('supplier.invoice') or '0'
+            padded_number = raw_seq.zfill(4)
 
+            # Get last two digits of current year
+            year_suffix = str(date.today().year)[-2:]
+
+            # Format as 0024/25
+            vals['supplier_invoice'] = "%s/%s" % (padded_number, year_suffix)
 
         return super(AccountMove, self).create(vals)
+
+
     @api.onchange('po_number')
     def _onchange_po_number(self):
         """ Fetch purchase order lines and replace the existing invoice lines """
