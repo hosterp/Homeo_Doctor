@@ -107,6 +107,12 @@ class AccountMove(models.Model):
                         'date': move.invoice_date,
                         'state': 'confirmed',
                     })
+                    stock_entries = self.env['stock.entry'].search([
+                        ('product_id', '=', line.product_id.id),
+                        ('state', '=', 'confirmed'),
+                        ('quantity', '>', 0),
+                    ])
+                    line.stock_in_hand = sum(stock_entries.mapped('quantity'))
         return res
 
 
