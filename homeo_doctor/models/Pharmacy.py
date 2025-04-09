@@ -23,6 +23,10 @@ class PharmacyDescription(models.Model):
     paid_amount = fields.Integer(string='Paid Amount')
     balance = fields.Integer(string='Balance Amount')
     status=fields.Selection([('unpaid','Unpaid'),('paid','Paid')],default='unpaid')
+    bill_by = fields.Char(string='Bill By')
+    remarks = fields.Char(string='Remarks')
+    staff_pwd = fields.Char(string='Staff Password')
+    staff_name = fields.Char(string='Staff Name')
 
     @api.onchange('paid_amount')
     def _onchange_paymode(self):

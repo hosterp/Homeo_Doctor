@@ -399,6 +399,20 @@
                                         <field name="total_amount"/>
                                     </group>
                                 </group>
+                                 <group col="4">
+                                    <group>
+                                        <field name="bill_by"/>
+                                    </group>
+                                    <group>
+                                        <field name="staff_name"/>
+                                    </group>
+                                    <group>
+                                        <field name="staff_pwd"/>
+                                    </group>
+                                     <group>
+                                         <field name="remarks"/>
+                                     </group>
+                                </group>
                             </div>
                         </group>
 
