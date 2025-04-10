@@ -315,4 +315,7 @@
         <field name="parent_id" ref="menu_homeo_head"/>
         <field name="sequence">5</field>
     </record>
+     <record id="purchase.menu_purchase_rfq" model="ir.ui.menu">
+      <field name="name">Purchase Orders</field>
+    </record>
 </odoo>
