@@ -1071,19 +1071,72 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 }
 
 .Register_details {
-	border-bottom: solid 2px #007bff;
+    border-bottom: solid 2px #007bff;
 }
 
 .o_list_view .o_list_table thead {
-	color: #fff !important;
-	background-color: #387298 !important;
+    color: #fff !important;
+    background-color: #387298 !important;
 }
 
 .o_main_navbar {
-	background-color: #387298 !important;
+    background-color: #387298 !important;
 
+}
+.o_main_navbar > ul > li > a:hover, .o_main_navbar > ul > li > label:hover {
+    background-color: #2e8bc8 !important;
+}
+
+
+.btn:not(:disabled):not(.disabled) {
+    background-color: #387298 !important;
+    color: white !important;
 }
 
 .o_data_cell.o_field_cell {
     border-right:1px solid;
+}
+
+/* Hide the chevron icons */
+.o_pager_previous:before,
+.o_pager_next:before {
+    display: none !important;
+}
+
+/* Replace with text */
+.o_pager_previous:after {
+    content: "Previous";
+}
+
+.o_pager_next:after {
+    content: "Next";
+}
+
+/* Add < > symbols */
+.o_pager_counter:before {
+    content: " < ";
+    margin-left: 5px;
+}
+
+.o_pager_counter:after {
+    content: " > ";
+    margin-right: 5px;
+}
+
+/* Hide the slash and limit */
+.o_pager_counter > span:not(.o_pager_value) {
+    display: none;
+}
+
+/* Adjust layout */
+.o_pager {
+    display: flex;
+    align-items: center;
+}
+
+/* Make buttons wider to fit text */
+.o_pager .btn {
+    min-width: 80px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
