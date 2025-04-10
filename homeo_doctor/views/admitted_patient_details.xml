@@ -23,8 +23,8 @@
                     <header>
                         <button name="action_print_patient_report" type="object" string="Print Patient Case Sheet"
                                 class="btn-primary" target="new"/>
-
-                        <field name="admission_date" readonly="1" style="font-weight: bold;margin-left: 1200px;"/>
+                        <button string="Discharged" class="btn-primary"/>
+                        <field name="admission_date" readonly="1" style="font-weight: bold;margin-left: 1100px;"/>
                         <field name="status" widget="statusbar"/>
                     </header>
                     <sheet>
