@@ -65,7 +65,7 @@ class AdmittedPatient(models.Model):
     summary_report = fields.Text(string="Summary Report")
     room_category = fields.Many2one('room.category', string='Room Category')
     advance_amount = fields.Integer(string='Advance Amount')
-
+    status=fields.Selection([('admitted','Admitted'),('discharged','Discharged')],default='admitted')
     @api.onchange('room_category')
     def onchange_advance_amount(self):
         for i in self:

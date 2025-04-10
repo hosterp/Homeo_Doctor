@@ -23,6 +23,9 @@
                     <header>
                         <button name="action_print_patient_report" type="object" string="Print Patient Case Sheet"
                                 class="btn-primary" target="new"/>
+
+                        <field name="admission_date" readonly="1" style="font-weight: bold;margin-left: 1200px;"/>
+                        <field name="status" widget="statusbar"/>
                     </header>
                     <sheet>
                         <group col="4">
@@ -44,7 +47,7 @@
                             <group>
                                 <field name="room_category"/>
                                 <field name="advance_amount"/>
-                                   <field name="admission_status"/>
+                                <field name="admission_status"/>
                             </group>
 
                         </group>
