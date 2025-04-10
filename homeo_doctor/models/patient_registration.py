@@ -113,8 +113,33 @@ class PatientRegistration(models.Model):
             'target': 'current',
         }
 
+    def action_create_admission(self):
+        admission_model = self.env['hospital.admitted.patient']
+        registration_model = self.env['patient.reg']
 
+        for rec in self:
+            patient = registration_model.search([('reference_no', '=', rec.reference_no)], limit=1)
+            if not patient:
+                raise UserError(f"No patient found with reference no: {rec.reference_no}")
 
+            admission_model.create({
+                'patient_id': patient.id,
+                'admission_date': fields.Date.today(),
+                'room_number': rec.transferred_room_number,
+                'room_category': rec.transferred_room_category.id,
+                'bed_number': rec.transferred_bed_number,
+                'attending_doctor': rec.doctor.id,
+            })
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Success',
+                'message': 'Admission created successfully.',
+                'sticky': False,
+                'type': 'success',  
+            }
+        }
     def _get_report_values(self, docids, data=None):
         docs = self.env['patient.reg'].browse(docids)
         return {

@@ -27,7 +27,7 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="patient_id"/>
+                                <field name="patient_id" string="UHID"/>
                                 <field name="name"/>
                                 <field name="dob"/>
                                 <field name="admission_date"/>

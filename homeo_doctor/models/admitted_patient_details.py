@@ -14,7 +14,7 @@ class AdmittedPatient(models.Model):
     email = fields.Char(related='patient_id.email', string="Email", readonly=True)
     address = fields.Text(related='patient_id.address', string="Address", readonly=True)
     medical_records=fields.Many2one('hospital.ot')
-    dob=fields.Date('Date of Birth')
+    dob=fields.Date(related='patient_id.dob',string='Date of Birth')
 
     emergency_contact_name = fields.Char(string="Emergency Contact Name")
     emergency_contact_phone = fields.Char(string="Emergency Contact Phone")
