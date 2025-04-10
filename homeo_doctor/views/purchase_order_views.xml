@@ -82,7 +82,7 @@
                             type="object"
                             context="{'create_bill': True}"
                             class="btn btn-secondary"
-                            attrs="{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}"/>
+                            attrs="{'invisible': [ ('state', 'not in', ('purchase', 'done')),}"/>
                 </xpath>
                 <xpath expr="//button[@name='button_confirm']" position="attributes">
                     <attribute name="states">requested</attribute>
