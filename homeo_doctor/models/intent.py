@@ -8,7 +8,7 @@ class Intent(models.Model):
     date = fields.Date(default=fields.Date.context_today, readonly=True)
     doctor_name = fields.Many2one('doctor.profile','Doctor Name')
     medicine = fields.Many2many('product.product',string="Medicine")
-    quantity = fields.Integer('Required Quantity')
+    quantity = fields.Char('Required Quantity')
     urgent = fields.Boolean('Urgent')
     very_urgent = fields.Boolean('Very Urgent')
     normal = fields.Boolean('Normal')
@@ -32,14 +32,22 @@ class Intent(models.Model):
         elif record.normal:
             priority = 'Normal'
 
-        # Create Purchase Order if medicines are selected
-        if record.medicine:
+        if record.medicine and record.quantity:
             order_lines = []
-            for med in record.medicine:
+
+
+            qty_list = [float(q.strip()) for q in record.quantity.split(',')]
+
+            # Check: number of quantities must match number of medicines
+            if len(qty_list) != len(record.medicine):
+                raise ValueError("Mismatch between number of medicines and quantities.")
+
+
+            for med, qty in zip(record.medicine, qty_list):
                 order_lines.append((0, 0, {
                     'product_id': med.id,
                     'name': med.name,
-                    'product_qty': record.quantity or 1,
+                    'product_qty': qty,
                     'date_planned': fields.Date.context_today(self),
                 }))
 
