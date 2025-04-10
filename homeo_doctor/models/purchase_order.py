@@ -17,6 +17,7 @@ class PurchaseOrderInherit(models.Model):
     approved_by=fields.Many2one('approved.store.person',string='Approved By')
     STATE_SELECTION = [
         ('draft', 'Draft'),
+        ('requested', 'Requested'),
         ('sent', 'Sent'),
         ('to approve', 'To Approve'),
         ('purchase', 'Purchase Order'),
@@ -26,6 +27,13 @@ class PurchaseOrderInherit(models.Model):
     ]
     state = fields.Selection(STATE_SELECTION, string='Status', default='draft',store=True)
     intent_priority=fields.Char(string='Priority')
+
+    
+    def button_confirm(self):
+        for order in self:
+            order.state = 'purchase'
+        return True
+
     def action_create_invoice(self):
         super(PurchaseOrderInherit, self).action_create_invoice()
 

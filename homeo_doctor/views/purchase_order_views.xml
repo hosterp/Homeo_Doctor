@@ -5,7 +5,7 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
-                 <xpath expr="//form" position="attributes">
+                <xpath expr="//form" position="attributes">
                     <attribute name="class">purchase_order_custom_form</attribute>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
@@ -84,7 +84,10 @@
                             class="btn btn-secondary"
                             attrs="{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}"/>
                 </xpath>
-
+                <xpath expr="//button[@name='button_confirm']" position="attributes">
+                    <attribute name="states">requested</attribute>
+                    <attribute name="string">Approve</attribute>
+                </xpath>
 
                 <!--                &lt;!&ndash; Add Custom Approve Button &ndash;&gt;-->
                 <!--                <xpath expr="//button[@name='button_confirm']" position="after">-->
@@ -139,7 +142,7 @@
                 </xpath>
                 <xpath expr="//field[@name='date_planned']" position="attributes">
                     <attribute name="invisible">1</attribute>
-<!--                    <attribute name="optional">hide</attribute>-->
+                    <!--                    <attribute name="optional">hide</attribute>-->
                     <attribute name="string">Requested BY</attribute>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="attributes">
@@ -219,24 +222,24 @@
         <record id="purchase.menu_purchase_form_action" model="ir.ui.menu">
             <field name="active" eval="False"/>
         </record>
-<!--        <record id="purchase.menu_procurement_management_supplier_name" model="ir.ui.menu">-->
-<!--            <field name="active" eval="False"/>-->
-<!--        </record>-->
-<!--        <record id="purchase.menu_procurement_partner_contact_form" model="ir.ui.menu">-->
-<!--            <field name="active" eval="False"/>-->
-<!--        </record>-->
-<!--        <record id="purchase.purchase_report" model="ir.ui.menu">-->
-<!--            <field name="active" eval="False"/>-->
-<!--        </record>-->
-<!--        <record id="purchase.menu_product_pricelist_action2_purchase" model="ir.ui.menu">-->
-<!--            <field name="active" eval="False"/>-->
-<!--        </record>-->
-<!--        <record id="purchase.menu_product_category_config_purchase" model="ir.ui.menu">-->
-<!--            <field name="active" eval="False"/>-->
-<!--        </record>-->
-<!--        <record id="purchase.menu_purchase_general_settings" model="ir.ui.menu">-->
-<!--            <field name="active" eval="False"/>-->
-<!--        </record>-->
+        <!--        <record id="purchase.menu_procurement_management_supplier_name" model="ir.ui.menu">-->
+        <!--            <field name="active" eval="False"/>-->
+        <!--        </record>-->
+        <!--        <record id="purchase.menu_procurement_partner_contact_form" model="ir.ui.menu">-->
+        <!--            <field name="active" eval="False"/>-->
+        <!--        </record>-->
+        <!--        <record id="purchase.purchase_report" model="ir.ui.menu">-->
+        <!--            <field name="active" eval="False"/>-->
+        <!--        </record>-->
+        <!--        <record id="purchase.menu_product_pricelist_action2_purchase" model="ir.ui.menu">-->
+        <!--            <field name="active" eval="False"/>-->
+        <!--        </record>-->
+        <!--        <record id="purchase.menu_product_category_config_purchase" model="ir.ui.menu">-->
+        <!--            <field name="active" eval="False"/>-->
+        <!--        </record>-->
+        <!--        <record id="purchase.menu_purchase_general_settings" model="ir.ui.menu">-->
+        <!--            <field name="active" eval="False"/>-->
+        <!--        </record>-->
         <record id="account.menu_action_move_in_invoice_type" model="ir.ui.menu">
             <field name="parent_id" ref="purchase.menu_procurement_management"/>
             <field name="name">Supplier Invoice</field>

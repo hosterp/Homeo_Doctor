@@ -55,6 +55,7 @@ class Intent(models.Model):
                 'order_line': order_lines,
                 'origin': f"Intent by {record.doctor_name.name}",
                 'intent_priority': priority,
+                'state': 'requested',
             })
 
         return record
