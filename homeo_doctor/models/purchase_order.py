@@ -5,7 +5,7 @@ class PurchaseOrderInherit(models.Model):
 
     custom_note = fields.Char(string="Custom Note")
     supplier_id= fields.Many2one('account.move',string='Supplier No',domain="[('move_type', '=', 'in_invoice')]")
-    supplier_name= fields.Many2one('supplier.name',string='Supplier Name')
+    supplier_name= fields.Many2one('res.partner',string='Supplier Name')
     partner_id = fields.Many2one(
         "res.partner",
         string="Vendor",
@@ -43,7 +43,7 @@ class PurchaseOrderInherit(models.Model):
                 order.state = 'approved'
                 # Update invoice fields
                 invoice.write({
-                    'supplier_name': order.supplier_name.display_name,
+                    'supplier_name': order.supplier_name.id,
                     'po_number': order.id,
                 })
 
