@@ -86,7 +86,10 @@
                 </xpath>
                 <xpath expr="//button[@name='button_confirm']" position="attributes">
                     <attribute name="states">requested</attribute>
-                    <attribute name="string">Approve</attribute>
+                    <attribute name="string">Approve Request</attribute>
+                </xpath>
+                 <xpath expr="//button[@name='button_confirm' and @states='draft']" position="attributes">
+                    <attribute name="string">Approve Request</attribute>
                 </xpath>
 
                 <!--                &lt;!&ndash; Add Custom Approve Button &ndash;&gt;-->

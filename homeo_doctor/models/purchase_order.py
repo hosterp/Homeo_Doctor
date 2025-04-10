@@ -28,7 +28,7 @@ class PurchaseOrderInherit(models.Model):
     state = fields.Selection(STATE_SELECTION, string='Status', default='draft',store=True)
     intent_priority=fields.Char(string='Priority')
 
-    
+
     def button_confirm(self):
         for order in self:
             order.state = 'purchase'
@@ -40,7 +40,7 @@ class PurchaseOrderInherit(models.Model):
         for order in self:
             if order.invoice_ids:
                 invoice = order.invoice_ids[0]
-
+                order.state = 'approved'
                 # Update invoice fields
                 invoice.write({
                     'supplier_name': order.supplier_name.display_name,
