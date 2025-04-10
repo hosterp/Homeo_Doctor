@@ -124,10 +124,10 @@ class PatientRegistration(models.Model):
 
             admission_model.create({
                 'patient_id': patient.id,
-                'admission_date': fields.Date.today(),
-                'room_number': rec.transferred_room_number,
-                'room_category': rec.transferred_room_category.id,
-                'bed_number': rec.transferred_bed_number,
+                'admission_date': fields.Datetime.now(),
+                'room_number': rec.room_number,
+                'room_category': rec.room_category.id,
+                'bed_number': rec.bed_number,
                 'attending_doctor': rec.doctor.id,
             })
         return {
@@ -137,7 +137,7 @@ class PatientRegistration(models.Model):
                 'title': 'Success',
                 'message': 'Admission created successfully.',
                 'sticky': False,
-                'type': 'success',  
+                'type': 'success',
             }
         }
     def _get_report_values(self, docids, data=None):
