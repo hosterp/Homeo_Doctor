@@ -210,9 +210,12 @@
             </field>
         </record>
 
-<!--        <record id="purchase.menu_purchase_rfq" model="ir.ui.menu">-->
-<!--            <field name="active" eval="False"/>-->
-<!--        </record>-->
+        <record id="purchase.menu_purchase_rfq" model="ir.ui.menu">
+            <field name="active" eval="True"/>
+        </record>
+        <record id="purchase.menu_purchase_form_action" model="ir.ui.menu">
+            <field name="active" eval="False"/>
+        </record>
 <!--        <record id="purchase.menu_procurement_management_supplier_name" model="ir.ui.menu">-->
 <!--            <field name="active" eval="False"/>-->
 <!--        </record>-->
