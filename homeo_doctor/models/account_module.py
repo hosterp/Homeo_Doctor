@@ -99,6 +99,7 @@ class AccountMove(models.Model):
                         'invoice_id': move.id,
                         'product_id': line.product_id.id,
                         'quantity': total_qty,
+                        'hsn': line.hsn,
                         'manf_date': line.manufacturing_date,
                         'exp_date': line.expiry_date,
                         'batch': line.batch,
@@ -285,6 +286,7 @@ class StockEntry(models.Model):
     product_id = fields.Many2one('product.product', string="Product", required=True)
     quantity = fields.Float(string="Stock In Hand", required=True)
     manf_date=fields.Char(string='M.Date')
+    hsn=fields.Char(string='HSN')
     exp_date=fields.Char(string='Exp.date')
     rack=fields.Char(string='Rack Position')
     batch=fields.Char(string='Batch Number')
