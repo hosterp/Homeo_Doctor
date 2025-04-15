@@ -39,7 +39,7 @@ class AdmittedPatient(models.Model):
     ], string="Admission Status")
 
 
-    previous_conditions = fields.Text(string="Previous Medical History")
+
     current_diagnosis = fields.Text(string="Current Diagnosis")
     medications_prescribed = fields.Text(string="Medications Prescribed")
     allergies = fields.Text(string="Allergies")
@@ -66,6 +66,43 @@ class AdmittedPatient(models.Model):
     room_category = fields.Many2one('room.category', string='Room Category')
     advance_amount = fields.Integer(string='Advance Amount')
     status=fields.Selection([('admitted','Admitted'),('discharged','Discharged')],default='admitted')
+    consultation_id = fields.Many2one('patient.registration', string="Consultation Reference")
+
+    previous_conditions = fields.Text(string="Previous Conditions", compute='_compute_previous_conditions')
+    # Field to store previous consultations
+    previous_consultation_ids = fields.One2many(
+        'patient.registration', 'patient_id',
+        string='Previous Consultations',
+        compute='_compute_previous_consultations',
+        store=False  # You can make it stored if you want to cache the results
+    )
+
+    @api.depends('patient_id')
+    def _compute_previous_consultations(self):
+        for record in self:
+            # Only proceed if the record has been saved (i.e., has an id)
+            if record.id:
+                previous_consultations = self.env['patient.registration'].search([
+                    ('patient_id', '=', record.patient_id.id),
+                    ('id', '!=', record.id)  # Ensure the current record is excluded
+                ])
+                record.previous_consultation_ids = previous_consultations
+            else:
+                # For unsaved records, set to False or an empty record set
+                record.previous_consultation_ids = False
+
+    def get_previous_medical_history(self):
+        history = ''
+        for consultation in self.previous_consultation_ids:
+            if consultation.present_medications:
+                history += f"Medications: {consultation.present_medications}\n"
+            if consultation.allergies:
+                history += f"Allergies: {consultation.allergies}\n"
+            if consultation.previous_conditions:
+                history += f"Previous Conditions: {consultation.previous_conditions}\n"
+
+        return history if history else "No previous medical history available."
+
     @api.onchange('room_category')
     def onchange_advance_amount(self):
         for i in self:

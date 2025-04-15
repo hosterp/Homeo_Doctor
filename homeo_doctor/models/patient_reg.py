@@ -87,6 +87,16 @@ class PatientRegistration(models.Model):
     )
     remark_boolean = fields.Boolean(default=False)
 
+    def get_previous_medical_history(self):
+        history = ''
+        for record in self.previous_consultation_ids:
+            if record.present_medications:  # Assuming "present_medications" is part of the history
+                history += f"Medications: {record.present_medications}\n"
+            if record.allergies:  # Add allergies if available
+                history += f"Allergies: {record.allergies}\n"
+            if record.previous_conditions:  # Add previous conditions if available
+                history += f"Previous Conditions: {record.previous_conditions}\n"
+        return history if history else "No previous medical history available."
     @api.onchange('referred_doctor_ids')
     def _onchange_referred_doctor_ids(self):
         if self.referred_doctor_ids:
