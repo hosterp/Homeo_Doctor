@@ -69,13 +69,24 @@ class AdmittedPatient(models.Model):
     consultation_id = fields.Many2one('patient.registration', string="Consultation Reference")
 
     previous_conditions = fields.Text(string="Previous Conditions", compute='_compute_previous_conditions')
-    # Field to store previous consultations
+
     previous_consultation_ids = fields.One2many(
         'patient.registration', 'patient_id',
         string='Previous Consultations',
         compute='_compute_previous_consultations',
         store=False  # You can make it stored if you want to cache the results
     )
+    past_prescription_ids = fields.One2many(
+        'prescription.entry.lines', compute='_compute_past_prescriptions', string="Past Prescriptions"
+    )
+
+    @api.depends('patient_id')
+    def _compute_past_prescriptions(self):
+        for rec in self:
+            prescriptions = self.env['prescription.entry.lines'].search([
+                ('prescription_line_id.patient_id', '=', rec.patient_id.id)
+            ])
+            rec.past_prescription_ids = prescriptions
 
     @api.depends('patient_id')
     def _compute_previous_consultations(self):

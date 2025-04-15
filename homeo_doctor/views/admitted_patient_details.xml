@@ -5,7 +5,8 @@
             <field name="model">hospital.admitted.patient</field>
             <field name="arch" type="xml">
                 <tree string="Admitted Patients">
-                    <field name="patient_id"/>
+                    <field name="patient_id" string="UHID"/>
+                    <field name="name"/>
                     <field name="admission_date"/>
                     <field name="room_number"/>
                     <field name="bed_number"/>
@@ -64,8 +65,8 @@
                                         <field name="id" invisible="1"/>
                                         <field name="patient_id" invisible="1"/>
                                         <field name="appointment_date" string="Date"/>
-<!--                                        <field name="patient_name"/>-->
-<!--                                        <field name="age"/>-->
+                                        <!--                                        <field name="patient_name"/>-->
+                                        <!--                                        <field name="age"/>-->
                                         <field name="doctor_id"/>
                                     </tree>
                                 </field>
@@ -78,7 +79,17 @@
                                 <field name="current_diagnosis"/>
                             </page>
                             <page string="Medicines Prescribed">
-                                <field name="medications_prescribed"/>
+                                <field name="past_prescription_ids">
+                                    <tree editable="bottom">
+                                        <!--                                        <field name="id" invisible="1"/>-->
+                                        <!--                                        <field name="patient_id" invisible="1"/>-->
+                                        <!--                                        <field name="appointment_date" string="Date"/>-->
+                                        <field name="prescription_line_id" invisible="1"/>
+                                        <field name="product_id"/>
+                                        <!--                                        <field name="age"/>-->
+                                        <!--                                        <field name="doctor_id"/>-->
+                                    </tree>
+                                </field>
                             </page>
                             <page string="Allergies">
                                 <field name="allergies"/>
