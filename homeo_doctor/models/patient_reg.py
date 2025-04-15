@@ -503,22 +503,33 @@ class PatientRegistration(models.Model):
             }
 
     def action_view_consultations(self):
-
         if not self.patient_id:
             return
-
-        test = self.env['patient.registration'].search([('patient_id', '=', self.patient_id.id)])
-
 
         return {
             'type': 'ir.actions.act_window',
             'name': 'Previous Consultations',
-            'view_mode': 'tree,form',
             'res_model': 'patient.registration',
+            'view_mode': 'tree,form',
+            'views': [
+                (self.env.ref('homeo_doctor.view_patient_registration_tree').id, 'tree'),
+                (self.env.ref('homeo_doctor.patient_registration_form').id, 'form'),
+            ],
             'domain': [('patient_id', '=', self.patient_id.id)],
             'context': {'default_patient_id': self.patient_id.id},
-            'views': [(self.env.ref('homeo_doctor.view_patient_registration_tree').id, 'tree'),
-                      (self.env.ref('homeo_doctor.patient_registration_form').id, 'form')],
+            'target': 'new',
+        }
+
+    def action_view_consultation_form(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Consultation',
+            'res_model': 'patient.registration',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'views': [(self.env.ref('homeo_doctor.patient_registration_form').id, 'form')],
+            'target': 'new',  # Opens in modal
         }
 
 
