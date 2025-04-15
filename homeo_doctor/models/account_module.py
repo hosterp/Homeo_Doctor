@@ -146,6 +146,12 @@ class AccountMoveLine(models.Model):
     supplier_rack=fields.Many2one('supplier.rack')
     reason_for_rejection=fields.Char('Reason For Rejection')
 
+    @api.onchange('product_id')
+    def _onchange_product_id_hsn(self):
+        for line in self:
+            if line.product_id and line.product_id.l10n_in_hsn_code:
+                line.hsn = line.product_id.l10n_in_hsn_code
+
     @api.depends('product_id')
     def _compute_stock_in_hand(self):
         """Fetch the total available quantity from stock.entry for the selected product."""
