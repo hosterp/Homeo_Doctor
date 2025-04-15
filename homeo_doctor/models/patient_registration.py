@@ -96,7 +96,7 @@ class PatientRegistration(models.Model):
     # ('card', 'Card')
     # ], string='Payment Method')
     # payment_reference = fields.Char(string='Payment Reference')
-    status=fields.Selection([('admitted','Admitted')])
+    status=fields.Selection([('admitted','Admitted'),('discharged','Discharged')])
     def _default_registration_fee(self):
         """Fetch the first registration fee as the default"""
         return self.env['patient.registration.fee'].search([], limit=1).id

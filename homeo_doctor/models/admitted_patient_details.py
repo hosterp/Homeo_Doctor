@@ -80,6 +80,12 @@ class AdmittedPatient(models.Model):
         'prescription.entry.lines', compute='_compute_past_prescriptions', string="Past Prescriptions"
     )
 
+    def action_discharged(self):
+        for record in self:
+            record.status = 'discharged'
+            if record.patient_id:
+                record.patient_id.status = 'discharged'
+                record.patient_id.admission_boolean = False
     @api.depends('patient_id')
     def _compute_past_prescriptions(self):
         for rec in self:

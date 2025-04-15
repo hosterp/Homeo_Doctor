@@ -24,7 +24,12 @@
                     <header>
                         <button name="action_print_patient_report" type="object" string="Print Patient Case Sheet"
                                 class="btn-primary" target="new"/>
-                        <button string="Discharged" class="btn-primary"/>
+                        <button string="Discharged"
+                                name="action_discharged"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('status', '=', 'discharged')]}"/>
+
                         <field name="admission_date" readonly="1" style="font-weight: bold;margin-left: 1100px;"/>
                         <field name="status" widget="statusbar"/>
                     </header>
