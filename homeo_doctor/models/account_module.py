@@ -20,7 +20,7 @@ class AccountMove(models.Model):
     mobile=fields.Char(related='uhid.phone_number',string='Mobile No')
     invoice_line_ids=fields.One2many('account.move.line','move_id')
 
-    supplier_name = fields.Char('Supplier Name')
+    supplier_name = fields.Many2one('res.partner',string='Supplier Name')
     supplier_invoice = fields.Char('Invoice No')
     supplier_phone = fields.Char('Phone No')
     supplier_email = fields.Char('Email Id')

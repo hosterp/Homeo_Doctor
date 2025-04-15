@@ -87,6 +87,16 @@ class PatientRegistration(models.Model):
     )
     remark_boolean = fields.Boolean(default=False)
 
+    def get_previous_medical_history(self):
+        history = ''
+        for record in self.previous_consultation_ids:
+            if record.present_medications:  # Assuming "present_medications" is part of the history
+                history += f"Medications: {record.present_medications}\n"
+            if record.allergies:  # Add allergies if available
+                history += f"Allergies: {record.allergies}\n"
+            if record.previous_conditions:  # Add previous conditions if available
+                history += f"Previous Conditions: {record.previous_conditions}\n"
+        return history if history else "No previous medical history available."
     @api.onchange('referred_doctor_ids')
     def _onchange_referred_doctor_ids(self):
         if self.referred_doctor_ids:
@@ -503,22 +513,33 @@ class PatientRegistration(models.Model):
             }
 
     def action_view_consultations(self):
-
         if not self.patient_id:
             return
-
-        test = self.env['patient.registration'].search([('patient_id', '=', self.patient_id.id)])
-
 
         return {
             'type': 'ir.actions.act_window',
             'name': 'Previous Consultations',
-            'view_mode': 'tree,form',
             'res_model': 'patient.registration',
+            'view_mode': 'tree,form',
+            'views': [
+                (self.env.ref('homeo_doctor.view_patient_registration_tree').id, 'tree'),
+                (self.env.ref('homeo_doctor.patient_registration_form').id, 'form'),
+            ],
             'domain': [('patient_id', '=', self.patient_id.id)],
             'context': {'default_patient_id': self.patient_id.id},
-            'views': [(self.env.ref('homeo_doctor.view_patient_registration_tree').id, 'tree'),
-                      (self.env.ref('homeo_doctor.patient_registration_form').id, 'form')],
+            'target': 'new',
+        }
+
+    def action_view_consultation_form(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Consultation',
+            'res_model': 'patient.registration',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'views': [(self.env.ref('homeo_doctor.patient_registration_form').id, 'form')],
+            'target': 'new',  # Opens in modal
         }
 
 

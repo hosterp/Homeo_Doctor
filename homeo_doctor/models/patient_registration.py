@@ -96,7 +96,7 @@ class PatientRegistration(models.Model):
     # ('card', 'Card')
     # ], string='Payment Method')
     # payment_reference = fields.Char(string='Payment Reference')
-    status=fields.Selection([('admitted','Admitted')])
+    status=fields.Selection([('admitted','Admitted'),('discharged','Discharged')])
     def _default_registration_fee(self):
         """Fetch the first registration fee as the default"""
         return self.env['patient.registration.fee'].search([], limit=1).id
@@ -113,8 +113,33 @@ class PatientRegistration(models.Model):
             'target': 'current',
         }
 
+    def action_create_admission(self):
+        admission_model = self.env['hospital.admitted.patient']
+        registration_model = self.env['patient.reg']
 
+        for rec in self:
+            patient = registration_model.search([('reference_no', '=', rec.reference_no)], limit=1)
+            if not patient:
+                raise UserError(f"No patient found with reference no: {rec.reference_no}")
 
+            admission_model.create({
+                'patient_id': patient.id,
+                'admission_date': fields.Datetime.now(),
+                'room_number': rec.room_number,
+                'room_category': rec.room_category.id,
+                'bed_number': rec.bed_number,
+                'attending_doctor': rec.doctor.id,
+            })
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Success',
+                'message': 'Admission created successfully.',
+                'sticky': False,
+                'type': 'success',
+            }
+        }
     def _get_report_values(self, docids, data=None):
         docs = self.env['patient.reg'].browse(docids)
         return {

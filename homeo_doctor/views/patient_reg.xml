@@ -39,17 +39,18 @@
                             </div>
                         </div>
 
-                        <group name="patient_info" string="Patient Information" col="12" class="paitent_details" style="border-bottom: 2px solid #007bff; padding: 15px 0; margin-bottom: 15px;">
+                        <group name="patient_info" string="Patient Information" col="12" class="paitent_details"
+                               style="border-bottom: 2px solid #007bff; padding: 15px 0; margin-bottom: 15px;">
                             <field name="patient_id" string="UHID" readonly="1" colspan="1" required="0"/>
                             <field name="patient_name" string="Name" colspan="1" required="0"/>
                             <field name="age" string="Age" colspan="1" required="1"/>
                             <field name="gender" string="Gender" colspan="1"/>
                             <field name="phone_number" widget="phone" string="Mobile No" colspan="1" required="0"/>
-<!--                            <field name="address" style="margin-right:10px;" string="Address" colspan="1" required="1"/>-->
+                            <!--                            <field name="address" style="margin-right:10px;" string="Address" colspan="1" required="1"/>-->
                             <field name="doctor_id" string="Consulting Doctor" colspan="1" required="1"/>
                         </group>
 
-                        <group name="vital_signs"  class="o_vital_signs_group single_row_vitals">
+                        <group name="vital_signs" class="o_vital_signs_group single_row_vitals">
                             <div class="vital_signs_header_container">
                                 <h3 class="vital_signs_title">Vital Signs &#8594;</h3>
                                 <div class="vitals_inline_container">
@@ -62,7 +63,8 @@
                                                 <field name="blood_pressure" class="oe_inline small_input"/>
                                                 <span>-</span>
                                                 <span>(Low)</span>
-                                                <field name="blood_pressure_low" nolabel="1" class="oe_inline small_input"/>
+                                                <field name="blood_pressure_low" nolabel="1"
+                                                       class="oe_inline small_input"/>
                                             </div>
                                         </div>
                                     </div>
@@ -102,125 +104,137 @@
                             </div>
                         </group>
 
-                        <group name="consultation_details" string="Clinical Assessment" class="consultation_details_section">
-                        <div class="clinical_assessment_grid">
-                        <!-- First row -->
-                        <div class="field_container">
-                            <label for="symptoms" string="Symptoms"/>
-                            <field name="symptoms" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
-                        </div>
-                        <div class="field_container">
-                            <label for="presenting_complaints" string="Presenting Complaints"/>
-                            <field name="presenting_complaints" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
-                        </div>
-                        <div class="field_container">
-                            <label for="allergies" string="Allergies"/>
-                            <field name="allergies" class="medical_history reduced_height" widget="text" nolabel="1"/>
-                        </div>
-                        <div class="field_container">
-                            <label for="general_examination" string="General Examination"/>
-                            <field name="general_examination" class="examination_field reduced_height" widget="text" nolabel="1"/>
-                        </div>
+                        <group name="consultation_details" string="Clinical Assessment"
+                               class="consultation_details_section">
+                            <div class="clinical_assessment_grid">
+                                <!-- First row -->
+                                <div class="field_container">
+                                    <label for="symptoms" string="Symptoms"/>
+                                    <field name="symptoms" class="clinical_findings reduced_height" widget="text"
+                                           nolabel="1"/>
+                                </div>
+                                <div class="field_container">
+                                    <label for="presenting_complaints" string="Presenting Complaints"/>
+                                    <field name="presenting_complaints" class="clinical_findings reduced_height"
+                                           widget="text" nolabel="1"/>
+                                </div>
+                                <div class="field_container">
+                                    <label for="allergies" string="Allergies"/>
+                                    <field name="allergies" class="medical_history reduced_height" widget="text"
+                                           nolabel="1"/>
+                                </div>
+                                <div class="field_container">
+                                    <label for="general_examination" string="General Examination"/>
+                                    <field name="general_examination" class="examination_field reduced_height"
+                                           widget="text" nolabel="1"/>
+                                </div>
 
-                        <!-- Second row -->
-                        <div class="field_container">
-                            <label for="present_medications" string="Present Medications"/>
-                            <field name="present_medications" class="medication_field reduced_height" widget="text" nolabel="1"/>
-                        </div>
-                        <div class="field_container">
-                            <label for="local_and_systemic" string="Local and Systemic"/>
-                            <field name="local_and_systemic" class="examination_field reduced_height" widget="text" nolabel="1"/>
-                        </div>
-                        <div class="field_container">
-                            <label for="investigation" string="Investigation"/>
-                            <field name="investigation" class="examination_field reduced_height" widget="text" nolabel="1"/>
-                        </div>
-                        <div class="field_container">
-                            <label for="endoscopy_finding" string="Endoscopy Finding"/>
-                            <field name="endoscopy_finding" class="examination_field reduced_height" widget="text" nolabel="1"/>
-                        </div>
+                                <!-- Second row -->
+                                <div class="field_container">
+                                    <label for="present_medications" string="Present Medications"/>
+                                    <field name="present_medications" class="medication_field reduced_height"
+                                           widget="text" nolabel="1"/>
+                                </div>
+                                <div class="field_container">
+                                    <label for="local_and_systemic" string="Local and Systemic"/>
+                                    <field name="local_and_systemic" class="examination_field reduced_height"
+                                           widget="text" nolabel="1"/>
+                                </div>
+                                <div class="field_container">
+                                    <label for="investigation" string="Investigation"/>
+                                    <field name="investigation" class="examination_field reduced_height" widget="text"
+                                           nolabel="1"/>
+                                </div>
+                                <div class="field_container">
+                                    <label for="endoscopy_finding" string="Endoscopy Finding"/>
+                                    <field name="endoscopy_finding" class="examination_field reduced_height"
+                                           widget="text" nolabel="1"/>
+                                </div>
 
-                        <!-- Third row -->
-                        <div class="field_container">
-                            <label for="review_date" string="Scheduled Follow-up Date"/>
-                            <field name="review_date" class="date_field" nolabel="1"/>
-                        </div>
-                        <div class="field_container">
-                            <label for="checkup_reports" string="Checkup Reports"/>
-                            <field name="checkup_reports" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
-                        </div>
-                        <div class="field_container">
-                            <label for="review_note" string="Review Note"/>
-                            <field name="review_note" class="clinical_findings reduced_height" widget="text" nolabel="1"/>
-                        </div>
-                        <div class="field_container">
-                            <label for="professional_diagnosis" string="C.D.A"/>
-                            <field name="professional_diagnosis" class="diagnosis_field reduced_height" widget="text" nolabel="1"/>
-                        </div>
-                    </div>
-                    </group>
-                  <!-- Modified layout for Prescription and Additional Info section -->
-                <div class="prescription_additional_section">
-                    <div class="prescription_column">
-                        <group name="prescription" class="prescription" string="Prescription">
-                            <field name="med_ids" nolabel="1">
-                                <tree editable="bottom" decoration-warning="total_med == 0">
-                                    <field name="product_id" required="1"/>
-                                    <field name="morn" string="Morning"/>
-                                    <field name="noon" string="Noon"/>
-                                    <field name="night" string="Night"/>
-                                    <field name="stock_in_hand" string="Stock"/>
-                                    <field name="per_ped" string="Per Med" invisible="1"/>
-                                    <field name="total_med" string="Total Dosage" invisible="1"/>
-                                </tree>
-                            </field>
+                                <!-- Third row -->
+                                <div class="field_container">
+                                    <label for="review_date" string="Scheduled Follow-up Date"/>
+                                    <field name="review_date" class="date_field" nolabel="1"/>
+                                </div>
+                                <div class="field_container">
+                                    <label for="checkup_reports" string="Checkup Reports"/>
+                                    <field name="checkup_reports" class="clinical_findings reduced_height" widget="text"
+                                           nolabel="1"/>
+                                </div>
+                                <div class="field_container">
+                                    <label for="review_note" string="Review Note"/>
+                                    <field name="review_note" class="clinical_findings reduced_height" widget="text"
+                                           nolabel="1"/>
+                                </div>
+                                <div class="field_container">
+                                    <label for="professional_diagnosis" string="C.D.A"/>
+                                    <field name="professional_diagnosis" class="diagnosis_field reduced_height"
+                                           widget="text" nolabel="1"/>
+                                </div>
+                            </div>
                         </group>
-                    </div>
-                    <div class="additional_column">
-    <group string="Additional Information" class="additional_info_group">
-        <!-- First row - with proper label for attributes -->
-        <div class="additional_row">
-            <div class="field_container medicine_course_container">
-                <label for="medicine_course" string="Medicine Course"/>
-                <field name="medicine_course" nolabel="1"/>
-            </div>
-            <div class="field_container department_container">
-                <label for="referred_department_ids" string="Referred Departments"/>
-                <field name="referred_department_ids" widget="many2many_tags" nolabel="1"/>
-            </div>
-        </div>
-        
-        <!-- Second row - with proper label for attributes -->
-        <div class="additional_row">
-            <div class="field_container doctor_container">
-                <label for="referred_doctor_ids" string="Referred Doctors"/>
-                <field name="referred_doctor_ids" widget="many2many_tags" nolabel="1"/>
-            </div>
-            <div class="field_container button_container">
-                <!-- For button container, we need a valid for attribute or use span instead -->
-                <span class="label_text">Action</span>
-                <div class="button_wrapper">
-                    <button name="action_reffer_move" type="object" string="GO"/>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Remarks field -->
-        <div class="field_container remark_container">
-            <label for="remark" string="Additional Remarks"/>
-            <field name="remark" placeholder="Additional Remarks" nolabel="1"/>
-        </div>
-    </group>
-</div>
-                </div>
+                        <!-- Modified layout for Prescription and Additional Info section -->
+                        <div class="prescription_additional_section">
+                            <div class="prescription_column">
+                                <group name="prescription" class="prescription" string="Prescription">
+                                    <field name="med_ids" nolabel="1">
+                                        <tree editable="bottom" decoration-warning="total_med == 0">
+                                            <field name="product_id" required="1"/>
+                                            <field name="morn" string="Morning"/>
+                                            <field name="noon" string="Noon"/>
+                                            <field name="night" string="Night"/>
+                                            <field name="stock_in_hand" string="Stock"/>
+                                            <field name="per_ped" string="Per Med" invisible="1"/>
+                                            <field name="total_med" string="Total Dosage" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </div>
+                            <div class="additional_column">
+                                <group string="Additional Information" class="additional_info_group">
+                                    <!-- First row - with proper label for attributes -->
+                                    <div class="additional_row">
+                                        <div class="field_container medicine_course_container">
+                                            <label for="medicine_course" string="Medicine Course"/>
+                                            <field name="medicine_course" nolabel="1"/>
+                                        </div>
+                                        <div class="field_container department_container">
+                                            <label for="referred_department_ids" string="Referred Departments"/>
+                                            <field name="referred_department_ids" widget="many2many_tags" nolabel="1"/>
+                                        </div>
+                                    </div>
 
-                <field name="remark_boolean" invisible="1"/>
-                <field name="doctor_remark_ids" attrs="{'invisible': [('remark_boolean', '=', False)]}">
-                    <tree editable="bottom">
-                        <field name="doctor_id"/>
-                        <field name="remark" placeholder="Remark for this doctor"/>
-                    </tree>
-                </field>
+                                    <!-- Second row - with proper label for attributes -->
+                                    <div class="additional_row">
+                                        <div class="field_container doctor_container">
+                                            <label for="referred_doctor_ids" string="Referred Doctors"/>
+                                            <field name="referred_doctor_ids" widget="many2many_tags" nolabel="1"/>
+                                        </div>
+                                        <div class="field_container button_container">
+                                            <!-- For button container, we need a valid for attribute or use span instead -->
+                                            <span class="label_text">Action</span>
+                                            <div class="button_wrapper">
+                                                <button name="action_reffer_move" type="object" string="GO"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Remarks field -->
+                                    <div class="field_container remark_container">
+                                        <label for="remark" string="Additional Remarks"/>
+                                        <field name="remark" placeholder="Additional Remarks" nolabel="1"/>
+                                    </div>
+                                </group>
+                            </div>
+                        </div>
+
+                        <field name="remark_boolean" invisible="1"/>
+                        <field name="doctor_remark_ids" attrs="{'invisible': [('remark_boolean', '=', False)]}">
+                            <tree editable="bottom">
+                                <field name="doctor_id"/>
+                                <field name="remark" placeholder="Remark for this doctor"/>
+                            </tree>
+                        </field>
                         <notebook>
                             <!-- Notebook content remains unchanged -->
                             <page string="Lab Reports" name="lab_reports">
@@ -393,18 +407,24 @@
                     <field name="doctor_id"/>
                     <field name="referred_doctor_ids" widget="many2many_tags" string="Referred Doctors"/>
                     <field name="referred_department_ids" widget="many2many_tags" string="Referred Department"/>
+                    <button name="action_view_consultation_form"
+                            string="View"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-eye"/>
                 </tree>
             </field>
         </record>
 
 
-        <record id="action_patient_registration_tree" model="ir.actions.act_window">
+        <record id="action_previous_consultations" model="ir.actions.act_window">
             <field name="name">Previous Consultations</field>
             <field name="res_model">patient.registration</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_patient_registration_tree"/>
-            <field name="domain">[('patient_id', '=', context.get('default_patient_id'))]</field>
-            <field name="context">{'default_patient_id': context.get('default_patient_id')}</field>
+            <field name="view_id" ref="homeo_doctor.view_patient_registration_tree"/>
+            <field name="context">{'default_patient_id': active_id}</field>
+            <field name="target">new</field>
         </record>
+
     </data>
 </odoo>

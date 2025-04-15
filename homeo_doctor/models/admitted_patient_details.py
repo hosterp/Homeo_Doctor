@@ -14,7 +14,7 @@ class AdmittedPatient(models.Model):
     email = fields.Char(related='patient_id.email', string="Email", readonly=True)
     address = fields.Text(related='patient_id.address', string="Address", readonly=True)
     medical_records=fields.Many2one('hospital.ot')
-    dob=fields.Date('Date of Birth')
+    dob=fields.Date(related='patient_id.dob',string='Date of Birth')
 
     emergency_contact_name = fields.Char(string="Emergency Contact Name")
     emergency_contact_phone = fields.Char(string="Emergency Contact Phone")
@@ -39,7 +39,7 @@ class AdmittedPatient(models.Model):
     ], string="Admission Status")
 
 
-    previous_conditions = fields.Text(string="Previous Medical History")
+
     current_diagnosis = fields.Text(string="Current Diagnosis")
     medications_prescribed = fields.Text(string="Medications Prescribed")
     allergies = fields.Text(string="Allergies")
@@ -65,6 +65,60 @@ class AdmittedPatient(models.Model):
     summary_report = fields.Text(string="Summary Report")
     room_category = fields.Many2one('room.category', string='Room Category')
     advance_amount = fields.Integer(string='Advance Amount')
+    status=fields.Selection([('admitted','Admitted'),('discharged','Discharged')],default='admitted')
+    consultation_id = fields.Many2one('patient.registration', string="Consultation Reference")
+
+    previous_conditions = fields.Text(string="Previous Conditions", compute='_compute_previous_conditions')
+
+    previous_consultation_ids = fields.One2many(
+        'patient.registration', 'patient_id',
+        string='Previous Consultations',
+        compute='_compute_previous_consultations',
+        store=False  # You can make it stored if you want to cache the results
+    )
+    past_prescription_ids = fields.One2many(
+        'prescription.entry.lines', compute='_compute_past_prescriptions', string="Past Prescriptions"
+    )
+
+    def action_discharged(self):
+        for record in self:
+            record.status = 'discharged'
+            if record.patient_id:
+                record.patient_id.status = 'discharged'
+                record.patient_id.admission_boolean = False
+    @api.depends('patient_id')
+    def _compute_past_prescriptions(self):
+        for rec in self:
+            prescriptions = self.env['prescription.entry.lines'].search([
+                ('prescription_line_id.patient_id', '=', rec.patient_id.id)
+            ])
+            rec.past_prescription_ids = prescriptions
+
+    @api.depends('patient_id')
+    def _compute_previous_consultations(self):
+        for record in self:
+            # Only proceed if the record has been saved (i.e., has an id)
+            if record.id:
+                previous_consultations = self.env['patient.registration'].search([
+                    ('patient_id', '=', record.patient_id.id),
+                    ('id', '!=', record.id)  # Ensure the current record is excluded
+                ])
+                record.previous_consultation_ids = previous_consultations
+            else:
+                # For unsaved records, set to False or an empty record set
+                record.previous_consultation_ids = False
+
+    def get_previous_medical_history(self):
+        history = ''
+        for consultation in self.previous_consultation_ids:
+            if consultation.present_medications:
+                history += f"Medications: {consultation.present_medications}\n"
+            if consultation.allergies:
+                history += f"Allergies: {consultation.allergies}\n"
+            if consultation.previous_conditions:
+                history += f"Previous Conditions: {consultation.previous_conditions}\n"
+
+        return history if history else "No previous medical history available."
 
     @api.onchange('room_category')
     def onchange_advance_amount(self):
