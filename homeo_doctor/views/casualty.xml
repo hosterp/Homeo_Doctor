@@ -133,7 +133,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="menu_casualty_reg" name="Casualty Registration" parent="menu_my_patient_template_root"
-                  action="casualty_reg_action"/>
+<!--        <menuitem id="menu_casualty_reg" name="Casualty Registration" parent="menu_my_patient_template_root"-->
+<!--                  action="casualty_reg_action"/>-->
     </data>
 </openerp>

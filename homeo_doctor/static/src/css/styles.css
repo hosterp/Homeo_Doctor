@@ -1140,3 +1140,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     padding-left: 8px;
     padding-right: 8px;
 }
+
+.o_main_navbar > ul > li > a, .o_main_navbar > ul > li > a:hover, .o_main_navbar > ul > li > a:focus {
+	border-right: 1px solid !important;
+}

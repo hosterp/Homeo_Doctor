@@ -99,6 +99,7 @@ class AccountMove(models.Model):
                         'invoice_id': move.id,
                         'product_id': line.product_id.id,
                         'quantity': total_qty,
+                        'hsn': line.hsn,
                         'manf_date': line.manufacturing_date,
                         'exp_date': line.expiry_date,
                         'batch': line.batch,
@@ -145,6 +146,12 @@ class AccountMoveLine(models.Model):
     product_uom_category_id = fields.Many2one('uom.category', string="Category", required=True)
     supplier_rack=fields.Many2one('supplier.rack')
     reason_for_rejection=fields.Char('Reason For Rejection')
+
+    @api.onchange('product_id')
+    def _onchange_product_id_hsn(self):
+        for line in self:
+            if line.product_id and line.product_id.l10n_in_hsn_code:
+                line.hsn = line.product_id.l10n_in_hsn_code
 
     @api.depends('product_id')
     def _compute_stock_in_hand(self):
@@ -279,6 +286,7 @@ class StockEntry(models.Model):
     product_id = fields.Many2one('product.product', string="Product", required=True)
     quantity = fields.Float(string="Stock In Hand", required=True)
     manf_date=fields.Char(string='M.Date')
+    hsn=fields.Char(string='HSN')
     exp_date=fields.Char(string='Exp.date')
     rack=fields.Char(string='Rack Position')
     batch=fields.Char(string='Batch Number')

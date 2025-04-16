@@ -196,6 +196,7 @@ class PharmacyPrescriptionLine(models.Model):
                     line.manf_date = stock_entry.manf_date
                     line.exp_date = stock_entry.exp_date
                     line.rate = stock_entry.rate
+                    line.hsn = stock_entry.hsn
                     # line.uom_id = stock_entry.uom_id.id
 
     @api.depends('product_id')
