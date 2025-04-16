@@ -812,9 +812,9 @@
         <menuitem
                 id="menu_patient_list"
                 name="Patient List"
-                parent="menu_homeo_head"
+                parent="menu_lab_root"
                 action="action_patient_list"
-                sequence="1"/>
+                sequence="8"/>
 
 
     </data>
