@@ -443,6 +443,11 @@
                                             <field name="admitted_date" style="width:60%;"
                                                    attrs="{'required': [('admission_boolean', '=', True)]}"/>
                                         </div>
+                                        <button name="action_create_admission"
+                                                string="GO"
+                                                type="object"
+                                                class="btn btn-sm btn-primary"
+                                                title="Check Bed Availability"/>
                                     </div>
                                 </div>
                             </div>
@@ -507,11 +512,7 @@
                                                 <div class="col-md-9 field-container py-0">
                                                     <field name="transferred_bed_number"/>
                                                 </div>
-                                                <button name="action_create_admission"
-                                                        string="GO"
-                                                        type="object"
-                                                        class="btn btn-sm btn-primary"
-                                                        title="Check Bed Availability"/>
+
                                             </div>
                                         </div>
                                     </div>
