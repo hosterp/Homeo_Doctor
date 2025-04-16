@@ -499,7 +499,7 @@ class PatientRegistration(models.Model):
             referral = self.env['lab.referral'].create({
                 'doctor': doctor.id,
                 'user_ide': consultation.user_id.id,
-                'patient_id': consultation.reference_no,
+                # 'patient_id': consultation.reference_no,
                 'patient_name': consultation.patient_name,
                 'referral_type': 'lab',
             })
