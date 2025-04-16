@@ -70,6 +70,7 @@ class PatientRegistration(models.Model):
         compute='_compute_previous_consultations',
         store=False
     )
+    admitted=fields.Many2one('hospital.admitted.patient')
 
     referred_doctor_ids = fields.Many2many(
         'doctor.profile',

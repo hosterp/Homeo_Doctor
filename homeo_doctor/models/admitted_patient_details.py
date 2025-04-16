@@ -71,7 +71,7 @@ class AdmittedPatient(models.Model):
     previous_conditions = fields.Text(string="Previous Conditions", compute='_compute_previous_conditions')
 
     previous_consultation_ids = fields.One2many(
-        'patient.registration', 'patient_id',
+        'patient.registration', 'admitted',
         string='Previous Consultations',
         compute='_compute_previous_consultations',
         store=False  # You can make it stored if you want to cache the results
