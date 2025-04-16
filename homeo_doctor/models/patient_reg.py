@@ -681,7 +681,7 @@ class LabReferral(models.Model):
     doctor = fields.Many2one('doctor.profile', string='Doctor')
     user_ide = fields.Many2one('patient.reg', string="Patient", readonly=True)
     patient_id = fields.Many2one('patient.registration', string='Patient')
-    patient_name = fields.Char(related='patient_id.patient_name', string='Patient Name')
+    patient_name = fields.Char(related='user_ide.patient_id', string='Patient Name')
     lab_test = fields.Many2many('lab.department', string='Lab Department')
     test_type = fields.Many2many('lab.investigation', string='Investigation Name')
     test_names = fields.Text(string='Test Names')

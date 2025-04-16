@@ -33,7 +33,7 @@
                                                        class="col-md-5 col-form-label py-0 small text-nowrap">Token No
                                                 </label>
                                                 <div class="col-md-9 field-container py-0">
-                                                    <field name="token_no"/>
+                                                    <field name="token_no" readonly="1"/>
                                                 </div>
                                             </div>
                                         </div>
