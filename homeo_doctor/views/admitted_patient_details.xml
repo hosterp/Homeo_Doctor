@@ -71,7 +71,7 @@
                             </page>
                             <page string="Medical History">
                                 <!--                                <field name="previous_conditions"/>-->
-                                <field name="previous_consultation_admitted_ids">
+                                <field name="previous_consultation_ids">
                                     <tree editable="bottom">
                                         <field name="id" invisible="1"/>
                                         <field name="patient_id" invisible="1"/>
