@@ -84,6 +84,7 @@ class DoctorLabReport(models.Model):
         ('mri', 'MRI'),
         ('lab', 'Lab')
     ], string="Active Investigation Type", default='all')
+    admitted_patient_id = fields.Many2one('hospital.admitted.patient', string="Admitted Patient")
 
     def filter_xray_investigations(self):
         """Button action to filter X-Ray investigations"""

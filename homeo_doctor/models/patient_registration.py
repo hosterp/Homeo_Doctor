@@ -47,7 +47,7 @@ class PatientRegistration(models.Model):
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
     consultation_fee = fields.Integer(string='Consultation Fee', compute='_compute_consultation_fee', store=True)
     # prescription_line_ids = fields.One2many('pharmacy.prescription.line', 'admission_id', string="Prescriptions")
-    lab_report_reg_ids = fields.One2many('doctor.lab.report', 'user_ide', string="Lab")
+    lab_report_reg_ids = fields.One2many('lab.result.page', 'patient_re_id_name', string="Lab")
     mri_report_reg_ids = fields.One2many('scanning.mri', 'user_ide', string="MRI")
     ct_report_reg_ids = fields.One2many('scanning.ct', 'user_ide', string="CT")
     audiology_report_reg_ids = fields.One2many('audiology.ref', 'user_ide', string="Audiology")

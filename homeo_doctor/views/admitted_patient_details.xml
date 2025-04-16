@@ -63,9 +63,15 @@
                             </group>
                         </group>
                         <notebook>
+                            <page string="Treatment Plan">
+                                <field name="procedures_scheduled"/>
+                                <field name="treatment_description"/>
+                                <field name="daily_progress_notes"/>
+                                <field name="consultation_notes"/>
+                            </page>
                             <page string="Medical History">
                                 <!--                                <field name="previous_conditions"/>-->
-                                <field name="previous_consultation_ids">
+                                <field name="previous_consultation_admitted_ids">
                                     <tree editable="bottom">
                                         <field name="id" invisible="1"/>
                                         <field name="patient_id" invisible="1"/>
@@ -80,6 +86,17 @@
                                 <!--                                <field name="allergies"/>-->
                                 <!--                                <field name="test_results"/>-->
                             </page>
+
+                            <page string="Lab Reports" name="lab_reports">
+                                <field name="lab_report_reg_admitted_ids">
+                                    <tree>
+                                        <field name="bill_number" invisible="1"/>
+                                        <field name="test_on"/>
+                                        <field name="result_status"/>
+                                    </tree>
+                                </field>
+                            </page>
+
                             <page string="Current Diagnosis">
                                 <field name="current_diagnosis"/>
                             </page>
@@ -99,12 +116,7 @@
                             <page string="Allergies">
                                 <field name="allergies"/>
                             </page>
-                            <page string="Treatment Plan">
-                                <field name="procedures_scheduled"/>
-                                <field name="treatment_description"/>
-                                <field name="daily_progress_notes"/>
-                                <field name="consultation_notes"/>
-                            </page>
+
                             <page string="Billing Information">
                                 <field name="insurance_provider"/>
                                 <field name="insurance_policy_number"/>

@@ -1,163 +1,149 @@
 <odoo>
     <data>
         <template id="report_admitted_patient_details_pdf">
-            <t t-call="web.html_container">
+            <t t-call="web.external_layout">
                 <t t-foreach="docs" t-as="doc">
-                    <div class="page">
-                        <h2 style="text-align: center;">Patient Case Sheet</h2>
-                         <!-- Patient Information Section -->
-                        <h3>Patient Information</h3>
-                        <table class="table">
-                            <tr>
-                                <td><strong>Patient ID:</strong></td>
-                                <td><span t-field="doc.patient_id"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Name:</strong></td>
-                                <td><span t-field="doc.name"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Age:</strong></td>
-                                <td><span t-field="doc.age"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Gender:</strong></td>
-                                <td><span t-field="doc.gender"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Date of Birth:</strong></td>
-                                <td><span t-field="doc.dob"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Contact:</strong></td>
-                                <td><span t-field="doc.phone_number"/></td>
-                            </tr>
-                        </table>
+                    <main>
+                        <div class="page" style="font-size: 13px; color: #000;">
+                            <!-- Header -->
+                            <div style="text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 10px;">
+                                <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                     style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px;"/>
+                                <h1 style="font-size: 28px; font-weight: bold; color: #2c3e50; margin: 0;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL</h1>
+                                <p style="font-size: 14px; color: #555; margin: 5px 0;">EANIKKARA, KARAKULAM PO THIRUVANANTHAPURAM -695 564</p>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, 2374004 | dpmshospital@gmail.com</p>
+                                <h2 style="text-align: center; margin-top: 20px; text-decoration: underline;">Patient Case Sheet</h2>
+                            </div>
 
-                        <!-- Admission Details Section -->
-                        <h3>Admission Details</h3>
-                        <table class="table">
-                            <tr>
-                                <td><strong>Admission Date:</strong></td>
-                                <td><span t-field="doc.admission_date"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Room Number:</strong></td>
-                                <td><span t-field="doc.room_number"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Bed Number:</strong></td>
-                                <td><span t-field="doc.bed_number"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Admitting Doctor:</strong></td>
-                                <td><span t-field="doc.attending_doctor"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Attending Doctor:</strong></td>
-                                <td><span t-field="doc.attending_doctor"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Reason for Admission:</strong></td>
-                                <td><span t-field="doc.reason_for_admission"/></td>
-                            </tr>
-                        </table>
+                            <!-- Patient Information -->
+                            <h3 style="border-bottom: 1px solid #000; padding-bottom: 3px;">Patient Information</h3>
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                                <tr>
+                                    <td><strong>Patient ID:</strong> <span t-field="doc.patient_id"/></td>
+                                    <td><strong>Name:</strong> <span t-field="doc.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Age:</strong> <span t-field="doc.age"/></td>
+                                    <td><strong>Gender:</strong> <span t-field="doc.gender"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Date of Birth:</strong> <span t-field="doc.dob"/></td>
+                                    <td><strong>Contact:</strong> <span t-field="doc.phone_number"/></td>
+                                </tr>
+                            </table>
 
-                        <!-- Medical History Section -->
-                        <h3>Medical History</h3>
-                        <table class="table">
-                            <tr>
-                                <td><strong>Previous Conditions:</strong></td>
-                                <td><span t-field="doc.previous_conditions"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Current Diagnosis:</strong></td>
-                                <td><span t-field="doc.current_diagnosis"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Medications Prescribed:</strong></td>
-                                <td><span t-field="doc.medications_prescribed"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Allergies:</strong></td>
-                                <td><span t-field="doc.allergies"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Test Results:</strong></td>
-                                <td><span t-field="doc.test_results"/></td>
-                            </tr>
-                        </table>
+                            <!-- Admission Details -->
+                            <h3 style="border-bottom: 1px solid #000;">Admission Details</h3>
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                                <tr>
+                                    <td><strong>Admission Date:</strong> <span t-field="doc.admission_date"/></td>
+                                    <td><strong>Room Number:</strong> <span t-field="doc.room_number"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Bed Number:</strong> <span t-field="doc.bed_number"/></td>
+                                    <td><strong>Admitting Doctor:</strong> <span t-field="doc.attending_doctor"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><strong>Reason for Admission:</strong> <span t-field="doc.reason_for_admission"/></td>
+                                </tr>
+                            </table>
 
-                        <!-- Treatment Plan Section -->
-                        <h3>Treatment Plan</h3>
-                        <table class="table">
-                            <tr>
-                                <td><strong>Scheduled Procedures:</strong></td>
-                                <td><span t-field="doc.procedures_scheduled"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Treatment Description:</strong></td>
-                                <td><span t-field="doc.treatment_description"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Daily Progress Notes:</strong></td>
-                                <td><span t-field="doc.daily_progress_notes"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Consultation Notes:</strong></td>
-                                <td><span t-field="doc.consultation_notes"/></td>
-                            </tr>
-                        </table>
+                            <!-- Medical History -->
+                            <h3 style="border-bottom: 1px solid #000;">Medical History</h3>
+                            <p><strong>Previous Consultations:</strong></p>
+                            <table style="width:100%; border: 1px solid #000; border-collapse: collapse; margin-bottom: 10px;">
+                                <thead>
+                                    <tr style="background-color: #f0f0f0;">
+                                        <th style="border: 1px solid #000; padding: 5px;">Date</th>
+                                        <th style="border: 1px solid #000; padding: 5px;">Doctor</th>
+<!--                                        <th style="border: 1px solid #000; padding: 5px;">Notes</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.previous_consultation_admitted_ids" t-as="consult">
+                                        <tr>
+                                            <td style="border: 1px solid #000; padding: 5px;"><span t-field="consult.appointment_date"/></td>
+                                            <td style="border: 1px solid #000; padding: 5px;"><span t-field="consult.doctor_id"/></td>
+<!--                                            <td style="border: 1px solid #000; padding: 5px;"><span t-field="consult.notes"/></td>-->
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
 
-                        <!-- Billing Information Section -->
-                        <h3>Billing Information</h3>
-                        <table class="table">
-                            <tr>
-                                <td><strong>Insurance Provider:</strong></td>
-                                <td><span t-field="doc.insurance_provider"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Insurance Policy Number:</strong></td>
-                                <td><span t-field="doc.insurance_policy_number"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Advance Payment:</strong></td>
-                                <td><span t-field="doc.advance_payment"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Billing Summary:</strong></td>
-                                <td><span t-field="doc.billing_summary"/></td>
-                            </tr>
-                        </table>
+                            <p><strong>Current Diagnosis:</strong> <span t-field="doc.current_diagnosis"/></p>
 
-                        <!-- Discharge Details Section -->
-                        <h3>Discharge Details</h3>
-                        <table class="table">
-                            <tr>
-                                <td><strong>Discharge Date:</strong></td>
-                                <td><span t-field="doc.discharge_date"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Final Diagnosis:</strong></td>
-                                <td><span t-field="doc.final_diagnosis"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Discharge Prescriptions:</strong></td>
-                                <td><span t-field="doc.discharge_prescriptions"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Follow-up Instructions:</strong></td>
-                                <td><span t-field="doc.follow_up_instructions"/></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Summary Report:</strong></td>
-                                <td><span t-field="doc.summary_report"/></td>
-                            </tr>
-                        </table>
-                    </div>
+                            <p><strong>Medications Prescribed:</strong></p>
+                            <table style="width:100%; border: 1px solid #000; border-collapse: collapse; margin-bottom: 10px;">
+                                <thead>
+                                    <tr style="background-color: #f0f0f0;">
+                                        <th style="border: 1px solid #000; padding: 5px;">Medicine</th>
+<!--                                        <th style="border: 1px solid #000; padding: 5px;">Dosage</th>-->
+<!--                                        <th style="border: 1px solid #000; padding: 5px;">Frequency</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.past_prescription_ids" t-as="med">
+                                        <tr>
+                                            <td style="border: 1px solid #000; padding: 5px;"><span t-field="med.product_id"/></td>
+<!--                                            <td style="border: 1px solid #000; padding: 5px;"><span t-field="med.dosage"/></td>-->
+<!--                                            <td style="border: 1px solid #000; padding: 5px;"><span t-field="med.frequency"/></td>-->
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <p><strong>Allergies:</strong> <span t-field="doc.allergies"/></p>
+                            <p><strong>Test Results:</strong> <span t-field="doc.test_results"/></p>
+
+                            <!-- Treatment Plan -->
+                            <h3 style="border-bottom: 1px solid #000;">Treatment Plan</h3>
+                            <p><strong>Scheduled Procedures:</strong> <span t-field="doc.procedures_scheduled"/></p>
+                            <p><strong>Treatment Description:</strong> <span t-field="doc.treatment_description"/></p>
+                            <p><strong>Daily Progress Notes:</strong> <span t-field="doc.daily_progress_notes"/></p>
+                            <p><strong>Consultation Notes:</strong> <span t-field="doc.consultation_notes"/></p>
+
+                            <!-- Billing Information -->
+                            <h3 style="border-bottom: 1px solid #000;">Billing Information</h3>
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                                <tr>
+                                    <td><strong>Insurance Provider:</strong> <span t-field="doc.insurance_provider"/></td>
+                                    <td><strong>Policy Number:</strong> <span t-field="doc.insurance_policy_number"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Advance Payment:</strong> <span t-field="doc.advance_payment"/></td>
+                                    <td><strong>Billing Summary:</strong> <span t-field="doc.billing_summary"/></td>
+                                </tr>
+                            </table>
+
+                            <!-- Discharge Details -->
+                            <h3 style="border-bottom: 1px solid #000;">Discharge Details</h3>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td><strong>Discharge Date:</strong> <span t-field="doc.discharge_date"/></td>
+                                    <td><strong>Final Diagnosis:</strong> <span t-field="doc.final_diagnosis"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><strong>Discharge Prescriptions:</strong> <span t-field="doc.discharge_prescriptions"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><strong>Follow-up Instructions:</strong> <span t-field="doc.follow_up_instructions"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><strong>Summary Report:</strong> <span t-field="doc.summary_report"/></td>
+                                </tr>
+                            </table>
+
+                            <!-- Footer -->
+                            <div style="margin-top: 20px; text-align: right; font-size: 11px;">
+                                <p>Doctor's Signature: ________________________</p>
+                            </div>
+                        </div>
+                    </main>
                 </t>
             </t>
         </template>
+
+        <!-- Report Action -->
         <record id="action_admitted_patient_report" model="ir.actions.report">
             <field name="name">Admitted Patient Details</field>
             <field name="model">hospital.admitted.patient</field>

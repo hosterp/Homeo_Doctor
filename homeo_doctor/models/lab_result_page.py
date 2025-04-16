@@ -34,15 +34,55 @@ class LabResultPage(models.Model):
         ('pending', 'Result Pending'),
         ('result_ready', 'Result Ready'),
     ], string="Status", default="pending", tracking=True)
-    patient_id_name = fields.Many2one('patient.registration', string="Patient")
+    patient_id_name = fields.Many2one('patient.registration', string="Patient", ondelete='cascade')
+    patient_re_id_name = fields.Many2one('patient.reg', string="Patient", ondelete='cascade')
+    patient_id_admitted = fields.Many2one(
+        'hospital.admitted.patient',
+        string="Admitted Patient",
+        ondelete='cascade'
+    )
+
+
 
     @api.model
     def create(self, vals):
+        # Ensure the bill_number is in the vals
         if vals.get('bill_number'):
             bill = self.env['doctor.lab.report'].browse(vals['bill_number'])
-            if bill and bill.patient_id:
-                vals['patient_id_name'] = bill.patient_id.id 
-        return super(LabResultPage, self).create(vals)
+            if bill:
+                # Assigning patient_id_name and patient_re_id_name from bill
+                if bill.patient_id:
+                    vals['patient_id_name'] = bill.patient_id.id
+                if bill.user_ide:
+                    vals['patient_re_id_name'] = bill.user_ide.id
+                    print('patientreg note................................................................')
+
+
+                    latest_patient = self.env['hospital.admitted.patient'].search([
+                        ('patient_id', '=', bill.patient_id.id),
+                    ], order='admission_date desc', limit=1)
+
+
+                    if latest_patient:
+                        vals['patient_id_admitted'] = latest_patient.id
+                        print("Latest Admitted Patient ID: ", latest_patient.id)
+
+        # Debugging: Print final vals before creating record
+        print("Final vals before create:", vals)
+
+        # Call the super method to create the record
+        record = super(LabResultPage, self).create(vals)
+        print("Created LabResultPage record with patient_id_admitted: ", record.patient_id_admitted)
+
+        return record
+
+    # @api.model
+    # def create(self, vals):
+    #     if vals.get('bill_number'):
+    #         bill = self.env['doctor.lab.report'].browse(vals['bill_number'])
+    #         if bill and bill.patient_id:
+    #             vals['patient_id_admitted'] = bill.patient_id.id
+    #     return super(LabResultPage, self).create(vals)
 
     def action_sample_collected(self):
         """Change status to 'Sample Collected' and update billing."""

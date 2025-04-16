@@ -70,16 +70,16 @@ class AdmittedPatient(models.Model):
 
     previous_conditions = fields.Text(string="Previous Conditions", compute='_compute_previous_conditions')
 
-    previous_consultation_ids = fields.One2many(
-        'patient.registration', 'patient_id',
+    previous_consultation_admitted_ids = fields.One2many(
+        'patient.registration', 'admitted_id',
         string='Previous Consultations',
         compute='_compute_previous_consultations',
-        store=False  # You can make it stored if you want to cache the results
+        store=False
     )
     past_prescription_ids = fields.One2many(
         'prescription.entry.lines', compute='_compute_past_prescriptions', string="Past Prescriptions"
     )
-
+    lab_report_reg_admitted_ids = fields.One2many('lab.result.page', 'patient_id_admitted', string="Lab")
     def action_discharged(self):
         for record in self:
             record.status = 'discharged'
@@ -103,10 +103,10 @@ class AdmittedPatient(models.Model):
                     ('patient_id', '=', record.patient_id.id),
                     ('id', '!=', record.id)  # Ensure the current record is excluded
                 ])
-                record.previous_consultation_ids = previous_consultations
+                record.previous_consultation_admitted_ids = previous_consultations
             else:
                 # For unsaved records, set to False or an empty record set
-                record.previous_consultation_ids = False
+                record.previous_consultation_admitted_ids = False
 
     def get_previous_medical_history(self):
         history = ''
