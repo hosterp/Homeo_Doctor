@@ -81,7 +81,7 @@ class PatientRegistration(models.Model):
     block = fields.Many2one('block',string='Block')
     new_block =fields.Many2one('hospital.block',string='Block')
     room_id = fields.Many2one('hospital.room', string="Room")
-    room_number = fields.Char("Room No")
+    room_number = fields.Many2one('hospital.room', string="Room")
     room_transfer_date = fields.Datetime(string="Transfer Date")
     transferred_block = fields.Many2one('block',string='Block')
     transferred_room_category = fields.Many2one('room.category', string='Room Category')
@@ -158,7 +158,7 @@ class PatientRegistration(models.Model):
                 'admission_date': fields.Datetime.now(),
                 'room_number': rec.room_number,
                 'room_category_new': rec.room_category_new.id,
-                'bed_number': rec.bed_id.id,
+                'bed_id': rec.bed_id.id,
                 'attending_doctor': rec.doctor.id,
             })
         return {
