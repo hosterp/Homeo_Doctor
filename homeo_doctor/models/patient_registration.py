@@ -158,7 +158,7 @@ class PatientRegistration(models.Model):
                 'admission_date': fields.Datetime.now(),
                 'room_number': rec.room_number,
                 'room_category_new': rec.room_category_new.id,
-                'bed_number': rec.bed_id.id,
+                'bed_id': rec.bed_id.id,
                 'attending_doctor': rec.doctor.id,
             })
         return {
