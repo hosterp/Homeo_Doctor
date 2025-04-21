@@ -57,9 +57,12 @@ class PatientRegistration(models.Model):
     bystander_mobile = fields.Char(string="Bystander Mobile No")
     bystander_relation = fields.Char(string="Relation")
     bystander_email = fields.Char(string="Email ID")
-    room_category = fields.Many2one('room.category', string='Room Category')
+    room_category = fields.Many2one('hospital.room', string='Room Category')
+    room_id = fields.Many2one('hospital.room', string="Room")
+
+    bed_id = fields.Many2one('hospital.bed', string="Bed",)
     advance_amount = fields.Integer(string='Per Day')
-    bed_number = fields.Integer(string='Bed Number')
+    # bed_id = fields.Many2one('hospital.bed', string='Bed')
     nurse_charge = fields.Integer(string='Nurse Fee')
     alternate_no = fields.Char(string='Alternate Number')
     no_days = fields.Integer(string='Number Of Days', compute='_compute_no_days', store=True)
@@ -75,7 +78,8 @@ class PatientRegistration(models.Model):
     op_category = fields.Many2one('op.category', string='OP Category')
     doctor = fields.Many2one('doctor.profile', string='Doctor')
     block = fields.Many2one('block',string='Block')
-    room_number = fields.Integer(string="Room No")
+    room_id = fields.Many2one('hospital.room', string="Room")
+    room_number = fields.Char(related='room_category.room_number')
     room_transfer_date = fields.Datetime(string="Transfer Date")
     transferred_block = fields.Many2one('block',string='Block')
     transferred_room_category = fields.Many2one('room.category', string='Room Category')
@@ -88,7 +92,17 @@ class PatientRegistration(models.Model):
                                 ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
     advance_remark = fields.Text(string="Remarks")
     advance_date = fields.Datetime(string="Date")
+    available_room_ids = fields.Many2many(
+        'hospital.room',
+        string="Available Rooms",
+        compute='_compute_available_room_ids'
+    )
 
+    @api.depends('room_category')
+    def _compute_available_room_ids(self):
+        for rec in self:
+            domain = [('room_type', '=', rec.room_category), ('is_available', '=', True)]
+            rec.available_room_ids = self.env['hospital.room'].search(domain)
 
     # payment_method = fields.Selection([
     # ('cash', 'Cash'),
@@ -127,7 +141,7 @@ class PatientRegistration(models.Model):
                 'admission_date': fields.Datetime.now(),
                 'room_number': rec.room_number,
                 'room_category': rec.room_category.id,
-                'bed_number': rec.bed_number,
+                'bed_number': rec.bed_id.id,
                 'attending_doctor': rec.doctor.id,
             })
         return {
@@ -238,15 +252,15 @@ class PatientRegistration(models.Model):
             else:
                 record.age = 0
 
-    @api.onchange('room_category')
-    def onchange_advance_amount(self):
-        for i in self:
-            if i.room_category:
-                i.advance_amount = i.room_category.advance_amount
-                i.nurse_charge = i.room_category.nursing_fee
-
-            else:
-                pass
+    # @api.onchange('room_category')
+    # def onchange_advance_amount(self):
+    #     for i in self:
+    #         if i.room_category:
+    #             i.advance_amount = i.room_category.advance_amount
+    #             i.nurse_charge = i.room_category.nursing_fee
+    #
+    #         else:
+    #             pass
 
     @api.depends('doc_name')
     def _compute_consultation_fee(self):

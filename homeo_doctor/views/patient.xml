@@ -427,10 +427,10 @@
                                 </div>
                                 <div class="col-md-2 px-1">
                                     <div class="form-group row my-1">
-                                        <label for="bed_number" class="col-md-4 col-form-label py-0 text-nowrap">Bed#
+                                        <label for="bed_id" class="col-md-4 col-form-label py-0 text-nowrap">Bed#
                                         </label>
                                         <div class="col-md-9 field-container py-0">
-                                            <field name="bed_number"/>
+                                            <field name="bed_id"/>
                                         </div>
                                     </div>
                                 </div>

@@ -20,7 +20,8 @@ class AdmittedPatient(models.Model):
     emergency_contact_phone = fields.Char(string="Emergency Contact Phone")
     emergency_contact_relation = fields.Char(string="Relationship to Patient")
 
-
+    bed_id = fields.Many2one('hospital.bed')
+    room_id = fields.Many2one(related='bed_id.room_id', store=True)
     admission_date = fields.Datetime(string="Admission Date", required=True, default=fields.Datetime.now)
     room_number = fields.Char(string="Room Number")
     bed_number = fields.Char(string="Bed Number")

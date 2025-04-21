@@ -27,3 +27,4 @@ from .import general_department
 from .import general_dept_costing
 from .import general_billing
 from .import lab_result_page
+from .import room_config
