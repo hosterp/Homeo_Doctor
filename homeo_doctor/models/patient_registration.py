@@ -57,7 +57,8 @@ class PatientRegistration(models.Model):
     bystander_mobile = fields.Char(string="Bystander Mobile No")
     bystander_relation = fields.Char(string="Relation")
     bystander_email = fields.Char(string="Email ID")
-    room_category = fields.Many2one('hospital.room', string='Room Category')
+    room_category = fields.Many2one('room.category', string='Room Category')
+    room_category_new = fields.Many2one('hospital.room', string='Room Category')
     room_id = fields.Many2one('hospital.room', string="Room")
 
     bed_id = fields.Many2one('hospital.bed', string="Bed",)
@@ -91,6 +92,12 @@ class PatientRegistration(models.Model):
                                 ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
     advance_remark = fields.Text(string="Remarks")
     advance_date = fields.Datetime(string="Date")
+    admission_total_amount = fields.Integer(string="Total Amount")
+    admission_amount_paid = fields.Integer(string="Amount Paid")
+    admission_balance = fields.Integer(string="Balance")
+    Staff_name = fields.Char("Staff Name")
+    staff_password = fields.Char("Password")
+
 
 
     # payment_method = fields.Selection([

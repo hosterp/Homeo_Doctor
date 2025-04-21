@@ -411,11 +411,11 @@
                             </div>
                             <div class="col px-1" style="max-width: 20%;">
                                 <div class="form-group row my-1">
-                                    <label for="room_category" class="col-md-4 col-form-label py-0 text-nowrap">
+                                    <label for="room_category_new" class="col-md-4 col-form-label py-0 text-nowrap">
                                         Room
                                     </label>
                                     <div class="col-md-8 field-container py-0">
-                                        <field name="room_category"/>
+                                        <field name="room_category_new"/>
                                     </div>
                                 </div>
                             </div>
@@ -884,6 +884,7 @@
                 id="menu_patient_root"
                 name="Patient Management"
                 sequence="10"/>
+        <menuitem id="menu_lab_root" name="Master" parent="menu_homeo_head" sequence="11"/>
 
         <menuitem
                 id="menu_patient_list"
