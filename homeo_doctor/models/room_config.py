@@ -3,7 +3,7 @@ from odoo import models, fields, api
 class HospitalRoom(models.Model):
     _name = 'hospital.room'
     _description = 'Hospital Room'
-    _rec_name='room_type_new'
+    _rec_name='room_number'
 
 
     room_number = fields.Char(string="Room Number")
