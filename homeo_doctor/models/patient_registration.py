@@ -100,6 +100,21 @@ class PatientRegistration(models.Model):
     Staff_name = fields.Char("Staff Name")
     staff_password = fields.Char("Password")
 
+    @api.onchange('amount_in_advance')
+    def _onchage_amount_advance(self):
+        for rec in self:
+            rec.admission_total_amount = rec.amount_in_advance
+
+    @api.onchange('admission_amount_paid')
+    def _onchage_amount_paid(self):
+        for rec in self:
+            if (rec.admission_amount_paid < rec.admission_total_amount and rec.admission_amount_paid > 0):
+                rec.admission_balance = rec.admission_total_amount - rec.admission_amount_paid
+            elif (rec.admission_amount_paid > rec.admission_total_amount and rec.admission_amount_paid > 0):
+                rec.admission_balance = rec.admission_amount_paid - rec.admission_total_amount
+            else:
+                rec.admission_balance = 0
+
     @api.depends('room_category')
     def _compute_available_room_ids(self):
         for rec in self:
