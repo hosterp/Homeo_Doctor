@@ -69,6 +69,9 @@
         "views/general_billing.xml",
         "views/general_billing.xml",
         "views/lab_result_page.xml",
+        "views/room_config.xml",
+        "views/hospital_block.xml",
+        "views/hospital_room_type.xml",
         "data/ir_sequence_data.xml",
 
     ],

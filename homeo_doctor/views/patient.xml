@@ -421,11 +421,11 @@
                             </div>
                             <div class="col px-1" style="max-width: 20%;">
                                 <div class="form-group row my-1">
-                                    <label for="room_number" class="col-md-4 col-form-label py-0 text-nowrap">
+                                    <label for="room_id" class="col-md-4 col-form-label py-0 text-nowrap">
                                         Room#
                                     </label>
                                     <div class="col-md-8 field-container py-0">
-                                        <field name="room_number"/>
+                                        <field name="room_id"/>
                                     </div>
                                 </div>
                             </div>
@@ -437,10 +437,10 @@
                         <div class="row mx-n1">
                             <div class="col px-1" style="max-width: 20%;">
                                 <div class="form-group row my-1">
-                                    <label for="bed_number" class="col-md-4 col-form-label py-0 text-nowrap">Bed#
+                                    <label for="bed_id" class="col-md-4 col-form-label py-0 text-nowrap">Bed#
                                     </label>
                                     <div class="col-md-8 field-container py-0">
-                                        <field name="bed_number"/>
+                                        <field name="bed_id"/>
                                     </div>
                                 </div>
                             </div>
