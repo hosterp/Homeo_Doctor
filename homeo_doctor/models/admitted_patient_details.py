@@ -64,7 +64,7 @@ class AdmittedPatient(models.Model):
     discharge_prescriptions = fields.Text(string="Discharge Prescriptions")
     follow_up_instructions = fields.Text(string="Follow-Up Instructions")
     summary_report = fields.Text(string="Summary Report")
-    room_category = fields.Many2one('room.category', string='Room Category')
+    room_category = fields.Many2one('hospital.room.type', string='Room Category')
     advance_amount = fields.Integer(string='Advance Amount')
     status=fields.Selection([('admitted','Admitted'),('discharged','Discharged')],default='admitted')
     consultation_id = fields.Many2one('patient.registration', string="Consultation Reference")
