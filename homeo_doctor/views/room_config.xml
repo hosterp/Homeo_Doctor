@@ -28,32 +28,33 @@
                             <group>
                                 <field name="room_number"/>
                                 <field name="rent_half"/>
-                                <field name="service_charge"/>
-                                <field name="bed_count"/>
+                                <field name="service_charge" invisible="1"/>
+                                <field name="bed_count" invisible="1"/>
                                 <!--                                <field name="occupied_beds" readonly="1"/>-->
                                 <!--                                <field name="is_available" readonly="1"/>-->
                             </group>
                             <group>
                                 <field name="block_new"/>
                                 <field name="rent_full"/>
-                                <field name="extesion_no"/>
-                                 <field name="tax"/>
+                                <field name="extesion_no" invisible="1"/>
+                                <field name="tax" invisible="1"/>
                                 <!--                                <field name="available_rooms" readonly="1"/>-->
                                 <!--                                <field name="block"/>-->
 
                             </group>
                             <group>
                                 <field name="room_type_new"/>
-                                <field name="room_status"/>
+                                <field name="room_status" invisible="1"/>
                                 <field name="description"/>
+                                <field name="advance_amount" invisible="1"/>
 
 
                             </group>
                             <group>
 
                                 <field name="bed_number"/>
-                                <field name="advance_amount"/>
-                                <field name="nurse_fee"/>
+
+                                <field name="nurse_fee" invisible="1"/>
                             </group>
 
                         </group>
