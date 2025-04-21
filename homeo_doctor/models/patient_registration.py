@@ -79,8 +79,9 @@ class PatientRegistration(models.Model):
     op_category = fields.Many2one('op.category', string='OP Category')
     doctor = fields.Many2one('doctor.profile', string='Doctor')
     block = fields.Many2one('block',string='Block')
+    new_block =fields.Many2one('hospital.block',string='Block')
     room_id = fields.Many2one('hospital.room', string="Room")
-    room_number = fields.Char(related='room_category.room_number')
+    room_number = fields.Char("Room No")
     room_transfer_date = fields.Datetime(string="Transfer Date")
     transferred_block = fields.Many2one('block',string='Block')
     transferred_room_category = fields.Many2one('room.category', string='Room Category')
@@ -93,11 +94,11 @@ class PatientRegistration(models.Model):
                                 ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
     advance_remark = fields.Text(string="Remarks")
     advance_date = fields.Datetime(string="Date")
-    available_room_ids = fields.Many2many(
-        'hospital.room',
-        string="Available Rooms",
-        compute='_compute_available_room_ids'
-    )
+    admission_total_amount = fields.Integer(string="Total Amount")
+    admission_amount_paid = fields.Integer(string="Amount Paid")
+    admission_balance = fields.Integer(string="Balance")
+    Staff_name = fields.Char("Staff Name")
+    staff_password = fields.Char("Password")
 
     @api.depends('room_category')
     def _compute_available_room_ids(self):

@@ -7,7 +7,7 @@ from datetime import datetime
 
 from datetime import datetime
 
-from odoo.odoo.exceptions import UserError
+# from odoo.odoo.exceptions import UserError
 
 
 # from odoo.odoo.exceptions import UserError
