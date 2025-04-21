@@ -6,6 +6,10 @@ from datetime import datetime
 # from odoo.odoo.tools.safe_eval import dateutil
 
 from datetime import datetime
+
+from odoo.odoo.exceptions import UserError
+
+
 # from odoo.odoo.exceptions import UserError
 
 
@@ -72,7 +76,34 @@ class GeneralBilling(models.Model):
             # Calculate net amount (payable amount after discount)
             self.net_amount = self.total_amount - self.discount_amount
 
+    def action_create_admission(self):
+        admission_model = self.env['hospital.admitted.patient']
+        admitted_any = False
 
+        for rec in self:
+            if not rec.mrd_no:
+                continue  # Skip this record if UHID is missing
+
+            admission_model.create({
+                'patient_id': rec.mrd_no.id,
+                'admission_date': fields.Datetime.now(),
+                'attending_doctor': rec.doctor.id,
+            })
+            admitted_any = True
+
+        if not admitted_any:
+            raise UserError("No valid billing records with UHID found for admission.")
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Success',
+                'message': 'Admission created successfully.',
+                'sticky': False,
+                'type': 'success',
+            }
+        }
 
     @api.onchange('amount_paid')
     def onchange_amount_paid(self):
