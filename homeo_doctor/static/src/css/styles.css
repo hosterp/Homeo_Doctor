@@ -748,12 +748,23 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 	border-color: black !important;
 	border-style: groove !important;
 }
+.custom_admission_row{
+	border-color: black !important;
+	border-style: groove !important;
+    white-space: nowrap !important;
+}
+.admission_form{
+
+	border-color: black !important;
+	border-style: groove !important;
+}
 .custom_lab_row {
     display: flex !important;
 	border-color: black !important;
 	border-style: groove !important;
 	margin-left: 2%;
 }
+
 
 .narrow_tax_column {
     width: 80px !important;
