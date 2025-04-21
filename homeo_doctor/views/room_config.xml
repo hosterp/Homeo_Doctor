@@ -13,7 +13,6 @@
                     <field name="bed_count"/>
                     <field name="occupied_beds"/>
                     <field name="available_rooms"/>
-                    <field name="is_available" widget="boolean_toggle"/>
                 </tree>
             </field>
         </record>
@@ -31,7 +30,7 @@
                                 <field name="rent_half"/>
                                 <field name="service_charge"/>
                                 <field name="occupied_beds" readonly="1"/>
-
+                                <field name="is_available" readonly="1"/>
                             </group>
                             <group>
                                 <field name="block_new"/>
@@ -49,10 +48,12 @@
 
                             </group>
                             <group>
+
+                                <field name="bed_number"/>
                                 <field name="advance_amount"/>
                                 <field name="nurse_fee"/>
                                 <field name="tax"/>
-                                <field name="is_available" readonly="1"/>
+
                             </group>
 
                         </group>
