@@ -79,7 +79,14 @@ class AdmittedPatient(models.Model):
     past_prescription_ids = fields.One2many(
         'prescription.entry.lines', compute='_compute_past_prescriptions', string="Past Prescriptions"
     )
-    lab_report_reg_admitted_ids = fields.One2many('lab.result.page', 'patient_id_admitted', string="Lab")
+    lab_report_reg_admitted_ids = fields.One2many('lab.result.page', compute='_compute_lab_reports', string="Lab")
+
+    @api.depends('patient_id')
+    def _compute_lab_reports(self):
+        for record in self:
+            record.lab_report_reg_admitted_ids = self.env['lab.result.page'].search([
+                ('patient_id', '=', record.patient_id.id)
+            ])
     def action_discharged(self):
         for record in self:
             record.status = 'discharged'
