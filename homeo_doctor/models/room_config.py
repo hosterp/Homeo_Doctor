@@ -48,6 +48,7 @@ class HospitalRoom(models.Model):
 class HospitalBed(models.Model):
     _name = 'hospital.bed'
     _description = 'Hospital Bed'
+    _rec_name='bed_number'
 
 
     bed_number = fields.Char()
