@@ -3,16 +3,23 @@ from odoo import models, fields, api
 class HospitalRoom(models.Model):
     _name = 'hospital.room'
     _description = 'Hospital Room'
-    _rec_name = 'room_type'
+    _rec_name='room_type_new'
+
 
     room_number = fields.Char(string="Room Number")
-    room_type = fields.Selection([
-        ('ac', 'AC'),
-        ('non_ac', 'Non AC'),
-        ('ward', 'Ward')
-    ], string="Room Type")
+    # room_type = fields.Many2one('hospital.room.type', string="Room Type", ondelete='restrict')
+    block_new=fields.Many2one('hospital.block',string='Block')
+    room_type_new = fields.Many2one('hospital.room.type', string="Room Type", ondelete='restrict')
     advance_amount = fields.Float(string="Advance Amount")
     bed_count = fields.Integer(string="Total Beds")
+    rent_half=fields.Char(string='Rent Half Day')
+    rent_full=fields.Char(string='Rent Full')
+    nurse_fee=fields.Integer(string='Nursing Charge')
+    service_charge=fields.Integer(string='Service Charge')
+    extesion_no=fields.Integer(string='Extension No')
+    description=fields.Text(string='Description')
+    tax=fields.Selection([('no','No'),('yes','YES')],default='no')
+    room_status=fields.Selection([('available','Available'),('blocked','Blocked'),('occupied','Occupied'),('repair','Repair'),('cleaning','Cleaning')])
     occupied_beds = fields.Integer(string="Occupied Beds", compute="_compute_occupied_beds", store=True)
     is_available = fields.Boolean(string="Is Available", compute="_compute_is_available", store=True)
     bed_ids = fields.One2many('hospital.bed', 'room_id', string="Beds")
@@ -40,10 +47,10 @@ class HospitalRoom(models.Model):
 class HospitalBed(models.Model):
     _name = 'hospital.bed'
     _description = 'Hospital Bed'
-    _rec_number='room_id'
+
 
     bed_number = fields.Char()
-    room_id = fields.Many2one('hospital.room', string="Room")
+    room_id = fields.Many2one('hospital.room', string="Room", ondelete='cascade')
     is_occupied = fields.Boolean(compute='_compute_is_occupied', store=True)
     admission_ids = fields.One2many('patient.reg', 'bed_id', string="Admissions")
 
@@ -54,15 +61,15 @@ class HospitalBed(models.Model):
 
 
 
-class HospitakBlock(models.Model):
+class HospitalBlock(models.Model):
     _name='hospital.block'
     _rec_name='block_name'
 
     block_name=fields.Char(string='Block Name')
 
 
-class HospitakRoomType(models.Model):
+class HospitalRoomType(models.Model):
     _name='hospital.room.type'
     _rec_name='room_type'
 
-    room_type=fields.Char(string='Room Type')
+    room_type=fields.Char(string='Block Name')

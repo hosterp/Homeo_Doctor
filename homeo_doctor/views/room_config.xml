@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <tree string="Hospital Rooms">
                     <field name="room_number"/>
-                    <field name="room_type"/>
+                    <field name="room_type_new"/>
                     <field name="advance_amount"/>
                     <field name="bed_count"/>
                     <field name="occupied_beds"/>
@@ -25,14 +25,36 @@
             <field name="arch" type="xml">
                 <form string="Hospital Room">
                     <sheet>
-                        <group>
-                            <field name="room_number"/>
-                            <field name="room_type"/>
-                            <field name="advance_amount"/>
-                            <field name="bed_count"/>
-                            <field name="occupied_beds" readonly="1"/>
-                            <field name="available_rooms" readonly="1"/>
-                            <field name="is_available" readonly="1"/>
+                        <group col="4">
+                            <group>
+                                <field name="room_number"/>
+                                <field name="rent_half"/>
+                                <field name="service_charge"/>
+                                <field name="occupied_beds" readonly="1"/>
+
+                            </group>
+                            <group>
+                                <field name="block_new"/>
+                                <field name="rent_full"/>
+                                <field name="extesion_no"/>
+                                <field name="available_rooms" readonly="1"/>
+                                <!--                                <field name="block"/>-->
+
+                            </group>
+                            <group>
+                                <field name="room_type_new"/>
+                                <field name="room_status"/>
+                                <field name="description"/>
+                                <field name="bed_count"/>
+
+                            </group>
+                            <group>
+                                <field name="advance_amount"/>
+                                <field name="nurse_fee"/>
+                                <field name="tax"/>
+                                <field name="is_available" readonly="1"/>
+                            </group>
+
                         </group>
                     </sheet>
                 </form>
@@ -62,21 +84,13 @@
             <field name="arch" type="xml">
                 <form string="Admit Patient">
                     <sheet>
-                        <group col="4">
-                            <group>
-                                <field name="name"/>
-                                <field name="bed_id"/>
-                            </group>
-                            <group>
-                                <field name="room_id" readonly="1"/>
-                                <field name="admission_date"/>
-                            </group>
-                            <group>
-                                <field name="discharge_date"/>
-                            </group>
-                            <group>
-                                 <field name="status"/>
-                            </group>
+                        <group>
+                            <field name="name"/>
+                            <field name="bed_id"/>
+                            <field name="room_id" readonly="1"/>
+                            <field name="admission_date"/>
+                            <field name="discharge_date"/>
+                            <field name="status"/>
                         </group>
                     </sheet>
                 </form>
