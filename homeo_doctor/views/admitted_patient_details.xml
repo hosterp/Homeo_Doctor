@@ -51,7 +51,7 @@
                                 <field name="attending_doctor"/>
                             </group>
                             <group>
-                                <field name="room_category"/>
+                                <field name="room_category_new"/>
                                 <field name="room_id" invisible="1"/>
                                 <field name="advance_amount"/>
                                 <field name="admission_status"/>
