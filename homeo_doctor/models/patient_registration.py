@@ -80,10 +80,9 @@ class PatientRegistration(models.Model):
     doctor = fields.Many2one('doctor.profile', string='Doctor')
     block = fields.Many2one('block',string='Block')
     new_block =fields.Many2one('hospital.block',string='Block')
-    room_id = fields.Many2one('hospital.room', string="Room")
     room_number = fields.Many2one('hospital.room', string="Room")
     room_transfer_date = fields.Datetime(string="Transfer Date")
-    transferred_block = fields.Many2one('block',string='Block')
+    transferred_block = fields.Many2one('block',string='Floor')
     transferred_room_category = fields.Many2one('room.category', string='Room Category')
     transferred_room_number = fields.Integer(string='Room No')
     transferred_bed_number = fields.Integer(string='Bed Number')
@@ -99,6 +98,20 @@ class PatientRegistration(models.Model):
     admission_balance = fields.Integer(string="Balance")
     Staff_name = fields.Char("Staff Name")
     staff_password = fields.Char("Password")
+    rent_half=fields.Char('Rent Half Day')
+    rent_full=fields.Char('Rent Full Day')
+
+
+    @api.onchange('room_category_new')
+    def _onchange_room_category_new(self):
+        if self.room_category_new:
+            # Filter rooms by the selected room category
+            return {
+                'domain': {
+                    'room_number': [('room_type_new', '=', self.room_category_new.id)]  # Filter rooms based on room category
+                }
+            }
+        return {'domain': {'room_number': []}}
 
     @api.onchange('amount_in_advance')
     def _onchage_amount_advance(self):

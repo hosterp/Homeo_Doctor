@@ -312,232 +312,280 @@
 
                         </group>
                         <div class="admission_details" attrs="{'invisible': [('admission_boolean', '=', False)]}"
-     style="border-bottom: 2px solid #007bff; padding: 15px 0; margin-bottom: 15px;margin-top: -38px;">
-    <h3 class="admission_details_title" style="color:blue;">Admission Details</h3>
-    <div class="row">
-        <!-- Left side - admission_form with wider fields -->
-        <div class="col-md-8">
-            <div class="admission_form">
-                <div class="row mx-n1">
-                    <!-- First row with uniform column sizes -->
-                    <div class="col-12">
-                        <div class="row mx-n1">
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="bystander_name"
-                                           class="col-md-4 col-form-label py-0 text-nowrap">Bystander
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="bystander_name"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="bystander_relation"
-                                           class="col-md-4 col-form-label py-0 text-nowrap">Relation
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="bystander_relation"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="bystander_email"
-                                           class="col-md-4 col-form-label py-0 text-nowrap">Email
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="bystander_email"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="bystander_mobile"
-                                           class="col-md-4 col-form-label py-0 text-nowrap">Mobile
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="bystander_mobile"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="alternate_no"
-                                           class="col-md-4 col-form-label py-0 text-nowrap">Alt Mobile
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="alternate_no"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                             style="border-bottom: 2px solid #007bff; padding: 15px 0; margin-bottom: 15px;margin-top: -38px;">
+                            <h3 class="admission_details_title" style="color:blue;">Admission Details</h3>
+                            <div class="row">
+                                <!-- Left side - admission_form with wider fields -->
+                                <div class="col-md-8">
+                                    <div class="admission_form">
+                                        <div class="row mx-n1">
+                                            <!-- First row with uniform column sizes -->
+                                            <div class="col-12">
+                                                <div class="row mx-n1">
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="bystander_name"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Bystander
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="bystander_name"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="bystander_relation"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Relation
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="bystander_relation"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="bystander_email"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Email
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="bystander_email"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="bystander_mobile"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Mobile
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="bystander_mobile"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="alternate_no"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">Alt
+                                                                Mobile
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="alternate_no"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                <!-- Second row for remaining fields -->
-                <div class="row mx-n1">
-                    <div class="col-12">
-                        <div class="row mx-n1">
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="op_category"
-                                           class="col-md-4 col-form-label py-0 text-nowrap">OP Category
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="op_category"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="doctor"
-                                           class="col-md-4 col-form-label py-0 text-nowrap">Doctor
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="doctor"/>
-                                    </div>
-                                </div>
-                            </div>
+                                        <!-- Second row for remaining fields -->
+                                        <div class="row mx-n1">
+                                            <div class="col-12">
+                                                <div class="row mx-n1">
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="op_category"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">OP
+                                                                Category
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="op_category"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="doctor"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Doctor
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="doctor"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="room_category_new" class="col-md-4 col-form-label py-0 text-nowrap">
-                                        Room
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="room_category_new"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="room_number" class="col-md-4 col-form-label py-0 text-nowrap">
-                                        Room#
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="room_number"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="new_block" class="col-md-4 col-form-label py-0 text-nowrap">Block
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="new_block"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mx-n1">
-                    <div class="col-12">
-                        <div class="row mx-n1">
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="bed_id" class="col-md-4 col-form-label py-0 text-nowrap">Bed#
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="bed_id"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="admitted_date" class="col-md-4 col-form-label py-0 text-nowrap">
-                                        Admitted Date
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="admitted_date" style="width:100%;"
-                                               attrs="{'required': [('admission_boolean', '=', True)]}"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col px-1" style="max-width: 20%;">
-                                <div class="form-group row my-1">
-                                    <label for="amount_in_advance" class="col-md-4 col-form-label py-0 text-nowrap">
-                                        Advance Amount
-                                    </label>
-                                    <div class="col-md-8 field-container py-0">
-                                        <field name="amount_in_advance" style="width:100%;"
-                                               attrs="{'required': [('admission_boolean', '=', True)]}"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Keep empty columns to maintain the 5-column layout -->
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="room_category_new"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Room
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="room_category_new"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="room_number"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Room#
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="room_number"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="new_block"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Block
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="new_block"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mx-n1">
+                                            <div class="col-12">
+                                                <div class="row mx-n1">
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="bed_id"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">Bed#
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="bed_id"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="admitted_date"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Admitted Date
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="admitted_date" style="width:100%;"
+                                                                       attrs="{'required': [('admission_boolean', '=', True)]}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="amount_in_advance"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Advance Amount
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="amount_in_advance" style="width:100%;"
+                                                                       attrs="{'required': [('admission_boolean', '=', True)]}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="rent_half"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Advance Amount
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="rent_half" style="width:100%;"
+                                                                       attrs="{'required': [('admission_boolean', '=', True)]}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="rent_full"
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Advance Amount
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="rent_full" style="width:100%;"
+                                                                       attrs="{'required': [('admission_boolean', '=', True)]}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Keep empty columns to maintain the 5-column layout -->
 
-                            <div class="col px-1" style="max-width: 20%;"></div>
-                            <div class="col px-1" style="max-width: 20%;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                                    <div class="col px-1" style="max-width: 20%;"></div>
+                                                    <div class="col px-1" style="max-width: 20%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-        <!-- Right side - custom_admission_row with reduced size -->
-        <div class="col-md-4">
-            <div class="custom_admission_row" style="font-size: 0.9rem;">
-                <div class="row">
-                    <!-- Left column of custom_admission_row -->
-                    <div class="col-md-6 left_column" style="padding-left: 25px;">
-                        <div class="form-group row mb-1">
-                            <label for="admission_total_amount" class="col-md-5 col-form-label small">Adv Amount
-                            </label>
-                            <div class="col-md-7 field-container py-0">
-                                <field name="admission_total_amount"/>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-1">
-                            <label for="admission_amount_paid" class="col-md-5 col-form-label small">Amount Paid</label>
-                            <div class="col-md-7 field-container py-0">
-                                <field name="admission_amount_paid"/>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-1">
-                            <label for="Staff_name" class="col-md-5 col-form-label small">Staff Name</label>
-                            <div class="col-md-7 field-container py-0">
-                                <field name="Staff_name"/>
-                            </div>
-                        </div>
-                    </div>
+                                <!-- Right side - custom_admission_row with reduced size -->
+                                <div class="col-md-4">
+                                    <div class="custom_admission_row" style="font-size: 0.9rem;">
+                                        <div class="row">
+                                            <!-- Left column of custom_admission_row -->
+                                            <div class="col-md-6 left_column" style="padding-left: 25px;">
+                                                <div class="form-group row mb-1">
+                                                    <label for="admission_total_amount"
+                                                           class="col-md-5 col-form-label small">Adv Amount
+                                                    </label>
+                                                    <div class="col-md-7 field-container py-0">
+                                                        <field name="admission_total_amount"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mb-1">
+                                                    <label for="admission_amount_paid"
+                                                           class="col-md-5 col-form-label small">Amount Paid
+                                                    </label>
+                                                    <div class="col-md-7 field-container py-0">
+                                                        <field name="admission_amount_paid"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mb-1">
+                                                    <label for="Staff_name" class="col-md-5 col-form-label small">Staff
+                                                        Name
+                                                    </label>
+                                                    <div class="col-md-7 field-container py-0">
+                                                        <field name="Staff_name"/>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                    <!-- Right column of custom_admission_row -->
-                    <div class="col-md-6 right_column">
-                        <div class="form-group row mb-1">
-                            <label for="advance_mode_payment" class="col-md-5 col-form-label small">Payment Mode
-                            </label>
-                            <div class="col-md-7 field-container py-0">
-                                <field name="advance_mode_payment"/>
+                                            <!-- Right column of custom_admission_row -->
+                                            <div class="col-md-6 right_column">
+                                                <div class="form-group row mb-1">
+                                                    <label for="advance_mode_payment"
+                                                           class="col-md-5 col-form-label small">Payment Mode
+                                                    </label>
+                                                    <div class="col-md-7 field-container py-0">
+                                                        <field name="advance_mode_payment"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mb-1">
+                                                    <label for="admission_balance"
+                                                           class="col-md-5 col-form-label small">Balance
+                                                    </label>
+                                                    <div class="col-md-7 field-container py-0">
+                                                        <field name="admission_balance"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mb-1">
+                                                    <label for="staff_password" class="col-md-5 col-form-label small">
+                                                        Password
+                                                    </label>
+                                                    <div class="col-md-7 field-container py-0">
+                                                        <field name="staff_password"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button name="action_create_admission"
+                                                            string="PAY"
+                                                            type="object"
+                                                            class="btn btn-sm btn-primary"
+                                                            title="Check Bed Availability"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row mb-1">
-                            <label for="admission_balance" class="col-md-5 col-form-label small">Balance</label>
-                            <div class="col-md-7 field-container py-0">
-                                <field name="admission_balance"/>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-1">
-                            <label for="staff_password" class="col-md-5 col-form-label small">Password</label>
-                            <div class="col-md-7 field-container py-0">
-                                <field name="staff_password"/>
-                            </div>
-                        </div>
-                         <div class="col-md-1">
-                                <button name="action_create_admission"
-                                        string="PAY"
-                                        type="object"
-                                        class="btn btn-sm btn-primary"
-                                        title="Check Bed Availability"/>
-                            </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
                         <!--</group>-->
 
 
