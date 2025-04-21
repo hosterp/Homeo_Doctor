@@ -58,7 +58,7 @@ class PatientRegistration(models.Model):
     bystander_relation = fields.Char(string="Relation")
     bystander_email = fields.Char(string="Email ID")
     room_category = fields.Many2one('room.category', string='Room Category')
-    room_category_new = fields.Many2one('hospital.room', string='Room Category')
+    room_category_new = fields.Many2one('hospital.room.type', string='Room Category')
     room_id = fields.Many2one('hospital.room', string="Room")
 
     bed_id = fields.Many2one('hospital.bed', string="Bed",)
