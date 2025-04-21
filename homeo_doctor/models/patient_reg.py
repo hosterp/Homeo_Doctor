@@ -62,7 +62,7 @@ class PatientRegistration(models.Model):
     doctor_remark_ids = fields.One2many('consultation.remark', 'consultation_id', string='Doctor Remarks')
     vssc_check = fields.Boolean(related='patient_id.vssc_boolean')
     status = fields.Selection(
-        [('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')],
+        [('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled'),('admitted','ADMITTED')],
         default='confirmed', string="Status")
     previous_consultation_ids = fields.One2many(
         'patient.registration', 'id',
@@ -183,6 +183,7 @@ class PatientRegistration(models.Model):
 
     def admission_button(self):
         self.move_to_admission_clicked = True
+        self.status = 'admitted'
         # Prepare admission values for prescription lines
         # admission_vals = {
         #     'prescription_line_ids': [(0, 0, {
