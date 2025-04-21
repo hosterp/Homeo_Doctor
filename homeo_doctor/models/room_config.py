@@ -73,4 +73,4 @@ class HospitalRoomType(models.Model):
     _name='hospital.room.type'
     _rec_name='room_type'
 
-    room_type=fields.Char(string='Block Name')
+    room_type=fields.Char(string='Room Type')

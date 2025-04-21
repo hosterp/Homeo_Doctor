@@ -29,14 +29,16 @@
                                 <field name="room_number"/>
                                 <field name="rent_half"/>
                                 <field name="service_charge"/>
-                                <field name="occupied_beds" readonly="1"/>
-                                <field name="is_available" readonly="1"/>
+                                <field name="bed_count"/>
+                                <!--                                <field name="occupied_beds" readonly="1"/>-->
+                                <!--                                <field name="is_available" readonly="1"/>-->
                             </group>
                             <group>
                                 <field name="block_new"/>
                                 <field name="rent_full"/>
                                 <field name="extesion_no"/>
-                                <field name="available_rooms" readonly="1"/>
+                                 <field name="tax"/>
+                                <!--                                <field name="available_rooms" readonly="1"/>-->
                                 <!--                                <field name="block"/>-->
 
                             </group>
@@ -44,7 +46,7 @@
                                 <field name="room_type_new"/>
                                 <field name="room_status"/>
                                 <field name="description"/>
-                                <field name="bed_count"/>
+
 
                             </group>
                             <group>
@@ -52,8 +54,6 @@
                                 <field name="bed_number"/>
                                 <field name="advance_amount"/>
                                 <field name="nurse_fee"/>
-                                <field name="tax"/>
-
                             </group>
 
                         </group>
