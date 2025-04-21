@@ -548,7 +548,7 @@
                         <!--                                </field>-->
                         <!--                            </page>-->
                         <!--                        </notebook>-->
-                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">
+                        <notebook invisible="1">
                             <page string="Lab">
                                 <field name="lab_report_reg_ids">
                                     <tree>
