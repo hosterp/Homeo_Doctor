@@ -88,6 +88,11 @@ class PatientRegistration(models.Model):
                                 ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
     advance_remark = fields.Text(string="Remarks")
     advance_date = fields.Datetime(string="Date")
+    admission_total_amount = fields.Integer(string="Total Amount")
+    admission_amount_paid = fields.Integer(string="Amount Paid")
+    admission_balance = fields.Integer(string="Balance")
+    Staff_name = fields.Char("Staff Name")
+    staff_password = fields.Char("Password")
 
 
     # payment_method = fields.Selection([
