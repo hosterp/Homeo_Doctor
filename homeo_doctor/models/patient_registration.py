@@ -107,11 +107,11 @@ class PatientRegistration(models.Model):
             record.status = 'discharged'
             record.admission_boolean = False
 
-         
+            # Mark the room as available
             if record.room_number:
                 record.room_number.is_available = False
 
-
+            # Clear admission-related fields
             record.update({
                 'room_number': False,
                 'bed_id': False,
