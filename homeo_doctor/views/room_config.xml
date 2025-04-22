@@ -117,7 +117,7 @@
         </record>
 
         <!-- Menu -->
-        <menuitem id="menu_lab_root" name="Master" parent="menu_homeo_head" sequence="11"/>
+        <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
         <menuitem id="menu_hospital_config" name="Configuration" parent="menu_lab_root" sequence="20"/>
         <menuitem id="menu_hospital_room" name="Rooms" parent="menu_hospital_config" action="action_hospital_room"
                   sequence="1"/>

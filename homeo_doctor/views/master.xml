@@ -110,7 +110,7 @@
                   sequence="3"
         />
 
-        <menuitem id="menu_lab_root" name="Master" parent="menu_homeo_head" sequence="11"/>
+        <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
         <menuitem id="menu_lab" name="Lab" parent="menu_lab_root" sequence="1"/>
         <menuitem id="menu_lab_department" name="Department" parent="menu_lab" action="action_lab_department"
                   sequence="1"/>

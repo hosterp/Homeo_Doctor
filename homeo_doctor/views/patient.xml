@@ -945,7 +945,7 @@
                 id="menu_patient_root"
                 name="Patient Management"
                 sequence="10"/>
-        <menuitem id="menu_lab_root" name="Master" parent="menu_homeo_head" sequence="11"/>
+        <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
 
         <menuitem
                 id="menu_patient_list"
