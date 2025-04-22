@@ -102,6 +102,15 @@
                                 <!--                                <field name="test_results"/>-->
                             </page>
 
+                            <page string="Lab Test" >
+                                <field name="lab_report_test_ids">
+                                    <tree>
+                                        <!--                                        <field name="bill_number" invisible="1"/>-->
+                                        <field name="date"/>
+<!--                                        <field name="result_status"/>-->
+                                    </tree>
+                                </field>
+                            </page>
                             <page string="Lab Result" name="lab_reports">
                                 <field name="lab_report_reg_admitted_ids">
                                     <tree>

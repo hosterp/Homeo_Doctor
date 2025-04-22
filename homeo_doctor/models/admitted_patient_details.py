@@ -42,7 +42,6 @@ class AdmittedPatient(models.Model):
     ], string="Admission Status")
 
 
-
     current_diagnosis = fields.Text(string="Current Diagnosis")
     medications_prescribed = fields.Text(string="Medications Prescribed")
     allergies = fields.Text(string="Allergies")
@@ -84,6 +83,12 @@ class AdmittedPatient(models.Model):
         'prescription.entry.lines', compute='_compute_past_prescriptions', string="Past Prescriptions"
     )
     lab_report_reg_admitted_ids = fields.One2many('lab.result.page', compute='_compute_lab_reports', string="Lab")
+    lab_report_test_ids = fields.One2many(
+        'doctor.lab.report',
+        compute='_compute_lab_test',
+        string="Lab"
+    )
+
 
     def create_referral_lab(self):
         for consultation in self:
@@ -109,6 +114,13 @@ class AdmittedPatient(models.Model):
                 'res_id': referral.id,
                 'target': 'new',
             }
+
+    @api.depends('patient_id')
+    def _compute_lab_test(self):
+        for record in self:
+            record.lab_report_test_ids = self.env['doctor.lab.report'].search([
+                ('user_ide', '=', record.patient_id.id)
+            ])
 
     @api.depends('patient_id')
     def _compute_lab_reports(self):
