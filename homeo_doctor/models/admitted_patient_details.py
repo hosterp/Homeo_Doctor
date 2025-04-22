@@ -1,4 +1,6 @@
 from odoo import api, fields, models, _
+from odoo.odoo.exceptions import UserError
+
 
 class AdmittedPatient(models.Model):
     _name = 'hospital.admitted.patient'
@@ -82,6 +84,31 @@ class AdmittedPatient(models.Model):
         'prescription.entry.lines', compute='_compute_past_prescriptions', string="Past Prescriptions"
     )
     lab_report_reg_admitted_ids = fields.One2many('lab.result.page', compute='_compute_lab_reports', string="Lab")
+
+    def create_referral_lab(self):
+        for consultation in self:
+            if not consultation.patient_id:
+                raise UserError("Patient not selected.")
+
+            doctor = self.env['doctor.profile'].search([('name', '=', consultation.attending_doctor.name)], limit=1)
+            if not doctor:
+                raise UserError("Doctor not found in the system.")
+
+            referral = self.env['lab.referral'].create({
+                'doctor': doctor.id,
+                'user_ide': consultation.patient_id.id,
+                'patient_name': consultation.name,
+                'referral_type': 'lab',
+            })
+
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Lab Referral',
+                'res_model': 'lab.referral',
+                'view_mode': 'form',
+                'res_id': referral.id,
+                'target': 'new',
+            }
 
     @api.depends('patient_id')
     def _compute_lab_reports(self):

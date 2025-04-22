@@ -29,8 +29,9 @@
                                 type="object"
                                 class="btn-primary"
                                 attrs="{'invisible': [('status', '=', 'discharged')]}"/>
-
-                        <field name="admission_date" readonly="1" style="font-weight: bold;margin-left: 1100px;"/>
+                        <button name="create_referral_lab" type="object" string="Lab Referral"
+                                class="btn-primary" target="new"/>
+                        <field name="admission_date" readonly="1" style="font-weight: bold;margin-left: 1000px;"/>
                         <field name="status" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -64,7 +65,7 @@
                             </group>
                         </group>
                         <notebook>
-                             <page string="Prescription" editable="1">
+                            <page string="Prescription" editable="1">
                                 <field name="past_prescription_ids">
                                     <tree editable="bottom">
                                         <!--                                        <field name="id" invisible="1"/>-->
@@ -104,7 +105,7 @@
                             <page string="Lab Result" name="lab_reports">
                                 <field name="lab_report_reg_admitted_ids">
                                     <tree>
-<!--                                        <field name="bill_number" invisible="1"/>-->
+                                        <!--                                        <field name="bill_number" invisible="1"/>-->
                                         <field name="test_on"/>
                                         <field name="result_status"/>
                                     </tree>
@@ -114,19 +115,19 @@
                             <page string="Current Diagnosis">
                                 <field name="current_diagnosis"/>
                             </page>
-<!--                            <page string="Medicines Prescribed">-->
-<!--                                <field name="past_prescription_ids">-->
-<!--                                    <tree editable="bottom">-->
-<!--                                        &lt;!&ndash;                                        <field name="id" invisible="1"/>&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                        <field name="patient_id" invisible="1"/>&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                        <field name="appointment_date" string="Date"/>&ndash;&gt;-->
-<!--                                        <field name="prescription_line_id" invisible="1"/>-->
-<!--                                        <field name="product_id"/>-->
-<!--                                        &lt;!&ndash;                                        <field name="age"/>&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                        <field name="doctor_id"/>&ndash;&gt;-->
-<!--                                    </tree>-->
-<!--                                </field>-->
-<!--                            </page>-->
+                            <!--                            <page string="Medicines Prescribed">-->
+                            <!--                                <field name="past_prescription_ids">-->
+                            <!--                                    <tree editable="bottom">-->
+                            <!--                                        &lt;!&ndash;                                        <field name="id" invisible="1"/>&ndash;&gt;-->
+                            <!--                                        &lt;!&ndash;                                        <field name="patient_id" invisible="1"/>&ndash;&gt;-->
+                            <!--                                        &lt;!&ndash;                                        <field name="appointment_date" string="Date"/>&ndash;&gt;-->
+                            <!--                                        <field name="prescription_line_id" invisible="1"/>-->
+                            <!--                                        <field name="product_id"/>-->
+                            <!--                                        &lt;!&ndash;                                        <field name="age"/>&ndash;&gt;-->
+                            <!--                                        &lt;!&ndash;                                        <field name="doctor_id"/>&ndash;&gt;-->
+                            <!--                                    </tree>-->
+                            <!--                                </field>-->
+                            <!--                            </page>-->
                             <page string="Allergies">
                                 <field name="allergies"/>
                             </page>
