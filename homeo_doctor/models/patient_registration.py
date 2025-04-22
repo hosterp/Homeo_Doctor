@@ -101,6 +101,17 @@ class PatientRegistration(models.Model):
     rent_half=fields.Char('Rent Half Day')
     rent_full=fields.Char('Rent Full Day')
 
+    register_total_amount = fields.Integer(string="Total Amount")
+    register_amount_paid = fields.Integer(string="Amount Paid")
+    register_balance = fields.Integer(string="Balance")
+    register_staff_name = fields.Char("Staff Name")
+    register_staff_password = fields.Char("Password")
+    register_mode_payment = fields.Selection([('cash', 'Cash'),
+                                             ('card', 'Card'),
+                                             ('cheque', 'Cheque'),
+                                             ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
+
+
 
     @api.onchange('room_category_new')
     def _onchange_room_category_new(self):

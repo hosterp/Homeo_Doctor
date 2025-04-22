@@ -1,5 +1,5 @@
 from odoo import api, fields, models, _
-from odoo.odoo.exceptions import UserError
+# from odoo.odoo.exceptions import UserError
 
 
 class AdmittedPatient(models.Model):
