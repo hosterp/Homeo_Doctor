@@ -252,3 +252,8 @@ class GeneralBillLine(models.Model):
         for line in self:
             tax_amount = line.tax.tax if line.tax else 0.0
             line.total_amt = line.rate * line.quantity * (1 + tax_amount / 100)
+
+    @api.onchange('particulars')
+    def _rate_auto_fill(self):
+        for rec in self:
+            rec.rate= rec.particulars.amount
