@@ -100,7 +100,37 @@ class PatientRegistration(models.Model):
     staff_password = fields.Char("Password")
     rent_half=fields.Char('Rent Half Day')
     rent_full=fields.Char('Rent Full Day')
+    status = fields.Selection([('admitted', 'Admitted'), ('discharged', 'Discharged')])
 
+    def action_discharged_patient_reg(self):
+        for record in self:
+            record.status = 'discharged'
+            record.admission_boolean = False
+
+         
+            if record.room_number:
+                record.room_number.is_available = False
+
+
+            record.update({
+                'room_number': False,
+                'bed_id': False,
+                'admitted_date': False,
+                'discharge_date': False,
+                'room_category_new': False,
+                'bystander_name': False,
+                'bystander_mobile': False,
+                'bystander_relation': False,
+                'bystander_email': False,
+                'rent_full': False,
+                'rent_half': False,
+                'doctor': False,
+                'new_block': False,
+                'alternate_no': False,
+                'amount_in_advance': False,
+                'op_category': False,
+                'admission_total_amount': False,
+            })
 
     @api.onchange('room_category_new')
     def _onchange_room_category_new(self):
@@ -150,7 +180,7 @@ class PatientRegistration(models.Model):
     # ('card', 'Card')
     # ], string='Payment Method')
     # payment_reference = fields.Char(string='Payment Reference')
-    status=fields.Selection([('admitted','Admitted'),('discharged','Discharged')])
+
     def _default_registration_fee(self):
         """Fetch the first registration fee as the default"""
         return self.env['patient.registration.fee'].search([], limit=1).id

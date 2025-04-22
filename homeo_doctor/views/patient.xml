@@ -11,8 +11,7 @@
                                 class="oe_stat_button" invisible="1">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
-                        <!--                        <button name="action_create_appointment" type="object" string="Create Appointment"/>-->
-
+                        <button  name="action_discharged_patient_reg" type="object" string="Discharged"/>
                     </header>
                     <sheet>
                         <h5 class="oe_left" style="display:none;">
