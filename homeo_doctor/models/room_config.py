@@ -13,6 +13,7 @@ class HospitalRoom(models.Model):
     advance_amount = fields.Float(string="Advance Amount")
     bed_count = fields.Integer(string="Total Beds")
     bed_number = fields.Integer(string="Bed Number")
+    bed_number_new = fields.Many2one('hospital.bed',string="Bed Number")
     rent_half=fields.Char(string='Rent Half Day')
     rent_full=fields.Char(string='Rent Full')
     nurse_fee=fields.Integer(string='Nursing Charge')

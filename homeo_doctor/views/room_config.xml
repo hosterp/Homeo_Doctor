@@ -14,7 +14,7 @@
                     <field name="occupied_beds" invisible="1"/>
                     <field name="available_rooms" invisible="1"/>
                     <field name="block_new"/>
-                    <field name="bed_number"/>
+                    <field name="bed_number_new"/>
                 </tree>
             </field>
         </record>
@@ -54,7 +54,7 @@
                             </group>
                             <group>
 
-                                <field name="bed_number"/>
+                                <field name="bed_number_new"/>
 
                                 <field name="nurse_fee" invisible="1"/>
                             </group>
