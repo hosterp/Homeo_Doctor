@@ -23,7 +23,7 @@ class AdmittedPatient(models.Model):
     bed_id = fields.Many2one('hospital.bed')
     room_id = fields.Many2one(related='bed_id.room_id', store=True)
     admission_date = fields.Datetime(string="Admission Date", required=True, default=fields.Datetime.now)
-    room_number = fields.Char(string="Room Number")
+    room_number = fields.Many2one('hospital.room',string="Room Number")
     bed_number = fields.Char(string="Bed Number")
     admitting_department = fields.Selection([
         ('general', 'General'),
