@@ -19,7 +19,7 @@ class HospitalRoom(models.Model):
     nurse_fee=fields.Integer(string='Nursing Charge')
     service_charge=fields.Integer(string='Service Charge')
     extesion_no=fields.Integer(string='Extension No')
-    description=fields.Text(string='Description')
+    description=fields.Text(string='Amenity Details')
     tax=fields.Selection([('no','No'),('yes','YES')],default='no')
     room_status=fields.Selection([('available','Available'),('blocked','Blocked'),('occupied','Occupied'),('repair','Repair'),('cleaning','Cleaning')])
     occupied_beds = fields.Integer(string="Occupied Beds", compute="_compute_occupied_beds", store=True)
