@@ -753,8 +753,18 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 	border-style: groove !important;
     white-space: nowrap !important;
 }
+.custom_register_payment_row{
+	border-color: black !important;
+	border-style: groove !important;
+    white-space: nowrap !important;
+}
 .admission_form{
 
+	border-color: black !important;
+	border-style: groove !important;
+}
+.sub_details{
+    padding-left: 10px !important;
 	border-color: black !important;
 	border-style: groove !important;
 }
