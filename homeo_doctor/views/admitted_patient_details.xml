@@ -65,7 +65,7 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Prescription" editable="1">
+                            <page string="Prescription">
                                 <field name="past_prescription_ids">
                                     <tree editable="bottom">
                                         <!--                                        <field name="id" invisible="1"/>-->
@@ -73,8 +73,29 @@
                                         <!--                                        <field name="appointment_date" string="Date"/>-->
                                         <field name="prescription_line_id" invisible="1"/>
                                         <field name="product_id"/>
+                                        <field name="morn"/>
+                                        <field name="night"/>
+                                        <field name="noon"/>
                                         <!--                                        <field name="age"/>-->
                                         <!--                                        <field name="doctor_id"/>-->
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Lab Test">
+                                <field name="lab_report_test_ids">
+                                    <tree>
+                                        <!--                                        <field name="bill_number" invisible="1"/>-->
+                                        <field name="date" string="Date"/>
+                                        <!--                                        <field name="result_status"/>-->
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Lab Result" name="lab_reports">
+                                <field name="lab_report_reg_admitted_ids">
+                                    <tree>
+                                        <!--                                        <field name="bill_number" invisible="1"/>-->
+                                        <field name="test_on"/>
+                                        <field name="result_status"/>
                                     </tree>
                                 </field>
                             </page>
@@ -102,24 +123,6 @@
                                 <!--                                <field name="test_results"/>-->
                             </page>
 
-                            <page string="Lab Test" >
-                                <field name="lab_report_test_ids">
-                                    <tree>
-                                        <!--                                        <field name="bill_number" invisible="1"/>-->
-                                        <field name="date" string="Date"/>
-<!--                                        <field name="result_status"/>-->
-                                    </tree>
-                                </field>
-                            </page>
-                            <page string="Lab Result" name="lab_reports">
-                                <field name="lab_report_reg_admitted_ids">
-                                    <tree>
-                                        <!--                                        <field name="bill_number" invisible="1"/>-->
-                                        <field name="test_on"/>
-                                        <field name="result_status"/>
-                                    </tree>
-                                </field>
-                            </page>
 
                             <page string="Current Diagnosis">
                                 <field name="current_diagnosis"/>
