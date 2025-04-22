@@ -434,10 +434,10 @@
                                                         <div class="form-group row my-1">
                                                             <label for="new_block"
                                                                    class="col-md-4 col-form-label py-0 text-nowrap">
-                                                                Block
+                                                                Floor
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
-                                                                <field name="new_block"/>
+                                                                <field name="new_block" string="Floor"/>
                                                             </div>
                                                         </div>
                                                     </div>

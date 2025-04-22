@@ -47,7 +47,7 @@
                             <group>
                                 <field name="room_type_new" string="Room Category"/>
                                 <field name="room_status" invisible="1"/>
-                                <field name="description"/>
+                                <field name="description" string="Availability Details"/>
                                 <field name="advance_amount" invisible="1"/>
 
 
