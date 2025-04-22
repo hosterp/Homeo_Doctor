@@ -13,6 +13,9 @@ from datetime import datetime
 # from odoo.odoo.exceptions import UserError
 
 
+# from odoo.odoo.exceptions import UserError
+
+
 class GeneralBilling(models.Model):
     _name = 'general.billing'
     _description = 'General Billing'
@@ -77,22 +80,45 @@ class GeneralBilling(models.Model):
             self.net_amount = self.total_amount - self.discount_amount
 
     def action_create_admission(self):
-        admission_model = self.env['hospital.admitted.patient']
         admitted_any = False
+        warnings = []
 
         for rec in self:
             if not rec.mrd_no:
-                continue  # Skip this record if UHID is missing
+                continue
 
-            admission_model.create({
-                'patient_id': rec.mrd_no.id,
-                'admission_date': fields.Datetime.now(),
-                'attending_doctor': rec.doctor.id,
-            })
-            admitted_any = True
+            patient = rec.mrd_no  # patient.reg record
+
+            if patient.status != 'admitted' and not patient.admission_boolean:
+                patient.admission_boolean = True
+                patient.status = 'admitted'
+                admitted_any = True
+            else:
+                warnings.append(f"Patient {patient.patient_id or patient.id} is already admitted.")
+
+        if warnings:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Warning',
+                    'message': '\n'.join(warnings),
+                    'sticky': True,
+                    'type': 'warning',
+                }
+            }
 
         if not admitted_any:
-            raise UserError("No valid billing records with UHID found for admission.")
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Info',
+                    'message': 'No valid billing records with UHID found for admission.',
+                    'sticky': True,
+                    'type': 'info',
+                }
+            }
 
         return {
             'type': 'ir.actions.client',

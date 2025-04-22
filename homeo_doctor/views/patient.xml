@@ -11,8 +11,7 @@
                                 class="oe_stat_button" invisible="1">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
-                        <!--                        <button name="action_create_appointment" type="object" string="Create Appointment"/>-->
-
+                        <button name="action_discharged_patient_reg" type="object" string="Discharged"/>
                     </header>
                     <sheet>
                         <h5 class="oe_left" style="display:none;">
@@ -601,6 +600,41 @@
                         </div>
                         <!--</group>-->
 
+                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">
+                            <page string="Unpaid Bills">
+
+                                <group string="General Billing">
+                                    <field name="unpaid_general_ids">
+                                        <tree editable="bottom">
+                                            <field name="bill_date"/>
+                                            <field name="total_amount"/>
+                                            <field name="status"/>
+                                        </tree>
+                                    </field>
+                                </group>
+
+                                <group string="Lab Billing">
+                                    <field name="unpaid_lab_ids">
+                                        <tree editable="bottom">
+                                            <field name="date"/>
+                                            <field name="total_bill_amount"/>
+                                            <field name="status"/>
+                                        </tree>
+                                    </field>
+                                </group>
+
+                                <group string="Pharmacy Billing">
+                                    <field name="unpaid_pharmacy_ids">
+                                        <tree editable="bottom">
+                                            <field name="date"/>
+                                            <field name="total_amount"/>
+                                            <field name="status"/>
+                                        </tree>
+                                    </field>
+                                </group>
+
+                            </page>
+                        </notebook>
 
                         <div class="admission_transfer" attrs="{'invisible': [('admission_boolean', '=', False)]}">
                             <h3 class="admission_details_title" style="color:blue;">Room Transfer</h3>
@@ -957,7 +991,7 @@
                 id="menu_patient_root"
                 name="Patient Management"
                 sequence="10"/>
-        <menuitem id="menu_lab_root" name="Master" parent="menu_homeo_head" sequence="11"/>
+        <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
 
         <menuitem
                 id="menu_patient_list"

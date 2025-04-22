@@ -93,13 +93,35 @@ class PatientRegistration(models.Model):
                                 ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
     advance_remark = fields.Text(string="Remarks")
     advance_date = fields.Datetime(string="Date")
-    admission_total_amount = fields.Integer(string="Total Amount")
+    admission_total_amount = fields.Integer(string="Total Amount" ,compute='_compute_total_unpaid_amount')
     admission_amount_paid = fields.Integer(string="Amount Paid")
     admission_balance = fields.Integer(string="Balance")
     Staff_name = fields.Char("Staff Name")
     staff_password = fields.Char("Password")
     rent_half=fields.Char('Rent Half Day')
     rent_full=fields.Char('Rent Full Day')
+    status = fields.Selection([('admitted', 'Admitted'), ('discharged', 'Discharged')])
+
+    unpaid_general_ids = fields.One2many('general.billing', compute='_compute_unpaid_general', string="Unpaid General")
+    unpaid_lab_ids = fields.One2many('doctor.lab.report', compute='_compute_unpaid_lab', string="Unpaid Lab")
+    unpaid_pharmacy_ids = fields.One2many('pharmacy.description', compute='_compute_unpaid_pharmacy',
+                                          string="Unpaid Pharmacy")
+
+    @api.depends('reference_no')
+    def _compute_unpaid_general(self):
+        for rec in self:
+            rec.unpaid_general_ids = self.env['general.billing'].search([
+                ('mrd_no', '=', rec.id),
+                ('status', '!=', 'paid')
+            ])
+
+    @api.depends('reference_no')
+    def _compute_unpaid_lab(self):
+        for rec in self:
+            rec.unpaid_lab_ids = self.env['doctor.lab.report'].search([
+                ('user_ide', '=', rec.id),
+                ('status', '!=', 'paid')
+            ])
 
     register_total_amount = fields.Integer(string="Total Amount")
     register_amount_paid = fields.Integer(string="Amount Paid")
@@ -112,6 +134,61 @@ class PatientRegistration(models.Model):
                                              ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
 
 
+    @api.depends('reference_no')
+    def _compute_unpaid_pharmacy(self):
+        for rec in self:
+            rec.unpaid_pharmacy_ids = self.env['pharmacy.description'].search([
+                ('patient_id', '=', rec.id),
+                ('status', '!=', 'paid')
+            ])
+
+    @api.depends('unpaid_general_ids', 'unpaid_lab_ids', 'unpaid_pharmacy_ids')
+    def _compute_total_unpaid_amount(self):
+        for rec in self:
+            total = 0.0
+
+            for general in rec.unpaid_general_ids:
+                total += general.total_amount or 0.0
+
+
+            for lab in rec.unpaid_lab_ids:
+                total += lab.total_bill_amount or 0.0
+
+
+            for pharmacy in rec.unpaid_pharmacy_ids:
+                total += pharmacy.total_amount or 0.0
+
+            rec.admission_total_amount = total
+
+    def action_discharged_patient_reg(self):
+        for record in self:
+            record.status = 'discharged'
+            record.admission_boolean = False
+
+            # Mark the room as available
+            if record.room_number:
+                record.room_number.is_available = False
+
+            # Clear admission-related fields
+            record.update({
+                'room_number': False,
+                'bed_id': False,
+                'admitted_date': False,
+                'discharge_date': False,
+                'room_category_new': False,
+                'bystander_name': False,
+                'bystander_mobile': False,
+                'bystander_relation': False,
+                'bystander_email': False,
+                'rent_full': False,
+                'rent_half': False,
+                'doctor': False,
+                'new_block': False,
+                'alternate_no': False,
+                'amount_in_advance': False,
+                'op_category': False,
+                'admission_total_amount': False,
+            })
 
     @api.onchange('room_category_new')
     def _onchange_room_category_new(self):
@@ -134,10 +211,10 @@ class PatientRegistration(models.Model):
         else:
             self.bed_id = False
             self.new_block = False
-    @api.onchange('amount_in_advance')
-    def _onchage_amount_advance(self):
-        for rec in self:
-            rec.admission_total_amount = rec.amount_in_advance
+    # @api.onchange('amount_in_advance')
+    # def _onchage_amount_advance(self):
+    #     for rec in self:
+    #         rec.admission_total_amount = rec.amount_in_advance
 
     @api.onchange('admission_amount_paid')
     def _onchage_amount_paid(self):
@@ -161,7 +238,7 @@ class PatientRegistration(models.Model):
     # ('card', 'Card')
     # ], string='Payment Method')
     # payment_reference = fields.Char(string='Payment Reference')
-    status=fields.Selection([('admitted','Admitted'),('discharged','Discharged')])
+
     def _default_registration_fee(self):
         """Fetch the first registration fee as the default"""
         return self.env['patient.registration.fee'].search([], limit=1).id
