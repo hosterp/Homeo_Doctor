@@ -106,7 +106,7 @@
                                 <field name="lab_report_test_ids">
                                     <tree>
                                         <!--                                        <field name="bill_number" invisible="1"/>-->
-                                        <field name="date"/>
+                                        <field name="date" string="Date"/>
 <!--                                        <field name="result_status"/>-->
                                     </tree>
                                 </field>
