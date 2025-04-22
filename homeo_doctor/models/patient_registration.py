@@ -108,7 +108,7 @@ class PatientRegistration(models.Model):
             # Filter rooms by the selected room category
             return {
                 'domain': {
-                    'room_number': [('room_type_new', '=', self.room_category_new.id)]  # Filter rooms based on room category
+                    'room_number': [('room_type_new', '=', self.room_category_new.id), ('is_available', '=', False)]
                 }
             }
         return {'domain': {'room_number': []}}
@@ -170,7 +170,7 @@ class PatientRegistration(models.Model):
     def action_create_admission(self):
         admission_model = self.env['hospital.admitted.patient']
         registration_model = self.env['patient.reg']
-
+        room_model = self.env['hospital.room']
         for rec in self:
             patient = registration_model.search([('reference_no', '=', rec.reference_no)], limit=1)
             if not patient:
@@ -184,6 +184,10 @@ class PatientRegistration(models.Model):
                 'bed_id': rec.bed_id.id,
                 'attending_doctor': rec.doctor.id,
             })
+            if rec.room_number:
+                room = room_model.browse(rec.room_number.id)
+                if room:
+                    room.write({'is_available': True})
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
