@@ -134,6 +134,8 @@ class AdmittedPatient(models.Model):
             if record.patient_id:
                 record.patient_id.status = 'discharged'
                 record.patient_id.admission_boolean = False
+            if record.room_number:
+                record.room_number.is_available = False
     @api.depends('patient_id')
     def _compute_past_prescriptions(self):
         for rec in self:

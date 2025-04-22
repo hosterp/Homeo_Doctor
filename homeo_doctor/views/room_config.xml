@@ -33,7 +33,7 @@
                                 <field name="service_charge" invisible="1"/>
                                 <field name="bed_count" invisible="1"/>
                                 <!--                                <field name="occupied_beds" readonly="1"/>-->
-                                                                <field name="is_available" />
+                                                                <field name="is_available" invisible="1"/>
                             </group>
                             <group>
                                 <field name="block_new" string="Floor"/>
