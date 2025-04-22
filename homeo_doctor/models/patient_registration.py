@@ -113,6 +113,16 @@ class PatientRegistration(models.Model):
             }
         return {'domain': {'room_number': []}}
 
+    @api.onchange('room_number')
+    def _onchange_room_number(self):
+        if self.room_number:
+            self.bed_id = self.room_number.bed_number
+            self.new_block = self.room_number.block_new
+            self.rent_half=self.room_number.rent_half
+            self.rent_full=self.room_number.rent_full
+        else:
+            self.bed_number = False
+            self.block = False
     @api.onchange('amount_in_advance')
     def _onchage_amount_advance(self):
         for rec in self:
