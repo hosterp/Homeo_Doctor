@@ -80,7 +80,7 @@ class AdmittedPatient(models.Model):
         store=False  # You can make it stored if you want to cache the results
     )
     past_prescription_ids = fields.One2many(
-        'prescription.entry.lines', compute='_compute_past_prescriptions', string="Past Prescriptions"
+        'prescription.entry.lines','admitted_id', string="Past Prescriptions"
     )
     lab_report_reg_admitted_ids = fields.One2many('lab.result.page', compute='_compute_lab_reports', string="Lab")
     lab_report_test_ids = fields.One2many(

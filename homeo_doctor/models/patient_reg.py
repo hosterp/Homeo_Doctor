@@ -557,7 +557,8 @@ class PrescriptionEntryLine(models.Model):
     noon = fields.Integer("Noon")
     night = fields.Integer("Night")
     stock_in_hand = fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
-
+    admitted_id = fields.Many2one('hospital.admitted.patient')
+    date=fields.Date(default=dateutil.utils.today())
     @api.depends('product_id')
     def _compute_stock_in_hand(self):
         """Fetch the total available quantity from stock.entry for the selected product."""
