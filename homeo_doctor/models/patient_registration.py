@@ -121,8 +121,8 @@ class PatientRegistration(models.Model):
             self.rent_half=self.room_number.rent_half
             self.rent_full=self.room_number.rent_full
         else:
-            self.bed_number = False
-            self.block = False
+            self.bed_id = False
+            self.new_block = False
     @api.onchange('amount_in_advance')
     def _onchage_amount_advance(self):
         for rec in self:
