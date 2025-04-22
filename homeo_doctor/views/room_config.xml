@@ -8,11 +8,13 @@
             <field name="arch" type="xml">
                 <tree string="Hospital Rooms">
                     <field name="room_number"/>
-                    <field name="room_type_new"/>
-                    <field name="advance_amount"/>
-                    <field name="bed_count"/>
-                    <field name="occupied_beds"/>
-                    <field name="available_rooms"/>
+                    <field name="room_type_new" string="Room Category"/>
+                    <field name="advance_amount" invisible="1"/>
+                    <field name="bed_count" invisible="1"/>
+                    <field name="occupied_beds" invisible="1"/>
+                    <field name="available_rooms" invisible="1"/>
+                    <field name="block_new"/>
+                    <field name="bed_number"/>
                 </tree>
             </field>
         </record>
