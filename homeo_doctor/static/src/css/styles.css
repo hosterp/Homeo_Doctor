@@ -1171,3 +1171,9 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 	justify-content: center;
 	width: 83%;
 }
+
+.nav-tabs .nav-link {
+
+background-color: #387298;
+color: white ;
+}
