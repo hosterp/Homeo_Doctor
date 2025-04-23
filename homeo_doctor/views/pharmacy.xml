@@ -438,6 +438,7 @@
                     <field name="phone_number"/>
                     <field name="doctor_name"/>
                     <field name="status"/>
+                    <field name="status_admitted"/>
                 </tree>
             </field>
         </record>

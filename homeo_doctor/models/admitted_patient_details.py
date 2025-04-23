@@ -97,7 +97,9 @@ class AdmittedPatient(models.Model):
                 pharmacy = self.env['pharmacy.description'].create({
                     'uhid_id': rec.patient_id.id,
                     'name':rec.name,
-                    'doctor_name':rec.attending_doctor.id
+                    'doctor_name':rec.attending_doctor.id,
+                    'payment_mathod':'credit',
+                    'status_admitted':'admitted'
                 })
 
                 line_vals = []
