@@ -213,10 +213,11 @@ class PatientRegistration(models.Model):
         else:
             self.bed_id = False
             self.new_block = False
-    # @api.onchange('amount_in_advance')
-    # def _onchage_amount_advance(self):
-    #     for rec in self:
-    #         rec.admission_total_amount = rec.amount_in_advance
+
+    @api.onchange('amount_in_advance')
+    def _onchage_amount_advance(self):
+        for rec in self:
+            rec.admission_total_amount = rec.amount_in_advance
 
     @api.onchange('admission_amount_paid')
     def _onchage_amount_paid(self):
@@ -273,6 +274,7 @@ class PatientRegistration(models.Model):
         registration_model = self.env['patient.reg']
         room_model = self.env['hospital.room']
         for rec in self:
+            rec.admission_total_amount= False
             patient = registration_model.search([('reference_no', '=', rec.reference_no)], limit=1)
             if not patient:
                 raise UserError(f"No patient found with reference no: {rec.reference_no}")

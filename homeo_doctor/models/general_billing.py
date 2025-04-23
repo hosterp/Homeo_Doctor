@@ -79,15 +79,77 @@ class GeneralBilling(models.Model):
             # Calculate net amount (payable amount after discount)
             self.net_amount = self.total_amount - self.discount_amount
 
+    # def action_create_admission(self):
+    #     admitted_any = False
+    #     warnings = []
+    #
+    #     for rec in self:
+    #         if not rec.mrd_no:
+    #             continue
+    #
+    #         patient = rec.mrd_no  # patient.reg record
+    #
+    #         if patient.status != 'admitted' and not patient.admission_boolean:
+    #             patient.admission_boolean = True
+    #             patient.status = 'admitted'
+    #             admitted_any = True
+    #         else:
+    #             warnings.append(f"Patient {patient.patient_id or patient.id} is already admitted.")
+    #
+    #     if warnings:
+    #         return {
+    #             'type': 'ir.actions.client',
+    #             'tag': 'display_notification',
+    #             'params': {
+    #                 'title': 'Warning',
+    #                 'message': '\n'.join(warnings),
+    #                 'sticky': True,
+    #                 'type': 'warning',
+    #             }
+    #         }
+    #
+    #     if not admitted_any:
+    #         return {
+    #             'type': 'ir.actions.client',
+    #             'tag': 'display_notification',
+    #             'params': {
+    #                 'title': 'Info',
+    #                 'message': 'No valid billing records with UHID found for admission.',
+    #                 'sticky': True,
+    #                 'type': 'info',
+    #             }
+    #         }
+    #
+    #     return {
+    #         'type': 'ir.actions.client',
+    #         'tag': 'display_notification',
+    #         'params': {
+    #             'title': 'Success',
+    #             'message': 'Admission created successfully.',
+    #             'sticky': False,
+    #             'type': 'success',
+    #         }
+    #     }
     def action_create_admission(self):
         admitted_any = False
         warnings = []
 
         for rec in self:
             if not rec.mrd_no:
-                continue
+             
+                vals = {
+                    'patient_id': rec.patient_name or 'Unknown',
+                    'age': rec.age,
+                    'gender': rec.gender,
+                    'phone_number': rec.mobile,
 
-            patient = rec.mrd_no  # patient.reg record
+                }
+
+
+                patient = self.env['patient.reg'].create(vals)
+                rec.mrd_no = patient
+            else:
+                patient = rec.mrd_no
 
             if patient.status != 'admitted' and not patient.admission_boolean:
                 patient.admission_boolean = True
