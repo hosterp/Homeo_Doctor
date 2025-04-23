@@ -227,7 +227,7 @@ class PharmacyPrescriptionLine(models.Model):
                     line.rate = stock_entry.rate
                     line.hsn = stock_entry.hsn
                 else:
-                  
+
                     line.batch = False
                     line.manf_date = False
                     line.exp_date = False
