@@ -432,7 +432,7 @@
             <field name="model">pharmacy.description</field>
             <field name="arch" type="xml">
                 <tree string="Pharmacy Description">
-                    <field name="patient_id" string='Patient ID'/>
+                    <field name="uhid_id" string='Patient ID'/>
                     <field name="name"/>
                     <field name="date" string="Appointment Date"/>
                     <field name="phone_number"/>
