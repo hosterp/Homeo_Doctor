@@ -8,7 +8,7 @@ class PharmacyDescription(models.Model):
 
 
     patient_id = fields.Many2one('patient.registration',string="UHID")
-    uhid_id = fields.Many2one('patient.reg',string="UHID")
+    uhid_id = fields.Many2one('patient.reg', string="UHID", ondelete='set null')
     name = fields.Char(string="Patient Name")
     phone_number = fields.Char(string="Phone Number")
     # bill_amount=fields.Integer(string='Bill Amount')

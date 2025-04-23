@@ -89,6 +89,27 @@ class AdmittedPatient(models.Model):
         string="Lab"
     )
 
+    def action_move_to_pharmacy(self):
+        for rec in self:
+            today = fields.Date.today()
+            matching_prescriptions = rec.past_prescription_ids.filtered(lambda l: l.date == today)
+            print(matching_prescriptions,'matching_prescriptionsmatching_prescriptionsmatching_prescriptions')
+            if matching_prescriptions:
+                pharmacy = self.env['pharmacy.description'].create({
+                    'uhid_id': rec.patient_id.id,
+                    'date': today,
+                })
+
+                line_vals = []
+                for line in matching_prescriptions:
+                    line_vals.append((0, 0, {
+                        'product_id': line.product_id.id,
+                        'morn': line.morn,
+                        'noon': line.noon,
+                        'night': line.night,
+                    }))
+
+                pharmacy.prescription_line_ids = line_vals
 
     def create_referral_lab(self):
         for consultation in self:

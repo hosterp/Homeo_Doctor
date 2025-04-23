@@ -72,7 +72,7 @@
                                         <!--                                        <field name="patient_id" invisible="1"/>-->
                                         <!--                                        <field name="appointment_date" string="Date"/>-->
                                         <field name="prescription_line_id" invisible="1"/>
-                                        <field name="date" readonly="1"/>
+                                        <field name="date" />
                                         <field name="product_id"/>
                                         <field name="morn"/>
                                         <field name="night"/>
@@ -81,6 +81,12 @@
                                         <!--                                        <field name="doctor_id"/>-->
                                     </tree>
                                 </field>
+                                <footer>
+                                    <button name="action_move_to_pharmacy"
+                                            string="Move to Pharmacy"
+                                            type="object"
+                                            class="btn btn-primary"/>
+                                </footer>
                             </page>
                             <page string="Lab Test">
                                 <field name="lab_report_test_ids">
