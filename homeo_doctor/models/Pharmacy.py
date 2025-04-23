@@ -12,7 +12,7 @@ class PharmacyDescription(models.Model):
     name = fields.Char(string="Patient Name")
     phone_number = fields.Char(string="Phone Number")
     # bill_amount=fields.Integer(string='Bill Amount')
-    doctor_name=fields.Char(string='Doctor')
+    doctor_name=fields.Many2one('doctor.profile',string='Doctor')
     date= fields.Datetime(string="Date",default=fields.Datetime.now)
     prescription_line_ids = fields.One2many('pharmacy.prescription.line', 'pharmacy_id', string="Prescriptions")
     bill_amount = fields.Float(string="Total Bill Amount", compute="_compute_bill_amount", store=True)

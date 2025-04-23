@@ -93,11 +93,11 @@ class AdmittedPatient(models.Model):
         for rec in self:
             today = fields.Date.today()
             matching_prescriptions = rec.past_prescription_ids.filtered(lambda l: l.date == today)
-            print(matching_prescriptions,'matching_prescriptionsmatching_prescriptionsmatching_prescriptions')
             if matching_prescriptions:
                 pharmacy = self.env['pharmacy.description'].create({
                     'uhid_id': rec.patient_id.id,
-                    'date': today,
+                    'name':rec.name,
+                    'doctor_name':rec.attending_doctor.id
                 })
 
                 line_vals = []
@@ -110,7 +110,16 @@ class AdmittedPatient(models.Model):
                     }))
 
                 pharmacy.prescription_line_ids = line_vals
-
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Success',
+                    'message': 'Pharmacy record sent successfully!',
+                    'sticky': False,
+                    'warning': False,
+                }
+            }
     def create_referral_lab(self):
         for consultation in self:
             if not consultation.patient_id:
