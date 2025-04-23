@@ -205,7 +205,8 @@ class DoctorLabReport(models.Model):
 
     @api.depends('lab_billing_ids')
     def _onchange_lab_billing_ids(self):
-        self.total_bill_amount = sum(self.lab_billing_ids.mapped('total_amount'))
+        for rec in self:
+            rec.total_bill_amount = sum(rec.lab_billing_ids.mapped('total_amount'))
         # self.display_amount = self.total_bill_amount
 
     @api.depends('lab_line_ids')
