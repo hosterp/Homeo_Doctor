@@ -110,7 +110,16 @@ class AdmittedPatient(models.Model):
                     }))
 
                 pharmacy.prescription_line_ids = line_vals
-
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Success',
+                    'message': 'Pharmacy record sent successfully!',
+                    'sticky': False,
+                    'warning': False,
+                }
+            }
     def create_referral_lab(self):
         for consultation in self:
             if not consultation.patient_id:
