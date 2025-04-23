@@ -132,6 +132,12 @@ class PatientRegistration(models.Model):
                                              ('card', 'Card'),
                                              ('cheque', 'Cheque'),
                                              ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
+    
+    @api.onchange('registration_fee', 'consultation_fee')
+    def _onchange_total_amount(self):
+        for rec in self:
+            reg_fee = rec.registration_fee.fee if rec.registration_fee else 0
+            rec.register_total_amount = reg_fee + (rec.consultation_fee or 0)
 
 
     @api.depends('reference_no')
@@ -262,7 +268,7 @@ class PatientRegistration(models.Model):
         self.status = 'paid'  # Update the status to 'paid'
 
         # Return the PDF report action
-        return self.env.ref('homeo_doctor.action_patient_registration_report').report_action(self)
+        return self.env.ref('homeo_doctor.report_patient_challan_action').report_action(self)
 
         
 
