@@ -258,16 +258,13 @@ class PatientRegistration(models.Model):
             'target': 'current',
         }
     def action_register_pay(self):
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': 'Success',
-                'message': 'Paid',
-                'sticky': False,
-                'type': 'success',
-            }
-        }
+        self.ensure_one()
+        self.status = 'paid'  # Update the status to 'paid'
+
+        # Return the PDF report action
+        return self.env.ref('homeo_doctor.action_patient_registration_report').report_action(self)
+
+        
 
     def action_create_admission(self):
         admission_model = self.env['hospital.admitted.patient']
