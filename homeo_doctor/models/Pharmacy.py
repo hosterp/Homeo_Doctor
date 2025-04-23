@@ -177,10 +177,11 @@ class PharmacyPrescriptionLine(models.Model):
     noon = fields.Integer("Noon")
     night = fields.Integer("Night")
     category=fields.Char(string='Category')
-    hsn=fields.Char(string='HSN')
-    batch=fields.Char(string='Batch')
-    manf_date=fields.Date(string='M.Date')
-    exp_date=fields.Date(string='Exp.Date')
+    batch = fields.Char(string="Batch", compute="_compute_product_details", store=True)
+    manf_date = fields.Date(string="Manufacturing Date", compute="_compute_product_details", store=True)
+    exp_date = fields.Date(string="Expiry Date", compute="_compute_product_details", store=True)
+    rate = fields.Float(string="Rate", compute="_compute_product_details", store=True)
+    hsn = fields.Char(string="HSN Code", compute="_compute_product_details", store=True)
     packing=fields.Char(string='Packing')
     mfc=fields.Char(string='MFC')
     qty=fields.Integer(string='QTY')
@@ -208,6 +209,30 @@ class PharmacyPrescriptionLine(models.Model):
                     line.hsn = stock_entry.hsn
                     # line.uom_id = stock_entry.uom_id.id
 
+    @api.depends('product_id')
+    def _compute_product_details(self):
+        for line in self:
+            if line.product_id:
+                stock_entry = self.env['stock.entry'].search([
+                    ('product_id', '=', line.product_id.id),
+                    ('quantity', '>', 0),
+                    ('state', '=', 'confirmed'),
+                    ('exp_date', '>', fields.Date.today()),
+                ], order='exp_date asc', limit=1)
+
+                if stock_entry:
+                    line.batch = stock_entry.batch
+                    line.manf_date = stock_entry.manf_date
+                    line.exp_date = stock_entry.exp_date
+                    line.rate = stock_entry.rate
+                    line.hsn = stock_entry.hsn
+                else:
+                  
+                    line.batch = False
+                    line.manf_date = False
+                    line.exp_date = False
+                    line.rate = 0.0
+                    line.hsn = False
     @api.depends('product_id')
     def _compute_stock_in_hand(self):
         """Fetch the total available quantity from stock.entry for the selected product."""
