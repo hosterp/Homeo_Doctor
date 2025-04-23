@@ -582,20 +582,21 @@
                                                         <field name="staff_password"/>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-1">
+
+                                            </div>
+                                            <div class="row pay_button_advance" >
+                                            <div class="col-md-1">
                                                     <button name="action_create_admission"
                                                             string="PAY"
                                                             type="object"
                                                             class="btn btn-sm btn-primary"
                                                             title="Check Bed Availability"/>
                                                 </div>
-                                            </div>
+                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
 
-                                </div>
                             </div>
                         </div>
                         <!--</group>-->
