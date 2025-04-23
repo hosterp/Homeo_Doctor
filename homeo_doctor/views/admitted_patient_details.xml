@@ -82,11 +82,14 @@
                                     </tree>
                                 </field>
                                 <footer>
-                                    <button name="action_move_to_pharmacy"
-                                            string="Move to Pharmacy"
-                                            type="object"
-                                            class="btn btn-primary"/>
+                                    <div style="text-align: right;">
+                                        <button name="action_move_to_pharmacy"
+                                                string="Move to Pharmacy"
+                                                type="object"
+                                                class="btn btn-primary"/>
+                                    </div>
                                 </footer>
+
                             </page>
                             <page string="Lab Test">
                                 <field name="lab_report_test_ids">
