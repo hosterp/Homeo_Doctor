@@ -98,6 +98,8 @@ class PatientRegistration(models.Model):
     admission_balance = fields.Integer(string="Balance")
     Staff_name = fields.Char("Staff Name")
     staff_password = fields.Char("Password")
+    admit_card_no = fields.Char(string="Card No")
+    admit_bank = fields.Char(string="Bank")
     rent_half=fields.Char('Rent Half Day')
     rent_full=fields.Char('Rent Full Day')
     status = fields.Selection([('unpaid','Unpaid'),('paid','Paid'),('admitted', 'Admitted'), ('discharged', 'Discharged')],default='unpaid')
