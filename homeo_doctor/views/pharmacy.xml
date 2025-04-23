@@ -395,8 +395,8 @@
                                         <field name="paid_amount" attrs="{'invisible': [('payment_mathod', '!=', 'cash')]}"/>
                                     </group>
                                     <group>
-                                        <field name="balance"/>
-                                        <field name="total_amount" attrs="{'invisible': [('payment_mathod', '!=', 'cash')]}"/>
+                                        <field name="balance" attrs="{'invisible': [('payment_mathod', '!=', 'cash')]}"/>
+                                        <field name="total_amount"/>
                                     </group>
                                 </group>
                                  <group col="4">
