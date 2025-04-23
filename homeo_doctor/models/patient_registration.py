@@ -132,6 +132,9 @@ class PatientRegistration(models.Model):
                                              ('card', 'Card'),
                                              ('cheque', 'Cheque'),
                                              ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
+    register_card_no = fields.Char(string="Card No")
+    register_bank_name = fields.Char(string="Bank")
+
     
 
     @api.onchange('register_amount_paid')
