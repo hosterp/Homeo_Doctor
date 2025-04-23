@@ -138,7 +138,7 @@ class PatientRegistration(models.Model):
     def _compute_unpaid_pharmacy(self):
         for rec in self:
             rec.unpaid_pharmacy_ids = self.env['pharmacy.description'].search([
-                ('patient_id', '=', rec.id),
+                ('uhid_id', '=', rec.id),
                 ('status', '!=', 'paid')
             ])
 

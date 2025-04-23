@@ -5,9 +5,10 @@ class PharmacyDescription(models.Model):
     _name = 'pharmacy.description'
     _description = 'Pharmacy Description'
     _order = 'date desc'
-    patient_id = fields.Many2one('patient.registration',string="Patient ID")
-    _order = 'date desc'
+
+
     patient_id = fields.Many2one('patient.registration',string="UHID")
+    uhid_id = fields.Many2one('patient.reg',string="UHID")
     name = fields.Char(string="Patient Name")
     phone_number = fields.Char(string="Phone Number")
     # bill_amount=fields.Integer(string='Bill Amount')
@@ -27,6 +28,14 @@ class PharmacyDescription(models.Model):
     remarks = fields.Char(string='Remarks')
     staff_pwd = fields.Char(string='Staff Password')
     staff_name = fields.Char(string='Staff Name')
+
+    @api.onchange('uhid_id')
+    def _onchange_uhid_id(self):
+        if self.uhid_id:
+            self.name = self.uhid_id.patient_id
+            self.phone_number = self.uhid_id.phone_number
+            # self.patient_age = self.uhid_id.age
+            # self.patient_gender = self.uhid_id.gender
 
     @api.onchange('paid_amount')
     def _onchange_paymode(self):

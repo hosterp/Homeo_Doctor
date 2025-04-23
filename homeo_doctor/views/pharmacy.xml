@@ -335,7 +335,7 @@
                                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                                     <div style="flex: 1; min-width: 180px;">
                                         <span class="o_form_label" style="font-weight: bold;">UHID:</span>
-                                        <field name="patient_id"/>
+                                        <field name="uhid_id"/>
                                     </div>
                                     <div style="flex: 1; min-width: 180px;">
                                         <span class="o_form_label" style="font-weight: bold;">Patient Name:</span>
