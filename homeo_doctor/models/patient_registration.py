@@ -133,6 +133,14 @@ class PatientRegistration(models.Model):
                                              ('cheque', 'Cheque'),
                                              ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
     
+
+    @api.onchange('register_amount_paid')
+    def _onchange_register_amount_paid(self):
+        for rec in self:
+            total = rec.register_total_amount or 0
+            paid = rec.register_amount_paid or 0
+            rec.register_balance = total - paid
+    
     
     
     @api.onchange('registration_fee', 'consultation_fee')
