@@ -254,6 +254,17 @@ class PatientRegistration(models.Model):
             'domain': [('walk_in', '=', True)],
             'target': 'current',
         }
+    def action_register_pay(self):
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Success',
+                'message': 'Paid',
+                'sticky': False,
+                'type': 'success',
+            }
+        }
 
     def action_create_admission(self):
         admission_model = self.env['hospital.admitted.patient']
