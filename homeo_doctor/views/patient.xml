@@ -235,7 +235,7 @@
                                                         <field name="register_total_amount"/>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', '=', 'card')]}">
+                                                <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', 'in', ['card','cheque','upi'])]}">
                                                     <label for="register_amount_paid" class="col-md-5 col-form-label small">Amount Paid</label>
                                                     <div class="col-md-7 field-container py-0">
                                                         <field name="register_amount_paid"/>
@@ -263,7 +263,7 @@
                                                         <field name="register_mode_payment"/>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', '=', 'card')]}">
+                                                <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', 'in', ['card','cheque','upi'])]}">
                                                     <label for="register_balance" class="col-md-5 col-form-label small">Balance</label>
                                                     <div class="col-md-7 field-container py-0">
                                                         <field name="register_balance"/>
