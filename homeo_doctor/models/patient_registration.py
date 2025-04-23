@@ -123,7 +123,7 @@ class PatientRegistration(models.Model):
                 ('status', '!=', 'paid')
             ])
 
-    register_total_amount = fields.Integer(string="Total Amount")
+    register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")
     register_amount_paid = fields.Integer(string="Amount Paid")
     register_balance = fields.Integer(string="Balance")
     register_staff_name = fields.Char("Staff Name")
@@ -133,11 +133,22 @@ class PatientRegistration(models.Model):
                                              ('cheque', 'Cheque'),
                                              ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
     
+    
+    
     @api.onchange('registration_fee', 'consultation_fee')
     def _onchange_total_amount(self):
         for rec in self:
             reg_fee = rec.registration_fee.fee if rec.registration_fee else 0
             rec.register_total_amount = reg_fee + (rec.consultation_fee or 0)
+    
+
+
+    @api.depends('registration_fee', 'consultation_fee')
+    def _compute_register_total(self):
+        for rec in self:
+            reg_fee = rec.registration_fee.fee if rec.registration_fee else 0
+            rec.register_total_amount = reg_fee + (rec.consultation_fee or 0)
+
 
 
     @api.depends('reference_no')
