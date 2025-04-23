@@ -596,7 +596,7 @@
                                              <div class="row pay_button" style="margin-left: 30px" >
                                                 <div class="col-md-1">
                                                     <button name="action_discharged_patient_reg"
-                                                            string="Pay"
+                                                            string="Pay / Discharged"
                                                             type="object"
                                                             class="btn btn-sm btn-primary"
                                                             title="Discharge"/>
