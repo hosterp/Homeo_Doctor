@@ -189,7 +189,9 @@ class PatientRegistration(models.Model):
                 'op_category': False,
                 'admission_total_amount': False,
             })
-
+            record.unpaid_general_ids.write({'status': 'paid'})
+            record.unpaid_lab_ids.write({'status': 'paid'})
+            record.unpaid_pharmacy_ids.write({'status': 'paid'})
     @api.onchange('room_category_new')
     def _onchange_room_category_new(self):
         if self.room_category_new:
