@@ -758,11 +758,11 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 	border-style: groove !important;
     white-space: nowrap !important;
 }
-.admission_form{
+/*.admission_form{
 
 	border-color: black !important;
 	border-style: groove !important;
-}
+}/*
 /*
 .sub_details{
     padding-left: 10px !important;
@@ -1180,5 +1180,8 @@ color: white ;
 
 
 .sub_details .col.px-1 {
+ border: 1px solid
+}
+.admission_form .col.px-1{
  border: 1px solid
 }
