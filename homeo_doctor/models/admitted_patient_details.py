@@ -90,9 +90,10 @@ class AdmittedPatient(models.Model):
     )
 
     def action_move_to_pharmacy(self):
+        any_medicine_moved = False
         for rec in self:
             today = fields.Date.today()
-            matching_prescriptions = rec.past_prescription_ids.filtered(lambda l: l.date == today)
+            matching_prescriptions = rec.past_prescription_ids.filtered(lambda l: l.date == today and l.medicine_move==False)
             print(matching_prescriptions,'matching_prescriptionsmatching_prescriptionsmatching_prescriptionsmatching_prescriptions')
             if matching_prescriptions:
                 pharmacy = self.env['pharmacy.description'].create({
@@ -112,18 +113,31 @@ class AdmittedPatient(models.Model):
                         'night': line.night,
                         'qty': line.qty,
                     }))
-
+                    line.medicine_move=True
+                    any_medicine_moved = True
                 pharmacy.prescription_line_ids = line_vals
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'title': 'Success',
-                    'message': 'Pharmacy record sent successfully!',
-                    'sticky': False,
-                    'warning': False,
+            if any_medicine_moved:
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': 'Success',
+                        'message': 'Pharmacy record sent successfully!',
+                        'sticky': False,
+                        'warning': False,
+                    }
                 }
-            }
+            else:
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': 'Info',
+                        'message': 'Medicine already moved to pharmacy.',
+                        'sticky': False,
+                        'warning': True,
+                    }
+                }
     def create_referral_lab(self):
         for consultation in self:
             if not consultation.patient_id:

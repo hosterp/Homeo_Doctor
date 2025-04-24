@@ -78,6 +78,7 @@
                                         <field name="noon"/>
                                         <field name="night"/>
                                         <field name="qty"/>
+                                        <field name="medicine_move" invisible="1"/>
                                         <!--                                        <field name="age"/>-->
                                         <!--                                        <field name="doctor_id"/>-->
                                     </tree>
