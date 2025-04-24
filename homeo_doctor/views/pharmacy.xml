@@ -70,7 +70,7 @@
                                                 <tr>
                                                     <td style="width: 100px; color: #666;">Patient ID:</td>
                                                     <td style="font-weight: bold; color: #333;">
-                                                        <span t-field="o.patient_id"/>
+                                                        <span t-field="o.uhid_id"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -103,120 +103,88 @@
 
                             <!-- Prescription Table -->
                             <div class="mb-4">
+                                <!-- Section Header -->
                                 <div style="background-color: #f5f5f5; padding: 8px 15px; border: 1px solid #ddd; border-top-left-radius: 5px; border-top-right-radius: 5px;">
                                     <strong style="color: #333; font-size: 16px;">Prescribed Medications</strong>
                                 </div>
 
-                                <!-- Header Row as a separate div with grid styling -->
+                                <!-- Header Row -->
                                 <div style="display: table; width: 100%; background: #1a73e8; color: white; font-weight: bold; border: 1px solid #ddd;">
                                     <div style="display: table-row;">
-                                        <div style="display: table-cell; width: 4%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
-                                            #
+                                        <div style="display: table-cell; padding: 8px; text-align: center;">Sl No</div>
+                                        <div style="display: table-cell; padding: 8px;">Particulars</div>
+                                        <div style="display: table-cell; padding: 8px; text-align: center;">Qty</div>
+                                        <div style="display: table-cell; padding: 8px; text-align: center;">Batch</div>
+                                        <div style="display: table-cell; padding: 8px; text-align: center;">Expiry</div>
+                                        <div style="display: table-cell; padding: 8px; text-align: center;">Per Time
                                         </div>
-                                        <div style="display: table-cell; width: 15%; padding: 8px; border-right: 1px solid #ddd;">
-                                            Medicine
+                                        <div style="display: table-cell; padding: 8px; text-align: center;">Timing</div>
+                                        <div style="display: table-cell; padding: 8px; text-align: right;">Unit Price
                                         </div>
-                                        <div style="display: table-cell; width: 6%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
-                                            Qty
+                                        <div style="display: table-cell; padding: 8px; text-align: center;">GST (%)
                                         </div>
-                                        <div style="display: table-cell; width: 6%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
-                                            Batch
-                                        </div>
-                                        <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
-                                            Expiry
-                                        </div>
-                                        <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
-                                            Per Time
-                                        </div>
-                                        <div style="display: table-cell; width: 15%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
-                                            Timing
-                                        </div>
-                                        <div style="display: table-cell; width: 8%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
-                                            Unit Price
-                                        </div>
-                                        <!--                                        <div style="display: table-cell; width: 7%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">Disc %</div>-->
-                                        <div style="display: table-cell; width: 7%; padding: 8px; border-right: 1px solid #ddd; text-align: center;">
-                                            GST (%)
-                                        </div>
-                                        <div style="display: table-cell; width: 10%; padding: 8px; text-align: center;">
-                                            Total
-                                        </div>
+                                        <div style="display: table-cell; padding: 8px; text-align: right;">Total</div>
                                     </div>
                                 </div>
 
-                                <!-- Table for the data rows -->
+                                <!-- Data Table -->
                                 <table class="table table-bordered table-sm"
-                                       style="border: 1px solid #ddd; margin-top: 0; width: 100%;">
+                                       style="border: 1px solid #ddd; margin-top: 0; width: 100%; table-layout: fixed;">
                                     <tbody>
                                         <t t-set="counter" t-value="1"/>
                                         <t t-foreach="o.prescription_line_ids" t-as="medicine">
                                             <tr t-att-style="'background-color: ' + ('rgba(245, 245, 245, 0.5)' if counter % 2 == 0 else 'white')">
-                                                <td class="text-center"
-                                                    style="width: 4%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-center" style="padding: 8px;">
                                                     <span t-esc="counter"/>
                                                     <t t-set="counter" t-value="counter + 1"/>
                                                 </td>
-                                                <td style="width: 15%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td style="padding: 8px;">
                                                     <strong t-field="medicine.product_id.display_name"/>
                                                 </td>
-                                                <td class="text-center"
-                                                    style="width: 6%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-center" style="padding: 8px;">
                                                     <span t-field="medicine.qty"/>
                                                 </td>
-                                                <td class="text-center"
-                                                    style="width: 6%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-center" style="padding: 8px;">
                                                     <span t-field="medicine.batch"/>
                                                 </td>
-                                                <td class="text-center"
-                                                    style="width: 8%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-center" style="padding: 8px;">
                                                     <span t-field="medicine.exp_date"
                                                           t-options='{"widget": "date", "format": "MM/yy"}'/>
                                                 </td>
-                                                <td class="text-center"
-                                                    style="width: 8%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-center" style="padding: 8px;">
                                                     <span t-field="medicine.per_ped"/>
                                                 </td>
-                                                <td class="text-center"
-                                                    style="width: 15%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
-                                                    <span t-if="medicine.morn"
-                                                          class="badge badge-pill badge-primary mr-1"
+                                                <td class="text-center" style="padding: 8px;">
+                                                    <span t-if="medicine.morn" class="badge badge-primary mr-1"
                                                           style="background-color: #1a73e8;">Morning
                                                     </span>
-                                                    <span t-if="medicine.noon"
-                                                          class="badge badge-pill badge-success mr-1"
+                                                    <span t-if="medicine.noon" class="badge badge-success mr-1"
                                                           style="background-color: #28a745;">Noon
                                                     </span>
-                                                    <span t-if="medicine.night" class="badge badge-pill badge-info"
+                                                    <span t-if="medicine.night" class="badge badge-info"
                                                           style="background-color: #17a2b8;">Night
                                                     </span>
                                                 </td>
-                                                <td class="text-right"
-                                                    style="width: 8%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-right" style="padding: 8px;">
                                                     <span t-field="medicine.per_ped"
                                                           t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
                                                 </td>
-                                                <!--                                                <td class="text-center" style="width: 7%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">-->
-                                                <!--                                                    <span t-field="medicine.discount"/>%-->
-                                                <!--                                                </td>-->
-                                                <td class="text-center"
-                                                    style="width: 7%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
-                                                    <span t-field="medicine.gst"/>%
+                                                <td class="text-center" style="padding: 8px;"><span
+                                                        t-field="medicine.gst"/>%
                                                 </td>
-                                                <td class="text-right"
-                                                    style="width: 10%; vertical-align: middle; padding: 8px; border: 1px solid #ddd;">
+                                                <td class="text-right" style="padding: 8px;">
                                                     <span t-field="medicine.rate"
                                                           t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
                                                 </td>
                                             </tr>
                                         </t>
+
                                         <!-- Subtotal Row -->
                                         <tr style="background-color: #f8f9fa;">
-                                            <td colspan="10" class="text-right"
-                                                style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">
+                                            <td colspan="9" class="text-right" style="font-weight: bold; padding: 8px;">
                                                 Subtotal:
                                             </td>
-                                            <td class="text-right"
-                                                style="font-weight: bold; padding: 8px; border: 1px solid #ddd;">
+                                            <td class="text-right" style="font-weight: bold; padding: 8px;">
                                                 <span t-esc="sum(o.prescription_line_ids.mapped('rate'))"
                                                       t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
                                             </td>
@@ -224,6 +192,7 @@
                                     </tbody>
                                 </table>
                             </div>
+
 
                             <!-- Payment Information -->
                             <div class="row">
@@ -392,14 +361,16 @@
                                     </group>
                                     <group>
                                         <field name="payment_mathod"/>
-                                        <field name="paid_amount" attrs="{'invisible': [('payment_mathod', '!=', 'cash')]}"/>
+                                        <field name="paid_amount"
+                                               attrs="{'invisible': [('payment_mathod', '!=', 'cash')]}"/>
                                     </group>
                                     <group>
-                                        <field name="balance" attrs="{'invisible': [('payment_mathod', '!=', 'cash')]}"/>
+                                        <field name="balance"
+                                               attrs="{'invisible': [('payment_mathod', '!=', 'cash')]}"/>
                                         <field name="total_amount"/>
                                     </group>
                                 </group>
-                                 <group col="4">
+                                <group col="4">
                                     <group>
                                         <field name="bill_by"/>
                                     </group>
@@ -409,9 +380,9 @@
                                     <group>
                                         <field name="staff_pwd"/>
                                     </group>
-                                     <group>
-                                         <field name="remarks"/>
-                                     </group>
+                                    <group>
+                                        <field name="remarks"/>
+                                    </group>
                                 </group>
                             </div>
                         </group>
@@ -434,7 +405,7 @@
                 <tree string="Pharmacy Description">
                     <field name="uhid_id" string='UHID'/>
                     <field name="name"/>
-<!--                    <field name="date" string="Appointment Date"/>-->
+                    <!--                    <field name="date" string="Appointment Date"/>-->
                     <field name="phone_number"/>
                     <field name="doctor_name"/>
                     <field name="status"/>
