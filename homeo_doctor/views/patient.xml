@@ -451,12 +451,12 @@
                                                     </div>
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
-                                                            <label for="room_number"
+                                                            <label for="room_number_new"
                                                                    class="col-md-4 col-form-label py-0 text-nowrap">
                                                                 Room#
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
-                                                                <field name="room_number"/>
+                                                                <field name="room_number_new"/>
                                                             </div>
                                                         </div>
                                                     </div>
