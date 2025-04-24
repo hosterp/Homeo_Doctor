@@ -459,7 +459,7 @@
                                                                 <field name="room_number_new"/>
                                                             </div>
                                                         </div>
-                                                    </div> 
+                                                    </div>
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="new_block"
