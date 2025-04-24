@@ -197,12 +197,12 @@ class PatientRegistration(models.Model):
             record.admission_boolean = False
 
             # Mark the room as available
-            if record.room_number_new:
-                record.room_number_new.is_available = False
+            if record.room_number:
+                record.room_number.is_available = False
 
             # Clear admission-related fields
             record.update({
-                'room_number_new': False,
+                'room_number': False,
                 'bed_id': False,
                 'admitted_date': False,
                 'discharge_date': False,
@@ -229,18 +229,18 @@ class PatientRegistration(models.Model):
             # Filter rooms by the selected room category
             return {
                 'domain': {
-                    'room_number_new': [('room_type_new', '=', self.room_category_new.id), ('is_available', '=', False)]
+                    'room_number': [('room_type_new', '=', self.room_category_new.id), ('is_available', '=', False)]
                 }
             }
-        return {'domain': {'room_number_new': []}}
+        return {'domain': {'room_number': []}}
 
-    @api.onchange('room_number_new')
+    @api.onchange('room_number')
     def _onchange_room_number(self):
-        if self.room_number_new:
-            self.bed_id = self.room_number_new.bed_number_new
-            self.new_block = self.room_number_new.block_new
-            self.rent_half=self.room_number_new.rent_half
-            self.rent_full=self.room_number_new.rent_full
+        if self.room_number:
+            self.bed_id = self.room_number.bed_number_new
+            self.new_block = self.room_number.block_new
+            self.rent_half=self.room_number.rent_half
+            self.rent_full=self.room_number.rent_full
         else:
             self.bed_id = False
             self.new_block = False
@@ -310,13 +310,13 @@ class PatientRegistration(models.Model):
             admission_model.create({
                 'patient_id': patient.id,
                 'admission_date': fields.Datetime.now(),
-                'room_number': rec.room_number_new.id,
+                'room_number': rec.room_number.id,
                 'room_category_new': rec.room_category_new.id,
                 'bed_id': rec.bed_id.id,
                 'attending_doctor': rec.doctor.id,
             })
-            if rec.room_number_new:
-                room = room_model.browse(rec.room_number_new.id)
+            if rec.room_number:
+                room = room_model.browse(rec.room_number.id)
                 if room:
                     room.write({'is_available': True})
         return {
