@@ -274,7 +274,7 @@ class PatientRegistration(models.Model):
             'name': self.patient_name,
             'uhid_id': self.patient_id.id,
             'phone_number': self.phone_number,
-            'doctor_name': self.doctor_id,
+            'doctor_name': self.doctor.id,
             'prescription_line_ids': [(0, 0, {
                 'product_id': line.product_id.id,
                 'qty': line.total_med,
@@ -497,7 +497,7 @@ class PatientRegistration(models.Model):
         for consultation in self:
             if not consultation.user_id:
                 raise UserError("Patient not selected.")
-            doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor_id)], limit=1)
+            doctor = self.env['doctor.profile'].search([('name', '=', consultation.doctor.name)], limit=1)
             if not doctor:
                 raise UserError("Doctor not found in the system.")
 
