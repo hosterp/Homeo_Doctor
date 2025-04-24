@@ -59,7 +59,7 @@ class AppointmentPaymentWizard(models.TransientModel):
                 'address': appointment.patient_id.address,
                 'age': appointment.patient_id.age,
                 'phone_number': appointment.patient_id.phone_number,
-                'doctor_id': doctor.display_name,
+                'doctor': doctor.id,
                 'appointment_date': appointment.appointment_date,
                 'status': 'confirmed'
             }
