@@ -50,11 +50,13 @@ class PharmacyDescription(models.Model):
             rec.total_item = len(rec.prescription_line_ids)
             rec.total_qty = sum(line.qty for line in rec.prescription_line_ids)
             rec.total_amount = sum(line.rate for line in rec.prescription_line_ids)
+
     @api.model
     def create(self, vals):
-        # When creating a patient, also create or find a partner
         res = super(PharmacyDescription, self).create(vals)
-        res._process_payment()
+        # res._process_payment()
+
+        # Ensure partner creation is only done if necessary
         if not res.partner_id and res.name:
             partner = self.env['res.partner'].search([
                 ('name', '=', res.name),
@@ -68,6 +70,7 @@ class PharmacyDescription(models.Model):
                 })
 
             res.partner_id = partner.id
+
         return res
 
     def write(self, vals):
