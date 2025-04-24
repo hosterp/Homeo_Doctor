@@ -2,7 +2,7 @@
     <!-- Custom minimal layout -->
     <template id="lab_minimal_layout">
         <t t-call="web.basic_layout">
-             <div class="header">
+            <div class="header">
                 <!-- <div class="text-center">
                     <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI
                         SPECIALITY HOSPITAL
@@ -26,17 +26,18 @@
                     <div class="page">
                         <!-- Header Section -->
                         <div class="row">
-                            <div class="text-center">
-                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI
-                                    SPECIALITY HOSPITAL
+                            <div  class="col-12 text-center">
+                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">
+                                    Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
                                 </h1>
-                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO
-                                    THIRUVANANTHAPURAM -695 564
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">
+                                    EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564
                                 </p>
-                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004,2374004
-                                    dpmshospital@gmail.com
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">
+                                    Phone: 0471-2373004, 2374004 | dpmshospital@gmail.com
                                 </p>
                             </div>
+
                             <div class="col-12 text-center">
                                 <h5 class="mt-2 mb-4">LAB Result</h5>
                             </div>
@@ -193,9 +194,9 @@
                                                         <span t-esc="counter"/>
                                                         <t t-set="counter" t-value="counter + 1"/>
                                                     </td>
-<!--                                                    <td style="width: 35%;">-->
-<!--                                                        <span t-field="subline.lab_type_id"/>-->
-<!--                                                    </td>-->
+                                                    <!--                                                    <td style="width: 35%;">-->
+                                                    <!--                                                        <span t-field="subline.lab_type_id"/>-->
+                                                    <!--                                                    </td>-->
                                                     <td style="width: 35%;">
                                                         <span t-field="subline.lab_test_name"/>
                                                     </td>
