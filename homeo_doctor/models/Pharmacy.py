@@ -54,6 +54,7 @@ class PharmacyDescription(models.Model):
     def create(self, vals):
         # When creating a patient, also create or find a partner
         res = super(PharmacyDescription, self).create(vals)
+        res._process_payment()
         if not res.partner_id and res.name:
             partner = self.env['res.partner'].search([
                 ('name', '=', res.name),
@@ -69,11 +70,44 @@ class PharmacyDescription(models.Model):
             res.partner_id = partner.id
         return res
 
-
+    def write(self, vals):
+        res = super(PharmacyDescription, self).write(vals)
+        for record in self:
+            record._process_payment()
+        return res
     @api.depends('prescription_line_ids.rate', 'prescription_line_ids.gst')
     def _compute_bill_amount(self):
         for rec in self:
             rec.bill_amount = sum(line.rate for line in rec.prescription_line_ids)  # Excluding GST
+
+    def _process_payment(self):
+        # Check if the context already has the 'payment_processed' flag
+        if self.env.context.get('payment_processed', False):
+            return  # Skip processing if payment already processed
+
+        # Add the flag to the context
+        context = dict(self.env.context, payment_processed=True)
+        self = self.with_context(context)
+
+        if self.payment_mathod == 'credit':
+            for line in self.prescription_line_ids:
+                if line.product_id and line.qty:
+                    stock_entries = self.env['stock.entry'].search([
+                        ('product_id', '=', line.product_id.id)
+                    ], order="id asc")
+
+                    remaining_qty = line.qty
+                    for entry in stock_entries:
+                        if remaining_qty <= 0:
+                            break
+                        if entry.quantity >= remaining_qty:
+                            entry.quantity -= remaining_qty
+                            remaining_qty = 0
+                        else:
+                            remaining_qty -= entry.quantity
+                            entry.quantity = 0
+
+                    line.stock_in_hand = sum(stock_entries.mapped('quantity'))
 
     def action_register_payment(self):
         for record in self:

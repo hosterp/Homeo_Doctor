@@ -93,6 +93,7 @@ class AdmittedPatient(models.Model):
         for rec in self:
             today = fields.Date.today()
             matching_prescriptions = rec.past_prescription_ids.filtered(lambda l: l.date == today)
+            print(matching_prescriptions,'matching_prescriptionsmatching_prescriptionsmatching_prescriptionsmatching_prescriptions')
             if matching_prescriptions:
                 pharmacy = self.env['pharmacy.description'].create({
                     'uhid_id': rec.patient_id.id,
@@ -101,7 +102,7 @@ class AdmittedPatient(models.Model):
                     'payment_mathod':'credit',
                     'status_admitted':'admitted'
                 })
-
+                print(pharmacy,'pharmacypharmacypharmacypharmacypharmacypharmacypharmacypharmacypharmacypharmacypharmacy')
                 line_vals = []
                 for line in matching_prescriptions:
                     line_vals.append((0, 0, {
@@ -109,6 +110,7 @@ class AdmittedPatient(models.Model):
                         'morn': line.morn,
                         'noon': line.noon,
                         'night': line.night,
+                        'qty': line.qty,
                     }))
 
                 pharmacy.prescription_line_ids = line_vals
