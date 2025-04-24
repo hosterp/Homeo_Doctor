@@ -1,3 +1,4 @@
+from datetime import datetime
 from email.policy import default
 
 import dateutil.utils
@@ -23,6 +24,7 @@ class PatientRegistration(models.Model):
     patient_id = fields.Many2one('patient.reg', string='Patient ID', required=True)
     patient_name = fields.Char(string='Name', required=True, related='user_id.patient_id')
     doctor_id = fields.Char(string='Doctor name')
+    doctor = fields.Many2one('doctor.profile',string='Doctor name')
     address = fields.Text(string='Address', required=True, related='user_id.address')
     age = fields.Integer(string='Age', required=True, related='user_id.age')
     phone_number = fields.Char(string='Phone No', size=12, related='user_id.phone_number')
@@ -232,6 +234,9 @@ class PatientRegistration(models.Model):
         admission_record.admission_boolean = True
         if admission_record.admission_boolean:
             admission_record.status = 'admitted'
+            admission_record.doctor= self.doctor.id
+            admission_record.write({'admitted_date': fields.Datetime.now()})
+
         else:
             admission_record.status = False
         # if admission_record:
