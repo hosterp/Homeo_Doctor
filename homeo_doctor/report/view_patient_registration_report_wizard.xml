@@ -1,0 +1,115 @@
+<odoo>
+    <data>
+        <template id="patient_registration_pdf_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <!-- Check if 'data' is passed and contains 'from_date' and 'to_date' -->
+                    <t t-if="data">
+                        <t t-set="from_date" t-value="data.get('from_date')"/>
+                        <t t-set="to_date" t-value="data.get('to_date')"/>
+
+                        <p>From Date:
+                            <t t-esc="from_date"/>
+                            To Date:
+                            <t t-esc="to_date"/>
+                        </p>
+
+                        <t t-set="patients"
+                           t-value="env['patient.reg'].search([('date', '&gt;=', from_date), ('date', '&lt;=', to_date)])"/>
+
+                        <!-- Check if patients are available -->
+                        <t t-if="patients">
+                            <div class="page">
+                                <h2>Patient Registration Report</h2>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Reference</th>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                            <th>Mobile</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="patients" t-as="p">
+                                            <tr>
+                                                <td>
+                                                    <t t-esc="p.reference_no"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="p.patient_id"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="p.date"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="p.phone_number"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <!-- If no patients found -->
+                        <t t-else="">
+                            <p>No patients found for the selected date range.</p>
+                        </t>
+                    </t>
+                    <!-- If 'data' is None or 'from_date'/'to_date' are missing -->
+                    <t t-else="">
+                        <p>Invalid date range provided.</p>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+        <record id="view_patient_registration_report_wizard" model="ir.ui.view">
+            <field name="name">Patient Registration Report Wizard</field>
+            <field name="model">patient.registration.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Report">
+                    <group col="2">
+                        <group>
+                            <field name="from_date"/>
+
+                        </group>
+                        <group>
+                            <field name="to_date"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="action_print_pdf" type="object" string="PDF Report" class="btn-primary"/>
+                        <button name="action_export_excel" type="object" string="Excel Report" class="btn-secondary"/>
+                        <button string="Cancel" special="cancel" class="btn-link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <report
+                id="action_patient_registration_pdf"
+                model="patient.registration.report.wizard"
+                string="Patient Registration PDF"
+                report_type="qweb-pdf"
+                name="homeo_doctor.patient_registration_pdf_template"
+                file="homeo_doctor.patient_registration_pdf_template"
+                print_report_name="'Patient_Registration_Report'"
+        />
+
+        <act_window id="action_patient_registration_report_wizard"
+                    name="Patient Registration Report"
+                    res_model="patient.registration.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+        <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
+        <menuitem id="menu_reports_root" name="Reports" parent="menu_lab_root" sequence="21"/>
+        <menuitem id="menu_patient_registration_report"
+                  name="Patient Report"
+                  parent="menu_reports_root"
+                  action="action_patient_registration_report_wizard"/>
+
+
+    </data>
+</odoo>

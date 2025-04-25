@@ -28,3 +28,4 @@ from .import general_dept_costing
 from .import general_billing
 from .import lab_result_page
 from .import room_config
+from .import patient_reg_report_wizard
