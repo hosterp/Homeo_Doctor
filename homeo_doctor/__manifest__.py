@@ -52,6 +52,7 @@
         "report/lab_result_report.xml",
         "report/general_billing_report.xml",
         "report/view_patient_registration_report_wizard.xml",
+        "report/general_billing_wizard_report.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",
