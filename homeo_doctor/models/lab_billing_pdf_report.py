@@ -23,6 +23,7 @@ class DoctorLabReportWizard(models.TransientModel):
                 'sl_no': report.id,
                 'patient_name': report.patient_name,
                 'mrd_op_no': report.user_ide.display_name,
+                'total_bill_amount': report.total_bill_amount,
                 # 'ip_no': report.patient_id.id  # Assuming patient_id is the IP No.
             })
 

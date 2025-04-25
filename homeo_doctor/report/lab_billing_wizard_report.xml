@@ -10,7 +10,7 @@
                                 <th>SL No</th>
                                 <th>Patient Name</th>
                                 <th>MRD/OP No</th>
-<!--                                <th>IP No</th>-->
+                                <th>Amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -25,9 +25,9 @@
                                     <td>
                                         <t t-esc="data['mrd_op_no']"/>
                                     </td>
-<!--                                    <td>-->
-<!--                                        <t t-esc="data['ip_no']"/>-->
-<!--                                    </td>-->
+                                    <td>
+                                        <t t-esc="data['total_bill_amount']"/>
+                                    </td>
                                 </tr>
                             </t>
                         </tbody>
