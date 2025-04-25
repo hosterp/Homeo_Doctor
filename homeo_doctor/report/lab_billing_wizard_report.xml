@@ -9,7 +9,7 @@
                             <tr>
                                 <th>SL No</th>
                                 <th>Patient Name</th>
-                                <th>MRD/OP No</th>
+                                <th>UHID</th>
                                 <th>Amount</th>
                             </tr>
                         </thead>
