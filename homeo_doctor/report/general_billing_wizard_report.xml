@@ -6,9 +6,7 @@
                     <h2 style="text-align: center;">General Billing Report</h2>
                     <h3 style="text-align: center;">
 
-                        <t t-esc="date_from"/>
-<!--                        to-->
-                        <t t-esc="date_to"/>
+                        <t t-esc="data['date_from']"/> to <t t-esc="data['date_to']"/>
                     </h3>
 
 
@@ -86,9 +84,13 @@
             <field name="model">billing.report.wizard</field>
             <field name="arch" type="xml">
                 <form string="General Billing Report">
-                    <group>
-                        <field name="date_from"/>
-                        <field name="date_to"/>
+                    <group col="2">
+                        <group>
+                            <field name="date_from"/>
+                        </group>
+                        <group>
+                            <field name="date_to"/>
+                        </group>
                     </group>
                     <footer>
                         <button string="Print PDF" type="object" name="action_generate_pdf_report" class="btn-primary"/>
