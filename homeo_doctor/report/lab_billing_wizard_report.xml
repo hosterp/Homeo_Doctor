@@ -1,0 +1,89 @@
+<odoo>
+    <data>
+        <template id="report_doctor_lab_report">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                   <h2 style="text-align: center;">Lab Billing Report</h2>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>SL No</th>
+                                <th>Patient Name</th>
+                                <th>MRD/OP No</th>
+<!--                                <th>IP No</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="report_data" t-as="data">
+                                <tr>
+                                    <td>
+                                        <t t-esc="data['sl_no']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['patient_name']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['mrd_op_no']"/>
+                                    </td>
+<!--                                    <td>-->
+<!--                                        <t t-esc="data['ip_no']"/>-->
+<!--                                    </td>-->
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <record id="report_doctor_lab_report_pdf" model="ir.actions.report">
+            <field name="name">Doctor Lab Report</field>
+            <field name="model">doctor.lab.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">homeo_doctor.report_doctor_lab_report</field>
+            <field name="print_report_name">Doctor Lab Report</field>
+        </record>
+
+        <!-- Wizard View for Report Generation -->
+        <record id="view_doctor_lab_report_wizard" model="ir.ui.view">
+            <field name="name">doctor.lab.report.wizard.form</field>
+            <field name="model">doctor.lab.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Doctor Lab Report">
+                    <group col="2">
+                        <group>
+                              <field name="from_date"/>
+                        </group>
+                      <group>
+                           <field name="to_date"/>
+                      </group>
+                    </group>
+                    <footer>
+                        <button string="Pdf Report" type="object" name="action_generate_report" class="btn-primary"/>
+                        <button string="Cancel" type="object" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action for the Wizard -->
+        <record id="action_doctor_lab_report_wizard" model="ir.actions.act_window">
+            <field name="name">Generate Lab Billing Report</field>
+            <field name="res_model">doctor.lab.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_doctor_lab_report_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu Items -->
+        <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
+        <menuitem id="menu_reports_root" name="Reports" parent="menu_lab_root" sequence="21"/>
+
+
+        <menuitem id="menu_lab_billing_wizard_reports"
+                  name="Lab billing Wizard Report"
+                  parent="menu_reports_root"
+                  action="action_doctor_lab_report_wizard"
+                  sequence="3"/>
+    </data>
+</odoo>
