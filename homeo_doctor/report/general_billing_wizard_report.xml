@@ -94,7 +94,7 @@
                     </group>
                     <footer>
                         <button string="Print PDF" type="object" name="action_generate_pdf_report" class="btn-primary"/>
-                        <button string="Export Excel" type="object" name="action_generate_excel_report"
+                        <button string="Excel Report" type="object" name="action_generate_excel_report"
                                 class="btn-secondary"/>
                         <button string="Cancel" special="cancel" class="btn-secondary"/>
                     </footer>
