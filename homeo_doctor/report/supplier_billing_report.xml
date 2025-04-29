@@ -91,6 +91,7 @@
                     </group>
                     <footer>
                         <button name="action_print_pdf" type="object" string="PDF Report" class="btn-primary"/>
+                        <button name="action_print_excel" type="object" string="Excel Report" class="btn-secondary"/>
                         <button string="Cancel" special="cancel" class="btn-link"/>
                     </footer>
                 </form>

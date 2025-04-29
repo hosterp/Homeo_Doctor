@@ -221,6 +221,67 @@ class PharmacyDescriptionReportController(http.Controller):
                 ('Content-Disposition', 'attachment; filename=pharmacy_description_report.xlsx')
             ]
         )
+
+
+
+class VendorBillExcelController(http.Controller):
+
+    @http.route('/vendor/bill/excel', type='http', auth='user')
+    def download_excel_report(self, from_date, to_date, **kwargs):
+        user = request.env.user
+        ReportWizard = request.env['in.invoice.report.wizard'].sudo()
+
+        # Parse the dates
+        from_dt = datetime.strptime(from_date, "%Y-%m-%d")
+        to_dt = datetime.strptime(to_date, "%Y-%m-%d")
+
+        # Search the bills
+        records = request.env['account.move'].sudo().search([
+            ('move_type', '=', 'in_invoice'),
+            ('invoice_date', '>=', from_dt),
+            ('invoice_date', '<=', to_dt),
+        ])
+
+        # Create Excel file in memory
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet("Vendor Bills")
+
+        header_format = workbook.add_format({'bold': True, 'bg_color': '#D7E4BC'})
+
+        headers = [
+            'Supplier Name', 'Invoice No', 'Phone No', 'Email Id',
+            'GST No', 'DL/REG No', 'Bill Date', 'PO Number'
+        ]
+        for col_num, header in enumerate(headers):
+            worksheet.write(0, col_num, header, header_format)
+
+        row = 1
+        for rec in records:
+            worksheet.write(row, 0, rec.supplier_name.name if rec.supplier_name else '')
+            worksheet.write(row, 1, rec.supplier_invoice or '')
+            worksheet.write(row, 2, rec.supplier_phone or '')
+            worksheet.write(row, 3, rec.supplier_email or '')
+            worksheet.write(row, 4, rec.supplier_gst or '')
+            worksheet.write(row, 5, rec.supplier_dl or '')
+            worksheet.write(row, 6, rec.supplier_bill_date.strftime('%d-%m-%Y') if rec.supplier_bill_date else '')
+            worksheet.write(row, 7, rec.po_number.name if rec.po_number else '')
+            row += 1
+
+        workbook.close()
+        output.seek(0)
+        file_data = output.read()
+        output.close()
+
+        filename = "Vendor_Bill_Report.xlsx"
+        return request.make_response(
+            file_data,
+            headers=[
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', f'attachment; filename="{filename}"')
+            ]
+        )
+
 # class AuthLogin(http.Controller):
 #     @http.route('/web/login', type='http', auth="public", website=True)
 #     def web_login(self, redirect=None, **kw):
