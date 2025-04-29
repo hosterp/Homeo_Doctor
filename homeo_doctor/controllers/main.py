@@ -175,6 +175,52 @@ class DoctorLabReportController(http.Controller):
                 ('Content-Disposition', 'attachment; filename=doctor_lab_report.xlsx')
             ]
         )
+
+
+class PharmacyDescriptionReportController(http.Controller):
+
+    @http.route(['/pharmacy_description/download_excel'], type='http', auth="user")
+    def download_excel(self, **kw):
+        from_date = kw.get('from_date')
+        to_date = kw.get('to_date')
+
+        pharmacy_records = request.env['pharmacy.description'].sudo().search([
+            ('date', '>=', from_date),
+            ('date', '<=', to_date)
+        ], order='date asc')  # You can change to desc if needed
+
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet('Pharmacy Report')
+
+        headers = ['SL No', 'Receipt No', 'Date & Time', 'Name', 'Bill No', 'Payable Amount', 'Paying Amount', 'Balance Amount']
+        for col_num, header in enumerate(headers):
+            worksheet.write(0, col_num, header)
+
+        row = 1
+        sl_no = 1
+        for record in pharmacy_records:
+            worksheet.write(row, 0, sl_no)
+            worksheet.write(row, 1, record.id)  # Assuming Receipt No is ID
+            worksheet.write(row, 2, record.date.strftime('%Y-%m-%d %H:%M:%S') if record.date else '')
+            worksheet.write(row, 3, record.name or '')
+            worksheet.write(row, 4, record.id)  # Assuming Bill No is same as Receipt No (else adjust)
+            worksheet.write(row, 5, record.bill_amount or 0.0)
+            worksheet.write(row, 6, record.paid_amount or 0)
+            worksheet.write(row, 7, record.balance or 0)
+            row += 1
+            sl_no += 1
+
+        workbook.close()
+        output.seek(0)
+
+        return request.make_response(
+            output.read(),
+            headers=[
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', 'attachment; filename=pharmacy_description_report.xlsx')
+            ]
+        )
 # class AuthLogin(http.Controller):
 #     @http.route('/web/login', type='http', auth="public", website=True)
 #     def web_login(self, redirect=None, **kw):

@@ -31,3 +31,4 @@ from .import room_config
 from .import patient_reg_report_wizard
 from .import general_billing_report_wizard
 from .import lab_billing_pdf_report
+from .import pharmacy_discription_wizard
