@@ -12,9 +12,29 @@ class PatientRegistrationReportWizard(models.TransientModel):
             ('date', '>=', self.from_date),
             ('date', '<=', self.to_date)
         ])
+        patient_list = []
+        sl = 1
+        for patient in patients:
+            patient_list.append({
+                'sl': sl,
+                'reference_no': patient.reference_no,
+                'patient_name': patient.patient_id,
+                'age': patient.age,
+                'address': patient.address,
+                'phone': patient.phone_number,
+                'doctor': patient.doc_name if patient.doc_name else '',
+            })
+            sl += 1
+
         data = {
-            'patient_ids': patients.ids,
+            'form': {
+                'from_date': self.from_date,
+                'to_date': self.to_date,
+                'patients': patient_list,
+            }
         }
+        print(patient_list,'patient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_list')
+
         return self.env.ref('homeo_doctor.action_patient_registration_pdf').report_action(self, data=data)
 
     def action_export_excel(self):

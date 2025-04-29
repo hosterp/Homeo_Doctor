@@ -1,69 +1,72 @@
 <odoo>
     <data>
+
         <template id="patient_registration_pdf_template">
-            <t t-call="web.html_container">
-                <t t-call="web.external_layout">
-                    <!-- Check if 'data' is passed and contains 'from_date' and 'to_date' -->
+            <t t-call="web.external_layout">
+                 <div class="page">
                     <t t-if="data">
-                        <t t-set="from_date" t-value="data.get('from_date')"/>
-                        <t t-set="to_date" t-value="data.get('to_date')"/>
+                        <t t-set="from_date" t-value="data['form']['from_date']"/>
+                        <t t-set="to_date" t-value="data['form']['to_date']"/>
+                        <t t-set="patients" t-value="data['form']['patients']"/>
 
-                        <p>From Date:
-                            <t t-esc="from_date"/>
-                            To Date:
-                            <t t-esc="to_date"/>
-                        </p>
+                        <div class="page">
+                            <h2>Patient Registration Report</h2>
+                            <p>From:
+                                <t t-esc="from_date"/>
+                                To:
+                                <t t-esc="to_date"/>
+                            </p>
 
-                        <t t-set="patients"
-                           t-value="env['patient.reg'].search([('date', '&gt;=', from_date), ('date', '&lt;=', to_date)])"/>
-
-                        <!-- Check if patients are available -->
-                        <t t-if="patients">
-                            <div class="page">
-                                <h2>Patient Registration Report</h2>
+                            <t t-if="patients">
                                 <table class="table table-sm">
                                     <thead>
                                         <tr>
+                                            <th>SL</th>
                                             <th>Reference</th>
                                             <th>Name</th>
-                                            <th>Date</th>
+                                            <th>Age</th>
+                                            <th>Address</th>
                                             <th>Mobile</th>
+                                            <th>Doctor</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <t t-foreach="patients" t-as="p">
                                             <tr>
                                                 <td>
-                                                    <t t-esc="p.reference_no"/>
+                                                    <t t-esc="p['sl']"/>
                                                 </td>
                                                 <td>
-                                                    <t t-esc="p.patient_id"/>
+                                                    <t t-esc="p['reference_no']"/>
                                                 </td>
                                                 <td>
-                                                    <t t-esc="p.date"/>
+                                                    <t t-esc="p['patient_name']"/>
                                                 </td>
                                                 <td>
-                                                    <t t-esc="p.phone_number"/>
+                                                    <t t-esc="p['age']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="p['address']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="p['phone']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="p['doctor']"/>
                                                 </td>
                                             </tr>
                                         </t>
                                     </tbody>
                                 </table>
-                            </div>
-                        </t>
-                        <!-- If no patients found -->
-                        <t t-else="">
-                            <p>No patients found for the selected date range.</p>
-                        </t>
+                            </t>
+                            <t t-if="not patients">
+                                <p>No patient records found in this date range.</p>
+                            </t>
+                        </div>
                     </t>
-                    <!-- If 'data' is None or 'from_date'/'to_date' are missing -->
-                    <t t-else="">
-                        <p>Invalid date range provided.</p>
-                    </t>
-                </t>
+                 </div>
             </t>
         </template>
-
 
         <record id="view_patient_registration_report_wizard" model="ir.ui.view">
             <field name="name">Patient Registration Report Wizard</field>
@@ -71,15 +74,9 @@
             <field name="arch" type="xml">
                 <form string="Generate Report">
                     <group col="2">
-                        <group>
-                            <field name="from_date"/>
-
-                        </group>
-                        <group>
-                            <field name="to_date"/>
-                        </group>
+                        <field name="from_date"/>
+                        <field name="to_date"/>
                     </group>
-
                     <footer>
                         <button name="action_print_pdf" type="object" string="PDF Report" class="btn-primary"/>
                         <button name="action_export_excel" type="object" string="Excel Report" class="btn-secondary"/>
@@ -88,6 +85,8 @@
                 </form>
             </field>
         </record>
+
+        <!-- Report Action -->
         <report
                 id="action_patient_registration_pdf"
                 model="patient.registration.report.wizard"
@@ -98,18 +97,19 @@
                 print_report_name="'Patient_Registration_Report'"
         />
 
+        <!-- Menu & Action -->
         <act_window id="action_patient_registration_report_wizard"
                     name="Patient Registration Report"
                     res_model="patient.registration.report.wizard"
                     view_mode="form"
                     target="new"/>
+
         <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
         <menuitem id="menu_reports_root" name="Reports" parent="menu_lab_root" sequence="21"/>
         <menuitem id="menu_patient_registration_report"
                   name="Patient Report"
                   parent="menu_reports_root"
                   action="action_patient_registration_report_wizard"/>
-
 
     </data>
 </odoo>

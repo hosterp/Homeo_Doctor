@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Report Template -->
+        <template id="in_invoice_pdf_template">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <h2>Vendor Bill Report</h2>
+                        <p>
+                            <strong>From:</strong>
+                            <t t-esc="data['from_date']"/>
+                            <strong>To:</strong>
+                            <t t-esc="data['to_date']"/>
+                        </p>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Supplier Name</th>
+                                    <th>Invoice No</th>
+                                    <th>Phone No</th>
+                                    <th>Email Id</th>
+                                    <th>GST No</th>
+                                    <th>DL/REG No</th>
+                                    <th>Bill Date</th>
+                                    <th>PO Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="data['bills']" t-as="bill">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="bill['supplier_name']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="bill['supplier_invoice']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="bill['supplier_phone']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="bill['supplier_email']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="bill['supplier_gst']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="bill['supplier_dl']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="bill['bill_date']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="bill['po_number']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- Report Action -->
+        <report
+                id="in_invoice_pdf_report_action"
+                model="in.invoice.report.wizard"
+                string="Vendor Bill PDF"
+                report_type="qweb-pdf"
+                name="homeo_doctor.in_invoice_pdf_template"
+                file="homeo_doctor.in_invoice_pdf_template"
+                print_report_name="'Vendor_Bill_Report'"
+        />
+
+        <!-- Wizard View -->
+        <record id="view_in_invoice_report_wizard" model="ir.ui.view">
+            <field name="name">In Invoice Report Wizard</field>
+            <field name="model">in.invoice.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Vendor Bill Report">
+                    <group col="2">
+                        <group>
+                            <field name="from_date"/>
+                        </group>
+                        <group>
+                            <field name="to_date"/>
+                        </group>
+
+                    </group>
+                    <footer>
+                        <button name="action_print_pdf" type="object" string="PDF Report" class="btn-primary"/>
+                        <button string="Cancel" special="cancel" class="btn-link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Wizard Action -->
+        <act_window
+                id="action_in_invoice_report_wizard"
+                name="Supplier Bill Report"
+                res_model="in.invoice.report.wizard"
+                view_mode="form"
+                target="new"
+        />
+
+        <!-- Menu Items -->
+        <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
+        <menuitem id="menu_reports_root" name="Reports" parent="menu_lab_root" sequence="21"/>
+        <menuitem
+                id="menu_in_invoice_report"
+                name="Supplier Bill Report"
+                parent="menu_reports_root"
+                action="action_in_invoice_report_wizard"
+                sequence="5"
+        />
+
+    </data>
+</odoo>
