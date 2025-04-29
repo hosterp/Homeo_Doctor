@@ -34,3 +34,11 @@ class DoctorLabReportWizard(models.TransientModel):
         # Use the QWeb report template to render the data
         return self.env.ref('homeo_doctor.report_doctor_lab_report_pdf').report_action(self, data={
             'report_data': report_data})
+
+    def action_download_excel(self):
+        base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/doctor_lab_report/download_excel?from_date={self.from_date}&to_date={self.to_date}',
+            'target': 'self',
+        }

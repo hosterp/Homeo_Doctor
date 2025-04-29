@@ -60,6 +60,7 @@
                     </group>
                     <footer>
                         <button string="Pdf Report" type="object" name="action_generate_report" class="btn-primary"/>
+                        <button name="action_download_excel" type="object" string="Download Excel" class="oe_highlight"/>
                         <button string="Cancel" type="object" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>

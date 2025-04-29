@@ -129,6 +129,52 @@ class GeneralBillingExcelDownload(http.Controller):
         ]
         return request.make_response(output.read(), headers)
 
+
+class DoctorLabReportController(http.Controller):
+
+    @http.route(['/doctor_lab_report/download_excel'], type='http', auth="user")
+    def download_excel(self, **kw):
+        from_date = kw.get('from_date')
+        to_date = kw.get('to_date')
+
+        # Get the filtered data
+        lab_reports = request.env['doctor.lab.report'].sudo().search([
+            ('date', '>=', from_date),
+            ('date', '<=', to_date)
+        ])
+
+        # Create an in-memory output file
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet('Lab Reports')
+
+        # Define the headers
+        headers = ['SL No', 'Patient Name', 'MRD/OP No', 'Total Bill Amount']
+        for col_num, header in enumerate(headers):
+            worksheet.write(0, col_num, header)
+
+        # Fill the sheet with data
+        row = 1
+        sl_no = 1
+        for report in lab_reports:
+            worksheet.write(row, 0, sl_no)  # Serial number
+            worksheet.write(row, 1, report.patient_name or '')
+            worksheet.write(row, 2, report.user_ide.display_name or '')
+            worksheet.write(row, 3, report.total_bill_amount or 0.0)
+            row += 1
+            sl_no += 1
+
+        workbook.close()
+        output.seek(0)
+
+        # Return as download
+        return request.make_response(
+            output.read(),
+            headers=[
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', 'attachment; filename=doctor_lab_report.xlsx')
+            ]
+        )
 # class AuthLogin(http.Controller):
 #     @http.route('/web/login', type='http', auth="public", website=True)
 #     def web_login(self, redirect=None, **kw):
