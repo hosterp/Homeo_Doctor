@@ -3,7 +3,7 @@
 
         <template id="patient_registration_pdf_template">
             <t t-call="web.external_layout">
-                 <div class="page">
+                <div class="page">
                     <t t-if="data">
                         <t t-set="from_date" t-value="data['form']['from_date']"/>
                         <t t-set="to_date" t-value="data['form']['to_date']"/>
@@ -64,7 +64,7 @@
                             </t>
                         </div>
                     </t>
-                 </div>
+                </div>
             </t>
         </template>
 
@@ -74,8 +74,12 @@
             <field name="arch" type="xml">
                 <form string="Generate Report">
                     <group col="2">
-                        <field name="from_date"/>
-                        <field name="to_date"/>
+                        <group>
+                            <field name="from_date"/>
+                        </group>
+                        <group>
+                            <field name="to_date"/>
+                        </group>
                     </group>
                     <footer>
                         <button name="action_print_pdf" type="object" string="PDF Report" class="btn-primary"/>
