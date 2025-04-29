@@ -37,3 +37,12 @@ class PharmacyDescriptionWizard(models.TransientModel):
         }
 
         return self.env.ref('homeo_doctor.action_report_pharmacy_description').report_action(self, data={'data': data})
+
+    def action_generate_excel_report(self):
+        base_url ='/pharmacy_description/download_excel'
+        url = f"{base_url}?from_date={self.from_date.strftime('%Y-%m-%d %H:%M:%S')}&to_date={self.to_date.strftime('%Y-%m-%d %H:%M:%S')}"
+        return {
+            'type': 'ir.actions.act_url',
+            'url': url,
+            'target': 'self',
+        }

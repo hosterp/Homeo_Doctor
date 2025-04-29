@@ -71,8 +71,11 @@
 
                     </group>
                     <footer>
-                        <button string="Generate Report" type="object" name="action_generate_report"
+                        <button string="PDF Report" type="object" name="action_generate_report"
                                 class="btn-primary"/>
+                        <button string="Download Excel" type="object"
+                        name="action_generate_excel_report"
+                        class="btn-secondary"/>
                         <button string="Cancel" special="cancel" class="btn-secondary"/>
                     </footer>
                 </form>
