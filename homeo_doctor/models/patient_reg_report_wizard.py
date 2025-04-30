@@ -8,12 +8,16 @@ class PatientRegistrationReportWizard(models.TransientModel):
     to_date = fields.Date(string="To Date", required=True)
 
     def action_print_pdf(self):
+        # Search for patients within the given date range
         patients = self.env['patient.reg'].search([
             ('date', '>=', self.from_date),
             ('date', '<=', self.to_date)
         ])
+
         patient_list = []
         sl = 1
+
+        # Prepare data for the report
         for patient in patients:
             patient_list.append({
                 'sl': sl,
@@ -25,7 +29,8 @@ class PatientRegistrationReportWizard(models.TransientModel):
                 'doctor': patient.doc_name if patient.doc_name else '',
             })
             sl += 1
-
+        print(patient_list,'patient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_list')
+        # Prepare the context for the report
         data = {
             'form': {
                 'from_date': self.from_date,
@@ -33,8 +38,8 @@ class PatientRegistrationReportWizard(models.TransientModel):
                 'patients': patient_list,
             }
         }
-        print(patient_list,'patient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_listpatient_list')
 
+        # Return the PDF report action
         return self.env.ref('homeo_doctor.action_patient_registration_pdf').report_action(self, data=data)
 
     def action_export_excel(self):

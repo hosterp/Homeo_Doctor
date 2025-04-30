@@ -1,57 +1,49 @@
 <odoo>
     <data>
-
-        <template id="patient_registration_pdf_template">
+          <template id="patient_registration_pdf_template">
             <t t-call="web.external_layout">
-                <div class="page">
+                <main class="page">
+                    <t t-raw="0"/>
                     <t t-if="data">
-                        <t t-set="from_date" t-value="data['form']['from_date']"/>
-                        <t t-set="to_date" t-value="data['form']['to_date']"/>
-                        <t t-set="patients" t-value="data['form']['patients']"/>
-
-                        <div class="page">
+                        <div>
                             <h2>Patient Registration Report</h2>
-                            <p>From:
-                                <t t-esc="from_date"/>
-                                To:
-                                <t t-esc="to_date"/>
-                            </p>
-
-                            <t t-if="patients">
-                                <table class="table table-sm">
+                            <p>From: <t t-esc="data['form']['from_date']"/> To: <t t-esc="data['form']['to_date']"/></p>
+                                            <h1>ghjggggggggggggggggggggggggggggggg</h1>
+                            <t t-if="data['form']['patients']">
+                                <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
                                     <thead>
                                         <tr>
-                                            <th>SL</th>
-                                            <th>Reference</th>
-                                            <th>Name</th>
-                                            <th>Age</th>
-                                            <th>Address</th>
-                                            <th>Mobile</th>
-                                            <th>Doctor</th>
+                                            <th style="border: 1px solid #000; padding: 8px;">SL</th>
+                                            <th style="border: 1px solid #000; padding: 8px;">Reference</th>
+                                            <th style="border: 1px solid #000; padding: 8px;">Name</th>
+                                            <th style="border: 1px solid #000; padding: 8px;">Age</th>
+                                            <th style="border: 1px solid #000; padding: 8px;">Address</th>
+                                            <th style="border: 1px solid #000; padding: 8px;">Mobile</th>
+                                            <th style="border: 1px solid #000; padding: 8px;">Doctor</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <t t-foreach="patients" t-as="p">
+                                        <t t-foreach="data['form']['patients']" t-as="p">
                                             <tr>
-                                                <td>
+                                                <td style="border: 1px solid #000; padding: 8px;">
                                                     <t t-esc="p['sl']"/>
                                                 </td>
-                                                <td>
+                                                <td style="border: 1px solid #000; padding: 8px;">
                                                     <t t-esc="p['reference_no']"/>
                                                 </td>
-                                                <td>
+                                                <td style="border: 1px solid #000; padding: 8px;">
                                                     <t t-esc="p['patient_name']"/>
                                                 </td>
-                                                <td>
+                                                <td style="border: 1px solid #000; padding: 8px;">
                                                     <t t-esc="p['age']"/>
                                                 </td>
-                                                <td>
+                                                <td style="border: 1px solid #000; padding: 8px;">
                                                     <t t-esc="p['address']"/>
                                                 </td>
-                                                <td>
+                                                <td style="border: 1px solid #000; padding: 8px;">
                                                     <t t-esc="p['phone']"/>
                                                 </td>
-                                                <td>
+                                                <td style="border: 1px solid #000; padding: 8px;">
                                                     <t t-esc="p['doctor']"/>
                                                 </td>
                                             </tr>
@@ -59,12 +51,12 @@
                                     </tbody>
                                 </table>
                             </t>
-                            <t t-if="not patients">
+                            <t t-if="not data['form']['patients']">
                                 <p>No patient records found in this date range.</p>
                             </t>
                         </div>
                     </t>
-                </div>
+                </main>
             </t>
         </template>
 
@@ -90,7 +82,6 @@
             </field>
         </record>
 
-        <!-- Report Action -->
         <report
                 id="action_patient_registration_pdf"
                 model="patient.registration.report.wizard"
@@ -100,6 +91,7 @@
                 file="homeo_doctor.patient_registration_pdf_template"
                 print_report_name="'Patient_Registration_Report'"
         />
+
 
         <!-- Menu & Action -->
         <act_window id="action_patient_registration_report_wizard"
