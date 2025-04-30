@@ -33,3 +33,4 @@ from .import general_billing_report_wizard
 from .import lab_billing_pdf_report
 from .import pharmacy_discription_wizard
 from .import supplier_billing_report
+from .import admitted_patient_billing
