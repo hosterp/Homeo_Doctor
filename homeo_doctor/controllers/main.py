@@ -6,6 +6,7 @@ import xlsxwriter
 from datetime import datetime
 from io import BytesIO
 from collections import defaultdict
+import base64
 class PatientExcelReport(http.Controller):
 
     @http.route('/web/binary/download_patient_excel', type='http', auth="user")
@@ -279,6 +280,83 @@ class VendorBillExcelController(http.Controller):
             headers=[
                 ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
                 ('Content-Disposition', f'attachment; filename="{filename}"')
+            ]
+        )
+class PatientAdmissionReportController(http.Controller):
+
+    @http.route('/export_patient_admission_report', type='http', auth='user', website=True)
+    def export_patient_admission_report(self, date_from, date_to, **kwargs):
+        # Get the patient records within the date range
+        patient_records = request.env['patient.reg'].search([
+            ('admitted_date', '>=', date_from),
+            ('admitted_date', '<=', date_to),
+            ('status', '=', 'admitted')
+        ])
+
+        # Prepare data for the Excel report
+        report_data = []
+        for patient in patient_records:
+            report_data.append({
+                'patient_name': patient.patient_id,
+                'admitted_date': patient.admitted_date,
+                'room': patient.room_number_new.room_number if patient.room_number_new else '',
+                'total_amount': patient.admission_total_amount,
+                'uhid': patient.reference_no,
+            })
+
+        # Generate the Excel file
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output)
+        worksheet = workbook.add_worksheet('Patient Admission Report')
+
+        # Set column widths
+        worksheet.set_column('A:A', 20)
+        worksheet.set_column('B:B', 30)
+        worksheet.set_column('C:C', 20)
+        worksheet.set_column('D:D', 15)
+        worksheet.set_column('E:E', 20)
+
+        # Write the headers
+        worksheet.write('A1', 'UHID')
+        worksheet.write('B1', 'Patient Name')
+        worksheet.write('C1', 'Admission Date')
+        worksheet.write('D1', 'Room')
+        worksheet.write('E1', 'Total Bill Amount')
+
+        # Write the data
+        row = 1
+        for line in report_data:
+            worksheet.write(row, 0, line['uhid'])
+            worksheet.write(row, 1, line['patient_name'])
+            worksheet.write(row, 2, str(line['admitted_date']))
+            worksheet.write(row, 3, line['room'])
+            worksheet.write(row, 4, line['total_amount'])
+            row += 1
+    
+        workbook.close()
+
+        # Get the Excel file from memory
+        output.seek(0)
+        file_data = output.read()
+
+        # Base64 encode the file content for attachment
+        encoded_file_data = base64.b64encode(file_data)
+
+        # Create an attachment (Base64 encoded)
+        attachment = request.env['ir.attachment'].create({
+            'name': 'Patient_Admission_Report.xlsx',
+            'type': 'binary',
+            'datas': encoded_file_data,  # Store the Base64 encoded file content
+            'store_fname': 'Patient_Admission_Report.xlsx',
+            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        })
+
+        # Return the file as a downloadable link
+        return request.make_response(
+            file_data,
+            headers=[
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', 'attachment; filename="Patient_Admission_Report.xlsx"')
             ]
         )
 

@@ -32,3 +32,10 @@ class AdmissionBillingWizard(models.TransientModel):
             'date_from': self.date_from,
             'date_to': self.date_to,
         })
+
+    def action_download_excel(self):
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/export_patient_admission_report?date_from={self.date_from}&date_to={self.date_to}',
+            'target': 'self',
+        }

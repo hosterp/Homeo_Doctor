@@ -97,6 +97,7 @@
                     </group>
                     <footer>
                         <button name="action_generate_report" string="Print Report" type="object" class="oe_highlight"/>
+                        <button name="action_download_excel" string="Excel Report" type="object" class="oe_highlight"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
