@@ -765,12 +765,12 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 	border-color: black !important;
 	border-style: groove !important;
 } */
-.custom_lab_row {
+/*.custom_lab_row {
     display: flex !important;
 	border-color: black !important;
 	border-style: groove !important;
 	margin-left: 2%;
-}
+}*/
 
 
 .narrow_tax_column {
@@ -1207,3 +1207,8 @@ color: white ;
     padding-right: 5px;
     padding-left: 16px;
 }
+
+.lab_billing_class .col-md-1,.col-md-2{
+ border: 1px solid;
+}
+

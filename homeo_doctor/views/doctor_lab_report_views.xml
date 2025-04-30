@@ -99,18 +99,18 @@
                                 </div>
                             </div>
                         </div>
-                         <!-- Investigation Filter Buttons -->
-<!--                <div class="row mb-3">-->
-<!--                    <div class="col-12">-->
-<!--                        <field name="active_investigation_type" invisible="1"/>-->
-<!--                        <button name="filter_xray_investigations" string="X-Ray Only" type="object"-->
-<!--                                class="btn btn-secondary" attrs="{'invisible': [('active_investigation_type', '=', 'xray')]}"/>-->
-<!--                        <button name="filter_mri_investigations" string="MRI Only" type="object"-->
-<!--                                class="btn btn-secondary" attrs="{'invisible': [('active_investigation_type', '=', 'mri')]}"/>-->
-<!--                        <button name="filter_lab_investigations" string="Lab Only" type="object"-->
-<!--                                class="btn btn-secondary" attrs="{'invisible': [('active_investigation_type', '=', 'lab')]}"/>-->
-<!--                    </div>-->
-<!--                </div>-->
+                        <!-- Investigation Filter Buttons -->
+                        <!--                <div class="row mb-3">-->
+                        <!--                    <div class="col-12">-->
+                        <!--                        <field name="active_investigation_type" invisible="1"/>-->
+                        <!--                        <button name="filter_xray_investigations" string="X-Ray Only" type="object"-->
+                        <!--                                class="btn btn-secondary" attrs="{'invisible': [('active_investigation_type', '=', 'xray')]}"/>-->
+                        <!--                        <button name="filter_mri_investigations" string="MRI Only" type="object"-->
+                        <!--                                class="btn btn-secondary" attrs="{'invisible': [('active_investigation_type', '=', 'mri')]}"/>-->
+                        <!--                        <button name="filter_lab_investigations" string="Lab Only" type="object"-->
+                        <!--                                class="btn btn-secondary" attrs="{'invisible': [('active_investigation_type', '=', 'lab')]}"/>-->
+                        <!--                    </div>-->
+                        <!--                </div>-->
 
 
                         <!-- Main Content Container -->
@@ -123,137 +123,139 @@
                             <field name="register_email" invisible="1"/>
 
                             <!-- Row 1: Bill Type, UHID, Bill Date -->
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="bill_type" class="col-md-4 col-form-label">Bill Type</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="bill_type"/>
+                            <div class="lab_billing_class">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group row">
+                                            <label for="bill_type" class="col-md-4 col-form-label">Bill Type</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="bill_type"/>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="user_ide" class="col-md-4 col-form-label">UHID</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="user_ide"/>
+                                    <div class="col-md-2">
+                                        <div class="form-group row">
+                                            <label for="user_ide" class="col-md-4 col-form-label">UHID</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="user_ide"/>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="date" class="col-md-4 col-form-label">Bill Date</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="date" string="Bill Date" required="1"/>
+                                    <div class="col-md-2">
+                                        <div class="form-group row">
+                                            <label for="date" class="col-md-4 col-form-label">Bill Date</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="date" string="Bill Date" required="1"/>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="doctor_id" class="col-md-4 col-form-label">Doctor</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="doctor_id"/>
+                                    <div class="col-md-2">
+                                        <div class="form-group row">
+                                            <label for="doctor_id" class="col-md-4 col-form-label">Doctor</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="doctor_id"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <div class="form-group row">
+                                            <label for="vssc_check" class="col-md-4 col-form-label">VSSC</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="vssc_check" style="width: 20px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group row">
+                                            <label for="c_o" class="col-md-4 col-form-label">VSSC</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="c_o" style="width: 20px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group row">
+                                            <label for="b_o" class="col-md-4 col-form-label">VSSC</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="b_o" style="width: 20px;"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-1">
-                                    <div class="form-group row">
-                                        <label for="vssc_check" class="col-md-4 col-form-label">VSSC</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="vssc_check" style="width: 20px;"/>
+                                <!-- Row 2: Patient Name, Age, Gender -->
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <!-- Patient Name (Registered) -->
+                                        <div class="form-group row"
+                                             attrs="{'invisible': [('register_visible', '=', False)]}">
+                                            <label for="register_patient_name" class="col-md-4 col-form-label">Patient
+                                            </label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="register_patient_name"
+                                                       attrs="{'required': [('register_visible', '=', True)]}"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <div class="form-group row">
-                                        <label for="c_o" class="col-md-4 col-form-label">VSSC</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="c_o" style="width: 20px;"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-1">
-                                    <div class="form-group row">
-                                        <label for="b_o" class="col-md-4 col-form-label">VSSC</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="b_o" style="width: 20px;"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Row 2: Patient Name, Age, Gender -->
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <!-- Patient Name (Registered) -->
-                                    <div class="form-group row"
-                                         attrs="{'invisible': [('register_visible', '=', False)]}">
-                                        <label for="register_patient_name" class="col-md-4 col-form-label">Patient
-                                        </label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="register_patient_name"
-                                                   attrs="{'required': [('register_visible', '=', True)]}"/>
+                                        <!-- Patient Name (Non-Registered) -->
+                                        <div class="form-group row"
+                                             attrs="{'invisible': [('register_visible', '=', True)]}">
+                                            <label for="patient_name" class="col-md-4 col-form-label">Patient</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="patient_name"
+                                                       attrs="{'required': [('register_visible', '=', False)]}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group row">
+                                            <label for="age" class="col-md-4 col-form-label">Age</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="age" widget="float_no_default" style="width: 50px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group row">
+                                            <label for="gender" class="col-md-4 col-form-label">Gender</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="gender" style="width: 120px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" attrs="{'invisible': [('register_visible', '=', False)]}">
+                                        <!-- Mobile Number (Registered) -->
+                                        <div class="form-group row">
+                                            <label for="register_phone_number" class="col-md-4 col-form-label">Mobile
+                                            </label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="register_phone_number"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" attrs="{'invisible': [('register_visible', '=', True)]}">
+                                        <!-- Mobile Number (Registered) -->
+                                        <div class="form-group row">
+                                            <label for="patient_phone" class="col-md-4 col-form-label">Mobile</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="patient_phone"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group row">
+                                            <label for="alternate_phone" class="col-md-4 col-form-label">Alt. Mobile
+                                            </label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="alternate_phone"/>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- Patient Name (Non-Registered) -->
-                                    <div class="form-group row"
-                                         attrs="{'invisible': [('register_visible', '=', True)]}">
-                                        <label for="patient_name" class="col-md-4 col-form-label">Patient</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="patient_name"
-                                                   attrs="{'required': [('register_visible', '=', False)]}"/>
-                                        </div>
-                                    </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="age" class="col-md-4 col-form-label">Age</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="age" widget="float_no_default" style="width: 50px;"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="gender" class="col-md-4 col-form-label">Gender</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="gender" style="width: 120px;"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2" attrs="{'invisible': [('register_visible', '=', False)]}">
-                                    <!-- Mobile Number (Registered) -->
-                                    <div class="form-group row">
-                                        <label for="register_phone_number" class="col-md-4 col-form-label">Mobile
-                                        </label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="register_phone_number"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2" attrs="{'invisible': [('register_visible', '=', True)]}">
-                                    <!-- Mobile Number (Registered) -->
-                                    <div class="form-group row">
-                                        <label for="patient_phone" class="col-md-4 col-form-label">Mobile</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="patient_phone"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group row">
-                                        <label for="alternate_phone" class="col-md-4 col-form-label">Alt. Mobile</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="alternate_phone"/>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
-
                         <!-- Lab Billing Details Section -->
                         <div class="row">
                             <div class="custom_notebook">
@@ -273,83 +275,83 @@
                                 </notebook>
                             </div>
 
-                        <div class="custom_lab_row">
-                            <div class="row left_colum" style="display:block;">
-                                <!-- First row: bill_amount and mode_of_payment -->
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="total_bill_amount" class="col-md-4 col-form-label">Bill Amount
-                                        </label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="total_bill_amount"/>
+                            <div class="custom_lab_row">
+                                <div class="row left_colum" style="display:block;">
+                                    <!-- First row: bill_amount and mode_of_payment -->
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="total_bill_amount" class="col-md-4 col-form-label">Bill Amount
+                                            </label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="total_bill_amount"/>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-<!--                                <div class="col-md-6">-->
-<!--                                    <div class="form-group row">-->
-<!--                                        <label for="o_c_percentage" class="col-md-4 col-form-label">OC%</label>-->
-<!--                                        <div class="col-md-8 field-container">-->
-<!--                                            <field name="o_c_percentage"/>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="amount_paid" class="col-md-4 col-form-label">Amount Paid</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="amount_paid"/>
+                                    <!--                                <div class="col-md-6">-->
+                                    <!--                                    <div class="form-group row">-->
+                                    <!--                                        <label for="o_c_percentage" class="col-md-4 col-form-label">OC%</label>-->
+                                    <!--                                        <div class="col-md-8 field-container">-->
+                                    <!--                                            <field name="o_c_percentage"/>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+                                    <!--                                </div>-->
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="amount_paid" class="col-md-4 col-form-label">Amount Paid</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="amount_paid"/>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="remarks" class="col-md-4 col-form-label">Remarks</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="remarks"/>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="remarks" class="col-md-4 col-form-label">Remarks</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="remarks"/>
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
 
+                                <div class="row right_colum" style="display:block;">
+                                    <!-- Second row: remarks and staff_name -->
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="mode_of_payment" class="col-md-4 col-form-label">Mode of Payment
+                                            </label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="mode_of_payment"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                                <div class="col-md-6">-->
+                                    <!--                                    <div class="form-group row">-->
+                                    <!--                                        <label for="o_c" class="col-md-4 col-form-label">OC</label>-->
+                                    <!--                                        <div class="col-md-8 field-container">-->
+                                    <!--                                            <field name="o_c"/>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+                                    <!--                                </div>-->
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="balance" class="col-md-4 col-form-label">Balance</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="balance"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="staff_name" class="col-md-4 col-form-label">Staff</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="staff_name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
-
-                            <div class="row right_colum" style="display:block;">
-                                <!-- Second row: remarks and staff_name -->
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="mode_of_payment" class="col-md-4 col-form-label">Mode of Payment
-                                        </label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="mode_of_payment"/>
-                                        </div>
-                                    </div>
-                                </div>
-<!--                                <div class="col-md-6">-->
-<!--                                    <div class="form-group row">-->
-<!--                                        <label for="o_c" class="col-md-4 col-form-label">OC</label>-->
-<!--                                        <div class="col-md-8 field-container">-->
-<!--                                            <field name="o_c"/>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="balance" class="col-md-4 col-form-label">Balance</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="balance"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="staff_name" class="col-md-4 col-form-label">Staff</label>
-                                        <div class="col-md-8 field-container">
-                                            <field name="staff_name"/>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
                         </div>
                         <notebook>
                             <page string="Lab Details" name="lab_details" invisible="1">
