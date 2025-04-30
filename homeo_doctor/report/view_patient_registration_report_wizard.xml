@@ -1,62 +1,52 @@
 <odoo>
     <data>
           <template id="patient_registration_pdf_template">
-            <t t-call="web.external_layout">
-                <main class="page">
-                    <t t-raw="0"/>
-                    <t t-if="data">
-                        <div>
-                            <h2>Patient Registration Report</h2>
-                            <p>From: <t t-esc="data['form']['from_date']"/> To: <t t-esc="data['form']['to_date']"/></p>
-                                            <h1>ghjggggggggggggggggggggggggggggggg</h1>
-                            <t t-if="data['form']['patients']">
-                                <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
-                                    <thead>
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <h2 class="text-center">Patient Registration Report</h2>
+                        <p>
+                            <strong>From Date:</strong> <span t-esc="data['form']['from_date']"/>
+                            <strong>To Date:</strong> <span t-esc="data['form']['to_date']"/>
+                        </p>
+
+                        <t t-if="data['form']['patients'] and len(data['form']['patients']) > 0">
+                            <table class="table table-sm table-bordered mt-4" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">SL</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Reference</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Name</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Age</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Address</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Mobile</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Doctor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="data['form']['patients']" t-as="p">
                                         <tr>
-                                            <th style="border: 1px solid #000; padding: 8px;">SL</th>
-                                            <th style="border: 1px solid #000; padding: 8px;">Reference</th>
-                                            <th style="border: 1px solid #000; padding: 8px;">Name</th>
-                                            <th style="border: 1px solid #000; padding: 8px;">Age</th>
-                                            <th style="border: 1px solid #000; padding: 8px;">Address</th>
-                                            <th style="border: 1px solid #000; padding: 8px;">Mobile</th>
-                                            <th style="border: 1px solid #000; padding: 8px;">Doctor</th>
+                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['sl']"/></td>
+                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['reference_no']"/></td>
+                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['patient_name']"/></td>
+                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['age']"/></td>
+                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['address']"/></td>
+                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['phone']"/></td>
+                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['doctor']"/></td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <t t-foreach="data['form']['patients']" t-as="p">
-                                            <tr>
-                                                <td style="border: 1px solid #000; padding: 8px;">
-                                                    <t t-esc="p['sl']"/>
-                                                </td>
-                                                <td style="border: 1px solid #000; padding: 8px;">
-                                                    <t t-esc="p['reference_no']"/>
-                                                </td>
-                                                <td style="border: 1px solid #000; padding: 8px;">
-                                                    <t t-esc="p['patient_name']"/>
-                                                </td>
-                                                <td style="border: 1px solid #000; padding: 8px;">
-                                                    <t t-esc="p['age']"/>
-                                                </td>
-                                                <td style="border: 1px solid #000; padding: 8px;">
-                                                    <t t-esc="p['address']"/>
-                                                </td>
-                                                <td style="border: 1px solid #000; padding: 8px;">
-                                                    <t t-esc="p['phone']"/>
-                                                </td>
-                                                <td style="border: 1px solid #000; padding: 8px;">
-                                                    <t t-esc="p['doctor']"/>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                    </tbody>
-                                </table>
-                            </t>
-                            <t t-if="not data['form']['patients']">
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-if="not data['form']['patients'] or len(data['form']['patients']) == 0">
+                            <div class="alert alert-warning mt-4">
                                 <p>No patient records found in this date range.</p>
-                            </t>
-                        </div>
-                    </t>
-                </main>
+                            </div>
+                        </t>
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
             </t>
         </template>
 
@@ -83,14 +73,15 @@
         </record>
 
         <report
-                id="action_patient_registration_pdf"
-                model="patient.registration.report.wizard"
-                string="Patient Registration PDF"
-                report_type="qweb-pdf"
-                name="homeo_doctor.patient_registration_pdf_template"
-                file="homeo_doctor.patient_registration_pdf_template"
-                print_report_name="'Patient_Registration_Report'"
-        />
+    id="action_patient_registration_pdf"
+    model="patient.registration.report.wizard"
+    string="Patient Registration PDF"
+    report_type="qweb-pdf"
+    name="homeo_doctor.patient_registration_pdf_template"
+    file="homeo_doctor.patient_registration_pdf_template"
+    print_report_name="'Patient_Registration_Report_%s' % (object.from_date)"
+    paperformat="base.paperformat_euro"
+/>
 
 
         <!-- Menu & Action -->
