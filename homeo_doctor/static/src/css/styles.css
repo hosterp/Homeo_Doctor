@@ -743,11 +743,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     margin-left: 30px;
 }
 
-.custom_border {
-	margin-left: 4%;
-	border-color: black !important;
-	border-style: groove !important;
-}
+
 .custom_admission_row{
 	border-color: black !important;
 	border-style: groove !important;
@@ -784,7 +780,6 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
   margin-bottom: 5px;
   border: solid 2px !important;
 }
-
 
 
 
@@ -1184,4 +1179,31 @@ color: white ;
 }
 .admission_form .col.px-1{
  border: 1px solid
+}
+.genaral_billing_class .col.px-1{
+ border: 1px solid
+ }
+ .row.mx-n1.second_row_general .col-md-3.px-1{
+   border: 1px solid
+
+}
+
+.row .col-md-12 {
+    border: 1px solid;
+    height: 25%;
+}
+.row {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -25px;
+    margin-left: 25px;
+}
+.col-md-12{
+    position: relative;
+    width: 100%;
+    padding-right: 5px;
+    padding-left: 16px;
 }
