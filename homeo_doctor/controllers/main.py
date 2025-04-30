@@ -332,7 +332,7 @@ class PatientAdmissionReportController(http.Controller):
             worksheet.write(row, 3, line['room'])
             worksheet.write(row, 4, line['total_amount'])
             row += 1
-    
+
         workbook.close()
 
         # Get the Excel file from memory
@@ -359,7 +359,58 @@ class PatientAdmissionReportController(http.Controller):
                 ('Content-Disposition', 'attachment; filename="Patient_Admission_Report.xlsx"')
             ]
         )
+class PatientReportController(http.Controller):
 
+    @http.route('/patient/excel_report', type='http', auth='user')
+    def download_excel_report(self, **kwargs):
+        date_from = kwargs.get('date_from')
+        date_to = kwargs.get('date_to')
+        doctor_id = kwargs.get('doctor_id')
+
+        domain = []
+        if date_from:
+            domain.append(('date', '>=', date_from))
+        if date_to:
+            domain.append(('date', '<=', date_to))
+        if doctor_id:
+            domain.append(('doctor', '=', int(doctor_id)))
+
+        patients = request.env['patient.registration'].sudo().search(domain)
+
+        # Generate Excel file in memory
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        sheet = workbook.add_worksheet('Patient Report')
+
+        bold = workbook.add_format({'bold': True})
+        headers = ['UHID', 'Appointment Date', 'Patient Name','Age','Gender','Mobile', 'Doctor', 'Consultation Fee', ]
+        for col, header in enumerate(headers):
+            sheet.write(0, col, header, bold)
+
+        row = 1
+        for rec in patients:
+            sheet.write(row, 0, rec.reference_no)
+            sheet.write(row, 1, rec.date.strftime('%Y-%m-%d') if rec.date else '')
+            sheet.write(row, 2, rec.patient_name)
+            sheet.write(row, 3, rec.age)
+            sheet.write(row, 4, rec.gender)
+            sheet.write(row, 5, rec.phone_number)
+            sheet.write(row, 6, rec.doctor.name if rec.doctor else '')
+            sheet.write(row, 7, rec.consultation_fee or '')
+
+            row += 1
+
+        workbook.close()
+        output.seek(0)
+
+        filename = f"Patient_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        return request.make_response(
+            output.read(),
+            headers=[
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', f'attachment; filename="{filename}"')
+            ]
+        )
 # class AuthLogin(http.Controller):
 #     @http.route('/web/login', type='http', auth="public", website=True)
 #     def web_login(self, redirect=None, **kw):

@@ -27,6 +27,7 @@
         "report/patient_report.xml",
         "report/patient_registion_report.xml",
         "report/admitted_patient_report.xml",
+        "report/consultation_report.xml",
         "views/patient.xml",
         "views/ct_scan.xml",
         "views/mri_scan.xml",
