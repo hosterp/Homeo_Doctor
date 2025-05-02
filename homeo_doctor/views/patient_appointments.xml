@@ -11,7 +11,7 @@
                 <field name="appointment_date"/>
                 <field name="departments" widget="many2many_tags"/>
                 <field name="doctor_ids" widget="many2many_tags"/>
-                <field name="payment_method" />
+                <field name="payment_method"/>
             </tree>
         </field>
     </record>
@@ -20,36 +20,44 @@
         <field name="name">patient.appointment.form</field>
         <field name="model">patient.appointment</field>
         <field name="arch" type="xml">
-<!--            <header>-->
-<!--                <field name="status" widget="statusbar" options="{'clickable': 'true'}"/>-->
-<!--            </header>-->
+            <!--            <header>-->
+            <!--                <field name="status" widget="statusbar" options="{'clickable': 'true'}"/>-->
+            <!--            </header>-->
 
             <form>
                 <sheet>
-                    <group>
+                    <group col="4">
                         <group>
-                            <field name="appointment_reference" invisible="1"/>
                             <field name="patient_id" string="UHID"/>
+                            <field name="appointment_reference" invisible="1"/>
+
+                            <field name="phone_number"/>
+                            <field name="departments" widget="many2many_tags"/>
+                        </group>
+                        <group>
                             <field name="patient_name"/>
-                            <field name="gender"/>
-
                             <field name="age"/>
+                            <field name="doctor_id" invisible="1"/>
+                            <field name="doctor_ids" widget="many2many_tags"/>
 
+                        </group>
+                        <group>
+
+
+                            <field name="gender"/>
                             <field name="appointment_date"/>
                             <field name="department" invisible="1"/>
-                            <field name="departments" widget="many2many_tags"/>
+                            <field name="reason"/>
 
 
                             <!--                        <field name="status"/>-->
                         </group>
                         <group>
                             <field name="address"/>
-                            <field name="phone_number"/>
-                            <field name="doctor_id" invisible="1"/>
-                            <field name="doctor_ids" widget="many2many_tags"/>
+
                             <field name="consultation_fee" readonly="1"/>
                             <field name="registration_fee"/>
-                            <field name="reason"/>
+
 
                             <field name="button_visible" invisible="1"/>
 
@@ -69,8 +77,8 @@
                                     string="Confirm Appointment"
                                     class="oe_highlight"
                                     attrs="{'invisible': [('button_visible', '=', False)]}"/>
-<!--                            <button name="action_cancel" string="Cancel" type="object" class="btn btn-danger"-->
-<!--                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>-->
+                            <!--                            <button name="action_cancel" string="Cancel" type="object" class="btn btn-danger"-->
+                            <!--                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>-->
 
                         </group>
 
