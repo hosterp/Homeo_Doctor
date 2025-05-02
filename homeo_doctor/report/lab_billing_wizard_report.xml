@@ -3,7 +3,7 @@
         <template id="report_doctor_lab_report">
             <t t-call="web.basic_layout">
                 <div class="page">
-                   <h2 style="text-align: center;">Lab Billing Report</h2>
+                    <h2 style="text-align: center;">Lab Billing Report</h2>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -14,27 +14,45 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <t t-set="counter" t-value="0"/>
+                            <t t-set="total_amount" t-value="0"/>
                             <t t-foreach="report_data" t-as="data">
-                                <tr>
-                                    <td>
-                                        <t t-esc="data['sl_no']"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="data['patient_name']"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="data['mrd_op_no']"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="data['total_bill_amount']"/>
-                                    </td>
-                                </tr>
+                                <t t-if="data">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="counter + 1"/>
+                                            <t t-set="counter" t-value="counter + 1"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="data['patient_name']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="data['mrd_op_no']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="data['total_bill_amount']"/>
+                                            <t t-set="total_amount" t-value="total_amount + data['total_bill_amount']"/>
+                                        </td>
+                                    </tr>
+                                </t>
                             </t>
+                  
+                            <tr>
+                                <td colspan="3" style="text-align: right;">
+                                    <strong>Total</strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        <t t-esc="total_amount"/>
+                                    </strong>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </t>
         </template>
+
 
         <record id="report_doctor_lab_report_pdf" model="ir.actions.report">
             <field name="name">Doctor Lab Report</field>
@@ -52,15 +70,16 @@
                 <form string="Generate Doctor Lab Report">
                     <group col="2">
                         <group>
-                              <field name="from_date"/>
+                            <field name="from_date"/>
                         </group>
-                      <group>
-                           <field name="to_date"/>
-                      </group>
+                        <group>
+                            <field name="to_date"/>
+                        </group>
                     </group>
                     <footer>
                         <button string="Pdf Report" type="object" name="action_generate_report" class="btn-primary"/>
-                        <button name="action_download_excel" type="object" string="Download Excel" class="oe_highlight"/>
+                        <button name="action_download_excel" type="object" string="Download Excel"
+                                class="oe_highlight"/>
                         <button string="Cancel" type="object" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
