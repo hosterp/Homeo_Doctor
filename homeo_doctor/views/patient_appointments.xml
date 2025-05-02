@@ -26,6 +26,7 @@
 
             <form>
                 <sheet>
+                    
                     <group col="4">
                         <group>
                             <field name="patient_id" string="UHID"/>
@@ -57,8 +58,6 @@
 
                             <field name="consultation_fee" readonly="1"/>
                             <field name="registration_fee"/>
-
-
                             <field name="button_visible" invisible="1"/>
 
                         </group>
@@ -82,7 +81,98 @@
 
                         </group>
 
+
                     </group>
+                    <div class="col-md-4">
+                        <div class="custom_register_payment_row" style="font-size: 0.9rem;">
+                            <h4 style="text-align: center; width: 100%;text-decoration-line: underline;">Register
+                                Payment
+                            </h4>
+                            <div class="row">
+                                <!-- Left column of custom_register_payment_row -->
+                                <div class="col-md-6 left_column" style="padding-left: 25px;">
+                                    <div class="form-group row mb-1">
+                                        <label for="register_total_amount" class="col-md-5 col-form-label small">Total
+                                            Amount
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="register_total_amount"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-1"
+                                         attrs="{'invisible': [('register_mode_payment', 'in', ['card','cheque','upi'])]}">
+                                        <label for="register_amount_paid" class="col-md-5 col-form-label small">Amount
+                                            Paid
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="register_amount_paid"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-1"
+                                         attrs="{'invisible': [('register_mode_payment', 'in', ['cash', 'cheque', 'upi'])]}">
+                                        <label for="register_card_no" class="col-md-5 col-form-label small">Card No
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="register_card_no"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-1">
+                                        <label for="register_staff_name" class="col-md-5 col-form-label small">Staff
+                                            Name
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="register_staff_name"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right column of custom_register_payment_row -->
+                                <div class="col-md-6 right_column">
+                                    <div class="form-group row mb-1">
+                                        <label for="register_mode_payment" class="col-md-5 col-form-label small">Payment
+                                            Mode
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="register_mode_payment"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-1"
+                                         attrs="{'invisible': [('register_mode_payment', 'in', ['card','cheque','upi'])]}">
+                                        <label for="register_balance" class="col-md-5 col-form-label small">Balance
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="register_balance"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-1"
+                                         attrs="{'invisible': [('register_mode_payment', 'in', ['cash', 'cheque', 'upi'])]}">
+                                        <label for="register_bank_name" class="col-md-5 col-form-label small">Bank
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="register_bank_name"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-1">
+                                        <label for="register_staff_password" class="col-md-5 col-form-label small">
+                                            Password
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="register_staff_password"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pay_button_advance">
+                                    <div class="col-md-1">
+                                        <button name="action_confirm_payment"
+                                                string="Pay"
+                                                type="object"
+                                                class="btn btn-sm btn-primary"
+                                                title="Pay"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <notebook>
                         <page string="Notes">
                             <field name="notes"/>

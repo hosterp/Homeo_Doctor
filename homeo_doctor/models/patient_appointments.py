@@ -48,6 +48,71 @@ class PatientAppointment(models.Model):
     ], string='Payment Method')
     payment_reference = fields.Char(string='Payment Reference')
 
+    register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")
+    register_amount_paid = fields.Integer(string="Amount Paid")
+    register_balance = fields.Integer(string="Balance")
+    register_staff_name = fields.Char("Staff Name")
+    register_staff_password = fields.Char("Password")
+    register_mode_payment = fields.Selection([('cash', 'Cash'),
+                                              ('card', 'Card'),
+                                              ('cheque', 'Cheque'),
+                                              ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
+    register_card_no = fields.Char(string="Card No")
+    register_bank_name = fields.Char(string="Bank")
+
+    @api.depends('registration_fee', 'consultation_fee')
+    def _compute_register_total(self):
+        for rec in self:
+            reg_fee = rec.registration_fee if rec.registration_fee else 0
+            rec.register_total_amount = reg_fee + (rec.consultation_fee or 0)
+
+    appointment_id = fields.Many2one('patient.appointment', string='Appointment', readonly=True)
+
+
+    def action_confirm_payment(self):
+        for appointment in self:
+            # Update appointment with payment information
+            appointment.write({
+                'payment_method': appointment.payment_method,
+                'payment_reference': appointment.payment_reference,
+                'status': 'confirmed',
+                'button_visible': False
+            })
+
+            # Check if patient.registration model has payment_method and payment_reference
+            registration_model = self.env['patient.registration']
+            has_payment_fields = all(field in registration_model._fields
+                                     for field in ['payment_method', 'payment_reference'])
+
+            # Parse token numbers
+            token_numbers = [token.strip() for token in (appointment.token_no or '').split(',') if token.strip()]
+
+            # Create registrations for each doctor
+            for index, doctor in enumerate(appointment.doctor_ids):
+                token_no = token_numbers[min(index, len(token_numbers) - 1)] if token_numbers else appointment.token_no
+
+                registration_vals = {
+                    'user_id': appointment.patient_id.id,
+                    'patient_id': appointment.patient_id.id,
+                    'token_no': token_no,
+                    'address': appointment.patient_id.address,
+                    'age': appointment.patient_id.age,
+                    'phone_number': appointment.patient_id.phone_number,
+                    'doctor': doctor.id,
+                    'appointment_date': appointment.appointment_date,
+                    'status': 'confirmed',
+                }
+
+                if has_payment_fields:
+                    registration_vals.update({
+                        'payment_method': appointment.payment_method,
+                        'payment_reference': appointment.payment_reference,
+                    })
+
+                registration_model.create(registration_vals)
+
+        # return {'type': 'ir.actions.act_window_close'}
+
     @api.onchange('appointment_date')
     def _compute_registration_fee(self):
         for record in self:
