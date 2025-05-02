@@ -26,7 +26,7 @@
 
             <form>
                 <sheet>
-                    
+
                     <group col="4">
                         <group>
                             <field name="patient_id" string="UHID"/>
@@ -70,16 +70,16 @@
                         <!--                                </tree>-->
                         <!--                            </field>-->
                         <!--                        </group>-->
-                        <group>
-                            <button name="action_appointment_confirm"
-                                    type="object"
-                                    string="Confirm Appointment"
-                                    class="oe_highlight"
-                                    attrs="{'invisible': [('button_visible', '=', False)]}"/>
-                            <!--                            <button name="action_cancel" string="Cancel" type="object" class="btn btn-danger"-->
-                            <!--                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>-->
+<!--                        <group>-->
+<!--                            <button name="action_appointment_confirm"-->
+<!--                                    type="object"-->
+<!--                                    string="Confirm Appointment"-->
+<!--                                    class="oe_highlight"-->
+<!--                                    attrs="{'invisible': [('button_visible', '=', False)]}"/>-->
+<!--                            &lt;!&ndash;                            <button name="action_cancel" string="Cancel" type="object" class="btn btn-danger"&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>&ndash;&gt;-->
 
-                        </group>
+<!--                        </group>-->
 
 
                     </group>
