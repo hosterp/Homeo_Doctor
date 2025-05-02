@@ -1211,7 +1211,7 @@ color: white ;
  border: 1px solid;
 }
 
-.custom_lab_row .row.left_colum,.row.right_colum .col-md-6,.col-md-6{
+.custom_lab_row .row.left_colum .col-md-6, .custom_lab_row .row.right_colum .col-md-6{
         max-width: 100%;
         border: 1px solid;
 }
