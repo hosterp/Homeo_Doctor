@@ -26,63 +26,126 @@
 
             <form>
                 <sheet>
+                    <div class="row">
+                    <div class="col-md-8">
+                        <div class="sub_details revisit_details">
 
-                    <group col="4">
-                        <group>
-                            <field name="patient_id" string="UHID"/>
-                            <field name="appointment_reference" invisible="1"/>
+                            <div class="row mx-n1">
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="patient_id" class="col-md-5 col-form-label py-0 small text-nowrap">UHID</label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="patient_id" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="patient_name" class="col-md-5 col-form-label py-0 small text-nowrap">Name</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="patient_name"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="gender" class="col-md-5 col-form-label py-0 small text-nowrap">Gender</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="gender"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="age" class="col-md-5 col-form-label py-0 small text-nowrap">Age</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="age"/>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <field name="phone_number"/>
-                            <field name="departments" widget="many2many_tags"/>
-                        </group>
-                        <group>
-                            <field name="patient_name"/>
-                            <field name="age"/>
-                            <field name="doctor_id" invisible="1"/>
-                            <field name="doctor_ids" widget="many2many_tags"/>
-
-                        </group>
-                        <group>
-
-
-                            <field name="gender"/>
-                            <field name="appointment_date"/>
-                            <field name="department" invisible="1"/>
-                            <field name="reason"/>
-
-
-                            <!--                        <field name="status"/>-->
-                        </group>
-                        <group>
-                            <field name="address"/>
-
-                            <field name="consultation_fee" readonly="1"/>
-                            <field name="registration_fee"/>
-                            <field name="button_visible" invisible="1"/>
-
-                        </group>
-                        <!--                        <group>-->
-                        <!--                            <field name="consultation_fee_ids">-->
-                        <!--                                <tree editable="bottom">-->
-                        <!--                                    <field name="doctor_id"/>-->
-                        <!--                                    <field name="consultation_fee"/>-->
-                        <!--                                    <field name="consultation_fee" readonly="1" string="Total Consultation Fee"/>-->
-                        <!--                                </tree>-->
-                        <!--                            </field>-->
-                        <!--                        </group>-->
-<!--                        <group>-->
-<!--                            <button name="action_appointment_confirm"-->
-<!--                                    type="object"-->
-<!--                                    string="Confirm Appointment"-->
-<!--                                    class="oe_highlight"-->
-<!--                                    attrs="{'invisible': [('button_visible', '=', False)]}"/>-->
-<!--                            &lt;!&ndash;                            <button name="action_cancel" string="Cancel" type="object" class="btn btn-danger"&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                    attrs="{'invisible': [('status', '=', 'cancelled')]}"/>&ndash;&gt;-->
-
-<!--                        </group>-->
+                            </div>
 
 
-                    </group>
+                            <div class="row mx-n1">
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="address" class="col-md-5 col-form-label py-0 text-nowrap">Address</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="address"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="phone_number" class="col-md-5 col-form-label py-0 text-nowrap">Phone Number</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="phone_number"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="departments" class="col-md-5 col-form-label py-0 text-nowrap">Department</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="departments" widget="many2many_tags" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="doctor_ids" class="col-md-5 col-form-label py-0 small text-nowrap">Doctor</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="doctor_ids" widget="many2many_tags"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row mx-n1">
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="appointment_date" class="col-md-5 col-form-label py-0 small text-nowrap">Appointment Date</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="appointment_date" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1"  style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="consultation_fee" class="col-md-5 col-form-label py-0 small text-nowrap">Consultation Fee</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="consultation_fee"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="registration_fee" class="col-md-5 col-form-label py-0 small text-nowrap">Register Fee</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="registration_fee" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col px-1" style="max-width: 25%;">
+                                    <div class="form-group row my-1">
+                                        <label for="reason" class="col-md-5 col-form-label py-0 small text-nowrap reason">reason</label>
+                                        <div class="col-md-9 field-container py-0">
+                                            <field name="reason" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-md-4">
                         <div class="custom_register_payment_row" style="font-size: 0.9rem;">
                             <h4 style="text-align: center; width: 100%;text-decoration-line: underline;">Register
@@ -90,7 +153,7 @@
                             </h4>
                             <div class="row">
                                 <!-- Left column of custom_register_payment_row -->
-                                <div class="col-md-6 left_column" style="padding-left: 25px;">
+                                <div class="col-md-6 left_column" style="padding-left: 25px;margin-left: -12%;">
                                     <div class="form-group row mb-1">
                                         <label for="register_total_amount" class="col-md-5 col-form-label small">Total
                                             Amount
@@ -173,6 +236,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
                     <notebook>
                         <page string="Notes">
                             <field name="notes"/>
