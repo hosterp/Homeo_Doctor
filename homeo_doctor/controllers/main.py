@@ -20,14 +20,14 @@ class PatientExcelReport(http.Controller):
         sheet = workbook.add_worksheet("Patient Report")
         bold = workbook.add_format({'bold': True})
 
-        headers = ['UHID', 'Name', 'Age', 'Address', 'Phone', 'Doctor Name']
+        headers = ['UHID', 'Name', 'Age', 'Address', 'Phone', 'Doctor Name', 'Total Amount']
         for col, header in enumerate(headers):
             sheet.write(0, col, header, bold)
 
-        # Prepare to calculate max content length for each column
-        max_lengths = [len(header) for header in headers]  # Start with header lengths
 
-        # Iterate through records to calculate the maximum length of content for each column
+        max_lengths = [len(header) for header in headers] 
+        total_amount = 0
+
         for rec in records:
             row_data = [
                 str(rec.reference_no),
@@ -35,16 +35,20 @@ class PatientExcelReport(http.Controller):
                 str(rec.age),
                 str(rec.address),
                 str(rec.phone_number),
-                str(rec.doc_name.name)
+                str(rec.doc_name.name),
+                str(rec.register_total_amount)
             ]
             for col, value in enumerate(row_data):
                 max_lengths[col] = max(max_lengths[col], len(value))
 
-        # Set column widths based on the max lengths (add a buffer for readability)
-        for col, max_len in enumerate(max_lengths):
-            sheet.set_column(col, col, max_len + 2)  # Add a small buffer to the content length
 
-        # Write data to the sheet
+            total_amount += rec.register_total_amount
+
+
+        for col, max_len in enumerate(max_lengths):
+            sheet.set_column(col, col, max_len + 2)
+
+
         for row, rec in enumerate(records, start=1):
             sheet.write(row, 0, rec.reference_no)
             sheet.write(row, 1, rec.patient_id)
@@ -52,6 +56,11 @@ class PatientExcelReport(http.Controller):
             sheet.write(row, 3, str(rec.address))
             sheet.write(row, 4, rec.phone_number)
             sheet.write(row, 5, rec.doc_name.name)
+            sheet.write(row, 6, rec.register_total_amount)
+
+
+        sheet.write(len(records) + 1, 5, "Total Amount", bold)
+        sheet.write(len(records) + 1, 6, total_amount)
 
         workbook.close()
         output.seek(0)
