@@ -1,14 +1,16 @@
 <odoo>
     <data>
-          <template id="patient_registration_pdf_template">
+        <template id="patient_registration_pdf_template">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
                         <div class="oe_structure"/>
                         <h2 class="text-center">Patient Registration Report</h2>
                         <p>
-                            <strong>From Date:</strong> <span t-esc="data['form']['from_date']"/>
-                            <strong>To Date:</strong> <span t-esc="data['form']['to_date']"/>
+                            <strong>From Date:</strong>
+                            <span t-esc="data['form']['from_date']"/>
+                            <strong>To Date:</strong>
+                            <span t-esc="data['form']['to_date']"/>
                         </p>
 
                         <t t-if="data['form']['patients'] and len(data['form']['patients']) > 0">
@@ -16,26 +18,63 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center" style="border: 1px solid #000; padding: 8px;">SL</th>
-                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Reference</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">
+                                            Reference
+                                        </th>
                                         <th class="text-center" style="border: 1px solid #000; padding: 8px;">Name</th>
                                         <th class="text-center" style="border: 1px solid #000; padding: 8px;">Age</th>
-                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Address</th>
-                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Mobile</th>
-                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Doctor</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Address
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Mobile
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Doctor
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Total
+                                            Amount
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <t t-foreach="data['form']['patients']" t-as="p">
                                         <tr>
-                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['sl']"/></td>
-                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['reference_no']"/></td>
-                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['patient_name']"/></td>
-                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['age']"/></td>
-                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['address']"/></td>
-                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['phone']"/></td>
-                                            <td style="border: 1px solid #000; padding: 8px;"><span t-esc="p['doctor']"/></td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['sl']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['reference_no']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['patient_name']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['age']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['address']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['phone']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['doctor']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['register_total_amount']"/>
+                                            </td>
+
                                         </tr>
                                     </t>
+                                    <tr>
+                                        <td colspan="7"
+                                            style="border: 1px solid #000; padding: 8px; text-align: right;">Total
+                                            Amount
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 8px;">
+                                            <t t-set="total_amount"
+                                               t-value="sum(p['register_total_amount'] for p in data['form']['patients'])"/>
+                                            <span t-esc="total_amount"/>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </t>
@@ -73,15 +112,15 @@
         </record>
 
         <report
-    id="action_patient_registration_pdf"
-    model="patient.registration.report.wizard"
-    string="Patient Registration PDF"
-    report_type="qweb-pdf"
-    name="homeo_doctor.patient_registration_pdf_template"
-    file="homeo_doctor.patient_registration_pdf_template"
-    print_report_name="'Patient_Registration_Report_%s' % (object.from_date)"
-    paperformat="base.paperformat_euro"
-/>
+                id="action_patient_registration_pdf"
+                model="patient.registration.report.wizard"
+                string="Patient Registration PDF"
+                report_type="qweb-pdf"
+                name="homeo_doctor.patient_registration_pdf_template"
+                file="homeo_doctor.patient_registration_pdf_template"
+                print_report_name="'Patient_Registration_Report_%s' % (object.from_date)"
+                paperformat="base.paperformat_euro"
+        />
 
 
         <!-- Menu & Action -->

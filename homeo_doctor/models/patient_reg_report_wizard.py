@@ -27,6 +27,9 @@ class PatientRegistrationReportWizard(models.TransientModel):
                 'age': patient.age or '',
                 'address': patient.address or '',
                 'phone': patient.phone_number or '',
+                'consultation_fee': patient.consultation_fee or '',
+                'registration_fee': patient.registration_fee or '',
+                'register_total_amount': patient.register_total_amount or '',
                 'doctor': patient.doc_name.name if hasattr(patient.doc_name, 'name') else patient.doc_name or '',
             })
             sl += 1
