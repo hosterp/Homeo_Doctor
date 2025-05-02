@@ -30,11 +30,21 @@ class PharmacyDescriptionWizard(models.TransientModel):
                 'balance_amount': rec.balance,
             })
             sl_no += 1
+
         data = {
             'from_date': self.from_date.strftime('%d-%m-%Y'),
             'to_date': self.to_date.strftime('%d-%m-%Y'),
             'report_data': report_data,
         }
+        payable_total = sum(line['payable_amount'] for line in data['report_data'])
+        paying_total = sum(line['paying_amount'] for line in data['report_data'])
+        balance_total = sum(line['balance_amount'] for line in data['report_data'])
+
+        data.update({
+            'payable_total': payable_total,
+            'paying_total': paying_total,
+            'balance_total': balance_total,
+        })
 
         return self.env.ref('homeo_doctor.action_report_pharmacy_description').report_action(self, data={'data': data})
 

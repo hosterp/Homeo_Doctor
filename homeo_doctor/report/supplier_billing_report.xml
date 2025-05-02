@@ -109,7 +109,7 @@
 
         <!-- Menu Items -->
         <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
-        <menuitem id="menu_reports_root" name="Reports" parent="menu_lab_root" sequence="21"/>
+        <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
         <menuitem
                 id="menu_in_invoice_report"
                 name="Supplier Bill Report"

@@ -5,8 +5,15 @@
         <template id="report_pharmacy_description_pdf">
             <t t-call="web.basic_layout">
                 <div class="page">
-                    <h2>Pharmacy Description Report</h2>
-                      <t t-esc="data['from_date']"/> to <t t-esc="data['to_date']"/>
+                    <div style="text-align: center;">
+                        <h2>Pharmacy Description Report</h2>
+                        <p>
+                            <t t-esc="data['from_date']"/>
+                            to
+                            <t t-esc="data['to_date']"/>
+                        </p>
+                    </div>
+
 
                     <table class="table table-bordered">
                         <thead>
@@ -15,7 +22,7 @@
                                 <th>Receipt No</th>
                                 <th>Date Time</th>
                                 <th>Name</th>
-                                <th>Bill No</th>
+                                <!--                                <th>Bill No</th>-->
                                 <th>Payable Amount</th>
                                 <th>Paying Amount</th>
                                 <th>Balance Amount</th>
@@ -36,9 +43,9 @@
                                     <td>
                                         <t t-esc="line['name']"/>
                                     </td>
-<!--                                    <td>-->
-<!--                                        <t t-esc="line['uhid_id']"/>-->
-<!--                                    </td>-->
+                                    <!--                                    <td>-->
+                                    <!--                                        <t t-esc="line['uhid_id']"/>-->
+                                    <!--                                    </td>-->
                                     <td>
                                         <t t-esc="line['payable_amount']"/>
                                     </td>
@@ -50,6 +57,26 @@
                                     </td>
                                 </tr>
                             </t>
+                            <tr>
+                                <td colspan="4" style="text-align: right;">
+                                    <strong>Total:</strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        <t t-esc="data['payable_total']"/>
+                                    </strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        <t t-esc="data['paying_total']"/>
+                                    </strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        <t t-esc="data['balance_total']"/>
+                                    </strong>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -74,8 +101,8 @@
                         <button string="PDF Report" type="object" name="action_generate_report"
                                 class="btn-primary"/>
                         <button string="Download Excel" type="object"
-                        name="action_generate_excel_report"
-                        class="btn-secondary"/>
+                                name="action_generate_excel_report"
+                                class="btn-secondary"/>
                         <button string="Cancel" special="cancel" class="btn-secondary"/>
                     </footer>
                 </form>
@@ -100,7 +127,7 @@
 
         <!-- Menu Items -->
         <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
-        <menuitem id="menu_reports_root" name="Reports" parent="menu_lab_root" sequence="21"/>
+        <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
         <menuitem id="menu_pharmacy_report_wizard" name="Pharmacy Report" parent="menu_reports_root"
                   action="action_pharmacy_description_wizard" sequence="4"/>
 

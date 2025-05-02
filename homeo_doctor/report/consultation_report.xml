@@ -120,7 +120,7 @@
 
 
         <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
-        <menuitem id="menu_reports_root" name="Reports" parent="menu_lab_root" sequence="21"/>
+        <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
         <menuitem id="menu_consultation_report" name="Consultation Report"
                   parent="menu_reports_root" action="action_patient_report_wizard" sequence="7"/>
 

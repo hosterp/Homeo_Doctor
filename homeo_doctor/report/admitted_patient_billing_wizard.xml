@@ -114,7 +114,7 @@
 
         <!-- Menu Definition -->
         <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
-        <menuitem id="menu_reports_root" name="Reports" parent="menu_lab_root" sequence="21"/>
+        <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
         <menuitem id="menu_admitted_patient_report" name="Admitted Patient Billing Report"
                   parent="menu_reports_root" action="action_admission_billing_wizard" sequence="6"/>
 
