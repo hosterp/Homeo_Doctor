@@ -841,6 +841,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     display: flex;
     min-width: 100px;
     margin-right: 5px;
+    border-right: 3px solid;
 }
 
 /* New style for horizontal alignment */
@@ -850,6 +851,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     align-items: center;
     width: 100%;
     gap: 8px;
+    margin-right: 11px;
 }
 
 /* Blood pressure special layout */
