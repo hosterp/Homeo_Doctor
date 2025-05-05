@@ -14,7 +14,7 @@ class PatientAppointment(models.Model):
 
     appointment_reference = fields.Char(string="Appointment No", readonly=True)
     token_no = fields.Char("Token No")
-    patient_id = fields.Many2one('patient.reg', string='Patient ID', required=True)
+    patient_id = fields.Many2one('patient.reg', string='UHID', required=True)
     patient_name= fields.Char(related='patient_id.patient_id', string='Patient Name', required=True)
     appointment_date = fields.Date(string="Appointment Date")
     doctor_id = fields.Many2one('doctor.profile', string='Doctor')
