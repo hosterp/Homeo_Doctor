@@ -24,7 +24,7 @@
                     <header>
                         <button name="action_print_patient_report" type="object" string="Print Patient Case Sheet"
                                 class="btn-primary" target="new"/>
-                        <button string="Discharged"
+                        <button string="Proceed to Discharge"
                                 name="action_discharged"
                                 type="object"
                                 class="btn-primary"

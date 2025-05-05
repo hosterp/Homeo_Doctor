@@ -103,7 +103,7 @@ class PatientRegistration(models.Model):
     admit_bank = fields.Char(string="Bank")
     rent_half=fields.Char('Rent Half Day')
     rent_full=fields.Char('Rent Full Day')
-    status = fields.Selection([('unpaid','Unpaid'),('paid','Paid'),('admitted', 'Admitted'), ('discharged', 'Discharged')],default='unpaid')
+    status = fields.Selection([('unpaid','Unpaid'),('paid','Paid'),('admitted', 'Admitted'),('proceed_discharge','Proceed to Discharge'), ('discharged', 'Discharged')],default='unpaid')
 
     unpaid_general_ids = fields.One2many('general.billing', compute='_compute_unpaid_general', string="Unpaid General")
     unpaid_lab_ids = fields.One2many('doctor.lab.report', compute='_compute_unpaid_lab', string="Unpaid Lab")
@@ -199,6 +199,10 @@ class PatientRegistration(models.Model):
             # Mark the room as available
             if record.room_number_new:
                 record.room_number_new.is_available = False
+
+            admitted_patient = self.env['hospital.admitted.patient'].search([('patient_id', '=', record.id)], limit=1)
+            if admitted_patient:
+                admitted_patient.status = 'discharged'
 
             # Clear admission-related fields
             record.update({

@@ -1,5 +1,5 @@
 from odoo import api, fields, models, _
-# from odoo.odoo.exceptions import UserError
+from odoo.exceptions import UserError
 
 
 class AdmittedPatient(models.Model):
@@ -68,7 +68,7 @@ class AdmittedPatient(models.Model):
     room_category = fields.Many2one('room.category', string='Room Category')
     room_category_new = fields.Many2one('hospital.room.type', string='Room Category')
     advance_amount = fields.Integer(string='Advance Amount')
-    status=fields.Selection([('admitted','Admitted'),('discharged','Discharged')],default='admitted')
+    status=fields.Selection([('admitted','Admitted'),('proceed_discharge','Proceed to Discharge'),('discharged','Discharged')],default='admitted')
     consultation_id = fields.Many2one('patient.registration', string="Consultation Reference")
 
     previous_conditions = fields.Text(string="Previous Conditions", compute='_compute_previous_conditions')
@@ -178,12 +178,10 @@ class AdmittedPatient(models.Model):
             ])
     def action_discharged(self):
         for record in self:
-            record.status = 'discharged'
+            record.status = 'proceed_discharge'
             if record.patient_id:
-                record.patient_id.status = 'discharged'
-                record.patient_id.admission_boolean = False
-            if record.room_number:
-                record.room_number.is_available = False
+                record.patient_id.status = 'proceed_discharge'
+
     @api.depends('patient_id')
     def _compute_past_prescriptions(self):
         for rec in self:
