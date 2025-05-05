@@ -1221,3 +1221,8 @@ color: white ;
 .o_form_label.col-md-5.col-form-label.py-0.small.text-nowrap.reason {
 	font-size: 14px !important;
 }
+
+
+.o_purchase_dashboard {
+	display: none;
+}
