@@ -7,7 +7,7 @@
                 <div class="page">
                     <t t-foreach="docs" t-as="doc">
                         <!-- Title Section -->
-                        <h1 class="text-center mb-4">Patient Appointment Report</h1>
+                        <h1 class="text-center mb-4">Patient Appointment Challan</h1>
                         
                         <!-- Patient Details -->
                         <div class="row mb-4">
@@ -17,7 +17,7 @@
                             </div>
                             <div class="col-6 text-right">
                                 <strong>Appointment Date:</strong> 
-                                <span t-field="doc.appointment_date" t-options='{"format": "dd MMMM yyyy, HH:mm"}'/>
+                                <span t-field="doc.appointment_date" t-options='{"format": "dd MMMM yyyy"}'/>
                             </div>
                         </div>
                         
@@ -52,20 +52,10 @@
                                 <h3>Appointment Information</h3>
                                 <table class="table table-bordered">
                                     <tr>
-                                        <th>Departments</th>
-                                        <td>
-                                            <t t-foreach="doc.departments" t-as="dept">
-                                                <span t-field="dept.name"/>
-                                                <t t-if="not dept_last">, </t>
-                                            </t>
-                                        </td>
-                                        <th>Doctors</th>
-                                        <td>
-                                            <t t-foreach="doc.doctor_ids" t-as="doctor">
-                                                <span t-field="doctor.name"/>
-                                                <t t-if="not doctor_last">, </t>
-                                            </t>
-                                        </td>
+                                        <th>Department</th>
+                                        <td><span t-field="doc.departments"/></td>
+                                        <th>Doctor</th>
+                                        <td><span t-field="doc.doctor_ids"/></td>
                                     </tr>
                                     <tr>
                                         <th>Consultation Fee</th>
@@ -76,6 +66,29 @@
                                 </table>
                             </div>
                         </div>
+
+                        <!-- Multi-doctor/department section (if applicable) -->
+                        <t t-if="doc.doctor_ids and len(doc.doctor_ids) > 1">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h3>Additional Doctors</h3>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Doctor Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="doc.doctor_ids" t-as="doctor">
+                                                <tr>
+                                                    <td><span t-field="doctor.name"/></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
                         
                         <!-- Notes Section -->
                         <div class="row mb-4">
@@ -97,7 +110,7 @@
         <field name="name">Patient Appointment Report</field>
         <field name="model">patient.appointment</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">patient_appointment.report_patient_appointment_template</field>
+        <field name="report_name">homeo_doctor.report_patient_appointment_template</field>
         <field name="report_file">patient_appointment_report</field>
         <field name="binding_model_id" ref="model_patient_appointment"/>
         <field name="binding_type">report</field>

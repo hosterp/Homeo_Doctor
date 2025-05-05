@@ -110,6 +110,7 @@ class PatientAppointment(models.Model):
                     })
 
                 registration_model.create(registration_vals)
+        return self.env.ref('homeo_doctor.action_report_patient_appointment').report_action(appointment)
 
         # return {'type': 'ir.actions.act_window_close'}
 

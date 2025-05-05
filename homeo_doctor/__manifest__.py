@@ -59,6 +59,7 @@
         "report/pharmacy_description_report.xml",
         "report/supplier_billing_report.xml",
         "report/admitted_patient_billing_wizard.xml",
+        "report/appointment_challan.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",
