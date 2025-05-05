@@ -225,24 +225,24 @@
         <record id="purchase.menu_purchase_form_action" model="ir.ui.menu">
             <field name="active" eval="False"/>
         </record>
-        <!--        <record id="purchase.menu_procurement_management_supplier_name" model="ir.ui.menu">-->
-        <!--            <field name="active" eval="False"/>-->
-        <!--        </record>-->
-        <!--        <record id="purchase.menu_procurement_partner_contact_form" model="ir.ui.menu">-->
-        <!--            <field name="active" eval="False"/>-->
-        <!--        </record>-->
-        <!--        <record id="purchase.purchase_report" model="ir.ui.menu">-->
-        <!--            <field name="active" eval="False"/>-->
-        <!--        </record>-->
-        <!--        <record id="purchase.menu_product_pricelist_action2_purchase" model="ir.ui.menu">-->
-        <!--            <field name="active" eval="False"/>-->
-        <!--        </record>-->
-        <!--        <record id="purchase.menu_product_category_config_purchase" model="ir.ui.menu">-->
-        <!--            <field name="active" eval="False"/>-->
-        <!--        </record>-->
-        <!--        <record id="purchase.menu_purchase_general_settings" model="ir.ui.menu">-->
-        <!--            <field name="active" eval="False"/>-->
-        <!--        </record>-->
+                <record id="purchase.menu_procurement_management_supplier_name" model="ir.ui.menu">
+                    <field name="active" eval="False"/>
+                </record>
+                <record id="purchase.menu_procurement_partner_contact_form" model="ir.ui.menu">
+                    <field name="active" eval="False"/>
+                </record>
+                <record id="purchase.purchase_report" model="ir.ui.menu">
+                    <field name="active" eval="False"/>
+                </record>
+                <record id="purchase.menu_product_pricelist_action2_purchase" model="ir.ui.menu">
+                    <field name="active" eval="False"/>
+                </record>
+                <record id="purchase.menu_product_category_config_purchase" model="ir.ui.menu">
+                    <field name="active" eval="False"/>
+                </record>
+                <record id="purchase.menu_purchase_general_settings" model="ir.ui.menu">
+                    <field name="active" eval="False"/>
+                </record>
         <record id="account.menu_action_move_in_invoice_type" model="ir.ui.menu">
             <field name="parent_id" ref="purchase.menu_procurement_management"/>
             <field name="name">Supplier Invoice</field>
