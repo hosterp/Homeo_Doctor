@@ -51,10 +51,10 @@
                         <!-- Medical History Section -->
                         <h3>Medical History</h3>
                         <table class="table">
-                            <tr>
-                                <td><strong>Previous Conditions:</strong></td>
-                                <td><span t-field="doc.previous_conditions"/></td>
-                            </tr>
+<!--                            <tr>-->
+<!--                                <td><strong>Previous Conditions:</strong></td>-->
+<!--                                <td><span t-field="doc.previous_conditions"/></td>-->
+<!--                            </tr>-->
                             <tr>
                                 <td><strong>Current Diagnosis:</strong></td>
                                 <td><span t-field="doc.current_diagnosis"/></td>
