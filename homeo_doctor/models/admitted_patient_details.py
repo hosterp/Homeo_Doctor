@@ -94,7 +94,7 @@ class AdmittedPatient(models.Model):
         for rec in self:
             today = fields.Date.today()
             matching_prescriptions = rec.past_prescription_ids.filtered(lambda l: l.date == today and l.medicine_move==False)
-            print(matching_prescriptions,'matching_prescriptionsmatching_prescriptionsmatching_prescriptionsmatching_prescriptions')
+            # print(matching_prescriptions,'matching_prescriptionsmatching_prescriptionsmatching_prescriptionsmatching_prescriptions')
             if matching_prescriptions:
                 pharmacy = self.env['pharmacy.description'].create({
                     'uhid_id': rec.patient_id.id,
