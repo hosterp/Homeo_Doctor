@@ -60,6 +60,7 @@
         "report/supplier_billing_report.xml",
         "report/admitted_patient_billing_wizard.xml",
         "report/appointment_challan.xml",
+        "report/admission_challan_report.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",

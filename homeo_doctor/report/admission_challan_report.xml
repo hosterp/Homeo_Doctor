@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report action definition -->
+        <record id="action_report_admission_challan" model="ir.actions.report">
+            <field name="name">Admission Challan</field>
+            <field name="model">patient.reg</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">homeo_doctor.report_admission_challan</field>
+            <field name="report_file">homeo_doctor.report_admission_challan</field>
+            <field name="binding_model_id" ref="model_patient_reg"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report template -->
+        <template id="report_admission_challan">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 class="text-center">Admission Challan</h2>
+
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <strong>Challan No:</strong> <span t-field="o.reference_no"/>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <strong>Date:</strong> <span t-field="o.create_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td width="30%"><strong>Patient Name:</strong></td>
+                                            <td width="70%"><span t-field="o.patient_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Reference No.:</strong></td>
+                                            <td><span t-field="o.reference_no"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Room Category:</strong></td>
+                                            <td><span t-field="o.room_category_new"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Room Number:</strong></td>
+                                            <td><span t-field="o.room_number_new"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Bed:</strong></td>
+                                            <td><span t-field="o.bed_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Advance Amount:</strong></td>
+                                            <td><span t-field="o.amount_in_advance" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Payment Mode:</strong></td>
+                                            <td><span t-field="o.advance_mode_payment"/></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5">
+                                <div class="col-6">
+                                    <p>Patient's Signature</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <p>Authorized Signature</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

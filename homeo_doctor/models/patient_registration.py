@@ -323,16 +323,7 @@ class PatientRegistration(models.Model):
                 room = room_model.browse(rec.room_number_new.id)
                 if room:
                     room.write({'is_available': True})
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': 'Success',
-                'message': 'Admission created successfully.',
-                'sticky': False,
-                'type': 'success',
-            }
-        }
+        return self.env.ref('homeo_doctor.action_report_admission_challan').report_action(self)
     def _get_report_values(self, docids, data=None):
         docs = self.env['patient.reg'].browse(docids)
         return {
