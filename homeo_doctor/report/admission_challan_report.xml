@@ -66,9 +66,9 @@
                             </div>
 
                             <div class="row mt-5">
-                                <div class="col-6">
-                                    <p>Patient's Signature</p>
-                                </div>
+<!--                                <div class="col-6">-->
+<!--                                    <p>Patient's Signature</p>-->
+<!--                                </div>-->
                                 <div class="col-6 text-right">
                                     <p>Authorized Signature</p>
                                 </div>
