@@ -52,14 +52,15 @@
                                             <td><strong>Bed:</strong></td>
                                             <td><span t-field="o.bed_id"/></td>
                                         </tr>
+
+                                        <tr>
+                                            <td><strong>Payment Mode:</strong></td>
+                                            <td><span t-field="o.advance_mode_payment"/></td>
+                                        </tr>
                                         <tr>
                                             <td><strong>Advance Amount:</strong></td>
                                             <td><span t-field="o.amount_in_advance" />
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Payment Mode:</strong></td>
-                                            <td><span t-field="o.advance_mode_payment"/></td>
                                         </tr>
                                     </table>
                                 </div>
