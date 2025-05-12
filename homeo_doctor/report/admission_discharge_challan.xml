@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report action definition for Discharge Challan -->
+        <record id="action_report_discharge_challan" model="ir.actions.report">
+            <field name="name">Discharge Challan</field>
+            <field name="model">patient.reg</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">homeo_doctor.report_discharge_challan</field>
+            <field name="report_file">homeo_doctor.report_discharge_challan</field>
+            <field name="binding_model_id" ref="model_patient_reg"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report template for Discharge Challan -->
+        <template id="report_discharge_challan">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2 class="text-center">Discharge Challan</h2>
+
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <strong>Reference No:</strong> <span t-field="o.reference_no"/>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <strong>Discharge Date:</strong> <span t-field="o.discharge_date" />
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td width="30%"><strong>Patient Name:</strong></td>
+                                            <td width="70%"><span t-field="o.patient_id"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Patient Address:</strong></td>
+                                            <td><span t-field="o.address"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Admitted Date:</strong></td>
+                                            <td><span t-field="o.admitted_date" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Discharge Date:</strong></td>
+                                            <td><span t-field="o.discharge_date" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total  Amount:</strong></td>
+                                            <td><span t-field="o.admission_total_amount" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Payment Mode:</strong></td>
+                                            <td><span t-field="o.advance_mode_payment"/></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5">
+
+                                <div class="col-6 text-right">
+                                    <p>Authorized Signature</p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
