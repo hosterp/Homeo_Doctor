@@ -173,21 +173,45 @@ class PatientRegistration(models.Model):
                 ('status', '!=', 'paid')
             ])
 
-    @api.depends('unpaid_general_ids', 'unpaid_lab_ids', 'unpaid_pharmacy_ids')
+    @api.depends('unpaid_general_ids', 'unpaid_lab_ids', 'unpaid_pharmacy_ids', 'admitted_date', 'discharge_date',
+                 'rent_half', 'rent_full')
     def _compute_total_unpaid_amount(self):
         for rec in self:
             total = 0.0
 
+            # Calculate service totals
             for general in rec.unpaid_general_ids:
                 total += general.total_amount or 0.0
-
 
             for lab in rec.unpaid_lab_ids:
                 total += lab.total_bill_amount or 0.0
 
-
             for pharmacy in rec.unpaid_pharmacy_ids:
                 total += pharmacy.total_amount or 0.0
+
+            # Calculate rent if discharge date is present
+            if rec.admitted_date and rec.discharge_date:
+                # Convert to datetime objects if they're not already
+                admitted = fields.Datetime.from_string(rec.admitted_date) if isinstance(rec.admitted_date,
+                                                                                        str) else rec.admitted_date
+                discharge = fields.Datetime.from_string(rec.discharge_date) if isinstance(rec.discharge_date,
+                                                                                          str) else rec.discharge_date
+
+                # Calculate the duration in days (including partial days)
+                duration_hours = (discharge - admitted).total_seconds() / 3600
+
+                # Calculate full days and remaining hours
+                full_days = int(duration_hours / 24)
+                remaining_hours = duration_hours % 24
+
+                # Add full day rent - convert Char field to float for calculation
+                rent_full_value = float(rec.rent_full or 0) if rec.rent_full and rec.rent_full.strip() else 0
+                total += full_days * rent_full_value
+
+                # Add half day rent if remaining hours > 0
+                if remaining_hours > 0:
+                    rent_half_value = float(rec.rent_half or 0) if rec.rent_half and rec.rent_half.strip() else 0
+                    total += rent_half_value
 
             rec.admission_total_amount = total
 

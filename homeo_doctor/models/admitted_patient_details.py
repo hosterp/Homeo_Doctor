@@ -179,8 +179,10 @@ class AdmittedPatient(models.Model):
     def action_discharged(self):
         for record in self:
             record.status = 'proceed_discharge'
+            current_datetime = fields.Datetime.now()
             if record.patient_id:
                 record.patient_id.status = 'proceed_discharge'
+                record.patient_id.discharge_date = current_datetime
 
     @api.depends('patient_id')
     def _compute_past_prescriptions(self):
