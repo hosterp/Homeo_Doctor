@@ -68,9 +68,11 @@ class PatientRegistration(models.Model):
     alternate_no = fields.Char(string='Alternate Number')
     no_days = fields.Integer(string='Number Of Days', compute='_compute_no_days', store=True)
     admitted_date = fields.Datetime(string='Admitted Date')
+    temp_admitted_date = fields.Datetime(string='Admitted Date')
     admission_boolean = fields.Boolean(default=False)
     dob = fields.Date(string='DOB')
     discharge_date = fields.Datetime(string='Discharge Date')
+    temp_discharge_date = fields.Datetime(string='Discharge Date')
     vssc_boolean = fields.Boolean(string='VSSC', default=False)
     consultation_check = fields.Boolean(default=False)
     temp_reference_no = fields.Char(string=" Temporary Reference")
@@ -95,6 +97,7 @@ class PatientRegistration(models.Model):
     advance_remark = fields.Text(string="Remarks")
     advance_date = fields.Datetime(string="Date")
     admission_total_amount = fields.Integer(string="Total Amount" ,compute='_compute_total_unpaid_amount')
+    temp_admission_total_amount =  fields.Integer("Total Amount")
     admission_amount_paid = fields.Integer(string="Amount Paid")
     admission_balance = fields.Integer(string="Balance")
     Staff_name = fields.Char("Staff Name")
@@ -219,6 +222,9 @@ class PatientRegistration(models.Model):
         for record in self:
             record.status = 'discharged'
             record.admission_boolean = False
+            record.temp_admission_total_amount = record.admission_total_amount
+            record.temp_admitted_date = record.admitted_date
+            record.temp_discharge_date = record.discharge_date
 
             # Mark the room as available
             if record.room_number_new:

@@ -42,17 +42,17 @@
                                         </tr>
                                         <tr>
                                             <td><strong>Admitted Date:</strong></td>
-                                            <td><span t-field="o.admitted_date" />
+                                            <td><span t-field="o.temp_admitted_date" />
                                             </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Discharge Date:</strong></td>
-                                            <td><span t-field="o.discharge_date" />
+                                            <td><span t-field="o.temp_discharge_date" />
                                             </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Total  Amount:</strong></td>
-                                            <td><span t-field="o.admission_total_amount" />
+                                            <td><span t-field="o.temp_admission_total_amount" />
                                             </td>
                                         </tr>
                                         <tr>
