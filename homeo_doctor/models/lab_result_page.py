@@ -65,14 +65,14 @@ class LabResultPage(models.Model):
 
                     if latest_patient:
                         vals['patient_id_admitted'] = latest_patient.id
-                        print("Latest Admitted Patient ID: ", latest_patient.id)
+                        # print("Latest Admitted Patient ID: ", latest_patient.id)
 
         # Debugging: Print final vals before creating record
-        print("Final vals before create:", vals)
+        # print("Final vals before create:", vals)
 
         # Call the super method to create the record
         record = super(LabResultPage, self).create(vals)
-        print("Created LabResultPage record with patient_id_admitted: ", record.patient_id_admitted)
+        # print("Created LabResultPage record with patient_id_admitted: ", record.patient_id_admitted)
 
         return record
 
