@@ -173,11 +173,13 @@
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="after">
                 <field name="hsn"/>
                 <field name="batch"/>
+                <field name="pack"/>
                 <field name="manufacturing_date" string="M.Date"/>
             </xpath>
             <xpath expr="//field[@name='line_ids']/tree/field[@name='product_id']" position="after">
                 <field name="hsn"/>
                 <field name="batch"/>
+                <field name="pack"/>
                 <field name="manufacturing_date" string="M.Date"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="attributes">

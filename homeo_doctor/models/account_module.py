@@ -146,6 +146,8 @@ class AccountMoveLine(models.Model):
     product_uom_category_id = fields.Many2one('uom.category', string="Category", required=True)
     supplier_rack=fields.Many2one('supplier.rack')
     reason_for_rejection=fields.Char('Reason For Rejection')
+    pack = fields.Integer('Pack')
+    pup = fields.Integer('PUP')
 
     @api.onchange('product_id')
     def _onchange_product_id_hsn(self):
