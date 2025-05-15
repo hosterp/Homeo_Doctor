@@ -98,12 +98,14 @@
             </xpath>
 
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
+                <field name="pup"/>
                 <field name="gst"/>
                 <field name="discount" string="Disc.%"/>
                 <!--                <field name="supplier_rack" string="Rack"  invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
                 <field name="stock_in_hand"/>
             </xpath>
             <xpath expr="//field[@name='line_ids']/tree/field[@name='price_unit']" position="after">
+                <field name="pup"/>
                 <field name="gst"/>
                 <field name="discount" string="Disc.%"/>
                 <!--                <field name="supplier_rack" string="Rack"  invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
