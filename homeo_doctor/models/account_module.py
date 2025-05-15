@@ -106,6 +106,7 @@ class AccountMove(models.Model):
                         'uom_id': line.product_uom_id.id,
                         'rate': line.price_unit,
                         'date': move.invoice_date,
+                        'pack':line.pack,
                         'state': 'confirmed',
                     })
                     stock_entries = self.env['stock.entry'].search([
@@ -300,6 +301,7 @@ class StockEntry(models.Model):
     rate = fields.Float(string="Rate", required=True)
     uom_id = fields.Many2one('uom.uom', string="Unit of Measure")
     date=fields.Date(string='Date')
+    pack = fields.Integer(string="Pack",default=1)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
