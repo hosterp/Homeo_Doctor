@@ -4,8 +4,8 @@ class BillingReportWizard(models.TransientModel):
     _name = 'billing.report.wizard'
     _description = 'Billing Report Wizard'
 
-    date_from = fields.Datetime(string='From Date', required=True)
-    date_to = fields.Datetime(string='To Date', required=True)
+    date_from = fields.Date(string='From Date', required=True,default=fields.Date.today)
+    date_to = fields.Date(string='To Date', required=True,default=fields.Date.today)
 
     def action_generate_pdf_report(self):
         records = self.env['general.billing'].search([

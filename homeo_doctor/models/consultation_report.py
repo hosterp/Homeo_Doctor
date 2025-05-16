@@ -4,8 +4,8 @@ class PatientReportWizard(models.TransientModel):
     _name = 'patient.report.wizard'
     _description = 'Patient Report Wizard'
 
-    date_from = fields.Date(string='From Date', required=True)
-    date_to = fields.Date(string='To Date', required=True)
+    date_from = fields.Date(string='From Date', required=True,default=fields.Date.today)
+    date_to = fields.Date(string='To Date', required=True,default=fields.Date.today)
     doctor_id = fields.Many2one('doctor.profile', string='Doctor')
 
     def action_generate_report(self):
