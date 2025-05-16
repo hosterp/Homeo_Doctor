@@ -68,12 +68,15 @@
             <field name="model">doctor.lab.report.wizard</field>
             <field name="arch" type="xml">
                 <form string="Generate Doctor Lab Report">
-                    <group col="2">
+                    <group col="3">
                         <group>
                             <field name="from_date"/>
                         </group>
                         <group>
                             <field name="to_date"/>
+                        </group>
+                        <group>
+                            <field name="mode_pay"/>
                         </group>
                     </group>
                     <footer>

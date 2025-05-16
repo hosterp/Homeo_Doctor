@@ -100,12 +100,15 @@
             <field name="model">billing.report.wizard</field>
             <field name="arch" type="xml">
                 <form string="General Billing Report">
-                    <group col="2">
+                    <group col="3">
                         <group>
                             <field name="date_from"/>
                         </group>
                         <group>
                             <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="mode_pay"/>
                         </group>
                     </group>
                     <footer>

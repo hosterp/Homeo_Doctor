@@ -6,11 +6,17 @@ class BillingReportWizard(models.TransientModel):
 
     date_from = fields.Date(string='From Date', required=True,default=fields.Date.today)
     date_to = fields.Date(string='To Date', required=True,default=fields.Date.today)
+    mode_pay = fields.Selection([('cash', 'Cash'),
+                                 ('credit', 'Credit'),
+                                 ('card', 'Card'),
+                                 ('cheque', 'Cheque'),
+                                 ('upi', 'UPI'), ], string='Payment Method')
 
     def action_generate_pdf_report(self):
         records = self.env['general.billing'].search([
             ('bill_date', '>=', self.date_from),
             ('bill_date', '<=', self.date_to),
+            ('mode_pay', '=', self.mode_pay),
         ])
 
         billing_data = []

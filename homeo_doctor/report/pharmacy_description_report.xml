@@ -88,12 +88,15 @@
             <field name="model">pharmacy.description.wizard</field>
             <field name="arch" type="xml">
                 <form string="Pharmacy Description Wizard">
-                    <group col="2">
+                    <group col="3">
                         <group>
                             <field name="from_date"/>
                         </group>
                         <group>
                             <field name="to_date"/>
+                        </group>
+                        <group>
+                            <field name="mode_pay"/>
                         </group>
 
                     </group>
