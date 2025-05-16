@@ -113,6 +113,8 @@ class PatientRegistration(models.Model):
     unpaid_pharmacy_ids = fields.One2many('pharmacy.description', compute='_compute_unpaid_pharmacy',
                                           string="Unpaid Pharmacy")
 
+
+
     @api.depends('reference_no')
     def _compute_unpaid_general(self):
         for rec in self:
@@ -141,7 +143,8 @@ class PatientRegistration(models.Model):
     register_card_no = fields.Char(string="Card No")
     register_bank_name = fields.Char(string="Bank")
 
-    
+    def admit_reception(self):
+        self.admission_boolean=True
 
     @api.onchange('register_amount_paid')
     def _onchange_register_amount_paid(self):
