@@ -8,12 +8,18 @@ class DoctorLabReportWizard(models.TransientModel):
 
     from_date = fields.Date(string="From Date", required=True,default=fields.Date.today)
     to_date = fields.Date(string="To Date", required=True,default=fields.Date.today)
+    mode_pay = fields.Selection([('cash', 'Cash'),
+                                 ('credit', 'Credit'),
+                                 ('card', 'Card'),
+                                 ('cheque', 'Cheque'),
+                                 ('upi', 'UPI'), ], string='Payment Method')
 
     def action_generate_report(self):
         # Get the filtered data based on the provided dates
         lab_reports = self.env['doctor.lab.report'].search([
             ('date', '>=', self.from_date),
-            ('date', '<=', self.to_date)
+            ('date', '<=', self.to_date),
+            ('mode_of_payment', '=', self.mode_pay),
         ])
 
         # Prepare data for the report

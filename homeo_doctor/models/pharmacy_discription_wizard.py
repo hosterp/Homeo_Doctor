@@ -7,12 +7,17 @@ class PharmacyDescriptionWizard(models.TransientModel):
 
     from_date = fields.Date(string="From Date", required=True,default=fields.Date.today)
     to_date = fields.Date(string="To Date", required=True,default=fields.Date.today)
-
+    mode_pay = fields.Selection([('cash', 'Cash'),
+                                 ('credit', 'Credit'),
+                                 ('card', 'Card'),
+                                 ('cheque', 'Cheque'),
+                                 ('upi', 'UPI'), ], string='Payment Method')
     def action_generate_report(self):
         # Search records within the date range
         pharmacy_records = self.env['pharmacy.description'].search([
             ('date', '>=', self.from_date),
-            ('date', '<=', self.to_date)
+            ('date', '<=', self.to_date),
+            ('payment_mathod', '=', self.mode_pay),
         ], order='date asc')
 
         report_data = []
