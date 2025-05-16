@@ -120,7 +120,7 @@
                                             Amount:
                                         </td>
                                         <td style="padding: 8px; border: 1px solid #000;">
-                                            <t t-esc="doc.registration_fee.fee + doc.consultation_fee"/>
+                                            <t t-esc="doc.register_total_amount"/>
                                         </td>
                                     </tr>
 
