@@ -64,6 +64,25 @@ class GeneralBilling(models.Model):
 
     amount_in_words = fields.Char("Total in Words", compute="_compute_amount_in_words")
     discount_amount = fields.Integer(string="Discount amount")
+    rent = fields.Integer(string="Rent",Default=0)
+    observation = fields.Boolean(string="Observation")
+    observation_status = fields.Selection([
+                          ('observation', 'Observation'),
+                          ('discharge','Discharge')
+                          ], string="Status")
+
+    def action_observation(self):
+        """Method to toggle observation field when Observation button is clicked"""
+        self.observation = True
+        # If observation is True, set observation_status to 'observation'
+        if self.observation:
+            self.observation_status = 'observation'
+
+    def action_observation_discharge(self):
+        self.observation = False
+        if self.observation:
+            self.observation_status = 'discharge'
+
 
     @api.onchange('discount', 'discount_type', 'total_amount')
     def _onchange_discount(self):
@@ -223,17 +242,17 @@ class GeneralBilling(models.Model):
             }
         }
 
-    @api.depends('general_bill_line_ids.quantity', 'general_bill_line_ids.total_amt', 'general_bill_line_ids.tax')
+    @api.depends('general_bill_line_ids.quantity', 'general_bill_line_ids.total_amt', 'general_bill_line_ids.tax','rent')
     def _compute_totals(self):
         for record in self:
             record.total_item = len(record.general_bill_line_ids)
             record.total_qty = sum(record.general_bill_line_ids.mapped('quantity'))
-            record.total_amount = sum(record.general_bill_line_ids.mapped('total_amt'))
+            record.total_amount = sum(record.general_bill_line_ids.mapped('total_amt')) + record.rent
 
             record.total_tax = sum(
                 line.tax.tax * line.total_amt / 100 for line in record.general_bill_line_ids if line.tax)
 
-            record.net_amount = sum(record.general_bill_line_ids.mapped('total_amt'))
+            record.net_amount = sum(record.general_bill_line_ids.mapped('total_amt'))+ record.rent
 
     @api.onchange('mrd_no')
     def _onchange_mrd_no(self):

@@ -10,6 +10,8 @@
                         <field name="status" widget="statusbar"/>
                         <button name="action_pay_button" type="object" string="Pay" class="oe_highlight"/>
                         <button name="action_create_admission" type="object" string="Admit" class="oe_highlight"/>
+                        <button name="action_observation" type="object" string="Observation" class="oe_highlight"/>
+                        <button name="action_observation_discharge" type="object" string="Discharge" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <div class="oe_title" style="display:none;">
@@ -124,6 +126,23 @@
                                         </label>
                                         <div class="col-md-8 field-container py-0">
                                             <field name="particulars"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 px-1" attrs="{'invisible': [('observation', '=', False)]}">
+                                    <div class="form-group row my-1">
+                                        <label for="rent" class="col-md-4 col-form-label py-0">Rent
+                                        </label>
+                                        <div class="col-md-8 field-container py-0">
+                                            <field name="rent"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 px-1" attrs="{'invisible': True}">
+                                    <div class="form-group row my-1">
+                                        <label for="observation" class="col-md-4 col-form-label py-0">Observation</label>
+                                        <div class="col-md-8 field-container py-0">
+                                            <field name="observation"/>
                                         </div>
                                     </div>
                                 </div>
