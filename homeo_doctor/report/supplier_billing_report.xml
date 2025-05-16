@@ -80,12 +80,15 @@
             <field name="model">in.invoice.report.wizard</field>
             <field name="arch" type="xml">
                 <form string="Generate Vendor Bill Report">
-                    <group col="2">
+                    <group col="3">
                         <group>
                             <field name="from_date"/>
                         </group>
                         <group>
                             <field name="to_date"/>
+                        </group>
+                        <group>
+                            <field name="mode_pay"/>
                         </group>
 
                     </group>

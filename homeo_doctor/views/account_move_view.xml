@@ -32,6 +32,8 @@
                                attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="supplier_invoice"
                                attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
+                        <field name="pay_mode"
+                               attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                     </group>
                     <group>
                         <field name="supplier_bill_date"
