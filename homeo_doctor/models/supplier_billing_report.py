@@ -8,13 +8,22 @@ class InInvoiceReportWizard(models.TransientModel):
 
     from_date = fields.Date(string='From Date', required=True,default=fields.Date.today)
     to_date = fields.Date(string='To Date', required=True,default=fields.Date.today)
-
+    mode_pay = fields.Selection([('cash', 'Cash'),
+                                 ('credit', 'Credit'),
+                                 ('card', 'Card'),
+                                 ('cheque', 'Cheque'),
+                                 ('upi', 'UPI'), ], string='Payment Method')
     def action_print_pdf(self):
-        records = self.env['account.move'].search([
+        domain = [
             ('move_type', '=', 'in_invoice'),
             ('invoice_date', '>=', self.from_date),
             ('invoice_date', '<=', self.to_date),
-        ])
+        ]
+
+        if self.mode_pay:
+            domain.append(('pay_mode', '=', self.mode_pay))
+
+        records = self.env['account.move'].search(domain)
 
         bills = []
         for rec in records:
@@ -28,7 +37,7 @@ class InInvoiceReportWizard(models.TransientModel):
                 'bill_date': rec.supplier_bill_date.strftime('%d-%m-%Y') if rec.supplier_bill_date else '',
                 'po_number': rec.po_number.name if rec.po_number else '',
             })
-            print(bills,'billsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbills')
+            # print(bills,'billsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbillsbills')
         data = {
             'from_date': self.from_date.strftime('%d-%m-%Y'),
             'to_date': self.to_date.strftime('%d-%m-%Y'),

@@ -19,7 +19,6 @@ class AccountMove(models.Model):
     address=fields.Text(related='uhid.address',string='Address')
     mobile=fields.Char(related='uhid.phone_number',string='Mobile No')
     invoice_line_ids=fields.One2many('account.move.line','move_id')
-
     supplier_name = fields.Many2one('res.partner',string='Supplier Name')
     supplier_invoice = fields.Char('Invoice No')
     supplier_phone = fields.Char('Phone No')
@@ -34,7 +33,12 @@ class AccountMove(models.Model):
         string="Date",
         default=lambda self: date.today()
     )
-
+    pay_mode = fields.Selection([
+        ('cash', 'Cash'),
+        ('upi', 'UPI'),
+        ('card', 'Card'),
+        ('credit', 'Credit'),
+    ], string='Payment Mode',default='cash')
     @api.model
     def create(self, vals):
         if vals.get('supplier_invoice', '/') == '/':
@@ -282,6 +286,18 @@ class AccountPaymentRegister(models.TransientModel):
             })
         return res
 
+    def write(self, vals):
+        res = super(AccountPaymentRegister, self).write(vals)
+        if 'pay_mode' in vals and self.move_id:
+            self.move_id.write({'pay_mode': vals['pay_mode']})
+        return res
+
+    @api.model
+    def create(self, vals):
+        record = super(AccountPaymentRegister, self).create(vals)
+        if 'pay_mode' in vals and record.move_id:
+            record.move_id.write({'pay_mode': vals['pay_mode']})
+        return record
 
 
 class StockEntry(models.Model):
