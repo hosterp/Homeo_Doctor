@@ -4,8 +4,8 @@ from datetime import datetime
 class AdmissionBillingWizard(models.TransientModel):
     _name = 'admission.billing.wizard'
 
-    date_from = fields.Date(string="From Date", required=True)
-    date_to = fields.Date(string="To Date", required=True)
+    date_from = fields.Date(string="From Date", required=True,default=fields.Date.today)
+    date_to = fields.Date(string="To Date", required=True,default=fields.Date.today)
 
     def action_generate_report(self):
         patient_records = self.env['patient.reg'].search([

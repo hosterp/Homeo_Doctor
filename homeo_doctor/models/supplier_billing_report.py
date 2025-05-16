@@ -6,8 +6,8 @@ class InInvoiceReportWizard(models.TransientModel):
     _name = 'in.invoice.report.wizard'
     _description = 'Vendor Bill Report Wizard'
 
-    from_date = fields.Date(string='From Date', required=True)
-    to_date = fields.Date(string='To Date', required=True)
+    from_date = fields.Date(string='From Date', required=True,default=fields.Date.today)
+    to_date = fields.Date(string='To Date', required=True,default=fields.Date.today)
 
     def action_print_pdf(self):
         records = self.env['account.move'].search([

@@ -4,8 +4,8 @@ class PatientRegistrationReportWizard(models.TransientModel):
     _name = 'patient.registration.report.wizard'
     _description = 'Patient Registration Report Wizard'
 
-    from_date = fields.Date(string="From Date", required=True)
-    to_date = fields.Date(string="To Date", required=True)
+    from_date = fields.Date(string="From Date", required=True,default=fields.Date.today)
+    to_date = fields.Date(string="To Date", required=True,default=fields.Date.today)
 
     def action_print_pdf(self):
         # Search for patients within the given date range

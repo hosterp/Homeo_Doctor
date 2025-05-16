@@ -6,8 +6,8 @@ class DoctorLabReportWizard(models.TransientModel):
     _name = 'doctor.lab.report.wizard'
     _description = 'Doctor Lab Report Wizard'
 
-    from_date = fields.Date(string="From Date", required=True)
-    to_date = fields.Date(string="To Date", required=True)
+    from_date = fields.Date(string="From Date", required=True,default=fields.Date.today)
+    to_date = fields.Date(string="To Date", required=True,default=fields.Date.today)
 
     def action_generate_report(self):
         # Get the filtered data based on the provided dates
