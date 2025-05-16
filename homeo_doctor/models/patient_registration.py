@@ -149,22 +149,57 @@ class PatientRegistration(models.Model):
             total = rec.register_total_amount or 0
             paid = rec.register_amount_paid or 0
             rec.register_balance = total - paid
-    
-    
-    
-    @api.onchange('registration_fee', 'consultation_fee')
+
+    @api.depends('vssc_boolean', 'doc_name')
+    def _compute_consultation_fee(self):
+        for rec in self:
+            if rec.vssc_boolean:
+                rec.consultation_fee = 400
+            else:
+                # You might want to add your logic here for non-VSSC patients
+                # For now, I'm leaving it as is (presumably set by another method)
+                rec.consultation_fee = 0  # or whatever default you want
+
+    @api.depends('vssc_boolean')
+    def _default_registration_fee(self):
+        # Return false/None if VSSC, otherwise return your default registration fee
+        if self.vssc_boolean:
+            return False
+        else:
+            # Return your default registration fee record
+            registration_fee = self.env['patient.registration.fee'].search([], limit=1)
+            return registration_fee.id if registration_fee else False
+
+    @api.onchange('vssc_boolean')
+    def _onchange_vssc_boolean(self):
+        for rec in self:
+            if rec.vssc_boolean:
+                rec.registration_fee = False  # Set to None/False when VSSC is True
+                rec.consultation_fee = 400
+            else:
+                # Reset to default registration fee
+                default_fee = self._default_registration_fee()
+                rec.registration_fee = default_fee
+                # Reset consultation fee if needed
+                # rec.consultation_fee = 0  # or compute based on your business logic
+
+    @api.onchange('registration_fee', 'consultation_fee', 'vssc_boolean')
     def _onchange_total_amount(self):
         for rec in self:
-            reg_fee = rec.registration_fee.fee if rec.registration_fee else 0
-            rec.register_total_amount = reg_fee + (rec.consultation_fee or 0)
-    
+            if rec.vssc_boolean:
+                rec.register_total_amount = 400  # Only consultation fee for VSSC
+            else:
+                reg_fee = rec.registration_fee.fee if rec.registration_fee else 0
+                rec.register_total_amount = reg_fee + (rec.consultation_fee or 0)
 
-
-    @api.depends('registration_fee', 'consultation_fee')
+    @api.depends('registration_fee', 'consultation_fee', 'vssc_boolean')
     def _compute_register_total(self):
         for rec in self:
-            reg_fee = rec.registration_fee.fee if rec.registration_fee else 0
-            rec.register_total_amount = reg_fee + (rec.consultation_fee or 0)
+            if rec.vssc_boolean:
+                rec.register_total_amount = 400  # Only consultation fee for VSSC
+            else:
+                reg_fee = rec.registration_fee.fee if rec.registration_fee else 0
+                rec.register_total_amount = reg_fee + (rec.consultation_fee or 0)
 
 
 
@@ -323,9 +358,16 @@ class PatientRegistration(models.Model):
             'domain': [('walk_in', '=', True)],
             'target': 'current',
         }
+
     def action_register_pay(self):
         self.ensure_one()
         self.status = 'paid'  # Update the status to 'paid'
+
+        # Ensure VSSC logic is applied correctly before printing
+        if self.vssc_boolean:
+            # For VSSC patients, ensure values are correctly set before printing
+            if self.consultation_fee != 400:
+                self.consultation_fee = 400
 
         # Return the PDF report action
         return self.env.ref('homeo_doctor.report_patient_challan_action').report_action(self)
@@ -467,8 +509,11 @@ class PatientRegistration(models.Model):
     def _compute_consultation_fee(self):
         for record in self:
             if record.doc_name:
-                # Automatically populate consultation_fee from the selected doctor's record
-                record.consultation_fee = record.doc_name.consultation_fee_doctor
+                if record.vssc_boolean:
+                    record.register_total_amount = 400
+                else:
+                    # Automatically populate consultation_fee from the selected doctor's record
+                    record.consultation_fee = record.doc_name.consultation_fee_doctor
 
     @api.onchange('department_id')
     def _onchange_department_id(self):
