@@ -82,6 +82,7 @@
         "views/room_config.xml",
         "views/hospital_block.xml",
         "views/hospital_room_type.xml",
+        "views/admitted_patient_history.xml",
         "data/ir_sequence_data.xml",
 
     ],

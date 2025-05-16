@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+        <record id="view_discharged_patient_tree" model="ir.ui.view">
+            <field name="name">discharged.patient.record.tree</field>
+            <field name="model">discharged.patient.record</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="patient_id"/>
+                    <field name="name"/>
+                    <field name="bystander_name"/>
+                    <field name="relation"/>
+                    <field name="bystander_mobile"/>
+                    <field name="room_category_new"/>
+                    <field name="new_block"/>
+                    <field name="bed_id"/>
+                    <field name="op_category"/>
+                    <field name="admitted_date"/>
+                    <field name="discharge_date"/>
+                    <field name="room_number"/>
+                    <field name="doctor"/>
+                    <field name="amount_in_advance"/>
+                    <field name="total_amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_discharged_patient_record" model="ir.actions.act_window">
+            <field name="name">Discharged Patients</field>
+            <field name="res_model">discharged.patient.record</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_discharged_patient_root" name="Discharged Patients History" parent="menu_my_patient_template_root"
+                  action="action_discharged_patient_record" sequence="2"/>
+
+    </data>
+</odoo>

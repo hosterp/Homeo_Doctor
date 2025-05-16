@@ -271,8 +271,28 @@ class PatientRegistration(models.Model):
             admitted_patient = self.env['hospital.admitted.patient'].search([('patient_id', '=', record.id)], limit=1)
             if admitted_patient:
                 admitted_patient.status = 'discharged'
+                self.env['discharged.patient.record'].create({
+                    'patient_id': record.reference_no,
+                    'name': record.patient_id,
+                    'discharge_date': record.discharge_date,
+                    'admitted_date': record.admitted_date,
+                    'room_number': record.room_number_new.id,
+                    'doctor': record.doctor.id,
+                    'total_amount': record.admission_total_amount,
+                    'room_category_new': record.room_category_new.id,
+                    'new_block': record.new_block.id,
+                    'bed_id': record.bed_id.id,
+                    'amount_in_advance': record.amount_in_advance,
+                    'bystander_name': record.bystander_name,
+                    'relation': record.bystander_relation,
+                    'email': record.bystander_email,
+                    'bystander_mobile': record.bystander_mobile,
+                    'alternate_no': record.alternate_no,
+                    'op_category': record.op_category,
 
-            # Clear admission-related fields
+                })
+
+
             record.update({
                 'room_number_new': False,
                 'bed_id': False,
