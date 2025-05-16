@@ -11,6 +11,7 @@
                                 class="oe_stat_button" invisible="1">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
+                        <button name="admit_reception" type="object" string="Proceed to Admit"/>
                         <button name="action_discharged_patient_reg" type="object" string="Discharged"/>
                         <field name="status" widget="statusbar"/>
                     </header>
