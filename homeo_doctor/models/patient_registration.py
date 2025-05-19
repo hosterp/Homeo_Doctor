@@ -211,7 +211,8 @@ class PatientRegistration(models.Model):
         for rec in self:
             rec.unpaid_pharmacy_ids = self.env['pharmacy.description'].search([
                 ('uhid_id', '=', rec.id),
-                ('status', '!=', 'paid')
+                ('status', '!=', 'paid'),
+                ('status', '!=', 'cancelled')
             ])
 
     @api.depends('unpaid_general_ids', 'unpaid_lab_ids', 'unpaid_pharmacy_ids', 'admitted_date', 'discharge_date',
