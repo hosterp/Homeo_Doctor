@@ -29,6 +29,7 @@ class PharmacyDescription(models.Model):
     remarks = fields.Char(string='Remarks')
     staff_pwd = fields.Char(string='Staff Password')
     staff_name = fields.Char(string='Staff Name')
+    description_line_ids = fields.One2many('pharmacy.prescription.line', 'description_id', string="Lines")
 
     @api.onchange('uhid_id')
     def _onchange_uhid_id(self):
@@ -227,7 +228,7 @@ class PharmacyPrescriptionLine(models.Model):
     discount=fields.Float(string='Disc %')
     stock_in_hand = fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
     rate = fields.Float(string='Rate', store=True)
-
+    description_id = fields.Many2one('pharmacy.description', string="Sale Reference")
     @api.onchange('product_id')
     def _onchange_product_id(self):
         for line in self:
@@ -421,3 +422,97 @@ class AccountPayment(models.Model):
     def _compute_balance(self):
         for rec in self:
             rec.balance = max(0, rec.amount - rec.paid_mount)
+
+
+
+class PharmacyReturn(models.Model):
+    _name = 'pharmacy.return'
+    _description = 'Pharmacy Sales Return'
+    _order = 'return_date desc'
+
+    return_date = fields.Datetime(string="Return Date",default=fields.Datetime.now)
+    original_sale_id = fields.Many2one('pharmacy.description', string="Original Bill")
+    return_line_ids = fields.One2many('pharmacy.return.line', 'return_id', string="Return Lines")
+    total_return_amount = fields.Float(string="Total Return Amount", compute="_compute_return_amount", store=True)
+    patient_id = fields.Many2one(related='original_sale_id.uhid_id', string="UHID", store=True, readonly=True)
+    patient_name = fields.Char(related='original_sale_id.name', string="Patient Name", store=True, readonly=True)
+    phone_number = fields.Char(related='original_sale_id.phone_number', string="Phone Number", store=True,
+                               readonly=True)
+    doctor_name = fields.Many2one(related='original_sale_id.doctor_name', string="Doctor", store=True, readonly=True)
+
+    @api.depends('return_line_ids.subtotal')
+    def _compute_return_amount(self):
+        for rec in self:
+            rec.total_return_amount = sum(line.subtotal for line in rec.return_line_ids)
+
+    def action_validate_return(self):
+        StockEntry = self.env['stock.entry']
+        for rec in self:
+            if rec.original_sale_id:
+                original = rec.original_sale_id
+                original.bill_amount -= rec.total_return_amount
+                original.write({'bill_amount': original.bill_amount})
+
+                # Create Stock Entry for each returned line
+                for line in rec.return_line_ids:
+                    if not line.product_id:
+                        continue
+
+                    # Create new stock entry for returned product
+                    StockEntry.create({
+                        'product_id': line.product_id.id,
+                        'quantity': line.quantity,
+                        'rate': line.unit_price,
+                        'manf_date': line.manf_date,
+                        'exp_date': line.exp_date,
+                        'batch': line.batch,
+                        'hsn': line.hsn,
+                        'rack': 'Returned',  # optional: mark returned rack
+                        'date': fields.Date.today(),
+                        'uom_id': line.product_id.uom_id.id if line.product_id.uom_id else False,
+                        'state': 'confirmed',  # or 'done' based on your workflow
+                    })
+
+
+class PharmacyReturnLine(models.Model):
+    _name = 'pharmacy.return.line'
+    _description = 'Pharmacy Return Line'
+
+
+    product_id = fields.Many2one('product.product', string="Product")
+    quantity = fields.Float(string="Returned Quantity")
+    unit_price = fields.Float(string="Unit Price")
+    manf_date = fields.Char(string='M.Date')
+    exp_date = fields.Char(string='Exp. Date')
+    batch = fields.Char(string='Batch Number')
+    hsn = fields.Char(string='HSN')
+    subtotal = fields.Float(string="Subtotal", compute="_compute_subtotal", store=True)
+    return_id = fields.Many2one('pharmacy.return', string="Return")
+
+    @api.depends('quantity', 'unit_price')
+    def _compute_subtotal(self):
+        for line in self:
+            line.subtotal = line.quantity * line.unit_price
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        if not self.product_id or not self.return_id.original_sale_id:
+            return
+
+        sale = self.return_id.original_sale_id
+        matched_line = sale.description_line_ids.filtered(lambda l: l.product_id.id == self.product_id.id)
+        if matched_line:
+            line = matched_line[0]  # take the first match
+            self.unit_price = line.unit_price or 0.0
+            self.quantity = line.quantity or 0.0
+            self.manf_date = line.manf_date
+            self.exp_date = line.exp_date
+            self.batch = line.batch
+            self.hsn = line.hsn
+        else:
+            self.unit_price = 0.0
+            self.quantity = 0.0
+            self.manf_date = False
+            self.exp_date = False
+            self.batch = False
+            self.hsn = False

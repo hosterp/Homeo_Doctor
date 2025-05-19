@@ -1,0 +1,76 @@
+<odoo>
+    <data>
+        <record id="view_pharmacy_return_form" model="ir.ui.view">
+            <field name="name">pharmacy.return.form</field>
+            <field name="model">pharmacy.return</field>
+            <field name="arch" type="xml">
+                <form string="Pharmacy Return">
+                    <sheet>
+                        <group>
+                            <field name="return_date"/>
+                            <field name="original_sale_id"/>
+                            <field name="patient_id"/>
+                            <field name="patient_name"/>
+                            <field name="phone_number"/>
+                            <field name="doctor_name"/>
+
+                        </group>
+                        <field name="return_line_ids">
+                            <tree editable="bottom">
+                                <field name="product_id"/>
+                                <field name="manf_date"/>
+                                <field name="exp_date"/>
+                                <field name="batch"/>
+                                <field name="quantity"/>
+                                <field name="unit_price"/>
+                                <field name="subtotal" readonly="1"/>
+                            </tree>
+                        </field>
+                        <group>
+                            <field name="total_return_amount" readonly="1"/>
+                        </group>
+                        <footer>
+                            <button name="action_validate_return" string="Validate Return" type="object"
+                                    class="btn-primary"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_pharmacy_return_tree" model="ir.ui.view">
+            <field name="name">pharmacy.return.tree</field>
+            <field name="model">pharmacy.return</field>
+            <field name="arch" type="xml">
+                <tree string="Pharmacy Returns">
+                    <field name="return_date"/>
+                    <field name="original_sale_id" invisible="1"/>
+                    <field name="patient_id"/>
+                    <field name="patient_name"/>
+                    <field name="phone_number"/>
+                    <field name="total_return_amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_pharmacy_return_form" model="ir.actions.act_window">
+            <field name="name">Sales Return</field>
+            <field name="res_model">pharmacy.return</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a new sales return record.
+                </p>
+            </field>
+        </record>
+        <record id="action_pharmacy_return_form" model="ir.actions.act_window">
+            <field name="name">Sales Return</field>
+            <field name="res_model">pharmacy.return</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_pharmacy_root" name="Pharmacy" sequence="5" parent="menu_homeo_head"/>
+
+        <menuitem id="menu_pharmacy_return" name="Sales Return" parent="menu_pharmacy_root" sequence="20"
+                  action="action_pharmacy_return_form"/>
+
+    </data>
+</odoo>
