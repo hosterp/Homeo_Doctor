@@ -296,6 +296,9 @@
                 <form string="Pharmacy Description" class="pharmacy_description">
                     <header>
                         <field name="status" widget="statusbar"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn-danger"
+                                attrs="{'invisible': [('status', '=', 'cancelled')]}"/>
+
                     </header>
                     <sheet>
                         <group>

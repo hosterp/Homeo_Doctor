@@ -23,13 +23,33 @@ class PharmacyDescription(models.Model):
     payment_mathod=fields.Selection([('cash', 'Cash'), ('card', 'Card'), ('upi', 'UPI'),('credit','Credit')],string='Payment Method',default='cash')
     paid_amount = fields.Integer(string='Paid Amount')
     balance = fields.Integer(string='Balance Amount')
-    status=fields.Selection([('unpaid','Unpaid'),('paid','Paid')],default='unpaid',string='Payment Status')
+    status=fields.Selection([('unpaid','Unpaid'),('paid','Paid'),('cancelled', 'Cancelled')],default='unpaid',string='Payment Status')
     status_admitted=fields.Selection([('admitted','Admitted')],string='Status')
     bill_by = fields.Char(string='Bill By')
     remarks = fields.Char(string='Remarks')
     staff_pwd = fields.Char(string='Staff Password')
     staff_name = fields.Char(string='Staff Name')
     description_line_ids = fields.One2many('pharmacy.prescription.line', 'description_id', string="Lines")
+
+    active = fields.Boolean(default=True)
+
+    def action_cancel(self):
+        for record in self:
+            record.status = 'cancelled'
+
+    def get_cancelled_bills(self):
+        return self.search([('active', '=', False)])
+
+    def get_modified_bills(self):
+        return self.search([('write_date', '!=', False), ('write_date', '!=', 'create_date')])
+
+    def get_active_bills(self):
+        return self.search([('active', '=', True)])
+
+    def unlink(self):
+        for rec in self:
+            rec.active = False
+        return True
 
     @api.onchange('uhid_id')
     def _onchange_uhid_id(self):
@@ -429,6 +449,7 @@ class PharmacyReturn(models.Model):
     _name = 'pharmacy.return'
     _description = 'Pharmacy Sales Return'
     _order = 'return_date desc'
+    _rec_name='patient_id'
 
     return_date = fields.Datetime(string="Return Date",default=fields.Datetime.now)
     original_sale_id = fields.Many2one('pharmacy.description', string="Original Bill")
@@ -470,7 +491,7 @@ class PharmacyReturn(models.Model):
                         'rack': 'Returned',  # optional: mark returned rack
                         'date': fields.Date.today(),
                         'uom_id': line.product_id.uom_id.id if line.product_id.uom_id else False,
-                        'state': 'confirmed',  # or 'done' based on your workflow
+                        'state': 'confirmed',
                     })
 
 
@@ -516,3 +537,89 @@ class PharmacyReturnLine(models.Model):
             self.exp_date = False
             self.batch = False
             self.hsn = False
+class BillStatusWizard(models.TransientModel):
+    _name = 'bill.status.wizard'
+    _description = 'Bill Status Wizard'
+
+    view_type = fields.Selection([
+        ('modified', 'Modified Bills'),
+        ('cancelled', 'Cancelled/Deleted Bills'),
+    ], string="Bill Type", required=True)
+
+    date_from = fields.Date(string="From Date")
+    date_to = fields.Date(string="To Date")
+
+    def fetch_bills(self):
+        domain = []
+
+        if self.date_from:
+            domain.append(('date', '>=', self.date_from))
+        if self.date_to:
+            domain.append(('date', '<=', self.date_to))
+
+        # Include both active and inactive records
+        domain.append(('active', 'in', [True, False]))
+
+        # Fetch records with context to include inactive ones
+        bills = self.env['pharmacy.description'].with_context(active_test=False).search(domain)
+
+        if self.view_type == 'modified':
+            # Filter records where write_date != create_date
+            bills = bills.filtered(lambda b: b.write_date and b.create_date and b.write_date != b.create_date)
+        elif self.view_type == 'cancelled':
+            # Filter records with status 'cancelled' or 'returned'
+            bills = bills.filtered(lambda b: b.status in ['cancelled', 'returned'])
+
+        # Clear old results so the tree view shows fresh data
+        self.env['bill.status.wizard.line'].search([]).unlink()
+
+        # Create new records to show in the tree view
+        for b in bills:
+            self.env['bill.status.wizard.line'].create({
+                'patient_name': b.name,
+                'bill_amount': b.bill_amount,
+                'date': b.date,
+                'status': b.status,
+                'doctor_name': b.doctor_name.name if b.doctor_name else '',
+                'pharmacy_description_id': b.id,
+            })
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Bill Status',
+            'res_model': 'bill.status.wizard.line',
+            'view_mode': 'tree',
+            'target': 'current',
+            'context': {'active_test': False},
+        }
+
+
+class BillStatusWizardLine(models.TransientModel):
+    _name = 'bill.status.wizard.line'
+    _description = 'Bill Status Wizard Line'
+
+    wizard_id = fields.Many2one('bill.status.wizard', string='Wizard Reference')
+    patient_name = fields.Char("Patient Name")
+    doctor_name = fields.Char("Doctor")
+    date = fields.Datetime("Date")
+    bill_amount = fields.Float("Bill Amount")
+    status = fields.Selection([
+        ('unpaid', 'Unpaid'),
+        ('paid', 'Paid'),
+        ('cancelled', 'Cancelled')
+    ], string="Status")
+    pharmacy_description_id = fields.Many2one('pharmacy.description', string="Pharmacy Description")
+
+    def action_open_pharmacy_description(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Pharmacy Description',
+            'res_model': 'pharmacy.description',
+            'view_mode': 'form',
+            'res_id': self.pharmacy_description_id.id,
+            'target': 'current',
+        }
+class BillStatus(models.Model):
+    _name = 'bill.status'
+    _description = 'Bill Status'
