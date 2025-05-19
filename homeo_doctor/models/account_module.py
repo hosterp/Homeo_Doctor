@@ -39,6 +39,49 @@ class AccountMove(models.Model):
         ('card', 'Card'),
         ('credit', 'Credit'),
     ], string='Payment Mode',default='cash')
+    global_discount = fields.Float(string='Discount (%)', digits=(16, 2), default=0.0)
+    amount_before_discount = fields.Monetary(string='Amount Before Discount',
+                                             store=True, readonly=True, compute='_compute_amount')
+    discount_amount = fields.Monetary(string='Discount Amount',
+                                      store=True, readonly=True, compute='_compute_amount')
+
+    @api.depends('invoice_line_ids', 'global_discount', 'amount_untaxed')
+    def _compute_amount(self):
+        # First call the original method to calculate base amounts
+        super(AccountMove, self)._compute_amount()
+
+        for move in self:
+            # Only apply to supplier invoices
+            if move.move_type != 'in_invoice':
+                move.amount_before_discount = move.amount_total
+                move.discount_amount = 0.0
+                continue
+
+            # Store the original amount before discount
+            amount_before_discount = move.amount_total
+            move.amount_before_discount = amount_before_discount
+
+            # Calculate discount amount
+            discount_amount = amount_before_discount * (move.global_discount / 100.0)
+            move.discount_amount = discount_amount
+
+            # Update total after discount
+            move.amount_total = amount_before_discount - discount_amount
+
+            # Update amount_residual to match the discounted total for unpaid/partially paid invoices
+            if move.state == 'posted' and move.payment_state in ['not_paid', 'partial']:
+                # Calculate the payment ratio if partially paid
+                if move.payment_state == 'partial' and move.amount_residual != 0 and amount_before_discount != 0:
+                    paid_ratio = 1 - (move.amount_residual / amount_before_discount)
+                    # Apply the same payment ratio to the new discounted total
+                    move.amount_residual = (amount_before_discount - discount_amount) * (1 - paid_ratio)
+                else:
+                    # If not paid at all, residual should equal the new total
+                    move.amount_residual = amount_before_discount - discount_amount
+
+                # Update amount_residual_signed accordingly
+                move.amount_residual_signed = -move.amount_residual if move.is_inbound() else move.amount_residual
+
     @api.model
     def create(self, vals):
         if vals.get('supplier_invoice', '/') == '/':
@@ -53,7 +96,6 @@ class AccountMove(models.Model):
             vals['supplier_invoice'] = "%s/%s" % (padded_number, year_suffix)
 
         return super(AccountMove, self).create(vals)
-
 
     @api.onchange('po_number')
     def _onchange_po_number(self):
@@ -83,6 +125,7 @@ class AccountMove(models.Model):
         return self.env['res.partner'].search([], limit=1)
 
     partner_id = fields.Many2one('res.partner', string="Customer", required=True, default=_default_partner)
+
     @api.model
     def create(self, vals):
         if vals.get('move_type') == 'out_invoice' and not vals.get('name'):
@@ -93,11 +136,17 @@ class AccountMove(models.Model):
         res = super(AccountMove, self).action_post()
 
         for move in self:
+            # After posting the invoice, recalculate amount_residual based on discount
+            if move.move_type == 'in_invoice' and move.global_discount > 0:
+                # Apply discount to residual amount
+                move.amount_residual = move.amount_total
+                move.amount_residual_signed = -move.amount_residual if move.is_inbound() else move.amount_residual
+
             if move.move_type == 'in_invoice':
                 for line in move.invoice_line_ids:
                     total_qty = line.quantity or 0
                     if line.free_qty:
-                        total_qty += line.free_qty  
+                        total_qty += line.free_qty
 
                     self.env['stock.entry'].create({
                         'invoice_id': move.id,
@@ -110,7 +159,7 @@ class AccountMove(models.Model):
                         'uom_id': line.product_uom_id.id,
                         'rate': line.price_unit,
                         'date': move.invoice_date,
-                        'pack':line.pack,
+                        'pack': line.pack,
                         'state': 'confirmed',
                     })
                     stock_entries = self.env['stock.entry'].search([
@@ -120,6 +169,30 @@ class AccountMove(models.Model):
                     ])
                     line.stock_in_hand = sum(stock_entries.mapped('quantity'))
         return res
+
+    def write(self, vals):
+        result = super(AccountMove, self).write(vals)
+        # If global_discount is being updated on an already posted invoice
+        if 'global_discount' in vals and any(move.state == 'posted' for move in self):
+            for move in self.filtered(lambda m: m.state == 'posted' and m.move_type == 'in_invoice'):
+                # Recalculate amount_residual based on updated discount
+                discount_amount = move.amount_before_discount * (move.global_discount / 100.0)
+                new_total = move.amount_before_discount - discount_amount
+
+                # Update the amount_residual appropriately
+                if move.payment_state == 'not_paid':
+                    move.amount_residual = new_total
+                elif move.payment_state == 'partial':
+                    # Calculate the payment ratio
+                    paid_amount = move.amount_before_discount - move.amount_residual
+                    if move.amount_before_discount != 0:
+                        paid_ratio = paid_amount / move.amount_before_discount
+                        move.amount_residual = new_total * (1 - paid_ratio)
+
+                # Update amount_residual_signed accordingly
+                move.amount_residual_signed = -move.amount_residual if move.is_inbound() else move.amount_residual
+
+        return result
 
 
 class AccountMoveLine(models.Model):
@@ -262,28 +335,41 @@ class SupplierPacking(models.Model):
     supplier_packing=fields.Char(string='Packing')
 
 
-
-
 class AccountPaymentRegister(models.TransientModel):
     _inherit = 'account.payment.register'
 
-    pay_mode=fields.Selection([('cash','Cash'),('upi','UPI'),('card','Card'),('credit', 'Credit')],default='cash',string='Payment Mode')
+    pay_mode = fields.Selection([('cash', 'Cash'), ('upi', 'UPI'), ('card', 'Card'), ('credit', 'Credit')],
+                                default='cash', string='Payment Mode')
     move_id = fields.Many2one('account.move', string='Invoice')
 
     uhid = fields.Many2one(related='move_id.uhid', string='UHID', store=True, readonly=True)
     patient_name = fields.Char(related='move_id.patient_name', string='Patient Name', store=True, readonly=True)
+    global_discount = fields.Float(related='move_id.global_discount', string='Discount (%)', readonly=True)
+    amount_before_discount = fields.Monetary(related='move_id.amount_before_discount', string='Amount Before Discount',
+                                             readonly=True)
+    discount_amount = fields.Monetary(related='move_id.discount_amount', string='Discount Amount', readonly=True)
 
     @api.model
-    def default_get(self, fields):
-        res = super(AccountPaymentRegister, self).default_get(fields)
-        active_id = self.env.context.get('active_id')
-        if active_id:
-            move = self.env['account.move'].browse(active_id)
+    def default_get(self, fields_list):
+        res = super(AccountPaymentRegister, self).default_get(fields_list)
+        active_ids = self._context.get('active_ids')
+
+        if active_ids and len(active_ids) == 1:
+            move = self.env['account.move'].browse(active_ids[0])
             res.update({
                 'move_id': move.id,
-                'uhid': move.uhid.id,
+                'uhid': move.uhid.id if move.uhid else False,
                 'patient_name': move.patient_name,
             })
+
+            # If there's a discount, explicitly set the amount
+            if move.global_discount > 0:
+                res['amount'] = move.amount_total
+
+                # Also update payment_difference if it's in the fields
+                if 'payment_difference' in fields_list:
+                    res['payment_difference'] = 0.0
+
         return res
 
     def write(self, vals):
@@ -299,6 +385,50 @@ class AccountPaymentRegister(models.TransientModel):
             record.move_id.write({'pay_mode': vals['pay_mode']})
         return record
 
+    @api.onchange('source_amount', 'source_currency_id', 'company_id', 'currency_id', 'payment_date')
+    def _onchange_amount(self):
+        if hasattr(super(AccountPaymentRegister, self), '_onchange_amount'):
+            super(AccountPaymentRegister, self)._onchange_amount()
+
+        # After any amount calculation, apply discount if necessary
+        if self.move_id and self.move_id.global_discount > 0:
+            self.amount = self.move_id.amount_total
+
+    @api.onchange('journal_id')
+    def _onchange_journal(self):
+        # After journal change, reapply discount if necessary
+        if self.move_id and self.move_id.global_discount > 0:
+            self.amount = self.move_id.amount_total
+
+    # Override the _create_payment_vals_from_wizard method to use the correct amount
+    def _create_payment_vals_from_wizard(self):
+        payment_vals = super(AccountPaymentRegister, self)._create_payment_vals_from_wizard()
+
+        # Check if payment_vals is a dictionary (single payment)
+        if isinstance(payment_vals, dict):
+            # If we're paying an invoice with a discount, make sure we use the discounted amount
+            if self.move_id and self.move_id.global_discount > 0:
+                payment_vals['amount'] = self.move_id.amount_total
+
+        # Check if payment_vals is a list of dictionaries (batch payments)
+        elif isinstance(payment_vals, list) and all(isinstance(item, dict) for item in payment_vals):
+            # If we're paying an invoice with a discount, make sure we use the discounted amount
+            if self.move_id and self.move_id.global_discount > 0:
+                for val in payment_vals:
+                    if 'amount' in val:
+                        val['amount'] = self.move_id.amount_total
+
+        return payment_vals
+
+    # This method is called when the form is initialized
+    def _compute_payment_amount(self):
+        for wizard in self:
+            # Call the original method
+            super(AccountPaymentRegister, wizard)._compute_payment_amount()
+
+            # Then override the amount if there's a discount
+            if wizard.move_id and wizard.move_id.global_discount > 0:
+                wizard.amount = wizard.move_id.amount_total
 
 class StockEntry(models.Model):
     _name = 'stock.entry'
