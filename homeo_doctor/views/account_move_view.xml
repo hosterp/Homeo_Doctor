@@ -240,6 +240,19 @@
 
         </field>
     </record>
+    <record id="view_move_form_inherited_supplier_discount" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.supplier.discount</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add global discount fields for supplier invoices -->
+            <xpath expr="//field[@name='amount_untaxed']" position="before">
+                <field name="amount_before_discount" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
+                <field name="global_discount" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
+                <field name="discount_amount" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
+            </xpath>
+        </field>
+    </record>
     <record id="view_in_invoice_tree" model="ir.ui.view">
         <field name="name">account.out.invoice.tree.inherit</field>
         <field name="model">account.move</field>
@@ -295,12 +308,11 @@
         </field>
     </record>
 
-    <record id="inherit_account_payment_register_form" model="ir.ui.view">
+   <record id="inherit_account_payment_register_form" model="ir.ui.view">
         <field name="name">account.payment.register.form.inherit</field>
         <field name="model">account.payment.register</field>
         <field name="inherit_id" ref="account.view_account_payment_register_form"/>
         <field name="arch" type="xml">
-
             <xpath expr="//field[@name='communication']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
@@ -310,10 +322,26 @@
             <xpath expr="//field[@name='journal_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+            <!-- Hide payment difference field and any labels that might exist -->
+            <xpath expr="//field[@name='payment_difference']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Hide payment difference handling field -->
+            <xpath expr="//field[@name='payment_difference_handling']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Hide writeoff fields -->
+            <xpath expr="//field[@name='writeoff_account_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='writeoff_label']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
             <xpath expr="//field[@name='journal_id']" position="after">
                 <field name="move_id" readonly="1"/>
-                <field name="uhid"/>
-                <field name="patient_name"/>
+<!--                <field name="uhid"/>-->
+<!--                <field name="patient_name"/>-->
             </xpath>
         </field>
     </record>

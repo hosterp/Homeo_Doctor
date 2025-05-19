@@ -55,7 +55,7 @@ class LabResultPage(models.Model):
                     vals['patient_id_name'] = bill.patient_id.id
                 if bill.user_ide:
                     vals['patient_re_id_name'] = bill.user_ide.id
-                    print('patientreg note................................................................')
+                    # print('patientreg note................................................................')
 
 
                     latest_patient = self.env['hospital.admitted.patient'].search([
