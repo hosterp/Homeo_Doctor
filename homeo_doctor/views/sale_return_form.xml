@@ -37,6 +37,21 @@
                 </form>
             </field>
         </record>
+        <record id="view_pharmacy_return_tree" model="ir.ui.view">
+            <field name="name">pharmacy.return.tree</field>
+            <field name="model">pharmacy.return</field>
+            <field name="arch" type="xml">
+                <tree string="Pharmacy Returns">
+                    <field name="return_date"/>
+                    <field name="original_sale_id" invisible="1"/>
+                    <field name="patient_id"/>
+                    <field name="patient_name"/>
+                    <field name="phone_number"/>
+                    <field name="total_return_amount"/>
+                </tree>
+            </field>
+        </record>
+
         <record id="action_pharmacy_return_form" model="ir.actions.act_window">
             <field name="name">Sales Return</field>
             <field name="res_model">pharmacy.return</field>
