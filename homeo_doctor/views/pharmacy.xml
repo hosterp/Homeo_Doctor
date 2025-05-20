@@ -296,12 +296,19 @@
                 <form string="Pharmacy Description" class="pharmacy_description">
                     <header>
                         <field name="status" widget="statusbar"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn-danger"
+                                attrs="{'invisible': [('status', '=', 'cancelled')]}"/>
+
                     </header>
                     <sheet>
                         <group>
                             <div class="oe_title"
                                  style="border-bottom: 2px solid #007bff; padding: 15px 0; margin-bottom: 15px;">
                                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                                    <div style="flex: 1; min-width: 180px;">
+                                        <span class="o_form_label" style="font-weight: bold;">Bill Number:</span>
+                                        <field name="bill_number" invisible="1"/>
+                                    </div>
                                     <div style="flex: 1; min-width: 180px;">
                                         <span class="o_form_label" style="font-weight: bold;">UHID:</span>
                                         <field name="uhid_id"/>
@@ -321,6 +328,10 @@
                                     <div style="flex: 1; min-width: 180px;">
                                         <span class="o_form_label" style="font-weight: bold;">Date:</span>
                                         <field name="date"/>
+                                    </div>
+                                    <div style="flex: 1; min-width: 180px;">
+                                        <span class="o_form_label" style="font-weight: bold;">OP Category:</span>
+                                        <field name="op_category"/>
                                     </div>
                                 </div>
                             </div>
