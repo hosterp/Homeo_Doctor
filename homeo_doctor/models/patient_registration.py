@@ -299,7 +299,7 @@ class PatientRegistration(models.Model):
                     'email': record.bystander_email,
                     'bystander_mobile': record.bystander_mobile,
                     'alternate_no': record.alternate_no,
-                    'op_category': record.op_category,
+                    'op_category': record.op_category.id,
 
                 })
 
