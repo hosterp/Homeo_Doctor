@@ -236,13 +236,13 @@
                                                         <field name="register_total_amount"/>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', 'in', ['card','cheque','upi'])]}">
+                                                <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', 'in', ['card','cheque','upi','credit'])]}">
                                                     <label for="register_amount_paid" class="col-md-5 col-form-label small">Amount Paid</label>
                                                     <div class="col-md-7 field-container py-0">
                                                         <field name="register_amount_paid"/>
                                                     </div>
                                                 </div>
-                                                 <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', 'in', ['cash', 'cheque', 'upi'])]}">
+                                                 <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', 'in', ['cash', 'cheque', 'upi','credit'])]}">
                                                     <label for="register_card_no" class="col-md-5 col-form-label small">Card No</label>
                                                     <div class="col-md-7 field-container py-0">
                                                         <field name="register_card_no"/>
@@ -264,13 +264,13 @@
                                                         <field name="register_mode_payment"/>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', 'in', ['card','cheque','upi'])]}">
+                                                <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', 'in', ['card','cheque','upi','credit'])]}">
                                                     <label for="register_balance" class="col-md-5 col-form-label small">Balance</label>
                                                     <div class="col-md-7 field-container py-0">
                                                         <field name="register_balance"/>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', 'in', ['cash', 'cheque', 'upi'])]}">
+                                                <div class="form-group row mb-1" attrs="{'invisible': [('register_mode_payment', 'in', ['cash', 'cheque', 'upi','credit'])]}">
                                                     <label for="register_bank_name" class="col-md-5 col-form-label small">Bank</label>
                                                     <div class="col-md-7 field-container py-0">
                                                         <field name="register_bank_name"/>

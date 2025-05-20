@@ -139,6 +139,7 @@ class PatientRegistration(models.Model):
     register_mode_payment = fields.Selection([('cash', 'Cash'),
                                              ('card', 'Card'),
                                              ('cheque', 'Cheque'),
+                                             ('credit','Credit'),
                                              ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
     register_card_no = fields.Char(string="Card No")
     register_bank_name = fields.Char(string="Bank")
