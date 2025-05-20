@@ -150,9 +150,18 @@ class PatientRegistration(models.Model):
     @api.onchange('register_amount_paid')
     def _onchange_register_amount_paid(self):
         for rec in self:
-            total = rec.register_total_amount or 0
-            paid = rec.register_amount_paid or 0
-            rec.register_balance = total - paid
+            total = rec.register_total_amount
+            paid = rec.register_amount_paid
+            # rec.register_balance = total - paid
+            # print(total, "total....")
+            # print(paid, "paid....")
+            # print(rec.register_balance, "balance....")
+            if (paid < total and paid >0):
+                rec.register_balance = total - paid
+            elif (paid > total and paid >0):
+                rec.register_balance = paid - total
+            else:
+                rec.register_balance = 0
 
     @api.depends('vssc_boolean', 'doc_name')
     def _compute_consultation_fee(self):
