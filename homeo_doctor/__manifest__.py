@@ -85,6 +85,7 @@
         "views/admitted_patient_history.xml",
         "views/sale_return_form.xml",
         "views/bill_status_wizard_view.xml",
+        "views/ip_return_medicine.xml",
         "data/ir_sequence_data.xml",
 
     ],

@@ -5,6 +5,7 @@ class PharmacyDescription(models.Model):
     _name = 'pharmacy.description'
     _description = 'Pharmacy Description'
     _order = 'date desc'
+    _rec_name='uhid_id'
 
 
     patient_id = fields.Many2one('patient.registration',string="UHID")
@@ -30,9 +31,18 @@ class PharmacyDescription(models.Model):
     staff_pwd = fields.Char(string='Staff Password')
     staff_name = fields.Char(string='Staff Name')
     description_line_ids = fields.One2many('pharmacy.prescription.line', 'description_id', string="Lines")
+    bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='New')
+
+    # @api.model
+    # def create(self, vals):
+    #     if vals.get('bill_number', 'New') == 'New':
+    #         seq = self.env['ir.sequence'].next_by_code('pharmacy.description')
+    #         print(f"Generated sequence: {seq}")
+    #         vals['bill_number'] = seq or 'New'
+    #     return super(PharmacyDescription, self).create(vals)
 
     active = fields.Boolean(default=True)
-
+    op_category=fields.Selection([('op','OP'),('ip','IP'),('others','OTHERS')])
     def action_cancel(self):
         for record in self:
             record.status = 'cancelled'
@@ -74,6 +84,10 @@ class PharmacyDescription(models.Model):
 
     @api.model
     def create(self, vals):
+        if vals.get('bill_number', 'New') == 'New':
+            seq = self.env['ir.sequence'].next_by_code('pharmacy.description')
+            print(f"Generated sequence: {seq}")
+            vals['bill_number'] = seq or 'New'
         res = super(PharmacyDescription, self).create(vals)
         # res._process_payment()
 
@@ -623,3 +637,93 @@ class BillStatusWizardLine(models.TransientModel):
 class BillStatus(models.Model):
     _name = 'bill.status'
     _description = 'Bill Status'
+
+
+
+
+class IPReturn(models.Model):
+    _name = 'ip.return'
+    _description = 'IP Patient Medicine Return'
+    _order = 'return_date desc'
+    _rec_name='uhids'
+
+    patient_id = fields.Many2one('patient.registration', string="UHID")
+    uhid = fields.Many2one('patient.reg', string="UHID", required=True)
+    uhids = fields.Many2one('pharmacy.description', string="UHID", required=True)
+    name = fields.Char(string="Patient Name", store=True)
+    phone_number = fields.Char(string="Phone Number", store=True)
+    original_bill_id = fields.Many2one('pharmacy.description', string="Original Bill", domain="[('op_category', '=', 'ip')]")
+    return_line_ids = fields.One2many('ip.return.line', 'return_id', string="Return Lines")
+    return_date = fields.Datetime(string="Return Date", default=fields.Datetime.now)
+    total_return_qty = fields.Integer(string="Total Return Qty", compute='_compute_totals', store=True)
+    total_return_amount = fields.Float(string="Total Return Amount", compute='_compute_totals', store=True)
+    remarks = fields.Text(string="Remarks")
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('returned', 'Returned'),
+        ('cancelled', 'Cancelled')
+    ], default='draft', string="Status")
+
+    @api.onchange('uhids')
+    def _onchange_uhids(self):
+        for rec in self:
+            if rec.uhids:
+                rec.name = rec.uhids.name
+                rec.phone_number = rec.uhids.phone_number
+
+    @api.depends('return_line_ids.quantity', 'return_line_ids.amount')
+    def _compute_totals(self):
+        for rec in self:
+            rec.total_return_qty = sum(line.quantity for line in rec.return_line_ids)
+            rec.total_return_amount = sum(line.amount for line in rec.return_line_ids)
+
+
+    def action_validate_return(self):
+        StockEntry = self.env['stock.entry']
+        for rec in self:
+            # Deduct return amount from the original bill if it exists
+            if rec.original_bill_id:
+                original = rec.original_bill_id
+                original.bill_amount -= rec.total_return_amount
+                original.write({'bill_amount': original.bill_amount})
+
+            # Create Stock Entry for each returned line
+            for line in rec.return_line_ids:
+                if not line.medicine_id:
+                    continue
+
+                StockEntry.create({
+                    'product_id': line.medicine_id.id,
+                    'quantity': line.quantity,
+                    'rate': line.unit_price,
+                    'manf_date': line.manf_date,
+                    'exp_date': line.exp_date,
+                    'batch': line.batch,
+                    'hsn': line.hsn,
+                    'rack': 'Returned',
+                    'date': fields.Date.today(),
+                    'uom_id': line.medicine_id.uom_id.id if line.medicine_id.uom_id else False,
+                    'state': 'confirmed',
+
+                })
+            rec.write({'state': 'returned'})
+
+
+class IPReturnLine(models.Model):
+    _name = 'ip.return.line'
+    _description = 'IP Return Line'
+
+    return_id = fields.Many2one('ip.return', string="Return Ref", required=True, ondelete='cascade')
+    medicine_id = fields.Many2one('product.product', string="Medicine", required=True)
+    manf_date = fields.Date(string='M.Date')
+    exp_date = fields.Date(string='Exp. Date')
+    batch = fields.Char(string='Batch Number')
+    hsn = fields.Char(string='HSN')
+    quantity = fields.Integer(string="Return Qty", required=True)
+    unit_price = fields.Float(string="Unit Price")
+    amount = fields.Float(string="Amount", compute='_compute_amount', store=True)
+
+    @api.depends('quantity', 'unit_price')
+    def _compute_amount(self):
+        for line in self:
+            line.amount = line.quantity * line.unit_price
