@@ -36,3 +36,4 @@ from .import supplier_billing_report
 from .import admitted_patient_billing
 from .import consultation_report
 from .import admitted_patient_history
+from .import stock_transfer
