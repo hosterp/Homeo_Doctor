@@ -326,9 +326,13 @@ class DoctorLabReport(models.Model):
         """Create lab result record directly without going through the payment wizard"""
 
         for rec in self:
-            rec.write({
-                'status': 'unpaid' if rec.mode_of_payment == 'credit' else 'paid'
-            })
+            # Determine status based on vssc_check and mode_of_payment
+            if rec.vssc_check:
+                rec.status = 'paid'
+            elif rec.mode_of_payment == 'credit':
+                rec.status = 'unpaid'
+            else:
+                rec.status = 'paid'
         # self.write({
         #     'status': 'paid'
         # })
