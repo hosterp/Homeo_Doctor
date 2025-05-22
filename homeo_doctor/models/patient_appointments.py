@@ -60,6 +60,8 @@ class PatientAppointment(models.Model):
                                               ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
     register_card_no = fields.Char(string="Card No")
     register_bank_name = fields.Char(string="Bank")
+    vssc_boolean = fields.Boolean(related='patient_id.vssc_boolean',string='VSSC')
+    differance_appointment_days = fields.Integer("No of Days")
 
     def cancel_appointment(self):
 
@@ -260,12 +262,13 @@ class PatientAppointment(models.Model):
                     # Compare the two days and choose the larger value for delta_days
                     if last_registration_day != 0 and last_appointment_day != 0:
                         delta_days = min(last_registration_day, last_appointment_day)
+                        record.differance_appointment_days = delta_days
                         print(f"Both last registration and last appointment exist. delta_days set to: {delta_days}")
                     elif last_appointment_day != 0 and last_registration_day == 0:
                         delta_days = last_appointment_day
                         print(f"Only last appointment exists. delta_days set to: {delta_days}")
                     elif last_appointment_day == 0 and last_registration_day != 0:
-                        delta_days = last_registration_day
+
                         print(f"Only last registration exists. delta_days set to: {delta_days}")
                     else:
                         record.consultation_fee += consultation_fee
@@ -277,6 +280,7 @@ class PatientAppointment(models.Model):
                         if delta_days <= consultation_fee_limit:
                             print(f"delta_days <= consultation_fee_limit. No additional fee added.")
                             record.consultation_fee += 0.0
+                            record.differance_appointment_days = delta_days
                         else:
                             print(f"delta_days > consultation_fee_limit. Adding consultation fee: {consultation_fee}")
                             record.consultation_fee += consultation_fee
@@ -284,6 +288,81 @@ class PatientAppointment(models.Model):
                         record.consultation_fee += consultation_fee
                         print(f"No last registration or appointment. Adding consultation fee: {consultation_fee}")
 
+    @api.onchange('appointment_date')
+    def _compute_consultation_fee(self):
+        for record in self:
+            record.consultation_fee = 0
+            # print(f"Initial consultation_fee set to: {record.consultation_fee}")
+
+            for doctor in record.doctor_ids:
+                if record.patient_id and doctor and record.appointment_date:
+
+                    # Fetch consultation fee details
+                    consultation_fee_limit = doctor.consultation_fee_limit or 0
+                    consultation_fee = doctor.consultation_fee_doctor or 0
+                    print(f"consultation_fee_limit: {consultation_fee_limit}, consultation_fee: {consultation_fee}")
+
+                    # Convert appointment_date to date for comparison
+                    appointment_date = record.appointment_date
+                    print(f"Converted appointment_date to: {appointment_date}")
+
+                    # 1. Check last appointment
+                    last_appointment = self.env['patient.appointment'].search([
+                        ('patient_id', '=', record.patient_id.id),
+                        ('doctor_ids', '=', doctor.id),
+                        ('id', '!=', record.id) if record.id else ('id', '!=', False),
+                    ], order='appointment_date desc', limit=1)
+
+                    if last_appointment:
+                        last_appointment_date = last_appointment.appointment_date
+                        last_appointment_day = (appointment_date - last_appointment_date).days
+                        print(
+                            f"Last appointment found. Last appointment date: {last_appointment_date}, days since last appointment: {last_appointment_day}")
+                    else:
+                        last_appointment_day = 0
+                        print("No previous appointment found. Set last_appointment_day to 0.")
+
+                    # 2. Check last registration
+                    last_registration = self.env['patient.reg'].search([
+                        ('patient_id', '=', record.patient_id.patient_id),
+                        ('doc_name', '=', doctor.id),
+                    ], order='formatted_date desc', limit=1)
+
+                    if last_registration:
+                        last_registration_day = (appointment_date - last_registration.date).days
+                        print(
+                            f"Last registration found. Last registration date: {last_registration.date}, days since last registration: {last_registration_day}")
+                    else:
+                        last_registration_day = 0
+                        print("No previous registration found. Set last_registration_day to 0.")
+
+                    # Compare the two days and choose the larger value for delta_days
+                    if last_registration_day != 0 and last_appointment_day != 0:
+                        delta_days = min(last_registration_day, last_appointment_day)
+                        record.differance_appointment_days = delta_days
+                        print(f"Both last registration and last appointment exist. delta_days set to: {delta_days}")
+                    elif last_appointment_day != 0 and last_registration_day == 0:
+                        delta_days = last_appointment_day
+                        print(f"Only last appointment exists. delta_days set to: {delta_days}")
+                    elif last_appointment_day == 0 and last_registration_day != 0:
+                        print(f"Only last registration exists. delta_days set to: {delta_days}")
+                    else:
+                        record.consultation_fee += consultation_fee
+                        print(f"No previous registration or appointment. Adding consultation fee: {consultation_fee}")
+                        continue
+
+                    if last_registration_day or last_appointment_day != 0:
+                        # Apply the consultation fee logic
+                        if delta_days <= consultation_fee_limit:
+                            print(f"delta_days <= consultation_fee_limit. No additional fee added.")
+                            record.consultation_fee += 0.0
+                            record.differance_appointment_days = delta_days
+                        else:
+                            print(f"delta_days > consultation_fee_limit. Adding consultation fee: {consultation_fee}")
+                            record.consultation_fee += consultation_fee
+                    else:
+                        record.consultation_fee += consultation_fee
+                        print(f"No last registration or appointment. Adding consultation fee: {consultation_fee}")
     # @api.depends('doctor_ids', 'appointment_date', 'patient_id')
     # def _compute_consultation_fee(self):
     #     for record in self:
