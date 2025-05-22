@@ -221,11 +221,11 @@ class AccountMoveLine(models.Model):
     quantity = fields.Integer(string='Quantity',store=True)
     supplier_packing = fields.Many2one('supplier.packing', string='Packing')
     stock_in_hand=fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
-    product_uom_category_id = fields.Many2one('uom.category', string="Category", required=True)
+    product_uom_category_id = fields.Many2one('uom.category', string="Category")
     supplier_rack=fields.Many2one('supplier.rack')
     reason_for_rejection=fields.Char('Reason For Rejection')
     pack = fields.Integer('Pack',default=1)
-    pup = fields.Integer('PUP',compute="pup_calculation")
+    pup = fields.Float('PUP',compute="pup_calculation")
 
     @api.depends('pack','price_unit')
     def pup_calculation(self):

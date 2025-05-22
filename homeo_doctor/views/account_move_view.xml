@@ -213,7 +213,8 @@
                 <attribute name="string">Amount</attribute>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="after">
-                <field name="product_uom_category_id" readonly="0"/>
+                <field name="product_uom_category_id" readonly="0"  invisible="1"/>
+                <field name="category"/>
             </xpath>
             <xpath expr="//page[@id='edi_documents']" position="attributes">
                 <attribute name="attrs">{'invisible': [('move_type', 'in', ('out_invoice', 'in_invoice'))]}</attribute>
