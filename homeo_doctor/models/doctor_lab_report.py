@@ -325,7 +325,7 @@ class DoctorLabReport(models.Model):
     def action_confirm_payment(self):
         """Create lab result record directly without going through the payment wizard"""
 
-        # Update the lab report status to 'paid'
+
         self.write({
             'status': 'paid'
         })
