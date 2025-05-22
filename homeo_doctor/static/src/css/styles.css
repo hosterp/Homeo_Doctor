@@ -1343,3 +1343,9 @@ color: white ;
 .custom_admission_row .row .col-md-6.left_column {
     margin-left: -26px;
 }
+
+.clinical_assessment_grid {
+	border: 2px solid;
+	padding-left: 8%;
+	padding-right: 1%;
+}
