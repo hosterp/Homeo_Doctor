@@ -1349,3 +1349,11 @@ color: white ;
 	padding-left: 8%;
 	padding-right: 1%;
 }
+
+.additional_column_second {
+	border: 1px solid;
+}
+
+.additional_row > div {
+	border: 1px solid;
+}

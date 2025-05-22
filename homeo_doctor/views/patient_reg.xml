@@ -193,6 +193,7 @@
                             <div class="additional_column">
                                 <group string="Additional Information" class="additional_info_group">
                                     <!-- First row - with proper label for attributes -->
+                                  <div  class="additional_column_second">
                                     <div class="additional_row">
                                         <div class="field_container medicine_course_container">
                                             <label for="medicine_course" string="Medicine Course"/>
@@ -202,10 +203,6 @@
                                             <label for="referred_department_ids" string="Referred Departments"/>
                                             <field name="referred_department_ids" widget="many2many_tags" nolabel="1"/>
                                         </div>
-                                    </div>
-
-                                    <!-- Second row - with proper label for attributes -->
-                                    <div class="additional_row">
                                         <div class="field_container doctor_container">
                                             <label for="referred_doctor_ids" string="Referred Doctors"/>
                                             <field name="referred_doctor_ids" widget="many2many_tags" nolabel="1"/>
@@ -219,10 +216,16 @@
                                         </div>
                                     </div>
 
+                                    <!-- Second row - with proper label for attributes -->
+                                    <!-- <div class="additional_row"> -->
+
+                                    <!-- </div> -->
+
                                     <!-- Remarks field -->
                                     <div class="field_container remark_container">
                                         <label for="remark" string="Additional Remarks"/>
                                         <field name="remark" placeholder="Additional Remarks" nolabel="1"/>
+                                    </div>
                                     </div>
                                 </group>
                             </div>
