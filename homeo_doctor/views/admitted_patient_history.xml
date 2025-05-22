@@ -1,5 +1,153 @@
 <odoo>
     <data>
+        <record id="view_discharged_patient_form" model="ir.ui.view">
+            <field name="name">discharged.patient.record.form</field>
+            <field name="model">discharged.patient.record</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Patient Name"/>
+                            </h1>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="sub_details">
+                                <!-- First row with 4 fields -->
+                                <div class="row mx-n1">
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="patient_id" class="col-md-4 col-form-label py-0 small text-nowrap">Patient ID</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="patient_id"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="bystander_name" class="col-md-4 col-form-label py-0 small text-nowrap">Bystander Name</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="bystander_name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="relation" class="col-md-4 col-form-label py-0 small text-nowrap">Relation</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="relation"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="bystander_mobile" class="col-md-4 col-form-label py-0 small text-nowrap">Bystander Mobile</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="bystander_mobile"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Second row with 4 fields -->
+                                <div class="row mx-n1">
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="room_category_new" class="col-md-4 col-form-label py-0 small text-nowrap">Room Category</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="room_category_new"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="new_block" class="col-md-4 col-form-label py-0 small text-nowrap">Block</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="new_block"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="bed_id" class="col-md-4 col-form-label py-0 small text-nowrap">Bed</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="bed_id"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="room_number" class="col-md-4 col-form-label py-0 small text-nowrap">Room Number</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="room_number"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Third row with 4 fields -->
+                                <div class="row mx-n1">
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="op_category" class="col-md-4 col-form-label py-0 small text-nowrap">OP Category</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="op_category"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="doctor" class="col-md-4 col-form-label py-0 small text-nowrap">Doctor</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="doctor"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="admitted_date" class="col-md-4 col-form-label py-0 small text-nowrap">Admitted Date</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="admitted_date"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="discharge_date" class="col-md-4 col-form-label py-0 small text-nowrap">Discharge Date</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="discharge_date"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Fourth row with 2 fields -->
+                                <div class="row mx-n1">
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="amount_in_advance" class="col-md-4 col-form-label py-0 small text-nowrap">Amount in Advance</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="amount_in_advance"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="total_amount" class="col-md-4 col-form-label py-0 small text-nowrap">Total Amount</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="total_amount"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
         <record id="view_discharged_patient_tree" model="ir.ui.view">
             <field name="name">discharged.patient.record.tree</field>
             <field name="model">discharged.patient.record</field>
