@@ -13,6 +13,7 @@
                         </button>
                         <button name="admit_reception" type="object" string="Proceed to Admit"/>
                         <button name="action_discharged_patient_reg" type="object" string="Discharged"/>
+                        <button name="cancel_appointment" type="object" string="Cancel Appointment"/>
                         <field name="status" widget="statusbar"/>
                     </header>
                     <sheet>

@@ -61,6 +61,41 @@ class PatientAppointment(models.Model):
     register_card_no = fields.Char(string="Card No")
     register_bank_name = fields.Char(string="Bank")
 
+    def cancel_appointment(self):
+
+        for appointment in self:
+
+            # Update this appointment's status
+
+            appointment.write({
+
+                'status': 'cancelled',
+
+                'button_visible': False
+
+            })
+
+            # Find all patient.registration records created from this appointment
+
+            # by matching patient_id and appointment_date
+
+            related_registrations = self.env['patient.registration'].search([
+
+                ('patient_id', '=', appointment.patient_id.id),
+
+                ('appointment_date', '=', appointment.appointment_date),
+
+                ('doctor', 'in', appointment.doctor_ids.ids),
+
+                ('status', 'in', ['confirmed', 'completed'])
+
+            ])
+
+            if related_registrations:
+                related_registrations.write({'status': 'cancelled'})
+
+        return True
+
     @api.depends('registration_fee', 'consultation_fee')
     def _compute_register_total(self):
         for rec in self:

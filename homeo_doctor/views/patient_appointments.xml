@@ -23,6 +23,15 @@
             <!--            <header>-->
             <!--                <field name="status" widget="statusbar" options="{'clickable': 'true'}"/>-->
             <!--            </header>-->
+            <header>
+                <button name="cancel_appointment"
+                    string="Cancel Appointment"
+                                type="object"
+                                attrs="{'invisible': [('status', 'in', ['cancelled'])]}"
+                                class="btn btn-sm btn-primary"
+                                />
+                        <field name="status" widget="statusbar"  />
+                    </header>
 
             <form>
                 <sheet>

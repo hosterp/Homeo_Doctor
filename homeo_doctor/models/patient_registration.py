@@ -1,6 +1,6 @@
 import re
 from datetime import date, datetime
-
+import logging
 from gevent.util import print_run_info
 
 from odoo.exceptions import UserError
@@ -106,14 +106,35 @@ class PatientRegistration(models.Model):
     admit_bank = fields.Char(string="Bank")
     rent_half=fields.Char('Rent Half Day')
     rent_full=fields.Char('Rent Full Day')
-    status = fields.Selection([('unpaid','Unpaid'),('paid','Paid'),('admitted', 'Admitted'),('proceed_discharge','Proceed to Discharge'), ('discharged', 'Discharged')],default='unpaid')
+    status = fields.Selection([('unpaid','Unpaid'),('paid','Paid'),('cancelled','Cancelled'),('admitted', 'Admitted'),('proceed_discharge','Proceed to Discharge'), ('discharged', 'Discharged')],default='unpaid')
 
     unpaid_general_ids = fields.One2many('general.billing', compute='_compute_unpaid_general', string="Unpaid General")
     unpaid_lab_ids = fields.One2many('doctor.lab.report', compute='_compute_unpaid_lab', string="Unpaid Lab")
     unpaid_pharmacy_ids = fields.One2many('pharmacy.description', compute='_compute_unpaid_pharmacy',
                                           string="Unpaid Pharmacy")
 
+    def cancel_appointment(self):
 
+        """Cancel the appointment and only the specific related patient registration record"""
+
+        self.status = "cancelled"
+
+        # Find only the specific related patient.registration record for this appointment
+
+        # by matching both user_id and patient_id with the current record's id
+
+        related_registration = self.env['patient.registration'].search([
+
+            ('user_id', '=', self.id),
+
+            ('patient_id', '=', self.id),
+
+            ('status', 'in', ['confirmed', 'completed'])
+
+        ], limit=1)
+
+        if related_registration:
+            related_registration.write({'status': 'cancelled'})
 
     @api.depends('reference_no')
     def _compute_unpaid_general(self):
