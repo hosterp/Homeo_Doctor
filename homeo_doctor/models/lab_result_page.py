@@ -164,7 +164,7 @@ class labIncharge(models.Model):
 
 class LabTechnician(models.Model):
     _name = 'lab.technician'
-
+    _rec_name='lab_tecnician_name'
 
 
     lab_tecnician_name = fields.Char(string='Lab Technician')
