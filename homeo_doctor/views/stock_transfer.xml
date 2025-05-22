@@ -18,15 +18,37 @@
                                 <field name="name" readonly="1"/>
                             </h1>
                         </div>
-                        <group>
-                            <group>
-                                <field name="date"/>
-                                <field name="location_from"/>
-                            </group>
-                            <group>
-                                <field name="location_to"/>
-                            </group>
-                        </group>
+                        <div class="col-md-10">
+                    <div class="sub_details">
+                        <!-- Single row with all 3 fields -->
+                        <div class="row mx-n1">
+                            <div class="col px-1" style="max-width: 33.33%;">
+                                <div class="form-group row my-1">
+                                    <label for="date" class="col-md-4 col-form-label py-0 small text-nowrap">Date</label>
+                                    <div class="col-md-8 field-container py-0">
+                                        <field name="date"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col px-1" style="max-width: 33.33%;">
+                                <div class="form-group row my-1">
+                                    <label for="location_from" class="col-md-4 col-form-label py-0 small text-nowrap">Location From</label>
+                                    <div class="col-md-8 field-container py-0">
+                                        <field name="location_from"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col px-1" style="max-width: 33.33%;">
+                                <div class="form-group row my-1">
+                                    <label for="location_to" class="col-md-4 col-form-label py-0 small text-nowrap">Location To</label>
+                                    <div class="col-md-8 field-container py-0">
+                                        <field name="location_to"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                         <notebook>
                             <page string="Products">
                                 <field name="line_ids">
