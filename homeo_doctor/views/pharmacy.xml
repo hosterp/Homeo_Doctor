@@ -400,7 +400,7 @@
 
                         <footer>
                             <div class="oe_right">
-                                <button name="action_register_payment" type="object" string="Pay" class="oe_highlight"/>
+                                <button name="action_register_payment" type="object" string="Pay" class="oe_highlight"  attrs="{'invisible': [('payment_mathod', '=', 'credit')]}"/>
                             </div>
                         </footer>
                     </sheet>
