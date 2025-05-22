@@ -95,53 +95,53 @@
 
                             <!-- Second row - for remaining fields with reduced gaps -->
                             <div class="row mx-n1 second_row_general">
-                                <div class="col-md-3 px-1">
+                                <div class="col px-1" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
-                                        <label for="doctor" class="col-md-3 col-form-label py-0">Doctor</label>
-                                        <div class="col-md-9 field-container py-0">
+                                        <label for="doctor" class="col-md-5 col-form-label py-0 small">Doctor</label>
+                                        <div class="col-md-7 field-container py-0">
                                             <field name="doctor"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 px-1">
+                                <div class="col px-1" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
-                                        <label for="op_category" class="col-md-4 col-form-label py-0">OP Category
+                                        <label for="op_category" class="col-md-5 col-form-label py-0 small">OP Category
                                         </label>
-                                        <div class="col-md-8 field-container py-0">
+                                        <div class="col-md-7 field-container py-0">
                                             <field name="op_category"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 px-1">
+                                <div class="col px-1" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
-                                        <label for="department" class="col-md-4 col-form-label py-0">Department</label>
-                                        <div class="col-md-8 field-container py-0">
+                                        <label for="department" class="col-md-5 col-form-label py-0 small">Department</label>
+                                        <div class="col-md-7 field-container py-0">
                                             <field name="department"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 px-1">
+                                <div class="col px-1" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
-                                        <label for="particulars" class="col-md-4 col-form-label py-0">Particulars
+                                        <label for="particulars" class="col-md-5 col-form-label py-0 small">Particulars
                                         </label>
-                                        <div class="col-md-8 field-container py-0">
+                                        <div class="col-md-7 field-container py-0">
                                             <field name="particulars"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 px-1" attrs="{'invisible': [('observation', '=', False)]}">
+                                <div class="col px-1" attrs="{'invisible': [('observation', '=', False)]}" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
-                                        <label for="rent" class="col-md-4 col-form-label py-0">Rent
+                                        <label for="rent" class="col-md-5 col-form-label py-0 small">Rent
                                         </label>
-                                        <div class="col-md-8 field-container py-0">
+                                        <div class="col-md-7 field-container py-0">
                                             <field name="rent"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 px-1" attrs="{'invisible': True}">
+                                <div class="col px-1" style="max-width: 14.28%;" attrs="{'invisible': True}">
                                     <div class="form-group row my-1">
-                                        <label for="observation" class="col-md-4 col-form-label py-0">Observation</label>
-                                        <div class="col-md-8 field-container py-0">
+                                        <label for="observation" class="col-md-5 col-form-label py-0 small">Observation</label>
+                                        <div class="col-md-7 field-container py-0">
                                             <field name="observation"/>
                                         </div>
                                     </div>
