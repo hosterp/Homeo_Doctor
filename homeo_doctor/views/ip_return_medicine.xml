@@ -11,18 +11,62 @@
                                 class="btn-primary"/>
                     </header>
                     <sheet>
-                        <group col="2">
-                            <group>
-                                <field name="return_date"/>
-                                <field name="uhids"/>
-                            </group>
-                            <group>
-                                <field name="original_bill_id" invisible="1"/>
-                                <field name="name"/>
-                                <field name="phone_number"/>
-                            </group>
+                        <div class="oe_title">
+                            <h1>IP Medicine Return</h1>
+                        </div>
 
-                        </group>
+                        <div class="col-md-10">
+                            <div class="sub_details">
+                                <!-- First row with 4 fields -->
+                                <div class="row mx-n1">
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="return_date" class="col-md-4 col-form-label py-0 small text-nowrap">Return Date</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="return_date"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="uhids" class="col-md-4 col-form-label py-0 small text-nowrap">UHID</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="uhids"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="name" class="col-md-4 col-form-label py-0 small text-nowrap">Patient Name</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="phone_number" class="col-md-4 col-form-label py-0 small text-nowrap">Phone Number</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="phone_number"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Hidden field for original bill id -->
+                                <div class="row mx-n1" style="display: none;">
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <div class="col-md-12 field-container py-0">
+                                                <field name="original_bill_id" invisible="1"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Return Line Items (unchanged as requested) -->
                         <field name="return_line_ids">
                             <tree editable="bottom">
                                 <field name="medicine_id"/>
@@ -35,14 +79,35 @@
                                 <field name="amount" readonly="1"/>
                             </tree>
                         </field>
-                        <group>
-                            <field name="total_return_qty" readonly="1"/>
-                            <field name="total_return_amount" readonly="1"/>
-                        </group>
+
+                        <!-- Total Section -->
+                        <div class="col-md-10">
+                            <div class="sub_details">
+                                <div class="row mx-n1">
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="total_return_qty" class="col-md-4 col-form-label py-0 small text-nowrap">Total Return Qty</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="total_return_qty" readonly="1"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="total_return_amount" class="col-md-4 col-form-label py-0 small text-nowrap">Total Return Amount</label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="total_return_amount" readonly="1"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </sheet>
                 </form>
             </field>
         </record>
+
         <record id="view_ip_return_tree" model="ir.ui.view">
             <field name="name">ip.return.tree</field>
             <field name="model">ip.return</field>
@@ -64,6 +129,7 @@
             <field name="res_model">ip.return</field>
             <field name="view_mode">tree,form</field>
         </record>
+
         <menuitem id="menu_pharmacy_root" name="Pharmacy" sequence="5" parent="menu_homeo_head"/>
         <menuitem id="menu_ip_return_general_root" name="General Purchase" parent="menu_pharmacy_root" sequence="22"/>
         <menuitem id="menu_ip_return" name="IP Medicine Return" parent="menu_ip_return_general_root"
