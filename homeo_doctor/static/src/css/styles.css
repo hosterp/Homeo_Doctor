@@ -317,8 +317,11 @@ html {
 }
 
 .o_form_view .o_group.o_inner_group > tbody > tr > td.o_td_label {
-	padding: 0px 15px 0px 9px !important;
+	padding: 5px 15px 0px 9px !important;
 	min-width: 70px !important;
+}
+.o_form_view .o_group .o_td_label + td {
+	padding: 5px 36px 0px 8px !important;
 }
 
 /* Date hide*/
@@ -339,7 +342,7 @@ html {
 
 
 .o_form_view .o_form_sheet .consultation_details_section .o_form_label {
- 
+
       padding: 0px !important;
   }
 
@@ -393,7 +396,7 @@ html {
 }
 .o_form_view .o_form_sheet_bg {
     background: none !important; /* Remove default */
-    background-image: url('/homeo_doctor/static/src/img/background.jpg') !important;
+    /*background-image: url('/homeo_doctor/static/src/img/background.jpg') !important; */
     background-size: cover !important;
     background-repeat: no-repeat !important;
     background-position: center !important;
@@ -445,7 +448,7 @@ a[data-menu-xmlid="mail.menu_root_discuss"] {
 
 a[data-menu-xmlid="hr.menu_hr_root"] {
     display: none !important;
-} 
+}
 .o_menu_entry_lvl_1 span {
     font-weight: bold !important;
 }
@@ -769,6 +772,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
     display: flex !important;
 
 	margin-left: 2%;
+	width: 25% !important;
 }
 
 
@@ -1069,7 +1073,7 @@ a[data-menu-xmlid="hr.menu_hr_root"] {
 
 .second_row_general{
     margin-left: 0.5% !important;
-    width: 56%;
+   /* width: 56%; */
 }
 
 
@@ -1227,3 +1231,115 @@ color: white ;
 	display: none;
 }
 
+
+
+.col.px-1 {
+    box-shadow: -1px 1px 5px #53aade;
+    /* box-shadow: 0 5px 7px rgba(189, 55, 55, 0.25), 0 10px 10px rgba(57, 55, 135, 0.22); */
+}
+/* .col.px-1:hover {
+    box-shadow: -1px 1px 5px #53aade;
+
+} */
+
+.row.mx-n1 {
+    margin-bottom: 12px;
+}
+
+.row .col-md-12 {
+
+    margin: 5px 2px 1px;
+    box-shadow: -1px 1px 5px #53aade;
+}
+.col-md-2 {
+    box-shadow: -1px 1px 5px #53aade;
+}
+
+.row.mx-n1.second_row_general .col-md-3.px-1 {
+
+    box-shadow: -1px 1px 5px #53aade;
+}
+
+
+.o_input {
+
+    box-shadow: -1px 1px 1px #53aade;
+}
+
+
+
+
+
+.custom_register_payment_row > div {
+
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.form-group.row.mb-1 {
+    border-bottom: 1px solid;
+    border: 1px solid;
+    margin: 11px;
+    box-shadow: -1px 1px 1px #53aade;
+}
+
+
+.sub_details .col.px-1 {
+
+    border-radius: 12px;
+}
+
+.form-group.row.mb-1 {
+
+    border-radius: 12px;
+}
+
+.admission_form .col.px-1 {
+
+    border-radius: 12px;
+}
+
+.genaral_billing_class .col.px-1 {
+
+    border-radius: 12px;
+}
+
+.row.mx-n1.second_row_general .col-md-3.px-1 {
+
+    border-radius: 12px;
+}
+
+.row .col-md-12 {
+
+    border-radius: 12px;
+}
+
+.col-md-2 {
+
+    border-radius: 12px;
+    margin-top: 9px;
+}
+
+
+.lab_billing_class .col-md-1, .col-md-2 {
+    border: 1px solid;
+    border-radius: 12px;
+    box-shadow: -1px 1px 5px #53aade;
+    margin-top: 9px;
+}
+
+.custom_lab_row > div > div {
+    border-radius: 12px;
+    box-shadow: -1px 1px 5px #53aade;
+    height: 33%;
+}
+
+
+
+.custom_register_payment_row .row .col-md-6.left_column {
+    margin-left: -17px !important;
+}
+
+.custom_admission_row .row .col-md-6.left_column {
+    margin-left: -26px;
+}

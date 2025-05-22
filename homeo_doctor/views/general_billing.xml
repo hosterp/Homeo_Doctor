@@ -164,7 +164,7 @@
                                     </page>
                                 </notebook>
                             </div>
-                            <div class="custom_border">
+                            <div class="custom_border" style="width: 35%;">
                                 <div class="row">
                                     <!-- First column -->
                                     <div class="row column_one" style="display:block; width: 33%;">
