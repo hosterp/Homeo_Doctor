@@ -517,8 +517,8 @@ class PharmacyReturnLine(models.Model):
     product_id = fields.Many2one('product.product', string="Product")
     quantity = fields.Float(string="Returned Quantity")
     unit_price = fields.Float(string="Unit Price")
-    manf_date = fields.Char(string='M.Date')
-    exp_date = fields.Char(string='Exp. Date')
+    manf_date = fields.Date(string='M.Date')
+    exp_date = fields.Date(string='Exp. Date')
     batch = fields.Char(string='Batch Number')
     hsn = fields.Char(string='HSN')
     subtotal = fields.Float(string="Subtotal", compute="_compute_subtotal", store=True)
@@ -648,7 +648,7 @@ class IPReturn(models.Model):
     _rec_name='uhids'
 
     patient_id = fields.Many2one('patient.registration', string="UHID")
-    uhid = fields.Many2one('patient.reg', string="UHID", required=True)
+    uhid = fields.Many2one('patient.reg', string="UHID")
     uhids = fields.Many2one('pharmacy.description', string="UHID", required=True)
     name = fields.Char(string="Patient Name", store=True)
     phone_number = fields.Char(string="Phone Number", store=True)
@@ -704,7 +704,6 @@ class IPReturn(models.Model):
                     'date': fields.Date.today(),
                     'uom_id': line.medicine_id.uom_id.id if line.medicine_id.uom_id else False,
                     'state': 'confirmed',
-
                 })
             rec.write({'state': 'returned'})
 
