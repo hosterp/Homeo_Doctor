@@ -128,7 +128,11 @@ class PatientRegistration(models.Model):
         for rec in self:
             rec.unpaid_lab_ids = self.env['doctor.lab.report'].search([
                 ('user_ide', '=', rec.id),
-                ('status', '!=', 'paid')
+                '|',
+                ('status', '!=', 'paid'),
+                '&',
+                ('status', '=', 'paid'),
+                ('mode_of_payment', '=', 'credit')
             ])
 
     register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")

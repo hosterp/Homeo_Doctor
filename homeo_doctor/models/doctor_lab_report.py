@@ -325,10 +325,17 @@ class DoctorLabReport(models.Model):
     def action_confirm_payment(self):
         """Create lab result record directly without going through the payment wizard"""
 
-        # Update the lab report status to 'paid'
-        self.write({
-            'status': 'paid'
-        })
+        for rec in self:
+            # Determine status based on vssc_check and mode_of_payment
+            if rec.vssc_check:
+                rec.status = 'paid'
+            elif rec.mode_of_payment == 'credit':
+                rec.status = 'unpaid'
+            else:
+                rec.status = 'paid'
+        # self.write({
+        #     'status': 'paid'
+        # })
 
         # Calculate total amount from billing lines
         total_amount = sum(self.lab_billing_ids.mapped('total_amount'))
@@ -340,7 +347,7 @@ class DoctorLabReport(models.Model):
             'patient_name': self.patient_name,
             'doctor': self.doctor_id.id,
             'staff': self.staff_name,
-            'status': self.status,
+            'status': 'paid',
             'patient_phone': self.patient_phone,
             'sample_collected': fields.Datetime.now(),
             'lab_collection': fields.Datetime.now(),
