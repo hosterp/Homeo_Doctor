@@ -153,7 +153,8 @@ class PatientRegistration(models.Model):
                 ('status', '!=', 'paid'),
                 '&',
                 ('status', '=', 'paid'),
-                ('mode_of_payment', '=', 'credit')
+                ('mode_of_payment', '=', 'credit'),
+                ('status', '!=', 'credit')
             ])
 
     register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")
@@ -349,7 +350,10 @@ class PatientRegistration(models.Model):
                 'admission_total_amount': False,
             })
             record.unpaid_general_ids.write({'status': 'paid'})
-            record.unpaid_lab_ids.write({'status': 'paid'})
+            if record.vssc_boolean:
+                record.unpaid_lab_ids.write({'status': 'credit'})
+            else:
+                record.unpaid_lab_ids.write({'status': 'paid'})
             record.unpaid_pharmacy_ids.write({'status': 'paid'})
         return self.env.ref('homeo_doctor.action_report_discharge_challan').report_action(self)
     @api.onchange('room_category_new')

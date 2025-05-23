@@ -64,6 +64,7 @@ class DoctorLabReport(models.Model):
     status = fields.Selection([
         ('unpaid', 'Unpaid'),
         ('paid', 'Paid'),
+        ('credit','Credit'),
     ], string="Status", default="unpaid", tracking=True)
     sample_status=fields.Selection([
         ('sample_collected', 'Sample Collected'),
