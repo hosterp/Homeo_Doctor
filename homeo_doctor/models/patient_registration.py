@@ -172,6 +172,7 @@ class PatientRegistration(models.Model):
 
     def admit_reception(self):
         self.admission_boolean=True
+        self.status='admitted'
 
     @api.onchange('register_amount_paid')
     def _onchange_register_amount_paid(self):
