@@ -144,18 +144,34 @@ class PatientRegistration(models.Model):
                 ('status', '!=', 'paid')
             ])
 
-    @api.depends('reference_no')
+    @api.depends('reference_no', 'vssc_boolean')
     def _compute_unpaid_lab(self):
         for rec in self:
-            rec.unpaid_lab_ids = self.env['doctor.lab.report'].search([
-                ('user_ide', '=', rec.id),
-                '|',
-                ('status', '!=', 'paid'),
-                '&',
-                ('status', '=', 'paid'),
-                ('mode_of_payment', '=', 'credit'),
-                ('status', '!=', 'credit')
-            ])
+            # base_domain = [('user_ide', '=', rec.id)]
+
+            if not rec.vssc_boolean:
+                # Show only status unpaid and paid
+                print("vssc boolean not")
+                status_domain = [
+                    ('user_ide', '=', rec.id),
+                    ('status', '=', 'unpaid'),
+                    ('mode_of_payment', '=', 'credit'),
+                ]
+            else:
+                print("vssc boolean yes")
+                # Show only unpaid (including credit payments that are not credited)
+                status_domain = [
+                    ('user_ide', '=', rec.id),
+                    '|',
+                    ('status', '!=', 'paid'),
+                    '&',
+                    ('status', '=', 'paid'),
+                    ('mode_of_payment', '=', 'credit'),
+                    ('status', '!=', 'credit')
+                ]
+
+            final_domain = status_domain
+            rec.unpaid_lab_ids = self.env['doctor.lab.report'].search(final_domain)
 
     register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")
     register_amount_paid = fields.Integer(string="Amount Paid")
