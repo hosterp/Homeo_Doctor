@@ -3,6 +3,7 @@ from odoo import api, fields, models, _
 class DischargedPatientRecord(models.Model):
     _name = 'discharged.patient.record'
     _description = 'Discharged Patient Record'
+    _order='admitted_date desc'
 
     patient_id = fields.Char(string='UHID')
     name = fields.Char(string='Patient Name')
