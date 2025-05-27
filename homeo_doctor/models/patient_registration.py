@@ -151,14 +151,14 @@ class PatientRegistration(models.Model):
 
             if not rec.vssc_boolean:
                 # Show only status unpaid and paid
-                print("vssc boolean not")
+                # print("vssc boolean not")
                 status_domain = [
                     ('user_ide', '=', rec.id),
                     ('status', '=', 'unpaid'),
                     ('mode_of_payment', '=', 'credit'),
                 ]
             else:
-                print("vssc boolean yes")
+                # print("vssc boolean yes")
                 # Show only unpaid (including credit payments that are not credited)
                 status_domain = [
                     ('user_ide', '=', rec.id),
