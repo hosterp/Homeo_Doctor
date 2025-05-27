@@ -1382,3 +1382,8 @@ color: white ;
 	border-radius: 13px;
 	box-shadow: -1px 1px 5px #53aade;
 }
+
+
+.o_form_view .o_form_label {
+	white-space: pre-line !important;
+}
