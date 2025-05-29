@@ -13,6 +13,7 @@
                                 <field name="doctor_id" required="1"/>
                                 <field name="joining_date"/>
                                 <field name="name" required="1"/>
+                                <field name="age"/>
                                 <field name="specialization"/>
                                 <field name="department_id"/>
                                 <field name="available_hours"/>
