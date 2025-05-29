@@ -20,7 +20,7 @@
                             <group>
                                 <field name="consultation_fee_doctor"/>
                                 <field name="consultation_fee_limit"/>
-                                <field name="phone" widget="phone" required="1"/>
+                                <field name="phone" widget="phone" />
                                 <field name="email" widget="email"/>
                                 <field name="qualification"/>
                                 <field name="experience_years"/>

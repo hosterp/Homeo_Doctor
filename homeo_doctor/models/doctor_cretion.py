@@ -10,7 +10,7 @@ class DoctorProfile(models.Model):
     # [existing fields remain unchanged]
     name = fields.Char(string='Doctor Name', required=True)
     specialization = fields.Char(string='Specialization')
-    phone = fields.Char(string='Phone Number', required=True)
+    phone = fields.Char(string='Phone Number')
     email = fields.Char(string='Email')
     qualification = fields.Char(string='Qualification')
     joining_date = fields.Date(string='Joining Date', default=fields.Date.context_today)
