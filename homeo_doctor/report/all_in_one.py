@@ -33,11 +33,23 @@ class CombinedReportWizard(models.TransientModel):
                 ('mode_pay', '=', code),
             ])
 
-            lab = self.env['doctor.lab.report'].search([
+            lab_domain = [
                 ('date', '>=', self.from_date),
                 ('date', '<=', self.to_date),
                 ('mode_of_payment', '=', code),
-            ])
+            ]
+
+            if code == 'credit':
+                lab_domain.append('|')
+                lab_domain.append(('status', '=', 'unpaid'))
+                lab_domain.append('&')
+                lab_domain.append(('status', '=', 'paid'))
+                lab_domain.append(('vssc_check', '=', True))
+
+            else:
+                lab_domain.append(('status', '=', 'paid'))
+
+            lab = self.env['doctor.lab.report'].search(lab_domain)
 
             pharmacy_records = self.env['pharmacy.description'].search([
                 ('date', '>=', self.from_date),
