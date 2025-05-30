@@ -113,6 +113,7 @@ class PatientRegistration(models.Model):
     unpaid_pharmacy_ids = fields.One2many('pharmacy.description', compute='_compute_unpaid_pharmacy',
                                           string="Unpaid Pharmacy")
 
+    register_bool=fields.Boolean(default=False)
     def cancel_appointment(self):
 
         """Cancel the appointment and only the specific related patient registration record"""
@@ -443,7 +444,7 @@ class PatientRegistration(models.Model):
     def action_register_pay(self):
         self.ensure_one()
         self.status = 'paid'  # Update the status to 'paid'
-
+        self.register_bool=True
         # Ensure VSSC logic is applied correctly before printing
         if self.vssc_boolean:
             # For VSSC patients, ensure values are correctly set before printing

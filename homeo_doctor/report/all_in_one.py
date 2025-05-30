@@ -64,6 +64,7 @@ class CombinedReportWizard(models.TransientModel):
                 ('date', '>=', self.from_date),
                 ('date', '<=', self.to_date),
                 ('register_mode_payment', '=', code),
+                ('register_bool', '=', True),
             ])
             patient_records = self.env['discharged.patient.record'].search([
                 ('admitted_date', '>=', self.from_date),
