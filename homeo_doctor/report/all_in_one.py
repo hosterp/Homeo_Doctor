@@ -61,7 +61,6 @@ class CombinedReportWizard(models.TransientModel):
             patient_recept = self.env['patient.reg'].search([
                 ('admitted_date', '>=', self.from_date),
                 ('admitted_date', '<=', self.to_date),
-                ('status', '=', 'admitted'),
                 ('advance_mode_payment', '=', code),
             ])
 
