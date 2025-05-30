@@ -91,6 +91,7 @@ class PatientRegistration(models.Model):
     transferred_bed_number = fields.Integer(string='Bed Number')
     amount_in_advance =  fields.Integer(string="Advance Amount")
     advance_mode_payment = fields.Selection([('cash', 'Cash'),
+                                ('credit', 'Credit'),
                                 ('card', 'Card'),
                                 ('cheque', 'Cheque'),
                                 ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
