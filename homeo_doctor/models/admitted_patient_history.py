@@ -21,6 +21,13 @@ class DischargedPatientRecord(models.Model):
     email=fields.Char(string='Email ID')
     bystander_mobile=fields.Char(string='Bystander mobile')
     alternate_no=fields.Char(string='Alternate Number')
+    pay_mode=fields.Selection([
+        ('cash', 'Cash'),
+        ('credit', 'Credit'),
+        ('card', 'Card'),
+        ('cheque', 'Cheque'),
+        ('upi', 'UPI')
+    ], string='Payment Method')
     op_category=fields.Many2one('op.category',string='OP Category')
 
 

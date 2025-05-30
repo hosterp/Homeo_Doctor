@@ -299,13 +299,13 @@ class PharmacyPrescriptionLine(models.Model):
                     line.exp_date = stock_entry.exp_date
                     line.rate = stock_entry.rate
                     line.hsn = stock_entry.hsn
-                else:
+                # else:
 
-                    line.batch = False
-                    line.manf_date = False
-                    line.exp_date = False
-                    line.rate = 0.0
-                    line.hsn = False
+                    # line.batch = False
+                    # line.manf_date = False
+                    # line.exp_date = False
+                    # line.rate = 0.0
+                    # line.hsn = False
     @api.depends('product_id')
     def _compute_stock_in_hand(self):
         """Fetch the total available quantity from stock.entry for the selected product."""
@@ -321,27 +321,27 @@ class PharmacyPrescriptionLine(models.Model):
             else:
                 record.stock_in_hand = 0.0
 
-    # @api.model
-    # def create(self, vals):
-    #     """Deduct the quantity from stock when a record is created."""
-    #     record = super(PharmacyPrescriptionLine, self).create(vals)
-    #     if record.product_id and record.qty:
-    #         stock_entries = self.env['stock.entry'].search([
-    #             ('product_id', '=', record.product_id.id)
-    #         ], order="id asc")
-    #
-    #         remaining_qty = record.qty
-    #         for entry in stock_entries:
-    #             if remaining_qty <= 0:
-    #                 break
-    #             if entry.quantity >= remaining_qty:
-    #                 entry.quantity -= remaining_qty
-    #                 remaining_qty = 0
-    #             else:
-    #                 remaining_qty -= entry.quantity
-    #                 entry.quantity = 0
-    #
-    #     return record
+    @api.model
+    def create(self, vals):
+        """Deduct the quantity from stock when a record is created."""
+        record = super(PharmacyPrescriptionLine, self).create(vals)
+        if record.product_id and record.qty:
+            stock_entries = self.env['stock.entry'].search([
+                ('product_id', '=', record.product_id.id)
+            ], order="id asc")
+
+            remaining_qty = record.qty
+            for entry in stock_entries:
+                if remaining_qty <= 0:
+                    break
+                if entry.quantity >= remaining_qty:
+                    entry.quantity -= remaining_qty
+                    remaining_qty = 0
+                else:
+                    remaining_qty -= entry.quantity
+                    entry.quantity = 0
+
+        return record
 
     def write(self, vals):
         """Adjust stock when updating records."""

@@ -62,6 +62,8 @@
         "report/appointment_challan.xml",
         "report/admission_challan_report.xml",
         "report/admission_discharge_challan.xml",
+        "report/all_in_one_report.xml",
+        "report/combined_report_template.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",

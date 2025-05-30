@@ -166,6 +166,7 @@
                     <field name="discharge_date"/>
                     <field name="room_number"/>
                     <field name="doctor"/>
+                    <field name="pay_mode"/>
                     <field name="amount_in_advance"/>
                     <field name="total_amount"/>
                 </tree>
