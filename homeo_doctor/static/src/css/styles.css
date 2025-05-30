@@ -1357,3 +1357,33 @@ color: white ;
 .additional_row > div {
 	border: 1px solid;
 }
+
+
+.row.custom_lab_result > div {
+	border: 1px solid;
+	border-radius: 12px;
+	box-shadow: -1px 1px 5px #53aade;
+}
+
+.custom_lab_result {
+	margin-bottom: 13px;
+	margin-left: -1%;
+}
+
+.custom_lab_result {
+	margin-bottom: 13px;
+	margin-left: 0.5%;
+
+}
+
+.col-md-12.custom_lab_result_second {
+	border: 2px solid black;
+	padding: 18px;
+	border-radius: 13px;
+	box-shadow: -1px 1px 5px #53aade;
+}
+
+
+.patient_reg_form .o_form_label {
+	white-space: pre-line !important;
+}

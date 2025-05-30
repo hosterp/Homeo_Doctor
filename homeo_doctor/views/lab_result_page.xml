@@ -13,18 +13,8 @@
                           <button name="action_result_ready" type="object" string="Result Ready" class="btn-primary"/>
                     </header>
                     <sheet>
-
-<!--                        <group col="2">-->
-<!--                            <group>-->
-<!--                                <field name="from_date" style="width:150px;"/>-->
-<!--                            </group>-->
-<!--                            <group>-->
-<!--                                <field name="to_date" style="width:150px;"/>-->
-<!--                            </group>-->
-
-<!--                        </group>-->
-                        <div class="row">
-                        <div class="col-md-2">
+                        <div class="row custom_lab_result ">
+                        <div class="col-md-3">
                             <div class="form-group row">
                                 <label for="from_date" class="col-md-4 col-form-label">From Date</label>
                                 <div class="col-md-8 field-container">
@@ -32,7 +22,7 @@
                                 </div>
                             </div>
                         </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                             <div class="form-group row">
                                 <label for="to_date" class="col-md-4 col-form-label">To Date</label>
                                 <div class="col-md-8 field-container">
@@ -42,24 +32,111 @@
                         </div>
                         </div>
 
-                        <group col="3">
-                            <group>
-                                <field name="bill_number"/>
-                                <field name="patient_id"/>
-                                <field name="patient_name"/>
-                                <field name="internal_doctor"/>
-                            </group>
-                            <group>
-                                <field name="doctor"/>
-                                <field name="sample_collected"/>
-                                <field name="lab_incharge"/>
-                            </group>
-                            <group>
-                                <field name="lab_collection"/>
-                                <field name="test_on"/>
-                                <field name="lab_technician"/>
-                            </group>
-                        </group>
+                        <div class="col-md-12 custom_lab_result_second">
+                            <div class="sub_details revisit_details">
+
+                                <!-- First Row: Bill Number, Patient ID, Patient Name, Internal Doctor -->
+                                <div class="row mx-n1">
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="bill_number" class="col-md-5 col-form-label py-0 small text-nowrap">Bill Number</label>
+                                            <div class="col-md-7 field-container py-0">
+                                                <field name="bill_number" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="patient_id" class="col-md-5 col-form-label py-0 small text-nowrap">Patient ID</label>
+                                            <div class="col-md-7 field-container py-0">
+                                                <field name="patient_id"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="patient_name" class="col-md-5 col-form-label py-0 small text-nowrap">Patient Name</label>
+                                            <div class="col-md-7 field-container py-0">
+                                                <field name="patient_name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="internal_doctor" class="col-md-5 col-form-label py-0 small text-nowrap">Internal Doctor</label>
+                                            <div class="col-md-7 field-container py-0">
+                                                <field name="internal_doctor"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Second Row: Doctor, Sample Collected, Lab Incharge, Lab Collection -->
+                                <div class="row mx-n1">
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="doctor" class="col-md-5 col-form-label py-0 text-nowrap">Doctor</label>
+                                            <div class="col-md-7 field-container py-0">
+                                                <field name="doctor"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="sample_collected" class="col-md-5 col-form-label py-0 text-nowrap">Sample Collected</label>
+                                            <div class="col-md-7 field-container py-0">
+                                                <field name="sample_collected"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="lab_incharge" class="col-md-5 col-form-label py-0 text-nowrap">Lab Incharge</label>
+                                            <div class="col-md-7 field-container py-0">
+                                                <field name="lab_incharge"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="lab_collection" class="col-md-5 col-form-label py-0 text-nowrap">Lab Collection</label>
+                                            <div class="col-md-7 field-container py-0">
+                                                <field name="lab_collection"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Third Row: Test On, Lab Technician -->
+                                <div class="row mx-n1">
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="test_on" class="col-md-5 col-form-label py-0 small text-nowrap">Test On</label>
+                                            <div class="col-md-7 field-container py-0">
+                                                <field name="test_on" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="lab_technician" class="col-md-5 col-form-label py-0 small text-nowrap">Lab Technician</label>
+                                            <div class="col-md-7 field-container py-0">
+                                                <field name="lab_technician"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%; border:none;box-shadow:none;">
+                                        <!-- Empty column for consistent layout -->
+                                    </div>
+                                    <div class="col px-1" style="max-width: 25%;border:none;box-shadow:none;">
+                                        <!-- Empty column for consistent layout -->
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
                         <notebook>
                             <page string="Lab Details" name="lab_details">
                                 <field name="lab_line_ids"

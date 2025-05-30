@@ -56,7 +56,7 @@
                                             </div>
                                             <div class="col px-1" style="max-width: 20%;">
                                                 <div class="form-group row my-1">
-                                                    <label for="pin_code" class="col-md-5 col-form-label py-0 small text-nowrap">PIN Code</label>
+                                                    <label for="pin_code" class="col-md col-form-label py-0 small text-nowrap">PIN Code</label>
                                                     <div class="col-md-9 field-container py-0">
                                                         <field name="pin_code"/>
                                                     </div>
@@ -64,7 +64,7 @@
                                             </div>
                                             <div class="col px-1" style="max-width: 20%;">
                                                 <div class="form-group row my-1">
-                                                    <label for="email" class="col-md-5 col-form-label py-0 small text-nowrap">Email</label>
+                                                    <label for="email" class="col-md col-form-label py-0 small text-nowrap">Email</label>
                                                     <div class="col-md-9 field-container py-0">
                                                         <field name="email" widget="email"/>
                                                     </div>
@@ -100,7 +100,7 @@
                                             </div>
                                             <div class="col px-1" style="max-width: 20%;">
                                                 <div class="form-group row my-1">
-                                                    <label for="phone_number" class="col-md-5 col-form-label py-0 small text-nowrap">Mobile No</label>
+                                                    <label for="phone_number" class="col-md col-form-label py-0 small text-nowrap">Mobile No</label>
                                                     <div class="col-md-9 field-container py-0">
                                                         <field name="phone_number"/>
                                                     </div>
@@ -161,7 +161,7 @@
                                             <!-- Date -->
                                             <div class="col px-1" style="max-width: 20%;">
                                                 <div class="form-group row my-1">
-                                                    <label for="time" class="col-md-5 col-form-label py-0 small text-nowrap">Date</label>
+                                                    <label for="time" class="col-md col-form-label py-0 small text-nowrap">Date</label>
                                                     <div class="col-md-9 field-container py-0">
                                                         <field name="time"/>
                                                     </div>
@@ -357,7 +357,7 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="bystander_name"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                   class="col-md col-form-label py-0 text-nowrap">
                                                                 Bystander
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
@@ -379,7 +379,7 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="bystander_email"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                   class="col-md col-form-label py-0 text-nowrap">
                                                                 Email
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
@@ -390,7 +390,7 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="bystander_mobile"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                   class="col-md col-form-label py-0 text-nowrap">
                                                                 Mobile
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
@@ -401,7 +401,7 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="alternate_no"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">Alt
+                                                                   class="col-md col-form-label py-0 text-nowrap">Alt
                                                                 Mobile
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
@@ -420,7 +420,7 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="op_category"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">OP
+                                                                   class="col-md col-form-label py-0 text-nowrap">OP
                                                                 Category
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
@@ -443,7 +443,7 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="room_category_new"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                   class="col-md col-form-label py-0 text-nowrap">
                                                                 Room
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
@@ -492,7 +492,7 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="admitted_date"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                   class="col-md col-form-label py-0 text-nowrap">
                                                                 Admitted Date
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
@@ -505,8 +505,8 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="rent_half"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
-                                                                Advance Amount
+                                                                   class="col-md col-form-label py-0 text-nowrap">
+                                                                Rent Half
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
                                                                 <field name="rent_half" style="width:100%;"
@@ -517,8 +517,8 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="rent_full"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
-                                                                Advance Amount
+                                                                   class="col-md col-form-label py-0 text-nowrap">
+                                                                Rent Full
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
                                                                 <field name="rent_full" style="width:100%;"
@@ -529,7 +529,7 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="amount_in_advance"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                   class="col-md col-form-label py-0 text-nowrap">
                                                                 Advance Amount
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">

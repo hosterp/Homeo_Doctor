@@ -10,7 +10,7 @@ class DoctorProfile(models.Model):
     # [existing fields remain unchanged]
     name = fields.Char(string='Doctor Name', required=True)
     specialization = fields.Char(string='Specialization')
-    phone = fields.Char(string='Phone Number', required=True)
+    phone = fields.Char(string='Phone Number')
     email = fields.Char(string='Email')
     qualification = fields.Char(string='Qualification')
     joining_date = fields.Date(string='Joining Date', default=fields.Date.context_today)
@@ -25,6 +25,7 @@ class DoctorProfile(models.Model):
     consultation_fee_limit = fields.Integer(string='Consultation Fee Day Limit', default=7)
     is_doctor = fields.Boolean(default=False)
     token_no = fields.Char("Token No")
+    age = fields.Integer("Age")
 
     # Remove these fields as we'll track tokens in a separate model
     # last_token_number = fields.Integer(string="Last Token Number", default=0)

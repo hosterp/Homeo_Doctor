@@ -13,6 +13,7 @@
                                 <field name="doctor_id" required="1"/>
                                 <field name="joining_date"/>
                                 <field name="name" required="1"/>
+                                <field name="age"/>
                                 <field name="specialization"/>
                                 <field name="department_id"/>
                                 <field name="available_hours"/>
@@ -20,7 +21,7 @@
                             <group>
                                 <field name="consultation_fee_doctor"/>
                                 <field name="consultation_fee_limit"/>
-                                <field name="phone" widget="phone" required="1"/>
+                                <field name="phone" widget="phone" />
                                 <field name="email" widget="email"/>
                                 <field name="qualification"/>
                                 <field name="experience_years"/>
