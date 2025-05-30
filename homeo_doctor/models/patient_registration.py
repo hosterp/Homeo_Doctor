@@ -461,6 +461,7 @@ class PatientRegistration(models.Model):
         admission_model = self.env['hospital.admitted.patient']
         registration_model = self.env['patient.reg']
         room_model = self.env['hospital.room']
+        advance_model = self.env['advance.patient.record']
         for rec in self:
             rec.admission_total_amount= False
             patient = registration_model.search([('reference_no', '=', rec.reference_no)], limit=1)
@@ -475,6 +476,28 @@ class PatientRegistration(models.Model):
                 'bed_id': rec.bed_id.id,
                 'attending_doctor': rec.doctor.id,
             })
+            advance_model.create({
+                'patient_id': rec.reference_no,
+                'name': rec.patient_id,
+                'discharge_date': rec.discharge_date,
+                'admitted_date': rec.admitted_date,
+                'room_number': rec.room_number_new.id,
+                'doctor': rec.doctor.id,
+                'total_amount': rec.admission_total_amount,
+                'room_category_new': rec.room_category_new.id,
+                'new_block': rec.new_block.id,
+                'bed_id': rec.bed_id.id,
+                'amount_in_advance': rec.amount_in_advance,
+                'bystander_name': rec.bystander_name,
+                'relation': rec.bystander_relation,
+                'email': rec.bystander_email,
+                'bystander_mobile': rec.bystander_mobile,
+                'alternate_no': rec.alternate_no,
+                'op_category': rec.op_category.id,
+                'pay_mode': rec.advance_mode_payment,
+
+            })
+
             if rec.room_number_new:
                 room = room_model.browse(rec.room_number_new.id)
                 if room:
