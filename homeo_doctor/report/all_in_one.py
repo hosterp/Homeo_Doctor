@@ -26,6 +26,7 @@ class CombinedReportWizard(models.TransientModel):
 
         department_totals = {}
 
+        # Process records that depend on payment method
         for code, label in payment_methods:
             billing = self.env['general.billing'].search([
                 ('bill_date', '>=', self.from_date),
@@ -45,7 +46,6 @@ class CombinedReportWizard(models.TransientModel):
                 lab_domain.append('&')
                 lab_domain.append(('status', '=', 'paid'))
                 lab_domain.append(('vssc_check', '=', True))
-
             else:
                 lab_domain.append(('status', '=', 'paid'))
 
@@ -56,43 +56,42 @@ class CombinedReportWizard(models.TransientModel):
                 ('date', '<=', self.to_date),
                 ('payment_mathod', '=', code),
             ])
-            pharmacy_return = self.env['pharmacy.return'].search([
-                    ('return_date', '>=', self.from_date),
-                    ('return_date', '<=', self.to_date),
-                ], order='return_date asc')
+
             patients = self.env['patient.reg'].search([
                 ('date', '>=', self.from_date),
                 ('date', '<=', self.to_date),
                 ('register_mode_payment', '=', code),
                 ('register_bool', '=', True),
             ])
+            
             patient_records = self.env['discharged.patient.record'].search([
                 ('admitted_date', '>=', self.from_date),
                 ('admitted_date', '<=', self.to_date),
                 ('pay_mode', '=', code),
             ])
+            
             patient_recept = self.env['advance.patient.record'].search([
                 ('admitted_date', '>=', self.from_date),
                 ('admitted_date', '<=', self.to_date),
                 ('pay_mode', '=', code),
             ])
 
+            # Process payment-method specific records
             for rec in patients:
                 dept = 'OP'
                 department_totals.setdefault(dept, {m[0]: 0.0 for m in payment_methods})
                 department_totals[dept][code] += rec.register_total_amount or 0.0
+                
             for rec in patient_records:
                 dept = 'IP'
                 department_totals.setdefault(dept, {m[0]: 0.0 for m in payment_methods})
                 department_totals[dept][code] += rec.total_amount or 0.0
+                
             for rec in patient_recept:
                 dept = 'IP Recept'
                 department_totals.setdefault(dept, {m[0]: 0.0 for m in payment_methods})
                 department_totals[dept][code] += rec.amount_in_advance or 0.0
-            for rec in pharmacy_return:
-                dept = 'Pharmacy Return'
-                department_totals.setdefault(dept, {m[0]: 0.0 for m in payment_methods})
-                department_totals[dept]['cash'] += rec.total_return_amount or 0.0
+                
             for rec in billing:
                 dept = 'General Billing'
                 department_totals.setdefault(dept, {m[0]: 0.0 for m in payment_methods})
@@ -107,6 +106,24 @@ class CombinedReportWizard(models.TransientModel):
                 dept = 'Pharmacy Sales'
                 department_totals.setdefault(dept, {m[0]: 0.0 for m in payment_methods})
                 department_totals[dept][code] += rec.total_amount or 0.0
+
+        # Process pharmacy returns OUTSIDE the payment methods loop (only once!)
+        pharmacy_return = self.env['pharmacy.return'].search([
+            ('return_date', '>=', self.from_date),
+            ('return_date', '<=', self.to_date),
+        ], order='return_date asc')
+        
+        for rec in pharmacy_return:
+            dept = 'Pharmacy Return'
+            department_totals.setdefault(dept, {m[0]: 0.0 for m in payment_methods})
+            
+            # Get original payment method from the original sale
+            if rec.original_sale_id and rec.original_sale_id.payment_mathod:
+                original_payment_method = rec.original_sale_id.payment_mathod
+                department_totals[dept][original_payment_method] += rec.total_return_amount or 0.0
+            else:
+                # Fallback to cash if original payment method is not found
+                department_totals[dept]['cash'] += rec.total_return_amount or 0.0
 
         data = {
             'from_date': self.from_date.strftime('%d-%m-%Y'),
