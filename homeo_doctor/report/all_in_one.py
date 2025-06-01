@@ -120,10 +120,12 @@ class CombinedReportWizard(models.TransientModel):
             # Get original payment method from the original sale
             if rec.original_sale_id and rec.original_sale_id.payment_mathod:
                 original_payment_method = rec.original_sale_id.payment_mathod
-                department_totals[dept][original_payment_method] += rec.total_return_amount or 0.0
+                # Subtract return amount (use negative value)
+                department_totals[dept][original_payment_method] -= rec.total_return_amount or 0.0
             else:
                 # Fallback to cash if original payment method is not found
-                department_totals[dept]['cash'] += rec.total_return_amount or 0.0
+                # Subtract return amount (use negative value)
+                department_totals[dept]['cash'] -= rec.total_return_amount or 0.0
 
         data = {
             'from_date': self.from_date.strftime('%d-%m-%Y'),
