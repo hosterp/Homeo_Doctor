@@ -111,10 +111,44 @@ class PatientRegistration(models.Model):
 
     unpaid_general_ids = fields.One2many('general.billing', compute='_compute_unpaid_general', string="Unpaid General")
     unpaid_lab_ids = fields.One2many('doctor.lab.report', compute='_compute_unpaid_lab', string="Unpaid Lab")
-    unpaid_pharmacy_ids = fields.One2many('pharmacy.description', compute='_compute_unpaid_pharmacy',
-                                          string="Unpaid Pharmacy")
+    # unpaid_pharmacy_ids = fields.One2many('pharmacy.description', compute='_compute_unpaid_pharmacy',
+    #                                       string="Unpaid Pharmacy")
 
+    paid_general_ids = fields.One2many('general.billing', 'mrd_no', string='Paid Bills',
+                                       compute='_compute_unpaid_general')
+    # unpaid_general_ids = fields.One2many('general.billing', 'mrd_no', string='Unpaid Bills',
+    #                                      compute='_compute_unpaid_general')
+
+    paid_total = fields.Float(string="Total Paid", compute='_compute_unpaid_general')
+    unpaid_total = fields.Float(string="Total Unpaid", compute='_compute_unpaid_general')
+    grant_total = fields.Float(string='Grand Total', compute='_compute_unpaid_general', store=True)
+    room_rent = fields.Float(string="Room Rent", compute="_compute_total_unpaid_amount", store=True)
     register_bool=fields.Boolean(default=False)
+    unpaid_pharmacy_ids = fields.One2many(
+        'pharmacy.description', 'uhid_id', string="Unpaid Pharmacy Bills", compute='_compute_unpaid_pharmacy',
+        store=False)
+
+    paid_pharmacy_ids = fields.One2many(
+        'pharmacy.description', 'uhid_id', string="Paid Pharmacy Bills", compute='_compute_paid_pharmacy', store=False)
+
+    def action_view_consultations(self):
+        if not self.patient_id:
+            return
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Previous Consultations',
+            'res_model': 'patient.registration',
+            'view_mode': 'tree,form',
+            'views': [
+                (self.env.ref('homeo_doctor.view_patient_registration_tree').id, 'tree'),
+                (self.env.ref('homeo_doctor.patient_registration_form').id, 'form'),
+            ],
+            'domain': [('patient_id', '=', self.reference_no)],
+            'context': {'default_patient_id': self.reference_no},
+            'target': 'new',
+        }
+
     def cancel_appointment(self):
 
         """Cancel the appointment and only the specific related patient registration record"""
@@ -138,13 +172,46 @@ class PatientRegistration(models.Model):
         if related_registration:
             related_registration.write({'status': 'cancelled'})
 
+    # @api.depends('reference_no')
+    # def _compute_unpaid_general(self):
+    #     for rec in self:
+    #         rec.unpaid_general_ids = self.env['general.billing'].search([
+    #             ('mrd_no', '=', rec.id),
+    #             ('status', '!=', 'paid')
+    #         ])
+
     @api.depends('reference_no')
     def _compute_unpaid_general(self):
         for rec in self:
-            rec.unpaid_general_ids = self.env['general.billing'].search([
-                ('mrd_no', '=', rec.id),
-                ('status', '!=', 'paid')
-            ])
+            rec.paid_general_ids = False
+            rec.unpaid_general_ids = False
+            rec.paid_total = 0.0
+            rec.unpaid_total = 0.0
+            rec.grant_total = 0.0
+
+            if rec.admitted_date:
+                today = fields.Date.today()
+
+                paid_bills = self.env['general.billing'].search([
+                    ('mrd_no', '=', rec.id),
+                    ('status', '=', 'paid'),
+                    ('bill_date', '>=', rec.admitted_date),
+                    ('bill_date', '<=', today),
+                ])
+
+                unpaid_bills = self.env['general.billing'].search([
+                    ('mrd_no', '=', rec.id),
+                    ('status', '!=', 'paid'),
+                    ('bill_date', '>=', rec.admitted_date),
+                    ('bill_date', '<=', today),
+                ])
+
+                rec.paid_general_ids = paid_bills
+                rec.unpaid_general_ids = unpaid_bills
+
+                rec.paid_total = sum(p.total_amount for p in paid_bills)
+                rec.unpaid_total = sum(u.total_amount for u in unpaid_bills)
+                rec.grant_total= rec.grant_total = rec.paid_total + rec.unpaid_total + rec.room_rent
 
     @api.depends('reference_no', 'vssc_boolean')
     def _compute_unpaid_lab(self):
@@ -259,23 +326,44 @@ class PatientRegistration(models.Model):
                 reg_fee = rec.registration_fee.fee if rec.registration_fee else 0
                 rec.register_total_amount = reg_fee + (rec.consultation_fee or 0)
 
-
-
-    @api.depends('reference_no')
+    @api.depends('reference_no', 'admitted_date')
     def _compute_unpaid_pharmacy(self):
+        today = fields.Date.today()
         for rec in self:
-            rec.unpaid_pharmacy_ids = self.env['pharmacy.description'].search([
+            domain = [
                 ('uhid_id', '=', rec.id),
-                ('status', '!=', 'paid'),
-                ('status', '!=', 'cancelled')
-            ])
+                ('status', '=', 'unpaid'),
+            ]
+            if rec.admitted_date:
+                domain.append(('date', '>=', rec.admitted_date))
+                domain.append(('date', '<=', today))
+
+            rec.unpaid_pharmacy_ids = self.env['pharmacy.description'].search(domain)
+            rec.grant_total += sum(line.total_amount for line in rec.unpaid_pharmacy_ids)
+
+    @api.depends('reference_no', 'admitted_date')
+    def _compute_paid_pharmacy(self):
+        today = fields.Date.today()
+        for rec in self:
+            domain = [
+                ('uhid_id', '=', rec.id),
+                ('status', '=', 'paid'),
+            ]
+            if rec.admitted_date:
+                domain.append(('date', '>=', rec.admitted_date))
+                domain.append(('date', '<=', today))
+
+            rec.paid_pharmacy_ids = self.env['pharmacy.description'].search(domain)
+            rec.grant_total += sum(line.total_amount for line in rec.paid_pharmacy_ids)
 
     @api.depends('unpaid_general_ids', 'unpaid_lab_ids', 'unpaid_pharmacy_ids', 'admitted_date', 'discharge_date',
                  'rent_half', 'rent_full')
     def _compute_total_unpaid_amount(self):
         for rec in self:
             total = 0.0
-
+            full_days = 0
+            rent_full_value=0
+            remaining_hours=0
             # Calculate service totals
             for general in rec.unpaid_general_ids:
                 total += general.total_amount or 0.0
@@ -311,6 +399,7 @@ class PatientRegistration(models.Model):
                     total += rent_half_value
 
             rec.admission_total_amount = total
+            rec.room_rent = full_days * rent_full_value + (rent_half_value if remaining_hours > 0 else 0.0)
 
     def action_discharged_patient_reg(self):
         for record in self:

@@ -193,39 +193,40 @@
                             <div class="additional_column">
                                 <group string="Additional Information" class="additional_info_group">
                                     <!-- First row - with proper label for attributes -->
-                                  <div  class="additional_column_second">
-                                    <div class="additional_row">
-                                        <div class="field_container medicine_course_container">
-                                            <label for="medicine_course" string="Medicine Course"/>
-                                            <field name="medicine_course" nolabel="1"/>
-                                        </div>
-                                        <div class="field_container department_container">
-                                            <label for="referred_department_ids" string="Referred Departments"/>
-                                            <field name="referred_department_ids" widget="many2many_tags" nolabel="1"/>
-                                        </div>
-                                        <div class="field_container doctor_container">
-                                            <label for="referred_doctor_ids" string="Referred Doctors"/>
-                                            <field name="referred_doctor_ids" widget="many2many_tags" nolabel="1"/>
-                                        </div>
-                                        <div class="field_container button_container">
-                                            <!-- For button container, we need a valid for attribute or use span instead -->
-                                            <span class="label_text">Action</span>
-                                            <div class="button_wrapper">
-                                                <button name="action_reffer_move" type="object" string="GO"/>
+                                    <div class="additional_column_second">
+                                        <div class="additional_row">
+                                            <div class="field_container medicine_course_container">
+                                                <label for="medicine_course" string="Medicine Course"/>
+                                                <field name="medicine_course" nolabel="1"/>
+                                            </div>
+                                            <div class="field_container department_container">
+                                                <label for="referred_department_ids" string="Referred Departments"/>
+                                                <field name="referred_department_ids" widget="many2many_tags"
+                                                       nolabel="1"/>
+                                            </div>
+                                            <div class="field_container doctor_container">
+                                                <label for="referred_doctor_ids" string="Referred Doctors"/>
+                                                <field name="referred_doctor_ids" widget="many2many_tags" nolabel="1"/>
+                                            </div>
+                                            <div class="field_container button_container">
+                                                <!-- For button container, we need a valid for attribute or use span instead -->
+                                                <span class="label_text">Action</span>
+                                                <div class="button_wrapper">
+                                                    <button name="action_reffer_move" type="object" string="GO"/>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Second row - with proper label for attributes -->
-                                    <!-- <div class="additional_row"> -->
+                                        <!-- Second row - with proper label for attributes -->
+                                        <!-- <div class="additional_row"> -->
 
-                                    <!-- </div> -->
+                                        <!-- </div> -->
 
-                                    <!-- Remarks field -->
-                                    <div class="field_container remark_container">
-                                        <label for="remark" string="Additional Remarks"/>
-                                        <field name="remark" placeholder="Additional Remarks" nolabel="1"/>
-                                    </div>
+                                        <!-- Remarks field -->
+                                        <div class="field_container remark_container">
+                                            <label for="remark" string="Additional Remarks"/>
+                                            <field name="remark" placeholder="Additional Remarks" nolabel="1"/>
+                                        </div>
                                     </div>
                                 </group>
                             </div>
@@ -316,7 +317,60 @@
                 </tree>
             </field>
         </record>
+        <record id="view_patient_reg_consultation_search" model="ir.ui.view">
+            <field name="name">patient.registration.consultation.search</field>
+            <field name="model">patient.registration</field>
+            <field name="arch" type="xml">
+                <search string="Search Patient Registration">
+                    <field name="patient_id" string="UHID"/>
+                    <field name="patient_name" string="Patient Name"/>
+                    <field name="appointment_date" string="Appointment Date"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_doctor" string="Doctor" context="{'group_by': 'doctor'}"/>
+                        <filter name="group_by_date" string="Appointment Date"
+                                context="{'group_by': 'appointment_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
 
+        <record id="patient_reg_consultation_tree" model="ir.ui.view">
+            <field name="name">patient.reg.consultation.tree</field>
+            <field name="model">patient.registration</field>
+            <field name="arch" type="xml">
+                <tree string="Consultation Details">
+                    <field name="patient_id" string="UHID"/>
+                    <field name="token_no" string="Token No"/>
+                    <field name="appointment_date" string="Appointment Date"/>
+                    <field name="patient_name" string="Patient Name"/>
+                    <!--                    <field name="formatted_date" string="Consultation Date"/>-->
+                    <!--                    <field name="reference_no" string="Appointment NO"/>-->
+                    <!--                    <field name="appointment_date" string="Appointment Date"/>-->
+                    <field name="age"/>
+                    <field name="gender"/>
+                    <field name="phone_number" string="Mobile No"/>
+                    <field name="doctor"/>
+                    <!--                    <field name="referred_doctor_ids" widget="many2many_tags" string="Referred Doctors"/>-->
+                    <!--                    <field name="referred_department_ids" widget="many2many_tags" string="Referred Department"/>-->
+                    <field name="consultation_fee"/>
+                    <field name="vssc_check" string="VSSC"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_patient_reg_consultation" model="ir.actions.act_window">
+            <field name="name">Consultation Details</field>
+            <field name="res_model">patient.registration</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="patient_reg_consultation_tree"/>
+            <field name="search_view_id" ref="view_patient_reg_consultation_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create new patient
+                </p>
+            </field>
+        </record>
         <record id="action_patient_registration" model="ir.actions.act_window">
             <field name="name">Patient ID</field>
             <field name="res_model">patient.registration</field>
