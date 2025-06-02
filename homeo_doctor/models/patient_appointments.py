@@ -158,16 +158,16 @@ class PatientAppointment(models.Model):
             if record.patient_id:
                 # Check if VSSC is enabled for this patient
                 is_vssc = record.patient_id.vssc_boolean
-                print(f"VSSC Boolean: {is_vssc}")
+                # print(f"VSSC Boolean: {is_vssc}")
 
                 # If VSSC is true, registration fee is always 0
                 if is_vssc:
                     record.registration_fee = 0
-                    print("VSSC patient - registration fee set to 0")
+                    # print("VSSC patient - registration fee set to 0")
                     # Still update track registration date for VSSC patients
                     if not record.patient_id.track_registration_date:
                         record.patient_id.track_registration_date = record.appointment_date
-                        print("VSSC patient - track registration date set")
+                        # print("VSSC patient - track registration date set")
                     return
 
                 # Get the patient's last track registration date
