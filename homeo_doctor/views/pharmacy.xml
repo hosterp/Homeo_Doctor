@@ -334,6 +334,18 @@
                                         <field name="op_category"/>
                                     </div>
                                 </div>
+                                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                                    <div style="flex: 1; min-width: 180px;">
+                                        <span class="o_form_label" style="font-weight: bold;">Admitted:</span>
+                                        <field name="admitted_boolean"/>
+                                    </div>
+                                    <div style="flex: 1; min-width: 180px;"
+                                         attrs="{'invisible': [('admitted_boolean', '!=', True)]}">
+                                        <span class="o_form_label" style="font-weight: bold;">Patient Type:</span>
+                                        <field name="patient_type"/>
+                                    </div>
+                                </div>
+
                             </div>
                         </group>
 
@@ -400,7 +412,8 @@
 
                         <footer>
                             <div class="oe_right">
-                                <button name="action_register_payment" type="object" string="Pay" class="oe_highlight"  attrs="{'invisible': [('payment_mathod', '=', 'credit')]}"/>
+                                <button name="action_register_payment" type="object" string="Pay" class="oe_highlight"
+                                        attrs="{'invisible': [('payment_mathod', '=', 'credit')]}"/>
                             </div>
                         </footer>
                     </sheet>

@@ -32,7 +32,8 @@ class PharmacyDescription(models.Model):
     staff_name = fields.Char(string='Staff Name')
     description_line_ids = fields.One2many('pharmacy.prescription.line', 'description_id', string="Lines")
     bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='New')
-
+    admitted_boolean=fields.Boolean('Admitted')
+    patient_type=fields.Selection([('insurance','Insurance Patient'),('normal','Normal Patient')])
     # @api.model
     # def create(self, vals):
     #     if vals.get('bill_number', 'New') == 'New':
@@ -43,6 +44,13 @@ class PharmacyDescription(models.Model):
 
     active = fields.Boolean(default=True)
     op_category=fields.Selection([('op','OP'),('ip','IP'),('others','OTHERS')])
+
+    @api.onchange('patient_type')
+    def  _onchange_patient_type(self):
+        for rec in self:
+            if rec.patient_type == 'insurance':
+                rec.payment_mathod ='credit'
+
     def action_cancel(self):
         for record in self:
             record.status = 'cancelled'
