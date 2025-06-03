@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="seq_purchase_order_custom" model="ir.sequence">
+            <field name="name">Purchase Order Custom</field>
+            <field name="code">purchase.order.custom</field>
+            <field name="prefix"></field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
         <record id="seq_supplier_invoice" model="ir.sequence">
             <field name="name">Supplier Invoice</field>
             <field name="code">account.move</field>
@@ -9,7 +19,7 @@
             <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
-         <record id="seq_pharmacy_description" model="ir.sequence">
+        <record id="seq_pharmacy_description" model="ir.sequence">
             <field name="name">Pharmacy Bill Number</field>
             <field name="code">pharmacy.description</field>
             <field name="padding">4</field>

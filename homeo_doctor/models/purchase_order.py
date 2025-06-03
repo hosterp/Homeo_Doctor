@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo import models, fields, api
 
 class PurchaseOrderInherit(models.Model):
@@ -28,6 +30,16 @@ class PurchaseOrderInherit(models.Model):
     state = fields.Selection(STATE_SELECTION, string='Status', default='draft',store=True)
     intent_priority=fields.Char(string='Priority')
 
+    @api.model
+    def create(self, vals):
+        if vals.get('name', 'New') == 'New':
+            seq = self.env['ir.sequence'].next_by_code('purchase.order.custom') or '0000'
+            today = date.today()
+            year_start = today.year % 100
+            year_end = (today.year + 1) % 100
+            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+            vals['name'] = f"{seq}/{fiscal_suffix}"
+        return super(PurchaseOrderInherit, self).create(vals)
 
     def button_confirm(self):
         for order in self:
