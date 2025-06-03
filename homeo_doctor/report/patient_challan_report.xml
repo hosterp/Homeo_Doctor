@@ -62,6 +62,14 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td style="font-weight: bold; width: 30%; padding: 8px; border: 1px solid #000;">
+                                            Bill Number:
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.bill_number"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Patient
                                             Name:
                                         </td>

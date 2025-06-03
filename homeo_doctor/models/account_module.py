@@ -84,18 +84,18 @@ class AccountMove(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals.get('supplier_invoice', '/') == '/':
-            # Get the next number (e.g., '0024')
-            raw_seq = self.env['ir.sequence'].next_by_code('supplier.invoice') or '0'
-            padded_number = raw_seq.zfill(4)
+        if vals.get('name', 'New') in ['New', '/']:
+            raw_seq = self.env['ir.sequence'].next_by_code('purchase.order') or '0'
+            padded_seq = raw_seq.zfill(4)
 
-            # Get last two digits of current year
-            year_suffix = str(date.today().year)[-2:]
+            today = date.today()
+            year_start = today.year % 100
+            year_end = (today.year + 1) % 100
+            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
 
-            # Format as 0024/25
-            vals['supplier_invoice'] = "%s/%s" % (padded_number, year_suffix)
-
+            vals['name'] = f"{padded_seq}/{fiscal_suffix}"
         return super(AccountMove, self).create(vals)
+
 
     @api.onchange('po_number')
     def _onchange_po_number(self):

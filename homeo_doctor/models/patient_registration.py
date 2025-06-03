@@ -641,8 +641,19 @@ class PatientRegistration(models.Model):
             'target': 'current',
         }
 
+    bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='/')
     def action_register_pay(self):
         self.ensure_one()
+        if not self.bill_number or self.bill_number == '/':
+            raw_seq = self.env['ir.sequence'].next_by_code('patient.bill') or '0'
+            padded_seq = str(raw_seq).zfill(4)
+
+            today = date.today()
+            year_start = today.year % 100
+            year_end = (today.year + 1) % 100
+            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+            self.bill_number = f"{padded_seq}/{fiscal_suffix}"
         self.status = 'paid'  # Update the status to 'paid'
         self.register_bool=True
         # Ensure VSSC logic is applied correctly before printing
