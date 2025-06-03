@@ -307,7 +307,7 @@
                                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                                     <div style="flex: 1; min-width: 180px;">
                                         <span class="o_form_label" style="font-weight: bold;">Bill Number:</span>
-                                        <field name="bill_number" invisible="1"/>
+                                        <field name="bill_number" />
                                     </div>
                                     <div style="flex: 1; min-width: 180px;">
                                         <span class="o_form_label" style="font-weight: bold;">UHID:</span>

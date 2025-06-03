@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo import api, fields, models
 
 
@@ -93,9 +95,13 @@ class PharmacyDescription(models.Model):
     @api.model
     def create(self, vals):
         if vals.get('bill_number', 'New') == 'New':
-            seq = self.env['ir.sequence'].next_by_code('pharmacy.description')
-            print(f"Generated sequence: {seq}")
-            vals['bill_number'] = seq or 'New'
+            seq_number = self.env['ir.sequence'].next_by_code('pharmacy.description') or '0000'
+            today = date.today()
+            year_start = today.year % 100
+            year_end = (today.year + 1) % 100
+            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+            vals['bill_number'] = f"{seq_number}/{fiscal_suffix}"
         res = super(PharmacyDescription, self).create(vals)
         # res._process_payment()
 
