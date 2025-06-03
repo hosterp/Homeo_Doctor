@@ -5,7 +5,7 @@
             <div class="header">
                 <div class="text-center">
                     <h2 style="text-decoration: underline; margin-bottom: 10px;">Hospital Management</h2>
-                    <p>Trivandrum | Phone No: 0001-123456 </p>
+                    <p>Trivandrum | Phone: 0471-2373004, Mobile No: 8590203321 </p>
                 </div>
             </div>
             <t t-raw="0"/>
