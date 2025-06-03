@@ -1194,6 +1194,6 @@
             sequence="8"/>
 
     <menuitem id="menu_consultation_details_tree" name="Consultation Details" parent="menu_my_patient_template_root"
-              action="action_patient_reg_consultation" sequence="3"/>
+              action="action_patient_list" sequence="3"/>
 </data>
         </odoo>
