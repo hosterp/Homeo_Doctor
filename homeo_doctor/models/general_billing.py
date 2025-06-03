@@ -275,9 +275,9 @@ class GeneralBilling(models.Model):
 
             # Ensure sequence exists
             if not sequence_number:
-                sequence_number = '000001'
-
-            vals['bill_number'] = f"{sequence_number}/{year_range}"
+                sequence_number = '1'
+            formatted_seq = str(sequence_number).zfill(4)
+            vals['bill_number'] = f"{formatted_seq}/{year_range}"
 
         return super(GeneralBilling, self).create(vals)
 
