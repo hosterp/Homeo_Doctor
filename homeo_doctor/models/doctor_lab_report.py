@@ -1,3 +1,4 @@
+from datetime import date
 from email.policy import default
 
 from odoo import api, fields, models, _
@@ -399,11 +400,20 @@ class DoctorLabReport(models.Model):
 
     @api.model
     def create(self, vals):
-        # Generate report reference if not provided
         if vals.get('report_reference', _('New')) == _('New'):
-            vals['report_reference'] = self.env['ir.sequence'].next_by_code('doctor.lab.report') or _('New')
+
+            seq_number = self.env['ir.sequence'].next_by_code('doctor.lab.report') or '0000'
+
+            today = date.today()
+            year_start = today.year % 100
+            year_end = (today.year + 1) % 100
+            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+            vals['report_reference'] = f"{seq_number}/{fiscal_suffix}"
+
+
         self._onchange_lab_billing_ids_generate_lines()
-        # Check if registration is visible and patient name is provided
+
         if vals.get('register_visible', True) and vals.get('register_patient_name'):
             # Prepare patient registration values
             patient_reg_vals = {
