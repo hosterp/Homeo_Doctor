@@ -791,10 +791,18 @@
                             </group>
 
                             <group string="Lab Billing">
-                                <field name="unpaid_lab_ids">
+                                 <field name="unpaid_lab_ids">
                                     <tree editable="bottom">
                                         <field name="date"/>
-                                        <field name="total_bill_amount"/>
+                                        <field name="total_bill_amount" sum="Total"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
+                                <separator string="Unpaid Bills"/>
+                                <field name="paid_lab_ids">
+                                    <tree editable="bottom">
+                                        <field name="date"/>
+                                        <field name="total_bill_amount" sum='Total'/>
                                         <field name="status"/>
                                     </tree>
                                 </field>
