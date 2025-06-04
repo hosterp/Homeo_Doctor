@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="seq_discharge_bill" model="ir.sequence">
+            <field name="name">Patient Discharge Bill Number</field>
+            <field name="code">discharge.bill</field>
+            <field name="prefix"></field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        <record id="seq_appointment_recept_bill" model="ir.sequence">
+            <field name="name">Patient appointment Bill Number</field>
+            <field name="code">payment.receipt</field>
+            <field name="prefix"></field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
         <record id="seq_patient_bill" model="ir.sequence">
             <field name="name">Patient Bill Number</field>
             <field name="code">patient.bill</field>
+            <field name="prefix"></field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        <record id="seq_patient_admitted_bill" model="ir.sequence">
+            <field name="name">Patient Admitted Bill Number</field>
+            <field name="code">admitted.bill</field>
             <field name="prefix"></field>
             <field name="padding">4</field>
             <field name="number_next">1</field>

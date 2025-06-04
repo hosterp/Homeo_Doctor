@@ -46,7 +46,7 @@
 
                             <div class="row mt-4">
                                 <div class="col-6">
-                                    <strong>Challan No:</strong> <span t-field="o.reference_no"/>
+                                    <strong>Challan No:</strong> <span t-field="o.admitted_bill_number"/>
                                 </div>
                                 <div class="col-6 text-right">
                                     <strong>Date:</strong> <span t-field="o.create_date" t-options='{"format": "dd/MM/yyyy"}'/>

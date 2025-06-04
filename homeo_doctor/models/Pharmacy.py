@@ -7,7 +7,7 @@ class PharmacyDescription(models.Model):
     _name = 'pharmacy.description'
     _description = 'Pharmacy Description'
     _order = 'date desc'
-    _rec_name='uhid_id'
+    _rec_name='bill_number'
 
 
     patient_id = fields.Many2one('patient.registration',string="UHID")
@@ -477,7 +477,7 @@ class PharmacyReturn(models.Model):
     _name = 'pharmacy.return'
     _description = 'Pharmacy Sales Return'
     _order = 'return_date desc'
-    _rec_name='patient_id'
+    _rec_name='return_number'
 
     return_date = fields.Datetime(string="Return Date",default=fields.Datetime.now)
     original_sale_id = fields.Many2one('pharmacy.description', string="Original Bill")
@@ -488,6 +488,32 @@ class PharmacyReturn(models.Model):
     phone_number = fields.Char(related='original_sale_id.phone_number', string="Phone Number", store=True,
                                readonly=True)
     doctor_name = fields.Many2one(related='original_sale_id.doctor_name', string="Doctor", store=True, readonly=True)
+    return_number = fields.Char(
+        string="Return No",
+        readonly=True,
+        copy=False,
+        default='/',
+    )
+
+    @api.model
+    def create(self, vals):
+
+        if not vals.get('return_number') or vals.get('return_number') == '/':
+
+            raw_seq = self.env['ir.sequence'].next_by_code('pharmacy.return.bill') or '1'
+            padded_seq = str(raw_seq).zfill(4)
+
+
+            today = date.today()
+            year_start = today.year % 100
+            year_end = (today.year + 1) % 100
+            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+
+            vals['return_number'] = f"{padded_seq}/{fiscal_suffix}"
+
+        return super().create(vals)
+
 
     @api.depends('return_line_ids.subtotal')
     def _compute_return_amount(self):

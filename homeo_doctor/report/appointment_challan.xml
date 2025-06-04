@@ -36,8 +36,8 @@
                         <!-- Patient Details -->
                         <div class="row mb-4">
                             <div class="col-6">
-                                <strong>Appointment Reference:</strong> 
-                                <span t-field="doc.appointment_reference"/>
+                                <strong>Bill No:</strong>
+                                <span t-field="doc.payment_receipt_number"/>
                             </div>
                             <div class="col-6 text-right">
                                 <strong>Appointment Date:</strong> 
