@@ -665,9 +665,18 @@ class PatientRegistration(models.Model):
         # Return the PDF report action
         return self.env.ref('homeo_doctor.report_patient_challan_action').report_action(self)
 
-        
-
+    admitted_bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='/')
     def action_create_admission(self):
+        if not self.admitted_bill_number or self.admitted_bill_number == '/':
+            raw_seq = self.env['ir.sequence'].next_by_code('admitted.bill') or '0'
+            padded_seq = str(raw_seq).zfill(4)
+
+            today = date.today()
+            year_start = today.year % 100
+            year_end = (today.year + 1) % 100
+            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+            self.admitted_bill_number = f"{padded_seq}/{fiscal_suffix}"
         admission_model = self.env['hospital.admitted.patient']
         registration_model = self.env['patient.reg']
         room_model = self.env['hospital.room']
