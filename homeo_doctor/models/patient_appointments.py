@@ -106,9 +106,28 @@ class PatientAppointment(models.Model):
 
     appointment_id = fields.Many2one('patient.appointment', string='Appointment', readonly=True)
 
-
+    payment_receipt_number = fields.Char(
+        string="Receipt Number",
+        readonly=True,
+        copy=False,
+        default='/',
+    )
     def action_confirm_payment(self):
         for appointment in self:
+            if not appointment.payment_receipt_number or appointment.payment_receipt_number == '/':
+                # Fetch next from sequence 'payment.receipt'
+                raw_seq = self.env['ir.sequence'].next_by_code('payment.receipt') or '0'
+                # Zero-pad to 4 digits
+                padded_seq = str(raw_seq).zfill(4)
+
+                # Compute fiscal year suffix (e.g. if today is June 2025 → "25-26")
+                today = datetime.date.today()
+                year_start = today.year % 100
+                year_end = (today.year + 1) % 100
+                fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+                appointment.payment_receipt_number = f"{padded_seq}/{fiscal_suffix}"
+
             # Update appointment with payment information
             appointment.write({
                 'payment_method': appointment.payment_method,
