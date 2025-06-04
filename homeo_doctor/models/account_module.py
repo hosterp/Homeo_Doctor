@@ -126,12 +126,38 @@ class AccountMove(models.Model):
 
     partner_id = fields.Many2one('res.partner', string="Customer", required=True, default=_default_partner)
 
+    # @api.model
+    # def create(self, vals):
+    #     if vals.get('move_type') == 'out_invoice' and not vals.get('name'):
+    #         vals['name'] = self.env['ir.sequence'].next_by_code('account.move')
+    #
+    #     return super(AccountMove, self).create(vals)
     @api.model
     def create(self, vals):
-        if vals.get('move_type') == 'out_invoice' and not vals.get('name'):
-            vals['name'] = self.env['ir.sequence'].next_by_code('account.move')
-        return super(AccountMove, self).create(vals)
+        # 1) If this is a vendor bill, override the default name:
+        if vals.get('move_type') == 'in_invoice':
+            # Force name to False so we can generate our custom sequence
+            vals['name'] = False
 
+            # a) fetch next number from our custom sequence code 'in.invoice'
+            #    (You must have created a sequence with code = 'in.invoice')
+            raw_seq = self.env['ir.sequence'].next_by_code('in.invoice') or '0'
+            padded_seq = str(raw_seq).zfill(4)
+
+            # b) compute fiscal-year suffix, e.g. '25-26' if today is in 2025
+            today = fields.Date.context_today(self)
+            year_start = today.year % 100
+            year_end = (today.year + 1) % 100
+            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+            # c) set name = "0001/25-26"
+            vals['name'] = f"{padded_seq}/{fiscal_suffix}"
+
+        # 2) Else if it’s a customer invoice, let Odoo’s default run:
+        #    (We do nothing here, so `name` remains whatever default or next_by_code('account.move') gives.)
+        #    If you wanted to override out_invoice as well, you could add an elif for move_type == 'out_invoice'.
+
+        return super(AccountMove, self).create(vals)
     def action_post(self):
         res = super(AccountMove, self).action_post()
 
