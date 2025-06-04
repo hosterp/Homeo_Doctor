@@ -18,6 +18,30 @@
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
                         <div class="page">
+                            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+
+                                    <div style="text-align: center;">
+                                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
+                                        </h1>
+                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                            THIRUVANANTHAPURAM -695 564
+                                        </p>
+                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321
+                                            dpmshospital@gmail.com
+                                        </p>
+<!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
+<!--                                            <strong>PH:</strong>-->
+<!--                                            0471-2432121, 9188429198 |-->
+<!--                                            <strong>Email:</strong>-->
+<!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
+<!--                                               style="color: #007bff; text-decoration: none;">-->
+<!--                                                santhwanatvpm@gmail.com-->
+<!--                                            </a>-->
+<!--                                        </p>-->
+                                    </div>
+                                </div>
                             <h2 class="text-center">Discharge Challan</h2>
 
                             <div class="row mt-4">
