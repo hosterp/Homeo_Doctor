@@ -446,9 +446,9 @@ a[data-menu-xmlid="mail.menu_root_discuss"] {
     display: none !important;
 }
 
-a[data-menu-xmlid="hr.menu_hr_root"] {
+/*a[data-menu-xmlid="hr.menu_hr_root"] {
     display: none !important;
-}
+}*/
 .o_menu_entry_lvl_1 span {
     font-weight: bold !important;
 }
