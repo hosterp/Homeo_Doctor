@@ -685,11 +685,12 @@ class IPReturn(models.Model):
     _name = 'ip.return'
     _description = 'IP Patient Medicine Return'
     _order = 'return_date desc'
-    _rec_name='uhids'
+    _rec_name='return_number'
 
     patient_id = fields.Many2one('patient.registration', string="UHID")
     uhid = fields.Many2one('patient.reg', string="UHID")
-    uhids = fields.Many2one('pharmacy.description', string="UHID", required=True)
+    uhids = fields.Many2one('pharmacy.description', string="Orginal Bill", required=True)
+    patient_uhid = fields.Char(string="UHID")
     name = fields.Char(string="Patient Name", store=True)
     phone_number = fields.Char(string="Phone Number", store=True)
     original_bill_id = fields.Many2one('pharmacy.description', string="Original Bill", domain="[('op_category', '=', 'ip')]")
@@ -703,12 +704,37 @@ class IPReturn(models.Model):
         ('returned', 'Returned'),
         ('cancelled', 'Cancelled')
     ], default='draft', string="Status")
+    return_number = fields.Char(
+        string="Return Number",
+        readonly=True,
+        copy=False,
+        default='/',
+    )
 
+    @api.model
+    def create(self, vals):
+
+        if not vals.get('return_number') or vals.get('return_number') == '/':
+
+            raw_seq = self.env['ir.sequence'].next_by_code('ip.return.bill') or '1'
+            padded_seq = str(raw_seq).zfill(4)
+
+
+            today = date.today()
+            year_start = today.year % 100
+            year_end = (today.year + 1) % 100
+            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+
+            vals['return_number'] = f"{padded_seq}/{fiscal_suffix}"
+
+        return super(IPReturn, self).create(vals)
     @api.onchange('uhids')
     def _onchange_uhids(self):
         for rec in self:
             if rec.uhids:
                 rec.name = rec.uhids.name
+                rec.patient_uhid = rec.uhids.uhid_id.reference_no
                 rec.phone_number = rec.uhids.phone_number
 
     @api.depends('return_line_ids.quantity', 'return_line_ids.amount')
