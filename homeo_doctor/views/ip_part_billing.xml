@@ -129,6 +129,51 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="admitted_date" class="col-md-5 col-form-label py-0 small">Admitted Date
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="admitted_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="from_date" class="col-md-5 col-form-label py-0 small">From Date
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="from_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="to_date" class="col-md-5 col-form-label py-0 small">To Date
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="to_date"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="rent_full_day" class="col-md-5 col-form-label py-0 small">rent_full_day
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="rent_full_day"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="rent_half_day" class="col-md-5 col-form-label py-0 small">rent_half_day
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="rent_half_day"/>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col px-1" attrs="{'invisible': [('observation', '=', False)]}" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
                                         <label for="rent" class="col-md-5 col-form-label py-0 small">Rent

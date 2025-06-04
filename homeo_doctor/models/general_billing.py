@@ -262,6 +262,7 @@ class GeneralBilling(models.Model):
             self.gender = self.mrd_no.gender
             self.mobile = self.mrd_no.phone_number
             self.doctor = self.mrd_no.doc_name
+
     @api.model
     def create(self, vals):
         """Generate a unique billing number in the format: 000001/24-25"""
@@ -396,6 +397,12 @@ class IPPartBilling(models.Model):
                           ('observation', 'Observation'),
                           ('discharge','Discharge')
                           ], string="Status")
+    admitted_date = fields.Date('Admitted Date')
+    from_date = fields.Datetime('From Date')
+    to_date = fields.Datetime('to Date')
+    rent_full_day = fields.Float(string="Full Day Rent")
+    rent_half_day = fields.Float(string="Half Day Rent")
+
 
     def action_observation(self):
         """Method to toggle observation field when Observation button is clicked"""
@@ -578,6 +585,7 @@ class IPPartBilling(models.Model):
 
             record.net_amount = sum(record.general_bill_line_ids.mapped('total_amt')) + record.rent
 
+    total_rent_amount = fields.Float(string='Total Rent Amount', compute='_compute_rent_amount', store=True)
     @api.onchange('mrd_no')
     def _onchange_mrd_no(self):
         if self.mrd_no:
@@ -586,6 +594,81 @@ class IPPartBilling(models.Model):
             self.gender = self.mrd_no.gender
             self.mobile = self.mrd_no.phone_number
             self.doctor = self.mrd_no.doc_name
+            self.admitted_date = self.mrd_no.admitted_date
+            self.rent_full_day = self.mrd_no.rent_full
+            self.rent_half_day = self.mrd_no.rent_half
+
+    @api.depends('from_date', 'to_date', 'rent_full_day', 'rent_half_day')
+    def _compute_rent_amount(self):
+        for rec in self:
+            if rec.from_date and rec.to_date:
+                delta = rec.to_date - rec.from_date
+                total_days = delta.days
+                seconds = delta.seconds
+
+                if seconds == 0:
+                    half_day = False
+                elif seconds <= 12 * 3600:
+                    half_day = True
+                else:
+                    total_days += 1
+                    half_day = False
+
+                rent = total_days * (rec.rent_full_day or 0)
+                if half_day:
+                    rent += (rec.rent_half_day or 0)
+
+                rec.total_rent_amount = rent
+                print( rec.total_rent_amount,' rec.total_rent_amount rec.total_rent_amount rec.total_rent_amount rec.total_rent_amount rec.total_rent_amount')
+            else:
+                rec.total_rent_amount = 0
+
+    from datetime import datetime, timedelta
+
+    @api.onchange('from_date', 'to_date', 'total_rent_amount')
+    def _onchange_dates_update_rent_line(self):
+        for rec in self:
+            if rec.total_rent_amount > 0 and rec.from_date and rec.to_date:
+                rent_lines = rec.general_bill_line_ids.filtered(
+                    lambda l: l.particulars.particular_name == 'Room Rent'
+                )
+
+                rent_particular = self.env['general.dept.costing'].search(
+                    [('particular_name', '=', 'Room Rent')],
+                    limit=1
+                )
+                if not rent_particular:
+                    return
+
+                delta = rec.to_date - rec.from_date
+                total_days = delta.days
+
+                # Determine if the checkout time (to_date) is before 12 PM
+                half_day = rec.to_date.hour < 12
+
+                # Final quantity logic
+                qty = total_days + (0.5 if half_day else 1)
+
+                # Remove old rent lines
+                lines = [(2, line.id) for line in rent_lines]
+
+                vals = {
+                    'particulars': rent_particular.id,
+                    'quantity': qty,
+                    'rate': rec.rent_full_day,
+                }
+                lines.append((0, 0, vals))
+
+                print("Assigning One2many commands with qty:", qty, lines)
+
+                rec.general_bill_line_ids = lines
+            else:
+                rent_lines = rec.general_bill_line_ids.filtered(
+                    lambda l: l.particulars.particular_name == 'Room Rent'
+                )
+                if rent_lines:
+                    lines = [(2, line.id) for line in rent_lines]
+                    rec.general_bill_line_ids = lines
 
     @api.model
     def create(self, vals):
@@ -641,7 +724,7 @@ class IPPartBillLine(models.Model):
     particulars = fields.Many2one('general.dept.costing',string='Select particulars')
     rate = fields.Integer(string='Rate')
     tax = fields.Many2one('dept.tax', string='Tax(%)')
-    quantity = fields.Integer(string='Qty')
+    quantity = fields.Float(string='Qty')
     total_amt=fields.Integer(string='Amount',compute="_compute_total", store=True)
 
     @api.depends('rate', 'tax', 'quantity')
