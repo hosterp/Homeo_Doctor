@@ -36,7 +36,8 @@ class PatientRegistration(models.Model):
     vssc_id = fields.Char(string="VSSC ID No")
     department_id = fields.Many2one('doctor.department', string='Department')
     doc_name = fields.Many2one('doctor.profile', string='Doctor')
-    registration_fee = fields.Many2one('patient.registration.fee',string="Registration Fee", default=lambda self: self._default_registration_fee())
+    registration_fee = fields.Many2one('patient.registration.fee', string="Registration Fee",
+                                       default=lambda self: self._default_registration_fee())
     remark = fields.Text(string="Remark")
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     lab_report_count = fields.Integer(string="Lab Reports", compute='_compute_lab_report_count')
@@ -61,7 +62,7 @@ class PatientRegistration(models.Model):
     room_category_new = fields.Many2one('hospital.room.type', string='Room Category')
     room_id = fields.Many2one('hospital.room', string="Room")
 
-    bed_id = fields.Many2one('hospital.bed', string="Bed",)
+    bed_id = fields.Many2one('hospital.bed', string="Bed", )
     advance_amount = fields.Integer(string='Per Day')
     # bed_id = fields.Many2one('hospital.bed', string='Bed')
     nurse_charge = fields.Integer(string='Nurse Fee')
@@ -77,37 +78,39 @@ class PatientRegistration(models.Model):
     consultation_check = fields.Boolean(default=False)
     temp_reference_no = fields.Char(string=" Temporary Reference")
     no_consultation = fields.Boolean(default=True)
-    walk_in=fields.Boolean(default=False)
+    walk_in = fields.Boolean(default=False)
     op_category = fields.Many2one('op.category', string='OP Category')
     doctor = fields.Many2one('doctor.profile', string='Doctor')
-    block = fields.Many2one('block',string='Floor')
-    new_block =fields.Many2one('hospital.block',string='Floor')
+    block = fields.Many2one('block', string='Floor')
+    new_block = fields.Many2one('hospital.block', string='Floor')
     room_number_new = fields.Many2one('hospital.room', string="Room")
-    room_number = fields.Char( string="Room")
+    room_number = fields.Char(string="Room")
     room_transfer_date = fields.Datetime(string="Transfer Date")
-    transferred_block = fields.Many2one('block',string='Floor')
+    transferred_block = fields.Many2one('block', string='Floor')
     transferred_room_category = fields.Many2one('room.category', string='Room Category')
     transferred_room_number = fields.Integer(string='Room No')
     transferred_bed_number = fields.Integer(string='Bed Number')
-    amount_in_advance =  fields.Integer(string="Advance Amount")
+    amount_in_advance = fields.Integer(string="Advance Amount")
     advance_mode_payment = fields.Selection([('cash', 'Cash'),
-                                ('credit', 'Credit'),
-                                ('card', 'Card'),
-                                ('cheque', 'Cheque'),
-                                ('upi', 'Mobile Pay'),], string='Payment Method',default='cash')
+                                             ('credit', 'Credit'),
+                                             ('card', 'Card'),
+                                             ('cheque', 'Cheque'),
+                                             ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
     advance_remark = fields.Text(string="Remarks")
     advance_date = fields.Datetime(string="Date")
-    admission_total_amount = fields.Integer(string="Total Amount" ,compute='_compute_total_unpaid_amount')
-    temp_admission_total_amount =  fields.Integer("Total Amount")
+    admission_total_amount = fields.Integer(string="Total Amount", compute='_compute_total_unpaid_amount')
+    temp_admission_total_amount = fields.Integer("Total Amount")
     admission_amount_paid = fields.Integer(string="Amount Paid")
     admission_balance = fields.Integer(string="Balance")
     Staff_name = fields.Char("Staff Name")
     staff_password = fields.Char("Password")
     admit_card_no = fields.Char(string="Card No")
     admit_bank = fields.Char(string="Bank")
-    rent_half=fields.Char('Rent Half Day')
-    rent_full=fields.Char('Rent Full Day')
-    status = fields.Selection([('unpaid','Unpaid'),('paid','Paid'),('cancelled','Cancelled'),('admitted', 'Admitted'),('proceed_discharge','Proceed to Discharge'), ('discharged', 'Discharged')],default='unpaid')
+    rent_half = fields.Char('Rent Half Day')
+    rent_full = fields.Char('Rent Full Day')
+    status = fields.Selection(
+        [('unpaid', 'Unpaid'), ('paid', 'Paid'), ('cancelled', 'Cancelled'), ('admitted', 'Admitted'),
+         ('proceed_discharge', 'Proceed to Discharge'), ('discharged', 'Discharged')], default='unpaid')
 
     unpaid_general_ids = fields.One2many('general.billing', compute='_compute_all_totals', string="Unpaid General")
     # unpaid_lab_ids = fields.One2many('doctor.lab.report', compute='_compute_unpaid_lab', string="Unpaid Lab")
@@ -129,7 +132,7 @@ class PatientRegistration(models.Model):
     unpaid_total = fields.Float(string="Total Unpaid", compute="_compute_all_totals", store=True)
     grant_total = fields.Float(string="Grand Total", compute="_compute_all_totals", store=True)
     room_rent = fields.Float(string="Room Rent", compute="_compute_total_unpaid_amount", store=True)
-    register_bool=fields.Boolean(default=False)
+    register_bool = fields.Boolean(default=False)
     unpaid_pharmacy_ids = fields.One2many(
         'pharmacy.description', 'uhid_id', string="Unpaid Pharmacy Bills", compute='_compute_all_totals',
         store=False)
@@ -188,7 +191,7 @@ class PatientRegistration(models.Model):
     @api.depends('reference_no', 'admitted_date', 'vssc_boolean')
     def _compute_all_totals(self):
         today = fields.Date.today()
-        print(today,'todaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytoday')
+        print(today, 'todaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytoday')
         for rec in self:
             # Initialize
             rec.paid_total = 0.0
@@ -208,7 +211,7 @@ class PatientRegistration(models.Model):
                     ('mrd_no', '=', rec.id),
                     ('status', '=', 'paid'),
                     ('bill_date', '>=', rec.admitted_date),
-                    ('bill_date', '<=',  fields.Date.today()),
+                    ('bill_date', '<=', fields.Date.today()),
                 ])
                 unpaid_general = self.env['general.billing'].search([
                     ('mrd_no', '=', rec.id),
@@ -351,16 +354,16 @@ class PatientRegistration(models.Model):
     register_staff_name = fields.Char("Staff Name")
     register_staff_password = fields.Char("Password")
     register_mode_payment = fields.Selection([('cash', 'Cash'),
-                                             ('card', 'Card'),
-                                             ('cheque', 'Cheque'),
-                                             ('credit','Credit'),
-                                             ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
+                                              ('card', 'Card'),
+                                              ('cheque', 'Cheque'),
+                                              ('credit', 'Credit'),
+                                              ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
     register_card_no = fields.Char(string="Card No")
     register_bank_name = fields.Char(string="Bank")
 
     def admit_reception(self):
-        self.admission_boolean=True
-        self.status='admitted'
+        self.admission_boolean = True
+        self.status = 'admitted'
 
     @api.onchange('register_amount_paid')
     def _onchange_register_amount_paid(self):
@@ -371,9 +374,9 @@ class PatientRegistration(models.Model):
             # print(total, "total....")
             # print(paid, "paid....")
             # print(rec.register_balance, "balance....")
-            if (paid < total and paid >0):
+            if (paid < total and paid > 0):
                 rec.register_balance = total - paid
-            elif (paid > total and paid >0):
+            elif (paid > total and paid > 0):
                 rec.register_balance = paid - total
             else:
                 rec.register_balance = 0
@@ -470,8 +473,8 @@ class PatientRegistration(models.Model):
         for rec in self:
             total = 0.0
             full_days = 0
-            rent_full_value=0
-            remaining_hours=0
+            rent_full_value = 0
+            remaining_hours = 0
             # Calculate service totals
             for general in rec.unpaid_general_ids:
                 total += general.total_amount or 0.0
@@ -509,6 +512,13 @@ class PatientRegistration(models.Model):
             rec.admission_total_amount = total
             rec.room_rent = full_days * rent_full_value + (rent_half_value if remaining_hours > 0 else 0.0)
 
+    discharge_bill_number = fields.Char(
+        string="Discharge Bill #",
+        readonly=True,
+        copy=False,
+        default='/'
+    )
+
     def action_discharged_patient_reg(self):
         for record in self:
             record.status = 'discharged'
@@ -522,6 +532,19 @@ class PatientRegistration(models.Model):
                 record.room_number_new.is_available = False
 
             admitted_patient = self.env['hospital.admitted.patient'].search([('patient_id', '=', record.id)], limit=1)
+            if not record.discharge_bill_number or record.discharge_bill_number == '/':
+                # a) grab next sequence (must exist in Settings → Technical → Sequences)
+                raw_seq = self.env['ir.sequence'].next_by_code('discharge.bill') or '0'
+                padded_seq = str(raw_seq).zfill(4)
+
+                # b) compute fiscal year suffix: e.g. if today is July 2025 ⇒ "25-26"
+                today = date.today()
+                year_start = today.year % 100
+                year_end = (today.year + 1) % 100
+                fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+                # c) assign it
+                record.discharge_bill_number = f"{padded_seq}/{fiscal_suffix}"
             if admitted_patient:
                 admitted_patient.status = 'discharged'
                 self.env['discharged.patient.record'].create({
@@ -545,7 +568,6 @@ class PatientRegistration(models.Model):
                     'pay_mode': record.advance_mode_payment,
 
                 })
-
 
             record.update({
                 'room_number_new': False,
@@ -575,6 +597,7 @@ class PatientRegistration(models.Model):
                 record.unpaid_lab_ids.write({'status': 'paid'})
             record.unpaid_pharmacy_ids.write({'status': 'paid'})
         return self.env.ref('homeo_doctor.action_report_discharge_challan').report_action(self)
+
     @api.onchange('room_category_new')
     def _onchange_room_category_new(self):
         if self.room_category_new:
@@ -591,8 +614,8 @@ class PatientRegistration(models.Model):
         if self.room_number_new:
             self.bed_id = self.room_number_new.bed_number_new
             self.new_block = self.room_number_new.block_new
-            self.rent_half=self.room_number_new.rent_half
-            self.rent_full=self.room_number_new.rent_full
+            self.rent_half = self.room_number_new.rent_half
+            self.rent_full = self.room_number_new.rent_full
         else:
             self.bed_id = False
             self.new_block = False
@@ -629,7 +652,6 @@ class PatientRegistration(models.Model):
         """Fetch the first registration fee as the default"""
         return self.env['patient.registration.fee'].search([], limit=1).id
 
-
     def action_walk_in_patient(self):
         return {
             'type': 'ir.actions.act_window',
@@ -642,6 +664,7 @@ class PatientRegistration(models.Model):
         }
 
     bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='/')
+
     def action_register_pay(self):
         self.ensure_one()
         if not self.bill_number or self.bill_number == '/':
@@ -655,7 +678,7 @@ class PatientRegistration(models.Model):
 
             self.bill_number = f"{padded_seq}/{fiscal_suffix}"
         self.status = 'paid'  # Update the status to 'paid'
-        self.register_bool=True
+        self.register_bool = True
         # Ensure VSSC logic is applied correctly before printing
         if self.vssc_boolean:
             # For VSSC patients, ensure values are correctly set before printing
@@ -666,6 +689,7 @@ class PatientRegistration(models.Model):
         return self.env.ref('homeo_doctor.report_patient_challan_action').report_action(self)
 
     admitted_bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='/')
+
     def action_create_admission(self):
         if not self.admitted_bill_number or self.admitted_bill_number == '/':
             raw_seq = self.env['ir.sequence'].next_by_code('admitted.bill') or '0'
@@ -682,7 +706,7 @@ class PatientRegistration(models.Model):
         room_model = self.env['hospital.room']
         advance_model = self.env['advance.patient.record']
         for rec in self:
-            rec.admission_total_amount= False
+            rec.admission_total_amount = False
             patient = registration_model.search([('reference_no', '=', rec.reference_no)], limit=1)
             if not patient:
                 raise UserError(f"No patient found with reference no: {rec.reference_no}")
@@ -722,6 +746,7 @@ class PatientRegistration(models.Model):
                 if room:
                     room.write({'is_available': True})
         return self.env.ref('homeo_doctor.action_report_admission_challan').report_action(self)
+
     def _get_report_values(self, docids, data=None):
         docs = self.env['patient.reg'].browse(docids)
         return {
@@ -950,16 +975,16 @@ class PatientRegistration(models.Model):
             'res_id': appointment.id,
             'target': 'current',
         }
-    
+
     def open_patient_history(self):
 
         self.ensure_one()
-        
+
         # Create history wizard
         history_wizard = self.env['patient.history.wizard'].create({
             'patient_id': self.id
         })
-        
+
         # Return action to open wizard
         return {
             'name': f'Patient History - {self.patient_id}',
@@ -982,12 +1007,10 @@ class RoomCategory(models.Model):
 
 
 class PatientRegistrationFee(models.Model):
-    _name='patient.registration.fee'
-    _rec_name='fee'
+    _name = 'patient.registration.fee'
+    _rec_name = 'fee'
 
-    fee=fields.Integer(string='Patient Registration Fee')
-
-
+    fee = fields.Integer(string='Patient Registration Fee')
 
 
 class PatientHistoryWizard(models.TransientModel):
@@ -995,45 +1018,45 @@ class PatientHistoryWizard(models.TransientModel):
     _description = 'Patient History Wizard'
 
     patient_id = fields.Many2one('patient.reg', string='Patient', required=True)
-    
+
     # Consultation History
     consultation_history_ids = fields.One2many(
-        'patient.registration', 
-        compute='_compute_consultation_history', 
+        'patient.registration',
+        compute='_compute_consultation_history',
         string='Consultation History'
     )
-    
+
     # Lab Reports
     lab_report_ids = fields.One2many(
-        'doctor.lab.report', 
-        compute='_compute_lab_reports', 
+        'doctor.lab.report',
+        compute='_compute_lab_reports',
         string='Lab Reports'
     )
-    
+
     # MRI Reports
     mri_report_ids = fields.One2many(
-        'scanning.mri', 
-        compute='_compute_mri_reports', 
+        'scanning.mri',
+        compute='_compute_mri_reports',
         string='MRI Reports'
     )
-    
+
     # CT Reports
     ct_report_ids = fields.One2many(
-        'scanning.ct', 
-        compute='_compute_ct_reports', 
+        'scanning.ct',
+        compute='_compute_ct_reports',
         string='CT Reports'
     )
-    
+
     # X-Ray Reports
     x_ray_report_ids = fields.One2many(
-        'scanning.x.ray', 
-        compute='_compute_x_ray_reports', 
+        'scanning.x.ray',
+        compute='_compute_x_ray_reports',
         string='X-Ray Reports'
     )
     # Pharmacy History
     pharmacy_history_ids = fields.One2many(
-        'pharmacy.description', 
-        compute='_compute_pharmacy_history', 
+        'pharmacy.description',
+        compute='_compute_pharmacy_history',
         string='Pharmacy History'
     )
 
@@ -1083,7 +1106,5 @@ class PatientHistoryWizard(models.TransientModel):
 class OpCategory(models.Model):
     _name = 'block'
     _rec_name = 'block'
-
-
 
     block = fields.Char(string='block')

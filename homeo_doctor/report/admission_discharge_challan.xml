@@ -21,43 +21,71 @@
                             <h2 class="text-center">Discharge Challan</h2>
 
                             <div class="row mt-4">
-                                <div class="col-6">
-                                    <strong>Reference No:</strong> <span t-field="o.reference_no"/>
+                                <div class="col-4">
+                                    <strong>Bill No:</strong>
+                                    <span t-field="o.discharge_bill_number"/>
                                 </div>
-                                <div class="col-6 text-right">
-                                    <strong>Discharge Date:</strong> <span t-field="o.discharge_date" />
+                                <div class="col-4 text-center">
+                                    <strong>Reference No:</strong>
+                                    <span t-field="o.reference_no"/>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <strong>Discharge Date:</strong>
+                                    <span t-field="o.discharge_date"/>
                                 </div>
                             </div>
+
 
                             <div class="row mt-3">
                                 <div class="col-12">
                                     <table class="table table-bordered">
                                         <tr>
-                                            <td width="30%"><strong>Patient Name:</strong></td>
-                                            <td width="70%"><span t-field="o.patient_id"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Patient Address:</strong></td>
-                                            <td><span t-field="o.address"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Admitted Date:</strong></td>
-                                            <td><span t-field="o.temp_admitted_date" />
+                                            <td width="30%">
+                                                <strong>Patient Name:</strong>
+                                            </td>
+                                            <td width="70%">
+                                                <span t-field="o.patient_id"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Discharge Date:</strong></td>
-                                            <td><span t-field="o.temp_discharge_date" />
+                                            <td>
+                                                <strong>Patient Address:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.address"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Total  Amount:</strong></td>
-                                            <td><span t-field="o.temp_admission_total_amount" />
+                                            <td>
+                                                <strong>Admitted Date:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.temp_admitted_date"/>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Payment Mode:</strong></td>
-                                            <td><span t-field="o.advance_mode_payment"/></td>
+                                            <td>
+                                                <strong>Discharge Date:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.temp_discharge_date"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Total Amount:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.temp_admission_total_amount"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Payment Mode:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.advance_mode_payment"/>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
