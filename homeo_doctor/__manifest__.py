@@ -90,6 +90,7 @@
         "views/bill_status_wizard_view.xml",
         "views/ip_return_medicine.xml",
         "views/hr_employee_kanban_inherit.xml",
+        "views/ip_part_billing.xml",
         "data/ir_sequence_data.xml",
 
     ],
