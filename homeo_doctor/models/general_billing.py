@@ -60,6 +60,8 @@ class GeneralBilling(models.Model):
     status = fields.Selection([
         ('unpaid', 'Unpaid'),
         ('paid', 'Paid'),
+        ('observation','Observation'),
+        ('discharge','Discharge'),
     ], string="Status", default="unpaid", tracking=True)
 
     amount_in_words = fields.Char("Total in Words", compute="_compute_amount_in_words")
@@ -77,11 +79,14 @@ class GeneralBilling(models.Model):
         # If observation is True, set observation_status to 'observation'
         if self.observation:
             self.observation_status = 'observation'
+            self.status = 'observation'
 
     def action_observation_discharge(self):
         self.observation = False
+        self.status = 'discharge'
         if self.observation:
             self.observation_status = 'discharge'
+
 
 
     @api.onchange('discount', 'discount_type', 'total_amount')
