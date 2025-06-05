@@ -545,6 +545,16 @@ class PatientRegistration(models.Model):
     )
 
     def action_discharged_patient_reg(self):
+        if self.Staff_name and self.staff_password:
+            employee = self.Staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_password != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
         for record in self:
             record.status = 'discharged'
             record.admission_boolean = False
@@ -706,7 +716,7 @@ class PatientRegistration(models.Model):
         else:
             raise ValidationError("Please enter both staff name and password.")
 
-        # ✅ Password is valid, continue with logic:
+
         if not self.bill_number or self.bill_number == '/':
             raw_seq = self.env['ir.sequence'].next_by_code('patient.bill') or '0'
             padded_seq = str(raw_seq).zfill(4)
@@ -729,6 +739,16 @@ class PatientRegistration(models.Model):
     admitted_bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='/')
 
     def action_create_admission(self):
+        if self.Staff_name and self.staff_password:
+            employee = self.Staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_password != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
         if not self.admitted_bill_number or self.admitted_bill_number == '/':
             raw_seq = self.env['ir.sequence'].next_by_code('admitted.bill') or '0'
             padded_seq = str(raw_seq).zfill(4)
