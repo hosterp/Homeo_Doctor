@@ -566,15 +566,17 @@ class IPPartBilling(models.Model):
     def action_pay_button(self):
         for record in self:
             record.status = 'paid'
+
+        # Return action to print PDF and show notification
         return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': 'Payment Confirmed',
-                'message': f'Payment has been confirmed for {self.patient_name}',
-                'sticky': False,
-                'next': {'type': 'ir.actions.act_window_close'},
-            }
+            'type': 'ir.actions.report',
+            'report_name': 'homeo_doctor.report_ip_part_billing_document',
+            'report_type': 'qweb-pdf',
+            'context': {
+                'active_ids': self.ids,
+                'active_model': 'ip.part.billing',
+            },
+            'target': 'new',
         }
 
     @api.depends('general_bill_line_ids.quantity', 'general_bill_line_ids.total_amt', 'general_bill_line_ids.tax',
