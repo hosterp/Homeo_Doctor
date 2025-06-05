@@ -8,10 +8,10 @@
                 <form string="Patient Billing" class="lab_form general_form">
                     <header>
                         <field name="status" widget="statusbar"/>
-                        <button name="action_pay_button" type="object" string="Pay" class="oe_highlight"/>
-                        <button name="action_create_admission" type="object" string="Admit" class="oe_highlight"/>
-                        <button name="action_observation" type="object" string="Observation" class="oe_highlight"/>
-                        <button name="action_observation_discharge" type="object" string="Discharge" class="oe_highlight"/>
+                        <button name="action_pay_button" type="object"  string="Pay" class="oe_highlight"/>
+<!--                        <button name="action_create_admission" type="object" string="Admit" class="oe_highlight"/>-->
+<!--                        <button name="action_observation" type="object" string="Observation" class="oe_highlight"/>-->
+<!--                        <button name="action_observation_discharge" type="object" string="Discharge" class="oe_highlight"/>-->
                     </header>
                     <sheet>
                         <div class="oe_title" style="display:none;">
