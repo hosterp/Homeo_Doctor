@@ -737,9 +737,13 @@
 
                             </div>
                         </div>
-                        <group col="4">
+                        <group col="5">
                             <group>
                                 <field name="room_rent" readonly="1"
+                                       style="font-weight:bold; font-size:16px;"/>
+                            </group>
+                            <group>
+                                <field name="paid_room_rent" readonly="1"
                                        style="font-weight:bold; font-size:16px;"/>
                             </group>
                             <group>
@@ -762,7 +766,27 @@
 
                     <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">
                         <page string="Unpaid Bills">
+                            <group string="IP Part Billing">
+                                <separator string="Paid Bills"/>
+                                <field name="paid_ip_ids">
+                                    <tree>
+                                        <field name="bill_date"/>
+                                         <field name="room_rent_total" sum="Total"/>
+                                        <field name="total_amount" sum="Total"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
 
+                                <separator string="Unpaid Bills" invisible="1"/>
+                                <field name="unpaid_ip_ids" invisible="1">
+                                    <tree>
+                                        <field name="bill_date"/>
+
+                                        <field name="total_amount" sum="Total"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
+                            </group>
                             <group string="General Billing">
                                 <separator string="Paid Bills"/>
                                 <field name="paid_general_ids">
