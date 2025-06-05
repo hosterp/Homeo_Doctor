@@ -54,7 +54,7 @@ class GeneralBilling(models.Model):
     bill_by=fields.Char(string='Bill By')
     remarks =fields.Char(string='Remarks')
     staff_pwd=fields.Char(string='Staff Password')
-    staff_name=fields.Char(string='Staff Name')
+    staff_name=fields.Many2one('hr.employee',string='Staff Name')
     amount_paid = fields.Integer(string="Amount Paid")
     balance = fields.Integer(string="Balance")
     status = fields.Selection([
@@ -386,7 +386,7 @@ class IPPartBilling(models.Model):
     bill_by=fields.Char(string='Bill By')
     remarks =fields.Char(string='Remarks')
     staff_pwd=fields.Char(string='Staff Password')
-    staff_name=fields.Char(string='Staff Name')
+    staff_name=fields.Many2one('hr.employee',string='Staff Name')
     amount_paid = fields.Integer(string="Amount Paid")
     balance = fields.Integer(string="Balance")
     status = fields.Selection([

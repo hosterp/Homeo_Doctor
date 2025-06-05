@@ -37,7 +37,7 @@ class DoctorLabReport(models.Model):
     age=fields.Integer('Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     remarks = fields.Text("Remarks")
-    staff_name = fields.Char("Staff Name")
+    staff_name = fields.Many2one('hr.employee',"Staff Name")
     o_c_percentage = fields.Char("OC%")
     o_c = fields.Char("OC")
     mode_of_payment = fields.Selection([('cash', 'Cash'),

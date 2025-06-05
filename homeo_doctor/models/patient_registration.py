@@ -102,7 +102,7 @@ class PatientRegistration(models.Model):
     temp_admission_total_amount = fields.Integer("Total Amount")
     admission_amount_paid = fields.Integer(string="Amount Paid")
     admission_balance = fields.Integer(string="Balance")
-    Staff_name = fields.Char("Staff Name")
+    Staff_name = fields.Many2one('hr.employee',"Staff Name")
     staff_password = fields.Char("Password")
     admit_card_no = fields.Char(string="Card No")
     admit_bank = fields.Char(string="Bank")
@@ -374,7 +374,7 @@ class PatientRegistration(models.Model):
     register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")
     register_amount_paid = fields.Integer(string="Amount Paid")
     register_balance = fields.Integer(string="Balance")
-    register_staff_name = fields.Char("Staff Name")
+    register_staff_name = fields.Many2one('hr.employee',"Staff Name")
     register_staff_password = fields.Char("Password")
     register_mode_payment = fields.Selection([('cash', 'Cash'),
                                               ('card', 'Card'),

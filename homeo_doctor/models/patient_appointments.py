@@ -51,7 +51,7 @@ class PatientAppointment(models.Model):
     register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")
     register_amount_paid = fields.Integer(string="Amount Paid")
     register_balance = fields.Integer(string="Balance")
-    register_staff_name = fields.Char("Staff Name")
+    register_staff_name = fields.Many2one('hr.employee',"Staff Name")
     register_staff_password = fields.Char("Password")
     register_mode_payment = fields.Selection([('cash', 'Cash'),
                                               ('card', 'Card'),
