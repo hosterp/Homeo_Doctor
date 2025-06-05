@@ -132,6 +132,7 @@ class PatientRegistration(models.Model):
     unpaid_total = fields.Float(string="Total Unpaid", compute="_compute_all_totals", store=True)
     grant_total = fields.Float(string="Grand Total", compute="_compute_all_totals", store=True)
     room_rent = fields.Float(string="Room Rent", compute="_compute_total_unpaid_amount", store=True)
+    paid_room_rent = fields.Float(string="Paid Room Rent", store=True)
     register_bool = fields.Boolean(default=False)
     unpaid_pharmacy_ids = fields.One2many(
         'pharmacy.description', 'uhid_id', string="Unpaid Pharmacy Bills", compute='_compute_all_totals',
@@ -139,6 +140,12 @@ class PatientRegistration(models.Model):
 
     paid_pharmacy_ids = fields.One2many(
         'pharmacy.description', 'uhid_id', string="Paid Pharmacy Bills", compute='_compute_all_totals', store=False)
+    paid_ip_ids = fields.Many2many(
+        'ip.part.billing', string="Paid IP Bills", compute="_compute_all_totals"
+    )
+    unpaid_ip_ids = fields.Many2many(
+        'ip.part.billing', string="Unpaid IP Bills", compute="_compute_all_totals"
+    )
 
     def action_view_consultations(self):
         if not self.patient_id:
@@ -239,7 +246,20 @@ class PatientRegistration(models.Model):
             ])
             rec.paid_pharmacy_ids = paid_pharmacy
             rec.unpaid_pharmacy_ids = unpaid_pharmacy
-
+            paid_ip = self.env['ip.part.billing'].search([
+                ('mrd_no', '=', rec.id),
+                ('status', '=', 'paid'),
+                ('bill_date', '>=', rec.admitted_date),
+                ('bill_date', '<=', today),
+            ])
+            unpaid_ip = self.env['ip.part.billing'].search([
+                ('mrd_no', '=', rec.id),
+                ('status', '=', 'unpaid'),
+                ('bill_date', '>=', rec.admitted_date),
+                ('bill_date', '<=', today),
+            ])
+            rec.paid_ip_ids = paid_ip
+            rec.unpaid_ip_ids = unpaid_ip
             # -----------------------------
             # Lab Billing (Both Paid & Unpaid)
             # -----------------------------
@@ -275,17 +295,20 @@ class PatientRegistration(models.Model):
             rec.paid_total = (
                     sum(p.total_amount or 0.0 for p in rec.paid_general_ids) +
                     sum(p.total_amount or 0.0 for p in rec.paid_pharmacy_ids) +
+                    sum(p.total_amount or 0.0 for p in rec.paid_ip_ids) -
+                    sum(p.room_rent_total or 0.0 for p in rec.paid_ip_ids) +
                     rec.paid_lab_total
             )
 
             rec.unpaid_total = (
                     sum(u.total_amount or 0.0 for u in rec.unpaid_general_ids) +
                     sum(u.total_amount or 0.0 for u in rec.unpaid_pharmacy_ids) +
+                    sum(u.total_amount or 0.0 for u in rec.unpaid_ip_ids) +
                     rec.unpaid_lab_total
             )
 
             rec.grant_total = rec.paid_total + rec.unpaid_total + (rec.room_rent or 0.0)
-
+            rec.paid_room_rent=sum(p.room_rent_total or 0.0 for p in rec.paid_ip_ids)
     # @api.depends('reference_no')
     # def _compute_unpaid_general(self):
     #     for rec in self:
@@ -502,7 +525,7 @@ class PatientRegistration(models.Model):
 
                 # Add full day rent - convert Char field to float for calculation
                 rent_full_value = float(rec.rent_full or 0) if rec.rent_full and rec.rent_full.strip() else 0
-                total += full_days * rent_full_value
+                total += full_days * rent_full_value -(rec.paid_room_rent)
 
                 # Add half day rent if remaining hours > 0
                 if remaining_hours > 0:

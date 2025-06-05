@@ -346,7 +346,7 @@ class GeneralBillLine(models.Model):
 class IPPartBilling(models.Model):
     _name = 'ip.part.billing'
     _description = 'IP Part Billing'
-    _rec_name = 'bill_number'
+    _rec_name = 'mrd_no'
 
     bill_number = fields.Char(string='Bill Number',  copy=False, default='New')
     mrd_no = fields.Many2one('patient.reg', string='UHID')
@@ -624,6 +624,17 @@ class IPPartBilling(models.Model):
                 rec.total_rent_amount = 0
 
     from datetime import datetime, timedelta
+    room_rent_total = fields.Float(string='Room Rent Total', compute='_compute_room_rent_total', store=True)
+
+    @api.depends('general_bill_line_ids.quantity', 'general_bill_line_ids.rate', 'general_bill_line_ids.particulars')
+    def _compute_room_rent_total(self):
+        for rec in self:
+            total = 0.0
+            for line in rec.general_bill_line_ids:
+                if line.particulars and line.particulars.particular_name == 'Room Rent':
+                    total += (line.quantity or 0.0) * (line.rate or 0.0)
+            rec.room_rent_total = total
+
 
     @api.onchange('from_date', 'to_date', 'total_rent_amount')
     def _onchange_dates_update_rent_line(self):
