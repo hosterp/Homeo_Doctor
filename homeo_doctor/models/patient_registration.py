@@ -8,13 +8,14 @@ from odoo.exceptions import UserError
 import dateutil.utils
 from odoo import api, fields, models, tools, _
 import odoo.addons
-
+from odoo.exceptions import ValidationError
 
 # from odoo.odoo.exceptions import ValidationError
 
 
 # from datetime import datetime, date
 # default=date.today()
+
 class PatientRegistration(models.Model):
     _name = 'patient.reg'
     _description = 'Patient Registration'
@@ -146,6 +147,7 @@ class PatientRegistration(models.Model):
     unpaid_ip_ids = fields.Many2many(
         'ip.part.billing', string="Unpaid IP Bills", compute="_compute_all_totals"
     )
+
 
     def action_view_consultations(self):
         if not self.patient_id:
@@ -688,8 +690,23 @@ class PatientRegistration(models.Model):
 
     bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='/')
 
+    from odoo.exceptions import ValidationError
+
     def action_register_pay(self):
         self.ensure_one()
+
+        if self.register_staff_name and self.register_staff_password:
+            employee = self.register_staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.register_staff_password != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
+
+        # ✅ Password is valid, continue with logic:
         if not self.bill_number or self.bill_number == '/':
             raw_seq = self.env['ir.sequence'].next_by_code('patient.bill') or '0'
             padded_seq = str(raw_seq).zfill(4)
@@ -700,15 +717,13 @@ class PatientRegistration(models.Model):
             fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
 
             self.bill_number = f"{padded_seq}/{fiscal_suffix}"
-        self.status = 'paid'  # Update the status to 'paid'
-        self.register_bool = True
-        # Ensure VSSC logic is applied correctly before printing
-        if self.vssc_boolean:
-            # For VSSC patients, ensure values are correctly set before printing
-            if self.consultation_fee != 400:
-                self.consultation_fee = 400
 
-        # Return the PDF report action
+        self.status = 'paid'
+        self.register_bool = True
+
+        if self.vssc_boolean and self.consultation_fee != 400:
+            self.consultation_fee = 400
+
         return self.env.ref('homeo_doctor.report_patient_challan_action').report_action(self)
 
     admitted_bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='/')
