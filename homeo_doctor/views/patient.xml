@@ -713,10 +713,19 @@
                                                 </div>
 
                                             </div>
-                                            <div class="row pay_button" style="margin-left: 30px">
+                                            <div class="row pay_button"   attrs="{'invisible': [('status', '=', 'discharged')]}" style="margin-left: 30px">
                                                 <div class="col-md-1">
                                                     <button name="action_discharged_patient_reg"
-                                                            string="Pay / Discharged"
+                                                            string="Pay To Discharge"
+                                                            type="object"
+                                                            class="btn btn-sm btn-primary"
+                                                            title="Discharge"/>
+                                                </div>
+                                            </div>
+                                            <div class="row pay_button" attrs="{'invisible': [('status', 'in', ['proceed_discharge','admitted'])]}" style="margin-left: 30px">
+                                                <div class="col-md-1">
+                                                    <button name="finalize_discharge_cleanup"
+                                                            string="Discharged"
                                                             type="object"
                                                             class="btn btn-sm btn-primary"
                                                             title="Discharge"/>
@@ -805,13 +814,6 @@
                                         <field name="status"/>
                                     </tree>
                                 </field>
-                                <!--                                    <field name="unpaid_general_ids">-->
-                                <!--                                        <tree editable="bottom">-->
-                                <!--                                            <field name="bill_date"/>-->
-                                <!--                                            <field name="total_amount"/>-->
-                                <!--                                            <field name="status"/>-->
-                                <!--                                        </tree>-->
-                                <!--                                    </field>-->
                             </group>
 
                             <group string="Lab Billing">

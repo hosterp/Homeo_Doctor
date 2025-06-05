@@ -266,12 +266,16 @@ class PatientRegistration(models.Model):
             paid_lab = self.env['doctor.lab.report'].search([
                 ('user_ide', '=', rec.id),
                 ('status', '=', 'paid'),
+                ('date', '>=', rec.admitted_date),
+                ('date', '<=', today),
             ])
             if not rec.vssc_boolean:
                 unpaid_lab = self.env['doctor.lab.report'].search([
                     ('user_ide', '=', rec.id),
                     ('status', '=', 'unpaid'),
                     ('mode_of_payment', '=', 'credit'),
+                    ('date', '>=', rec.admitted_date),
+                    ('date', '<=', today),
                 ])
             else:
                 unpaid_lab = self.env['doctor.lab.report'].search([
@@ -281,7 +285,9 @@ class PatientRegistration(models.Model):
                     '&',
                     ('status', '=', 'paid'),
                     ('mode_of_payment', '=', 'credit'),
-                    ('status', '!=', 'credit')
+                    ('status', '!=', 'credit'),
+                    ('date', '>=', rec.admitted_date),
+                    ('date', '<=', today),
                 ])
 
             rec.paid_lab_ids = paid_lab
@@ -545,7 +551,7 @@ class PatientRegistration(models.Model):
     def action_discharged_patient_reg(self):
         for record in self:
             record.status = 'discharged'
-            record.admission_boolean = False
+            # record.admission_boolean = False
             record.temp_admission_total_amount = record.admission_total_amount
             record.temp_admitted_date = record.admitted_date
             record.temp_discharge_date = record.discharge_date
@@ -591,7 +597,18 @@ class PatientRegistration(models.Model):
                     'pay_mode': record.advance_mode_payment,
 
                 })
+                record.unpaid_general_ids.write({'status': 'paid'})
+                if record.vssc_boolean:
+                    record.unpaid_lab_ids.write({'status': 'credit'})
+                    record.paid_lab_ids.write({'status': 'credit'})
+                else:
+                    record.unpaid_lab_ids.write({'status': 'paid'})
+                record.unpaid_pharmacy_ids.write({'status': 'paid'})
+        return self.env.ref('homeo_doctor.action_report_discharge_challan').report_action(self)
 
+    def finalize_discharge_cleanup(self):
+        for record in self:
+            record.admission_boolean = False
             record.update({
                 'room_number_new': False,
                 'bed_id': False,
@@ -612,15 +629,8 @@ class PatientRegistration(models.Model):
                 'admission_total_amount': False,
 
             })
-            record.unpaid_general_ids.write({'status': 'paid'})
-            if record.vssc_boolean:
-                record.unpaid_lab_ids.write({'status': 'credit'})
-                record.paid_lab_ids.write({'status': 'credit'})
-            else:
-                record.unpaid_lab_ids.write({'status': 'paid'})
-            record.unpaid_pharmacy_ids.write({'status': 'paid'})
-        return self.env.ref('homeo_doctor.action_report_discharge_challan').report_action(self)
 
+        return
     @api.onchange('room_category_new')
     def _onchange_room_category_new(self):
         if self.room_category_new:
