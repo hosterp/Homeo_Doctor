@@ -14,7 +14,7 @@ from datetime import datetime
 
 
 # from odoo.odoo.exceptions import UserError
-
+from odoo.exceptions import ValidationError
 
 class GeneralBilling(models.Model):
     _name = 'general.billing'
@@ -54,7 +54,7 @@ class GeneralBilling(models.Model):
     bill_by=fields.Char(string='Bill By')
     remarks =fields.Char(string='Remarks')
     staff_pwd=fields.Char(string='Staff Password')
-    staff_name=fields.Char(string='Staff Name')
+    staff_name=fields.Many2one('hr.employee',string='Staff Name')
     amount_paid = fields.Integer(string="Amount Paid")
     balance = fields.Integer(string="Balance")
     status = fields.Selection([
@@ -234,6 +234,16 @@ class GeneralBilling(models.Model):
             record.amount_in_words = num2words(record.total_amount, lang='en').title() + " Only"
 
     def action_pay_button(self):
+        if self.staff_name and self.staff_pwd:
+            employee = self.staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
         for record in self:
             record.status = 'paid'
         return {
@@ -386,7 +396,7 @@ class IPPartBilling(models.Model):
     bill_by=fields.Char(string='Bill By')
     remarks =fields.Char(string='Remarks')
     staff_pwd=fields.Char(string='Staff Password')
-    staff_name=fields.Char(string='Staff Name')
+    staff_name=fields.Many2one('hr.employee',string='Staff Name')
     amount_paid = fields.Integer(string="Amount Paid")
     balance = fields.Integer(string="Balance")
     status = fields.Selection([
@@ -564,6 +574,16 @@ class IPPartBilling(models.Model):
             record.amount_in_words = num2words(record.total_amount, lang='en').title() + " Only"
 
     def action_pay_button(self):
+        if self.staff_name and self.staff_pwd:
+            employee = self.staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
         for record in self:
             record.status = 'paid'
 
