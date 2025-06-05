@@ -1,7 +1,7 @@
 from datetime import date
 
 from odoo import api, fields, models
-
+from odoo.exceptions import ValidationError
 
 class PharmacyDescription(models.Model):
     _name = 'pharmacy.description'
@@ -162,6 +162,16 @@ class PharmacyDescription(models.Model):
                     line.stock_in_hand = sum(stock_entries.mapped('quantity'))
 
     def action_register_payment(self):
+        if self.staff_name and self.staff_pwd:
+            employee = self.staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
         for record in self:
             for line in record.prescription_line_ids:
                 if line.product_id and line.qty:

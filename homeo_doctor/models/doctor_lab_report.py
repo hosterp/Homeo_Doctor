@@ -2,7 +2,7 @@ from datetime import date
 from email.policy import default
 
 from odoo import api, fields, models, _
-
+from odoo.exceptions import ValidationError
 
 # from odoo.odoo.exceptions import UserError
 
@@ -38,6 +38,7 @@ class DoctorLabReport(models.Model):
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     remarks = fields.Text("Remarks")
     staff_name = fields.Many2one('hr.employee',"Staff Name")
+    staff_pwd = fields.Char(string='Staff Password')
     o_c_percentage = fields.Char("OC%")
     o_c = fields.Char("OC")
     mode_of_payment = fields.Selection([('cash', 'Cash'),
@@ -325,7 +326,16 @@ class DoctorLabReport(models.Model):
         }
 
     def action_confirm_payment(self):
-        """Create lab result record directly without going through the payment wizard"""
+        if self.staff_name and self.staff_pwd:
+            employee = self.staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
 
         for rec in self:
             # Determine status based on vssc_check and mode_of_payment
