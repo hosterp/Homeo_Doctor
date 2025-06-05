@@ -574,6 +574,16 @@ class IPPartBilling(models.Model):
             record.amount_in_words = num2words(record.total_amount, lang='en').title() + " Only"
 
     def action_pay_button(self):
+        if self.staff_name and self.staff_pwd:
+            employee = self.staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
         for record in self:
             record.status = 'paid'
 
