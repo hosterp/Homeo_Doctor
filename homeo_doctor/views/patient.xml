@@ -773,88 +773,104 @@
 
 
 
-                    <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">
-                        <page string="Unpaid Bills">
-                            <group string="IP Part Billing">
-                                <separator string="Paid Bills"/>
-                                <field name="paid_ip_ids">
-                                    <tree>
-                                        <field name="bill_date"/>
-                                         <field name="room_rent_total" sum="Total"/>
-                                        <field name="total_amount" sum="Total"/>
-                                        <field name="status"/>
-                                    </tree>
-                                </field>
-
-                                <separator string="Unpaid Bills" invisible="1"/>
-                                <field name="unpaid_ip_ids" invisible="1">
-                                    <tree>
-                                        <field name="bill_date"/>
-
-                                        <field name="total_amount" sum="Total"/>
-                                        <field name="status"/>
-                                    </tree>
-                                </field>
-                            </group>
-                            <group string="General Billing">
-                                <separator string="Paid Bills"/>
-                                <field name="paid_general_ids">
-                                    <tree>
-                                        <field name="bill_date"/>
-                                        <field name="total_amount" sum="Total"/>
-                                        <field name="status"/>
-                                    </tree>
-                                </field>
-
-                                <separator string="Unpaid Bills"/>
-                                <field name="unpaid_general_ids">
-                                    <tree>
-                                        <field name="bill_date"/>
-                                        <field name="total_amount" sum="Total"/>
-                                        <field name="status"/>
-                                    </tree>
-                                </field>
-                            </group>
-
-                            <group string="Lab Billing">
-                                 <field name="unpaid_lab_ids">
-                                    <tree editable="bottom">
-                                        <field name="date"/>
-                                        <field name="total_bill_amount" sum="Total"/>
-                                        <field name="status"/>
-                                    </tree>
-                                </field>
-                                <separator string="Unpaid Bills"/>
-                                <field name="paid_lab_ids">
-                                    <tree editable="bottom">
-                                        <field name="date"/>
-                                        <field name="total_bill_amount" sum='Total'/>
-                                        <field name="status"/>
-                                    </tree>
-                                </field>
-                            </group>
-
-                            <group string="Pharmacy Billing">
-                                <field name="unpaid_pharmacy_ids">
-                                    <tree editable="bottom">
-                                        <field name="date"/>
-                                        <field name="total_amount" sum="Total"/>
-                                        <field name="status"/>
-                                    </tree>
-                                </field>
-                                <separator string="Unpaid Bills"/>
-                                <field name="paid_pharmacy_ids">
-                                    <tree>
-                                        <field name="date"/>
-                                        <field name="total_amount" sum="Total"/>
-                                        <field name="status"/>
-                                    </tree>
-                                </field>
-                            </group>
-
-                        </page>
-                    </notebook>
-
+                  <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}" class="billing_notebook_compact">
+    <page string="Billing Overview">
+        <!-- IP Part Billing Section -->
+        <div class="row">
+            <div class="col-md-6">
+                <group string="IP Part Billing" class="billing_group_compact">
+                    <separator string="Paid Bills" class="billing_separator_compact"/>
+                    <field name="paid_ip_ids" nolabel="1">
+                        <tree decoration-success="status=='paid'" class="billing_list_compact">
+                            <field name="bill_date" string="Date"/>
+                            <field name="room_rent_total" string="Room Rent" sum="Total"/>
+                            <field name="total_amount" string="Amount" sum="Total"/>
+                            <field name="status" string="Status"/>
+                        </tree>
+                    </field>
+                    
+                    <separator string="Unpaid Bills" class="billing_separator_compact"/>
+                    <field name="unpaid_ip_ids" nolabel="1">
+                        <tree decoration-danger="status=='unpaid'" class="billing_list_compact">
+                            <field name="bill_date" string="Date"/>
+                            <field name="total_amount" string="Amount" sum="Total"/>
+                            <field name="status" string="Status"/>
+                        </tree>
+                    </field>
+                </group>
+            </div>
+            
+            <div class="col-md-6">
+                <group string="General Billing" class="billing_group_compact">
+                    <separator string="Paid Bills" class="billing_separator_compact"/>
+                    <field name="paid_general_ids" nolabel="1">
+                        <tree decoration-success="status=='paid'" class="billing_list_compact">
+                            <field name="bill_date" string="Date"/>
+                            <field name="total_amount" string="Amount" sum="Total"/>
+                            <field name="status" string="Status"/>
+                        </tree>
+                    </field>
+                    
+                    <separator string="Unpaid Bills" class="billing_separator_compact"/>
+                    <field name="unpaid_general_ids" nolabel="1">
+                        <tree decoration-danger="status=='unpaid'" class="billing_list_compact">
+                            <field name="bill_date" string="Date"/>
+                            <field name="total_amount" string="Amount" sum="Total"/>
+                            <field name="status" string="Status"/>
+                        </tree>
+                    </field>
+                </group>
+            </div>
+        </div>
+        
+        <!-- Lab & Pharmacy Billing Section -->
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <group string="Lab Billing" class="billing_group_compact">
+                    <separator string="Unpaid Bills" class="billing_separator_compact"/>
+                    <field name="unpaid_lab_ids" nolabel="1">
+                        <tree editable="bottom" decoration-danger="status=='unpaid'" class="billing_list_compact">
+                            <field name="date" string="Date"/>
+                            <field name="total_bill_amount" string="Amount" sum="Total"/>
+                            <field name="status" string="Status"/>
+                        </tree>
+                    </field>
+                    
+                    <separator string="Paid Bills" class="billing_separator_compact"/>
+                    <field name="paid_lab_ids" nolabel="1">
+                        <tree editable="bottom" decoration-success="status=='paid'" class="billing_list_compact">
+                            <field name="date" string="Date"/>
+                            <field name="total_bill_amount" string="Amount" sum="Total"/>
+                            <field name="status" string="Status"/>
+                        </tree>
+                    </field>
+                </group>
+            </div>
+            
+            <div class="col-md-6">
+                <group string="Pharmacy Billing" class="billing_group_compact">
+                    <separator string="Unpaid Bills" class="billing_separator_compact"/>
+                    <field name="unpaid_pharmacy_ids" nolabel="1">
+                        <tree editable="bottom" decoration-danger="status=='unpaid'" class="billing_list_compact">
+                            <field name="date" string="Date"/>
+                            <field name="total_amount" string="Amount" sum="Total"/>
+                            <field name="status" string="Status"/>
+                        </tree>
+                    </field>
+                    
+                    <separator string="Paid Bills" class="billing_separator_compact"/>
+                    <field name="paid_pharmacy_ids" nolabel="1">
+                        <tree decoration-success="status=='paid'" class="billing_list_compact">
+                            <field name="date" string="Date"/>
+                            <field name="total_amount" string="Amount" sum="Total"/>
+                            <field name="status" string="Status"/>
+                        </tree>
+                    </field>
+                </group>
+            </div>
+        </div>
+    </page>
+</notebook>
                     <div class="admission_transfer" attrs="{'invisible': [('admission_boolean', '=', False)]}">
                         <h3 class="admission_details_title" style="color:blue;">Room Transfer</h3>
                         <!--                        <group col="4" string="Admission Details" attrs="{'invisible': [('admission_boolean', '=', False)]}">-->

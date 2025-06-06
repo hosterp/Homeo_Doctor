@@ -1387,3 +1387,112 @@ color: white ;
 .patient_reg_form .o_form_label {
 	white-space: pre-line !important;
 }
+
+
+
+
+
+
+
+
+
+/* Custom Billing Notebook Compact Styling */
+.billing_notebook_compact {
+    margin: 0;
+    padding: 0;
+}
+
+.billing_notebook_compact .tab-content {
+    padding: 15px 10px;
+}
+
+/* Custom Billing Group Styling */
+.billing_group_compact {
+    margin-bottom: 15px;
+}
+
+.billing_group_compact > .o_group_text {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 3px;
+}
+
+/* Custom Billing Separator Styling */
+.billing_separator_compact {
+    margin: 8px 0 5px 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+/* Custom Billing List View Styling */
+.billing_list_compact {
+    margin-bottom: 10px;
+}
+
+.billing_list_compact .o_list_table {
+    margin-bottom: 0;
+}
+
+.billing_list_compact .o_list_table thead th {
+    padding: 6px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #387298;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.billing_list_compact .o_list_table tbody td {
+    padding: 4px 8px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.billing_list_compact .o_list_table tbody tr:hover {
+    background-color: #387298;
+}
+
+/* Status Color Coding for Billing Lists */
+.billing_list_compact .o_list_table tbody tr.text-success {
+    background-color: #d4edda !important;
+}
+
+.billing_list_compact .o_list_table tbody tr.text-danger {
+    background-color: #f8d7da !important;
+}
+
+/* Responsive adjustments for Billing Notebook */
+@media (max-width: 768px) {
+    .billing_notebook_compact .row .col-md-6 {
+        margin-bottom: 20px;
+    }
+    
+    .billing_list_compact .o_list_table thead th,
+    .billing_list_compact .o_list_table tbody td {
+        padding: 3px 5px;
+        font-size: 11px;
+    }
+}
+
+/* Remove excessive margins in Billing Notebook */
+.billing_notebook_compact .o_field_widget {
+    margin-bottom: 8px;
+}
+
+.billing_notebook_compact .o_inner_group {
+    margin-bottom: 10px;
+}
+
+/* Compact field labels in Billing Notebook */
+.billing_notebook_compact .o_field_widget label {
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+.o_group.o_inner_group.billing_group_compact {
+	border: 1px solid;
+}
