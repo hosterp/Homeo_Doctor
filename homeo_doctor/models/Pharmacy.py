@@ -270,7 +270,7 @@ class PharmacyPrescriptionLine(models.Model):
     admission_id=fields.Many2one('patient.reg',string='Patient Registration')
     product_id = fields.Many2one('product.product', string="Medicine")
     total_med = fields.Integer("Total Medicine")
-    per_ped = fields.Integer("Per Medicine")
+    per_ped = fields.Float("Per Medicine")
     morn = fields.Integer("Morning")
     noon = fields.Integer("Noon")
     night = fields.Integer("Night")
