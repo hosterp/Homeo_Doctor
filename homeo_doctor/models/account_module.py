@@ -243,7 +243,7 @@ class AccountMoveLine(models.Model):
     to_be_received = fields.Integer(string='To Be Rec.',store=True)
     free_qty = fields.Integer(string='Free',store=True)
     rejected_qty = fields.Integer(string='Rejected',store=True)
-    supplier_mrp = fields.Integer(string='MRP',store=True)
+    supplier_mrp = fields.Float(string='MRP',store=True)
     quantity = fields.Integer(string='Quantity',store=True)
     supplier_packing = fields.Many2one('supplier.packing', string='Packing')
     stock_in_hand=fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
