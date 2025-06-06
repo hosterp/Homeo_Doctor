@@ -341,22 +341,23 @@
                                         <span class="o_form_label" style="font-weight: bold;">Date:</span>
                                         <field name="date"/>
                                     </div>
-                                    <div style="flex: 1; min-width: 180px;">
+                                    <div style="flex: 1; min-width: 180px; max-width:16%;">
                                         <span class="o_form_label" style="font-weight: bold;">OP Category:</span>
                                         <field name="op_category"/>
                                     </div>
-                                </div>
-                                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                                    <div style="flex: 1; min-width: 180px;">
+                                    <div style="flex: 1; min-width: 180px; max-width:16%;">
                                         <span class="o_form_label" style="font-weight: bold;">Admitted:</span>
                                         <field name="admitted_boolean"/>
                                     </div>
-                                    <div style="flex: 1; min-width: 180px;"
+                                    <div style="flex: 1; min-width: 180px; max-width:16%;"
                                          attrs="{'invisible': [('admitted_boolean', '!=', True)]}">
                                         <span class="o_form_label" style="font-weight: bold;">Patient Type:</span>
                                         <field name="patient_type"/>
                                     </div>
                                 </div>
+                                <!-- <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                                    
+                                </div> -->
 
                             </div>
                         </group>
