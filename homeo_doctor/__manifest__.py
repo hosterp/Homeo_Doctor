@@ -93,6 +93,7 @@
         "views/hr_employee_kanban_inherit.xml",
         "views/ip_part_billing.xml",
         "views/hr_employee.xml",
+        "views/medicine_wise_prescription_report_wizard_views.xml",
         "data/ir_sequence_data.xml",
 
     ],
