@@ -803,3 +803,7 @@ class IPReturnLine(models.Model):
     def _compute_amount(self):
         for line in self:
             line.amount = line.quantity * line.unit_price
+
+
+
+

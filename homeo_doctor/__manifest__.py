@@ -65,6 +65,7 @@
         "report/ip_part_challan.xml",
         "report/all_in_one_report.xml",
         "report/combined_report_template.xml",
+        "report/pharmacy_report_template.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",
@@ -93,6 +94,7 @@
         "views/hr_employee_kanban_inherit.xml",
         "views/ip_part_billing.xml",
         "views/hr_employee.xml",
+        "views/pharmacy_prescription_report_wizard.xml",
         "data/ir_sequence_data.xml",
 
     ],
