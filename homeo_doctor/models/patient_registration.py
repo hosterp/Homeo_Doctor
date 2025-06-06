@@ -200,7 +200,7 @@ class PatientRegistration(models.Model):
     @api.depends('reference_no', 'admitted_date', 'vssc_boolean')
     def _compute_all_totals(self):
         today = fields.Date.today()
-        print(today, 'todaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytodaytoday')
+
         for rec in self:
             # Initialize
             rec.paid_total = 0.0
