@@ -713,7 +713,9 @@
                                                 </div>
 
                                             </div>
-                                            <div class="row pay_button"   attrs="{'invisible': [('status', '=', 'discharged')]}" style="margin-left: 30px">
+                                            <div class="row pay_button"
+                                                 attrs="{'invisible': [('status', '=', 'discharged')]}"
+                                                 style="margin-left: 30px">
                                                 <div class="col-md-1">
                                                     <button name="action_discharged_patient_reg"
                                                             string="Pay To Discharge"
@@ -722,7 +724,9 @@
                                                             title="Discharge"/>
                                                 </div>
                                             </div>
-                                            <div class="row pay_button" attrs="{'invisible': [('status', 'in', ['proceed_discharge','admitted'])]}" style="margin-left: 30px">
+                                            <div class="row pay_button"
+                                                 attrs="{'invisible': [('status', 'in', ['proceed_discharge','admitted'])]}"
+                                                 style="margin-left: 30px">
                                                 <div class="col-md-1">
                                                     <button name="finalize_discharge_cleanup"
                                                             string="Discharged"
@@ -772,470 +776,499 @@
                         </group>
 
 
+                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}"
+                                  class="billing_notebook_compact">
+                            <page string="Billing Overview">
+                                <!-- IP Part Billing Section -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <group string="IP Part Billing" class="billing_group_compact">
+                                            <group>
+                                                <separator string="Paid Bills" class="billing_separator_compact"/>
+                                            </group>
+                                            <field name="paid_ip_ids" nolabel="1">
+                                                <tree decoration-success="status=='paid'" class="billing_list_compact">
+                                                    <field name="bill_date" string="Date"/>
+                                                    <field name="room_rent_total" string="Room Rent" sum="Total"/>
+                                                    <field name="total_amount" string="Amount" sum="Total"/>
+                                                    <field name="status" string="Status"/>
+                                                </tree>
+                                            </field>
+                                            <group>
+                                                <separator string="Unpaid Bills" class="billing_separator_compact"/>
+                                            </group>
 
-                  <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}" class="billing_notebook_compact">
-    <page string="Billing Overview">
-        <!-- IP Part Billing Section -->
-        <div class="row">
-            <div class="col-md-6">
-                <group string="IP Part Billing" class="billing_group_compact">
-                    <separator string="Paid Bills" class="billing_separator_compact"/>
-                    <field name="paid_ip_ids" nolabel="1">
-                        <tree decoration-success="status=='paid'" class="billing_list_compact">
-                            <field name="bill_date" string="Date"/>
-                            <field name="room_rent_total" string="Room Rent" sum="Total"/>
-                            <field name="total_amount" string="Amount" sum="Total"/>
-                            <field name="status" string="Status"/>
-                        </tree>
-                    </field>
-                    
-                    <separator string="Unpaid Bills" class="billing_separator_compact"/>
-                    <field name="unpaid_ip_ids" nolabel="1">
-                        <tree decoration-danger="status=='unpaid'" class="billing_list_compact">
-                            <field name="bill_date" string="Date"/>
-                            <field name="total_amount" string="Amount" sum="Total"/>
-                            <field name="status" string="Status"/>
-                        </tree>
-                    </field>
-                </group>
-            </div>
-            
-            <div class="col-md-6">
-                <group string="General Billing" class="billing_group_compact">
-                    <separator string="Paid Bills" class="billing_separator_compact"/>
-                    <field name="paid_general_ids" nolabel="1">
-                        <tree decoration-success="status=='paid'" class="billing_list_compact">
-                            <field name="bill_date" string="Date"/>
-                            <field name="total_amount" string="Amount" sum="Total"/>
-                            <field name="status" string="Status"/>
-                        </tree>
-                    </field>
-                    
-                    <separator string="Unpaid Bills" class="billing_separator_compact"/>
-                    <field name="unpaid_general_ids" nolabel="1">
-                        <tree decoration-danger="status=='unpaid'" class="billing_list_compact">
-                            <field name="bill_date" string="Date"/>
-                            <field name="total_amount" string="Amount" sum="Total"/>
-                            <field name="status" string="Status"/>
-                        </tree>
-                    </field>
-                </group>
-            </div>
-        </div>
-        
-        <!-- Lab & Pharmacy Billing Section -->
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <group string="Lab Billing" class="billing_group_compact">
-                    <separator string="Unpaid Bills" class="billing_separator_compact"/>
-                    <field name="unpaid_lab_ids" nolabel="1">
-                        <tree editable="bottom" decoration-danger="status=='unpaid'" class="billing_list_compact">
-                            <field name="date" string="Date"/>
-                            <field name="total_bill_amount" string="Amount" sum="Total"/>
-                            <field name="status" string="Status"/>
-                        </tree>
-                    </field>
-                    
-                    <separator string="Paid Bills" class="billing_separator_compact"/>
-                    <field name="paid_lab_ids" nolabel="1">
-                        <tree editable="bottom" decoration-success="status=='paid'" class="billing_list_compact">
-                            <field name="date" string="Date"/>
-                            <field name="total_bill_amount" string="Amount" sum="Total"/>
-                            <field name="status" string="Status"/>
-                        </tree>
-                    </field>
-                </group>
-            </div>
-            
-            <div class="col-md-6">
-                <group string="Pharmacy Billing" class="billing_group_compact">
-                    <separator string="Unpaid Bills" class="billing_separator_compact"/>
-                    <field name="unpaid_pharmacy_ids" nolabel="1">
-                        <tree editable="bottom" decoration-danger="status=='unpaid'" class="billing_list_compact">
-                            <field name="date" string="Date"/>
-                            <field name="total_amount" string="Amount" sum="Total"/>
-                            <field name="status" string="Status"/>
-                        </tree>
-                    </field>
-                    
-                    <separator string="Paid Bills" class="billing_separator_compact"/>
-                    <field name="paid_pharmacy_ids" nolabel="1">
-                        <tree decoration-success="status=='paid'" class="billing_list_compact">
-                            <field name="date" string="Date"/>
-                            <field name="total_amount" string="Amount" sum="Total"/>
-                            <field name="status" string="Status"/>
-                        </tree>
-                    </field>
-                </group>
-            </div>
-        </div>
-    </page>
-</notebook>
-                    <div class="admission_transfer" attrs="{'invisible': [('admission_boolean', '=', False)]}">
-                        <h3 class="admission_details_title" style="color:blue;">Room Transfer</h3>
-                        <!--                        <group col="4" string="Admission Details" attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
-                        <div class="row mx-n1">
-                            <!-- First row with uniform column sizes -->
-                            <div class="col-12">
-                                <div class="row mx-n1">
-                                    <div class="col px-1" style="max-width: 14.28%;">
-                                        <div class="form-group row my-1">
-                                            <label for="room_transfer_date"
-                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Transfer
-                                                Date
-                                            </label>
-                                            <div class="col-md-9 field-container py-0">
-                                                <field name="room_transfer_date"/>
-                                            </div>
-                                        </div>
+                                            <field name="unpaid_ip_ids" nolabel="1">
+                                                <tree decoration-danger="status=='unpaid'"
+                                                      class="billing_list_compact">
+                                                    <field name="bill_date" string="Date"/>
+                                                    <field name="total_amount" string="Amount" sum="Total"/>
+                                                    <field name="status" string="Status"/>
+                                                </tree>
+                                            </field>
+                                        </group>
                                     </div>
-                                    <div class="col px-1" style="max-width: 14.28%;">
-                                        <div class="form-group row my-1">
-                                            <label for="transferred_block"
-                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Block
-                                            </label>
-                                            <div class="col-md-9 field-container py-0">
-                                                <field name="transferred_block"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col px-1" style="max-width: 14.28%;">
-                                        <div class="form-group row my-1">
-                                            <label for="transferred_room_category"
-                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Room
-                                                Category
-                                            </label>
-                                            <div class="col-md-9 field-container py-0">
-                                                <field name="transferred_room_category"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col px-1" style="max-width: 14.28%;">
-                                        <div class="form-group row my-1">
-                                            <label for="transferred_room_number"
-                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Room No
-                                            </label>
-                                            <div class="col-md-9 field-container py-0">
-                                                <field name="transferred_room_number"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col px-1" style="max-width: 14.28%;">
-                                        <div class="form-group row my-1">
-                                            <label for="transferred_bed_number"
-                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Bed No
-                                            </label>
-                                            <div class="col-md-9 field-container py-0">
-                                                <field name="transferred_bed_number"/>
-                                            </div>
 
+                                    <div class="col-md-6">
+                                        <group string="General Billing" class="billing_group_compact">
+                                            <group>
+                                                <separator string="Paid Bills" class="billing_separator_compact"/>
+                                            </group>
+
+                                            <field name="paid_general_ids" nolabel="1">
+                                                <tree decoration-success="status=='paid'"
+                                                      class="billing_list_compact">
+                                                    <field name="bill_date" string="Date"/>
+                                                    <field name="total_amount" string="Amount" sum="Total"/>
+                                                    <field name="status" string="Status"/>
+                                                </tree>
+                                            </field>
+
+
+                                            <group>
+                                                <separator string="Unpaid Bills" class="billing_separator_compact"/>
+                                            </group>
+
+                                            <field name="unpaid_general_ids" nolabel="1">
+                                                <tree decoration-danger="status=='unpaid'"
+                                                      class="billing_list_compact">
+                                                    <field name="bill_date" string="Date"/>
+                                                    <field name="total_amount" string="Amount" sum="Total"/>
+                                                    <field name="status" string="Status"/>
+                                                </tree>
+                                            </field>
+
+
+                                        </group>
+                                    </div>
+                                </div>
+
+                                <!-- Lab & Pharmacy Billing Section -->
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <group string="Lab Billing" class="billing_group_compact">
+                                            <group>
+                                                <separator string="Unpaid Bills" class="billing_separator_compact"/>
+                                            </group>
+
+                                            <field name="unpaid_lab_ids" nolabel="1">
+                                                <tree editable="bottom" decoration-danger="status=='unpaid'"
+                                                      class="billing_list_compact">
+                                                    <field name="date" string="Date"/>
+                                                    <field name="total_bill_amount" string="Amount" sum="Total"/>
+                                                    <field name="status" string="Status"/>
+                                                </tree>
+                                            </field>
+                                            <group>
+                                                <separator string="Paid Bills" class="billing_separator_compact"/>
+                                            </group>
+
+                                            <field name="paid_lab_ids" nolabel="1">
+                                                <tree editable="bottom" decoration-success="status=='paid'"
+                                                      class="billing_list_compact">
+                                                    <field name="date" string="Date"/>
+                                                    <field name="total_bill_amount" string="Amount" sum="Total"/>
+                                                    <field name="status" string="Status"/>
+                                                </tree>
+                                            </field>
+                                        </group>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <group string="Pharmacy Billing" class="billing_group_compact">
+                                            <group>
+                                                 <separator string="Unpaid Bills" class="billing_separator_compact"/>
+                                            </group>
+
+                                            <field name="unpaid_pharmacy_ids" nolabel="1">
+                                                <tree editable="bottom" decoration-danger="status=='unpaid'"
+                                                      class="billing_list_compact">
+                                                    <field name="date" string="Date"/>
+                                                    <field name="total_amount" string="Amount" sum="Total"/>
+                                                    <field name="status" string="Status"/>
+                                                </tree>
+                                            </field>
+                                            <group>
+                                                  <separator string="Paid Bills" class="billing_separator_compact"/>
+                                            </group>
+
+                                            <field name="paid_pharmacy_ids" nolabel="1">
+                                                <tree decoration-success="status=='paid'" class="billing_list_compact">
+                                                    <field name="date" string="Date"/>
+                                                    <field name="total_amount" string="Amount" sum="Total"/>
+                                                    <field name="status" string="Status"/>
+                                                </tree>
+                                            </field>
+                                        </group>
+                                    </div>
+                                </div>
+                            </page>
+                        </notebook>
+                        <div class="admission_transfer" attrs="{'invisible': [('admission_boolean', '=', False)]}">
+                            <h3 class="admission_details_title" style="color:blue;">Room Transfer</h3>
+                            <!--                        <group col="4" string="Admission Details" attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
+                            <div class="row mx-n1">
+                                <!-- First row with uniform column sizes -->
+                                <div class="col-12">
+                                    <div class="row mx-n1">
+                                        <div class="col px-1" style="max-width: 14.28%;">
+                                            <div class="form-group row my-1">
+                                                <label for="room_transfer_date"
+                                                       class="col-md-5 col-form-label py-0 small text-nowrap">Transfer
+                                                    Date
+                                                </label>
+                                                <div class="col-md-9 field-container py-0">
+                                                    <field name="room_transfer_date"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col px-1" style="max-width: 14.28%;">
+                                            <div class="form-group row my-1">
+                                                <label for="transferred_block"
+                                                       class="col-md-5 col-form-label py-0 small text-nowrap">Block
+                                                </label>
+                                                <div class="col-md-9 field-container py-0">
+                                                    <field name="transferred_block"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col px-1" style="max-width: 14.28%;">
+                                            <div class="form-group row my-1">
+                                                <label for="transferred_room_category"
+                                                       class="col-md-5 col-form-label py-0 small text-nowrap">Room
+                                                    Category
+                                                </label>
+                                                <div class="col-md-9 field-container py-0">
+                                                    <field name="transferred_room_category"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col px-1" style="max-width: 14.28%;">
+                                            <div class="form-group row my-1">
+                                                <label for="transferred_room_number"
+                                                       class="col-md-5 col-form-label py-0 small text-nowrap">Room No
+                                                </label>
+                                                <div class="col-md-9 field-container py-0">
+                                                    <field name="transferred_room_number"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col px-1" style="max-width: 14.28%;">
+                                            <div class="form-group row my-1">
+                                                <label for="transferred_bed_number"
+                                                       class="col-md-5 col-form-label py-0 small text-nowrap">Bed No
+                                                </label>
+                                                <div class="col-md-9 field-container py-0">
+                                                    <field name="transferred_bed_number"/>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
 
 
-                    </div>
+                        <group>
+
+                            <field name="no_days" invisible="1"/>
+                            <field name="discharge_date" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="nurse_charge" string="Nursing Fee" invisible="1"/>
+                            <field name="room_category" invisible="1"/>
+                            <field name="advance_amount" invisible="1"/>
+                        </group>
+                        <!--                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
+                        <!--                            <page string="Prescriptions">-->
+                        <!--                                <field name="prescription_line_ids">-->
+                        <!--                                    <tree>-->
+                        <!--                                        <field name="product_id"/>-->
+                        <!--                                        <field name="total_med" invisible="1"/>-->
+                        <!--                                        <field name="per_ped" invisible="1"/>-->
+                        <!--                                        <field name="morn"/>-->
+                        <!--                                        <field name="noon"/>-->
+                        <!--                                        <field name="night"/>-->
+                        <!--                                        <field name="rate" sum="Total"/>-->
+                        <!--                                    </tree>-->
+                        <!--                                </field>-->
+                        <!--                            </page>-->
+                        <!--                        </notebook>-->
+                        <notebook invisible="1">
+                            <page string="Lab">
+                                <field name="lab_report_reg_ids">
+                                    <tree>
+                                        <field name="bill_number" invisible="1"/>
+                                        <field name="test_on"/>
+                                        <field name="result_status"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="MRI">
+                                <field name="mri_report_reg_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="scan_report_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="CT">
+                                <field name="ct_report_reg_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="scan_report_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="X Ray">
+                                <field name="xray_report_reg_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="scan_report_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Audiology">
+                                <field name="audiology_report_reg_ids">
+                                    <tree>
+                                        <field name="report_details"/>
+                                        <field name="scan_report_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                        <group>
+                            <field name="remark"/>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="patient_reg_tree" model="ir.ui.view">
+            <field name="name">patient.reg.tree</field>
+            <field name="model">patient.reg</field>
+            <field name="arch" type="xml">
+                <tree string="Patient Details">
+                    <header>
+                        <button name="action_walk_in_patient"
+                                string="Walk-in Patient"
+                                type="object"
+                                class="oe_highlight"/>
+
+                    </header>
+                    <field name="reference_no" string="UHID"/>
+                    <field name="patient_id"/>
+                    <field name="token_no"/>
+                    <field name="temp_reference_no" invisible="1"/>
+                    <field name="formatted_date" string="Registration Date"/>
+                    <field name="time" string="Appointment Date"/>
+                    <field name="vssc_boolean" string="VSSC"/>
+                    <field name="age"/>
+                    <field name="phone_number"/>
+                    <field name="department_id"/>
+                    <field name="doc_name"/>
+                    <field name="status" class="text-danger"/>
+                    <field name="walk_in" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="patient_reg_walk_in_tree" model="ir.ui.view">
+            <field name="name">patient.reg.walk.tree</field>
+            <field name="model">patient.reg</field>
+            <field name="arch" type="xml">
+                <tree string="Patient Details">
+                    <field name="reference_no" string="UHID" invisible="1"/>
+                    <field name="temp_reference_no"/>
+                    <field name="patient_id"/>
+                    <field name="token_no" invisible="1"/>
+                    <field name="formatted_date" string="Registration Date"/>
+                    <field name="time" string="Appointment Date" invisible="1"/>
+                    <field name="age"/>
+                    <field name="phone_number"/>
+                    <field name="walk_in" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_patient_reg_walk_in" model="ir.actions.act_window">
+            <field name="name">Walk-in Patients</field>
+            <field name="res_model">patient.reg</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="homeo_doctor.patient_reg_walk_in_tree"/>
+            <field name="domain">[('walk_in', '=', True)]</field>
+            <field name="target">current</field>
+        </record>
+
+        <record id="patient_reg_search" model="ir.ui.view">
+            <field name="name">patient.reg.search</field>
+            <field name="model">patient.reg</field>
+            <field name="arch" type="xml">
+                <search string="Search Patient">
+                    <field name="reference_no" string="Patient ID"/>
+                    <field name="patient_id" string="Patient Name"/>
+                    <field name="phone_number" string="Phone Number"/>
+                    <filter string="Patient ID"
+                            name="reference_number_filter"
+                            domain="[('reference_no', 'ilike', self)]"/>
+                    <filter string="Patient Name"
+                            name="reference_number_filter"
+                            domain="[('patient_id', 'ilike', self)]"/>
+
+                    <filter string="Mobile Number"
+                            name="phone_number_filter"
+                            domain="[('phone_number', 'ilike', self)]"/>
+                </search>
+            </field>
+        </record>
 
 
-                    <group>
+        <record id="action_patient_reg" model="ir.actions.act_window">
+            <field name="name">Patient Details form</field>
+            <field name="res_model">patient.reg</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="patient_reg_search"/>
+            <field name="view_id" ref="patient_reg_tree"/>
+            <field name="domain">[('walk_in', '!=', True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create new patient
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_patient_reg_form" name="Patient Reg" parent="menu_my_patient_template_root"
+                  action="action_patient_reg" sequence="0"/>
 
-                        <field name="no_days" invisible="1"/>
-                        <field name="discharge_date" invisible="1"/>
-                    </group>
-                    <group>
-                        <field name="nurse_charge" string="Nursing Fee" invisible="1"/>
-                        <field name="room_category" invisible="1"/>
-                        <field name="advance_amount" invisible="1"/>
-                    </group>
-                    <!--                        <notebook attrs="{'invisible': [('admission_boolean', '=', False)]}">-->
-                    <!--                            <page string="Prescriptions">-->
-                    <!--                                <field name="prescription_line_ids">-->
-                    <!--                                    <tree>-->
-                    <!--                                        <field name="product_id"/>-->
-                    <!--                                        <field name="total_med" invisible="1"/>-->
-                    <!--                                        <field name="per_ped" invisible="1"/>-->
-                    <!--                                        <field name="morn"/>-->
-                    <!--                                        <field name="noon"/>-->
-                    <!--                                        <field name="night"/>-->
-                    <!--                                        <field name="rate" sum="Total"/>-->
-                    <!--                                    </tree>-->
-                    <!--                                </field>-->
-                    <!--                            </page>-->
-                    <!--                        </notebook>-->
-                    <notebook invisible="1">
-                        <page string="Lab">
-                            <field name="lab_report_reg_ids">
-                                <tree>
-                                    <field name="bill_number" invisible="1"/>
-                                    <field name="test_on"/>
-                                    <field name="result_status"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="MRI">
-                            <field name="mri_report_reg_ids">
-                                <tree>
-                                    <field name="report_details"/>
-                                    <field name="scan_report_date"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="CT">
-                            <field name="ct_report_reg_ids">
-                                <tree>
-                                    <field name="report_details"/>
-                                    <field name="scan_report_date"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="X Ray">
-                            <field name="xray_report_reg_ids">
-                                <tree>
-                                    <field name="report_details"/>
-                                    <field name="scan_report_date"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Audiology">
-                            <field name="audiology_report_reg_ids">
-                                <tree>
-                                    <field name="report_details"/>
-                                    <field name="scan_report_date"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
 
-                    <group>
-                        <field name="remark"/>
-                    </group>
+        <record id="patient_history_wizard_form" model="ir.ui.view">
+            <field name="name">patient.history.wizard.form</field>
+            <field name="model">patient.history.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Patient History">
+                    <sheet>
+                        <group>
+                            <field name="patient_id"/>
+                        </group>
+                        <notebook>
+                            <page string="Consultation History">
+                                <field name="consultation_history_ids">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="doctor_id"/>
+                                        <field name="presenting_complaints"/>
+                                        <field name="professional_diagnosis"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Lab Reports">
+                                <field name="lab_report_ids">
+                                    <tree>
+                                        <field name="date"/>
+                                        <!-- <field name="report_type"/> -->
+                                        <field name="report_details"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="MRI Reports">
+                                <field name="mri_report_ids">
+                                    <tree>
+                                        <field name="scan_report_date"/>
+                                        <field name="report_details"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="CT Reports">
+                                <field name="ct_report_ids">
+                                    <tree>
+                                        <field name="scan_report_date"/>
+                                        <field name="report_details"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="X-Ray Reports">
+                                <field name="x_ray_report_ids">
+                                    <tree>
+                                        <field name="scan_report_date"/>
+                                        <field name="report_details"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Pharmacy History">
+                                <field name="pharmacy_history_ids">
+                                    <tree>
+                                        <field name="date"/>
+                                        <field name="doctor_name" string="Prescribed By"/>
+                                        <field name="bill_amount" string="Total Bill"/>
+                                        <button name="view_prescription_details"
+                                                type="object"
+                                                icon="fa-search"
+                                                string="View Prescription"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-                </sheet>
-            </form>
-        </field>
-    </record>
-    <record id="patient_reg_tree" model="ir.ui.view">
-        <field name="name">patient.reg.tree</field>
-        <field name="model">patient.reg</field>
-        <field name="arch" type="xml">
-            <tree string="Patient Details">
-                <header>
-                    <button name="action_walk_in_patient"
-                            string="Walk-in Patient"
+        <record id="action_patient_history_wizard" model="ir.actions.act_window">
+            <field name="name">Patient History</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">patient.history.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <!-- Patient List Tree View -->
+        <record id="patient_list_tree_view" model="ir.ui.view">
+            <field name="name">patient.list.tree</field>
+            <field name="model">patient.reg</field>
+            <field name="arch" type="xml">
+                <tree string="Patient List">
+                    <field name="reference_no" string="UHID"/>
+                    <field name="patient_id" string="Name"/>
+                    <field name="address"/>
+                    <field name="age"/>
+                    <field name="phone_number"/>
+                    <field name="time" string="Register Date"/>
+                    <button name="open_patient_history"
                             type="object"
-                            class="oe_highlight"/>
+                            icon="fa-history"
+                            string="View History"/>
+                </tree>
+            </field>
+        </record>
 
-                </header>
-                <field name="reference_no" string="UHID"/>
-                <field name="patient_id"/>
-                <field name="token_no"/>
-                <field name="temp_reference_no" invisible="1"/>
-                <field name="formatted_date" string="Registration Date"/>
-                <field name="time" string="Appointment Date"/>
-                <field name="vssc_boolean" string="VSSC"/>
-                <field name="age"/>
-                <field name="phone_number"/>
-                <field name="department_id"/>
-                <field name="doc_name"/>
-                <field name="status" class="text-danger"/>
-                <field name="walk_in" invisible="1"/>
-            </tree>
-        </field>
-    </record>
-    <record id="patient_reg_walk_in_tree" model="ir.ui.view">
-        <field name="name">patient.reg.walk.tree</field>
-        <field name="model">patient.reg</field>
-        <field name="arch" type="xml">
-            <tree string="Patient Details">
-                <field name="reference_no" string="UHID" invisible="1"/>
-                <field name="temp_reference_no"/>
-                <field name="patient_id"/>
-                <field name="token_no" invisible="1"/>
-                <field name="formatted_date" string="Registration Date"/>
-                <field name="time" string="Appointment Date" invisible="1"/>
-                <field name="age"/>
-                <field name="phone_number"/>
-                <field name="walk_in" invisible="1"/>
-            </tree>
-        </field>
-    </record>
+        <!-- Patient List Action -->
+        <record id="action_patient_list" model="ir.actions.act_window">
+            <field name="name">Patient List</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">patient.reg</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="patient_list_tree_view"/>
+        </record>
 
-    <record id="action_patient_reg_walk_in" model="ir.actions.act_window">
-        <field name="name">Walk-in Patients</field>
-        <field name="res_model">patient.reg</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="homeo_doctor.patient_reg_walk_in_tree"/>
-        <field name="domain">[('walk_in', '=', True)]</field>
-        <field name="target">current</field>
-    </record>
+        <!-- Menu Item -->
+        <menuitem
+                id="menu_patient_root"
+                name="Patient Management"
+                sequence="10"/>
+        <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
 
-    <record id="patient_reg_search" model="ir.ui.view">
-        <field name="name">patient.reg.search</field>
-        <field name="model">patient.reg</field>
-        <field name="arch" type="xml">
-            <search string="Search Patient">
-                <field name="reference_no" string="Patient ID"/>
-                <field name="patient_id" string="Patient Name"/>
-                <field name="phone_number" string="Phone Number"/>
-                <filter string="Patient ID"
-                        name="reference_number_filter"
-                        domain="[('reference_no', 'ilike', self)]"/>
-                <filter string="Patient Name"
-                        name="reference_number_filter"
-                        domain="[('patient_id', 'ilike', self)]"/>
+        <menuitem
+                id="menu_patient_list"
+                name="Patient List"
+                parent="menu_lab_root"
+                action="action_patient_list"
+                sequence="8"/>
 
-                <filter string="Mobile Number"
-                        name="phone_number_filter"
-                        domain="[('phone_number', 'ilike', self)]"/>
-            </search>
-        </field>
-    </record>
-
-
-    <record id="action_patient_reg" model="ir.actions.act_window">
-        <field name="name">Patient Details form</field>
-        <field name="res_model">patient.reg</field>
-        <field name="view_mode">tree,form</field>
-        <field name="search_view_id" ref="patient_reg_search"/>
-        <field name="view_id" ref="patient_reg_tree"/>
-        <field name="domain">[('walk_in', '!=', True)]</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Create new patient
-            </p>
-        </field>
-    </record>
-    <menuitem id="menu_patient_reg_form" name="Patient Reg" parent="menu_my_patient_template_root"
-              action="action_patient_reg" sequence="0"/>
-
-
-    <record id="patient_history_wizard_form" model="ir.ui.view">
-        <field name="name">patient.history.wizard.form</field>
-        <field name="model">patient.history.wizard</field>
-        <field name="arch" type="xml">
-            <form string="Patient History">
-                <sheet>
-                    <group>
-                        <field name="patient_id"/>
-                    </group>
-                    <notebook>
-                        <page string="Consultation History">
-                            <field name="consultation_history_ids">
-                                <tree>
-                                    <field name="date"/>
-                                    <field name="doctor_id"/>
-                                    <field name="presenting_complaints"/>
-                                    <field name="professional_diagnosis"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Lab Reports">
-                            <field name="lab_report_ids">
-                                <tree>
-                                    <field name="date"/>
-                                    <!-- <field name="report_type"/> -->
-                                    <field name="report_details"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="MRI Reports">
-                            <field name="mri_report_ids">
-                                <tree>
-                                    <field name="scan_report_date"/>
-                                    <field name="report_details"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="CT Reports">
-                            <field name="ct_report_ids">
-                                <tree>
-                                    <field name="scan_report_date"/>
-                                    <field name="report_details"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="X-Ray Reports">
-                            <field name="x_ray_report_ids">
-                                <tree>
-                                    <field name="scan_report_date"/>
-                                    <field name="report_details"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Pharmacy History">
-                            <field name="pharmacy_history_ids">
-                                <tree>
-                                    <field name="date"/>
-                                    <field name="doctor_name" string="Prescribed By"/>
-                                    <field name="bill_amount" string="Total Bill"/>
-                                    <button name="view_prescription_details"
-                                            type="object"
-                                            icon="fa-search"
-                                            string="View Prescription"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="action_patient_history_wizard" model="ir.actions.act_window">
-        <field name="name">Patient History</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">patient.history.wizard</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-    </record>
-
-
-    <!-- Patient List Tree View -->
-    <record id="patient_list_tree_view" model="ir.ui.view">
-        <field name="name">patient.list.tree</field>
-        <field name="model">patient.reg</field>
-        <field name="arch" type="xml">
-            <tree string="Patient List">
-                <field name="reference_no" string="UHID"/>
-                <field name="patient_id" string="Name"/>
-                <field name="address"/>
-                <field name="age"/>
-                <field name="phone_number"/>
-                <field name="time" string="Register Date"/>
-                <button name="open_patient_history"
-                        type="object"
-                        icon="fa-history"
-                        string="View History"/>
-            </tree>
-        </field>
-    </record>
-
-    <!-- Patient List Action -->
-    <record id="action_patient_list" model="ir.actions.act_window">
-        <field name="name">Patient List</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">patient.reg</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="patient_list_tree_view"/>
-    </record>
-
-    <!-- Menu Item -->
-    <menuitem
-            id="menu_patient_root"
-            name="Patient Management"
-            sequence="10"/>
-    <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
-
-    <menuitem
-            id="menu_patient_list"
-            name="Patient List"
-            parent="menu_lab_root"
-            action="action_patient_list"
-            sequence="8"/>
-
-    <menuitem id="menu_consultation_details_tree" name="Consultation Details" parent="menu_my_patient_template_root"
-              action="action_patient_list" sequence="3"/>
-</data>
-        </odoo>
+        <menuitem id="menu_consultation_details_tree" name="Consultation Details" parent="menu_my_patient_template_root"
+                  action="action_patient_list" sequence="3"/>
+    </data>
+</odoo>
