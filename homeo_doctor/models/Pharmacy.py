@@ -193,17 +193,18 @@ class PharmacyDescription(models.Model):
                     line.stock_in_hand = sum(stock_entries.mapped('quantity'))
             record.status = 'paid'
 
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': 'Payment Confirmed',
-                'message': f'Payment has been confirmed for {self.name}',
-                'sticky': False,
-                'next': {'type': 'ir.actions.act_window_close'},
-            }
-        }
+        # return {
+        #     'type': 'ir.actions.client',
+        #     'tag': 'display_notification',
+        #     'params': {
+        #         'title': 'Payment Confirmed',
+        #         'message': f'Payment has been confirmed for {self.name}',
+        #         'sticky': False,
+        #         'next': {'type': 'ir.actions.act_window_close'},
+        #     }
+        # }
 
+        return self.env.ref('homeo_doctor.action_pharmacy_report').report_action(self)
         # partner = False
         # if self.patient_id and hasattr(self.patient_id, 'partner_id') and self.patient_id.partner_id:
         #     partner = self.patient_id.partner_id.id

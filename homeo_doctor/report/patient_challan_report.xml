@@ -78,10 +78,17 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Address:
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Age:
                                         </td>
                                         <td style="padding: 8px; border: 1px solid #000;">
-                                            <t t-esc="doc.address"/>
+                                            <t t-esc="doc.age"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; padding: 8px; border: 1px solid #000;">Gender:
+                                        </td>
+                                        <td style="padding: 8px; border: 1px solid #000;">
+                                            <t t-esc="doc.gender"/>
                                         </td>
                                     </tr>
                                     <tr>
