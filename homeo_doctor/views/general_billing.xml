@@ -8,7 +8,7 @@
                 <form string="Patient Billing" class="lab_form general_form">
                     <header>
                         <field name="status" widget="statusbar"/>
-                        <button name="action_pay_button" type="object" attrs="{'invisible': [('mode_pay', '=', 'credit')]}" string="Pay" class="oe_highlight"/>
+                        <!-- <button name="action_pay_button" type="object" attrs="{'invisible': [('mode_pay', '=', 'credit')]}" string="Pay" class="oe_highlight"/> -->
                         <button name="action_create_admission" type="object" string="Admit" class="oe_highlight"/>
                         <button name="action_observation" type="object" string="Observation" class="oe_highlight"/>
                         <button name="action_observation_discharge" type="object" string="Discharge" class="oe_highlight"/>
@@ -196,6 +196,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label for="reference" class="col-md-4 col-form-label">Reference</label>
+                                                <div class="col-md-8 field-container">
+                                                    <field name="reference"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <!--                                    <div class="col-md-12">-->
                                         <!--                                        <div class="form-group row">-->
                                         <!--                                            <label for="discount_type" class="col-md-4 col-form-label">Discount Type</label>-->
@@ -242,6 +250,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                
+                                                <div class="col-md-8 field-container">
+                                                    <button name="action_pay_button" type="object" attrs="{'invisible': [('mode_pay', '=', 'credit')]}" string="Pay" class="oe_highlight"/>
+                                                </div>
+                                            </div>
+                                        </div>
 
 
                                     </div>
@@ -273,14 +289,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label for="reference" class="col-md-4 col-form-label">Reference</label>
-                                                <div class="col-md-8 field-container">
-                                                    <field name="reference"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
+                                        
                                         <div class="col-md-12" style="display:none;">
                                             <div class="form-group row">
                                                 <label for="net_amount" class="col-md-4 col-form-label">Net Bill

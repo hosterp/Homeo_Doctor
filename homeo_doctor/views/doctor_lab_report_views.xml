@@ -76,7 +76,7 @@
                         <field name="status" widget="statusbar"/>
                         <button name="action_confirm_payment" string="Print Invoice" type="object"
                                 class="btn-primary" groups="base.group_user" invisible="1"/>
-                        <button name='action_confirm_payment' type="object" string="Pay" class="btn-primary"/>
+                        
                         <button string="Unpaid" class="btn-primary"/>
                         <button name="action_sample_collected" type="object" string="Sample Collected"
                                 class="btn-primary"/>
@@ -305,6 +305,14 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
+                                            <label for="staff_name" class="col-md-4 col-form-label">Staff</label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="staff_name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
                                             <label for="remarks" class="col-md-4 col-form-label">Remarks</label>
                                             <div class="col-md-8 field-container">
                                                 <field name="remarks"/>
@@ -341,19 +349,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label for="staff_name" class="col-md-4 col-form-label">Staff</label>
-                                            <div class="col-md-8 field-container">
-                                                <field name="staff_name"/>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col-md-6">
                                         <div class="form-group row">
                                             <label for="staff_pwd" class="col-md-4 col-form-label">Staff Password</label>
                                             <div class="col-md-8 field-container">
                                                 <field name="staff_pwd"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                    
+                                            <div class="col-md-8 field-container">
+                                                <button name='action_confirm_payment' type="object" string="Pay" class="btn-primary"/>
                                             </div>
                                         </div>
                                     </div>
