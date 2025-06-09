@@ -95,6 +95,7 @@
         "views/ip_part_billing.xml",
         "views/hr_employee.xml",
         "views/pharmacy_prescription_report_wizard.xml",
+        "views/res_partner_inherit.xml",
         "data/ir_sequence_data.xml",
 
     ],

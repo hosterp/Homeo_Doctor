@@ -38,3 +38,4 @@ from .import consultation_report
 from .import admitted_patient_history
 from .import stock_transfer
 from .import hr_model
+from .import res_partner_inherit
