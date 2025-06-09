@@ -1127,6 +1127,7 @@
                     <field name="reference_no" string="Patient ID"/>
                     <field name="patient_id" string="Patient Name"/>
                     <field name="phone_number" string="Phone Number"/>
+                    <field name="status" string="Status"/>
                     <filter string="Patient ID"
                             name="reference_number_filter"
                             domain="[('reference_no', 'ilike', self)]"/>
@@ -1137,6 +1138,9 @@
                     <filter string="Mobile Number"
                             name="phone_number_filter"
                             domain="[('phone_number', 'ilike', self)]"/>
+                    <filter string="Status"
+                            name="status_filter"
+                            domain="[('status', 'ilike', self)]"/>
                 </search>
             </field>
         </record>
