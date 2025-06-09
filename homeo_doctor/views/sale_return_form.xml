@@ -1,5 +1,302 @@
 <odoo>
     <data>
+        <!-- QWeb Template for Pharmacy Return Report -->
+<template id="pharmacy_return_minimal_layout">
+    <t t-call="web.basic_layout">
+        <div class="header" style="border-bottom: 2px solid #dc3545; padding-bottom: 10px;">
+            <div class="row">
+                <div class="col-3">
+                    <img src="/web/binary/company_logo" style="max-height: 70px;" alt="Logo"/>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                    <div style="text-align: center;">
+                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
+                            MULTI SPECIALITY HOSPITAL
+                        </h1>
+                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                            THIRUVANANTHAPURAM -695 564
+                        </p>
+                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                            8590203321
+                            dpmshospital@gmail.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <t t-raw="0"/>
+        <div class="footer" style="border-top: 1px solid #ddd; padding-top: 10px; font-size: 9pt; color: #777;">
+            <div class="row">
+                <div class="col-6 text-left">
+                    <span>Return #</span>
+                    <span t-esc="context.get('active_id', '')"/>
+                </div>
+                <div class="col-6 text-right">
+                    <span>Page:</span>
+                    <span class="page"/>
+                    /
+                    <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
+
+<template id="pharmacy_return_report_template">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="homeo_doctor.pharmacy_return_minimal_layout">
+                <div class="page">
+                    <!-- Document Title -->
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <h3 style="background-color: #dc3545; color: white; padding: 10px; border-radius: 5px;">
+                                <i class="fa fa-undo mr-2"></i>Sales Return Receipt
+                            </h3>
+                        </div>
+                    </div>
+
+                    <!-- Return Information Section -->
+                    <div class="row mb-4">
+                        <div class="col-12"
+                             style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+                            <div style="background-color: #f5f5f5; padding: 8px 15px; border-bottom: 1px solid #ddd;">
+                                <strong style="color: #333; font-size: 16px;">Return Information</strong>
+                                <span style="float: right; color: #777; font-size: 12px;">
+                                    <i class="fa fa-calendar mr-1"></i>Return Date:
+                                    <t t-esc="o.return_date.strftime('%d %b, %Y %H:%M') if o.return_date else ''"/>
+                                </span>
+                            </div>
+                            <div class="row p-3">
+                                <div class="col-6">
+                                    <table class="table table-sm table-borderless mb-0">
+                                        <tr>
+                                            <td style="width: 120px; color: #666;">Return Number:</td>
+                                            <td style="font-weight: bold; color: #dc3545;">
+                                                <span t-field="o.return_number"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #666;">Original Bill:</td>
+                                            <td style="font-weight: bold; color: #333;">
+                                                <span t-field="o.original_sale_id.name"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-sm table-borderless mb-0">
+                                        <tr>
+                                            <td style="width: 100px; color: #666;">Patient ID:</td>
+                                            <td style="font-weight: bold; color: #333;">
+                                                <span t-field="o.patient_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #666;">Patient Name:</td>
+                                            <td style="font-weight: bold; color: #333;">
+                                                <span t-field="o.patient_name"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row px-3 pb-3">
+                                <div class="col-6">
+                                    <table class="table table-sm table-borderless mb-0">
+                                        <tr>
+                                            <td style="width: 120px; color: #666;">Phone:</td>
+                                            <td style="font-weight: bold; color: #333;">
+                                                <span t-field="o.phone_number"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table table-sm table-borderless mb-0">
+                                        <tr>
+                                            <td style="width: 100px; color: #666;">Doctor:</td>
+                                            <td style="font-weight: bold; color: #333;">
+                                                <span t-field="o.doctor_name"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Return Items Table -->
+                    <div class="mb-4">
+                        <!-- Section Header -->
+                        <div style="background-color: #f5f5f5; padding: 8px 15px; border: 1px solid #ddd; border-top-left-radius: 5px; border-top-right-radius: 5px;">
+                            <strong style="color: #333; font-size: 16px;">Returned Items</strong>
+                        </div>
+
+                        <!-- Header Row -->
+                        <div style="display: table; width: 100%; background: #dc3545; color: white; font-weight: bold; border: 1px solid #ddd;">
+                            <div style="display: table-row;">
+                                <div style="display: table-cell; padding: 8px; text-align: center;">Sl No</div>
+                                <div style="display: table-cell; padding: 8px;">Product Name</div>
+                                <div style="display: table-cell; padding: 8px; text-align: center;">Return Qty</div>
+                                <div style="display: table-cell; padding: 8px; text-align: center;">Batch</div>
+                                <div style="display: table-cell; padding: 8px; text-align: center;">Expiry</div>
+                                <div style="display: table-cell; padding: 8px; text-align: center;">HSN</div>
+                                <div style="display: table-cell; padding: 8px; text-align: right;">Unit Price</div>
+                                <div style="display: table-cell; padding: 8px; text-align: right;">Subtotal</div>
+                            </div>
+                        </div>
+
+                        <!-- Data Table -->
+                        <table class="table table-bordered table-sm"
+                               style="border: 1px solid #ddd; margin-top: 0; width: 100%; table-layout: fixed;">
+                            <tbody>
+                                <t t-set="counter" t-value="1"/>
+                                <t t-foreach="o.return_line_ids" t-as="line">
+                                    <tr t-att-style="'background-color: ' + ('rgba(245, 245, 245, 0.5)' if counter % 2 == 0 else 'white')">
+                                        <td class="text-center" style="padding: 8px;">
+                                            <span t-esc="counter"/>
+                                            <t t-set="counter" t-value="counter + 1"/>
+                                        </td>
+                                        <td style="padding: 8px;">
+                                            <strong t-field="line.product_id.display_name"/>
+                                        </td>
+                                        <td class="text-center" style="padding: 8px;">
+                                            <span t-field="line.return_quantity"/>
+                                        </td>
+                                        <td class="text-center" style="padding: 8px;">
+                                            <span t-field="line.batch"/>
+                                        </td>
+                                        <td class="text-center" style="padding: 8px;">
+                                            <span t-field="line.exp_date"
+                                                  t-options='{"widget": "date", "format": "MM/yy"}'/>
+                                        </td>
+                                        <td class="text-center" style="padding: 8px;">
+                                            <span t-field="line.hsn"/>
+                                        </td>
+                                        <td class="text-right" style="padding: 8px;">
+                                            <span t-field="line.unit_price"
+                                                  t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
+                                        </td>
+                                        <td class="text-right" style="padding: 8px;">
+                                            <span t-field="line.subtotal"
+                                                  t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </t>
+
+                                <!-- Total Row -->
+                                <tr style="background-color: #f8f9fa; border-top: 2px solid #dc3545;">
+                                    <td colspan="7" class="text-right" style="font-weight: bold; padding: 8px; font-size: 16px;">
+                                        Total Return Amount:
+                                    </td>
+                                    <td class="text-right" style="font-weight: bold; padding: 8px; color: #dc3545; font-size: 16px;">
+                                        <span t-field="o.total_return_amount"
+                                              t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Return Policy and Summary -->
+                    <div class="row">
+                        <div class="col-7">
+                            <!-- Return Policy Section -->
+                            <div style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+                                <div style="background-color: #f5f5f5; padding: 8px 15px; border-bottom: 1px solid #ddd;">
+                                    <strong style="color: #333; font-size: 16px;">Return Policy</strong>
+                                </div>
+                                <div class="p-3">
+                                    <ul style="padding-left: 20px; margin-bottom: 0;">
+                                        <li>Items must be returned within 7 days of purchase</li>
+                                        <li>Original packaging and unused condition required</li>
+                                        <li>Prescription medicines cannot be returned once opened</li>
+                                        <li>Refund will be processed within 3-5 business days</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <!-- Summary Section -->
+                            <div style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+                                <div style="background-color: #f5f5f5; padding: 8px 15px; border-bottom: 1px solid #ddd;">
+                                    <strong style="color: #333; font-size: 16px;">Return Summary</strong>
+                                </div>
+                                <div class="p-3">
+                                    <table class="table table-sm table-borderless mb-0">
+                                        <tr>
+                                            <td style="width: 60%; color: #666;">Total Items Returned:</td>
+                                            <td class="text-right" style="font-weight: bold; color: #333;">
+                                                <span t-esc="len(o.return_line_ids)"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #666;">Total Quantity:</td>
+                                            <td class="text-right" style="font-weight: bold; color: #333;">
+                                                <span t-esc="sum(o.return_line_ids.mapped('return_quantity'))"/>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-top: 1px dashed #ddd;">
+                                            <td style="color: #333; font-weight: bold;">Return Amount:</td>
+                                            <td class="text-right"
+                                                style="font-weight: bold; color: #dc3545; font-size: 16px;">
+                                                <span t-field="o.total_return_amount"
+                                                      t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Signatures -->
+                    <div class="row mt-5">
+                        <div class="col-6 text-center">
+                            <div style="border-top: 1px solid #777; padding-top: 10px; margin-top: 50px;">
+                                <p style="margin-bottom: 0;">Customer Signature</p>
+                                <p style="margin-bottom: 0; font-weight: bold;">
+                                    <span t-field="o.patient_name"/>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-6 text-center">
+                            <div style="border-top: 1px solid #777; padding-top: 10px; margin-top: 50px;">
+                                <p style="margin-bottom: 0;">Authorized Signature</p>
+                                <p style="margin-bottom: 0; font-weight: bold;">Pharmacy In-charge</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Note -->
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <p class="text-center"
+                               style="font-style: italic; color: #777; font-size: 12px; border-top: 1px solid #ddd; padding-top: 10px;">
+                                This return receipt is generated electronically and serves as proof of return.
+                                For any queries, please contact hospital pharmacy at 0471-2373004.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+
+<!-- Report Action -->
+<record id="action_pharmacy_return_report" model="ir.actions.report">
+    <field name="name">Pharmacy Return Receipt</field>
+    <field name="model">pharmacy.return</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">homeo_doctor.pharmacy_return_report_template</field>
+    <field name="report_file">homeo_doctor.pharmacy_return_report_template</field>
+    <field name="print_report_name">'Return Receipt - ' + object.return_number</field>
+    <field name="binding_model_id" ref="model_pharmacy_return"/>
+    <field name="binding_type">report</field>
+    <field name="paperformat_id" ref="base.paperformat_euro"/>
+</record>
         <record id="view_pharmacy_return_form" model="ir.ui.view">
             <field name="name">pharmacy.return.form</field>
             <field name="model">pharmacy.return</field>

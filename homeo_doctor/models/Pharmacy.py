@@ -579,6 +579,7 @@ class PharmacyReturn(models.Model):
                         'uom_id': line.product_id.uom_id.id if line.product_id.uom_id else False,
                         'state': 'confirmed',
                     })
+        return self.env.ref('homeo_doctor.action_pharmacy_return_report').report_action(self)
 
 
 class PharmacyReturnLine(models.Model):
