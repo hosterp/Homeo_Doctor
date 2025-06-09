@@ -622,17 +622,24 @@ class PatientRegistration(models.Model):
                     'pay_mode': record.advance_mode_payment,
 
                 })
-                record.unpaid_general_ids.write({'status': 'paid'})
-                if record.vssc_boolean:
-                    record.unpaid_lab_ids.write({'status': 'credit'})
-                    record.paid_lab_ids.write({'status': 'credit'})
-                else:
-                    record.unpaid_lab_ids.write({'status': 'paid'})
-                record.unpaid_pharmacy_ids.write({'status': 'paid'})
+                # record.unpaid_general_ids.write({'status': 'paid'})
+                # if record.vssc_boolean:
+                #     record.unpaid_lab_ids.write({'status': 'credit'})
+                #     record.paid_lab_ids.write({'status': 'credit'})
+                # else:
+                #     record.unpaid_lab_ids.write({'status': 'paid'})
+                # record.unpaid_pharmacy_ids.write({'status': 'paid'})
         return self.env.ref('homeo_doctor.action_report_discharge_challan').report_action(self)
 
     def finalize_discharge_cleanup(self):
         for record in self:
+            record.unpaid_general_ids.write({'status': 'paid'})
+            if record.vssc_boolean:
+                record.unpaid_lab_ids.write({'status': 'credit'})
+                record.paid_lab_ids.write({'status': 'credit'})
+            else:
+                record.unpaid_lab_ids.write({'status': 'paid'})
+            record.unpaid_pharmacy_ids.write({'status': 'paid'})
             record.admission_boolean = False
             record.update({
                 'room_number_new': False,
@@ -655,6 +662,8 @@ class PatientRegistration(models.Model):
                 'nurse_charge': False,
                 'doctor_visiting_charge': False,
                 'service_charge': False,
+                'Staff_name': False,
+                'staff_password': False,
 
             })
 
@@ -759,6 +768,9 @@ class PatientRegistration(models.Model):
 
         if self.vssc_boolean and self.consultation_fee != 400:
             self.consultation_fee = 400
+
+        self.register_staff_name = False
+        self.register_staff_password = False
 
         return self.env.ref('homeo_doctor.report_patient_challan_action').report_action(self)
 
