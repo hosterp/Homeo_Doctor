@@ -45,6 +45,7 @@ class AccountMove(models.Model):
     discount_amount = fields.Monetary(string='Discount Amount',
                                       store=True, readonly=True, compute='_compute_amount')
 
+
     @api.depends('invoice_line_ids', 'global_discount', 'amount_untaxed')
     def _compute_amount(self):
         # First call the original method to calculate base amounts
@@ -252,6 +253,26 @@ class AccountMoveLine(models.Model):
     reason_for_rejection=fields.Char('Reason For Rejection')
     pack = fields.Integer('Pack',default=1)
     pup = fields.Float('PUP',compute="pup_calculation")
+    price_subtotal = fields.Monetary(
+        compute="_compute_price_subtotal",
+        store=True,
+        readonly=True,
+        currency_field="currency_id",
+    )
+    currency_id = fields.Many2one(
+        'res.currency',
+        related='move_id.currency_id',
+        store=True,
+        readonly=True,
+    )
+
+    @api.depends('price_unit', 'quantity', 'discount', 'gst')
+    def _compute_price_subtotal(self):
+        for line in self:
+            base = line.price_unit * (1 - (line.discount or 0.0) / 100.0) * line.quantity
+            gst_amount = base * (line.gst or 0.0) / 100.0
+            line.price_subtotal = base + gst_amount
+
 
     @api.depends('pack','price_unit')
     def pup_calculation(self):
@@ -283,11 +304,11 @@ class AccountMoveLine(models.Model):
             if line.ord_qty is not None and line.quantity is not None:
                 line.to_be_received = line.ord_qty - line.quantity
 
-            if line.ord_qty < line.quantity:
+            if (line.ord_qty < line.quantity )and (line.ord_qty >0):
                 line.free_qty = line.quantity - line.ord_qty
                 line.quantity = line.ord_qty
             else:
-                line.to_be_received = 0  # Reset if either field is empty
+                line.to_be_received = 0
 
     @api.onchange('ord_qty')
     def _onchange_ord_qty(self):
