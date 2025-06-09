@@ -360,7 +360,6 @@ class DoctorLabReport(models.Model):
             'patient_id': self.user_ide.id,
             'patient_name': self.patient_name,
             'doctor': self.doctor_id.id,
-            'staff': self.staff_name,
             'status': 'paid',
             'patient_phone': self.patient_phone,
             'sample_collected': fields.Datetime.now(),
