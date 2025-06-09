@@ -54,12 +54,17 @@ class AccountMove(models.Model):
         for move in self:
             # Only apply to supplier invoices
             if move.move_type != 'in_invoice':
-                move.amount_before_discount = move.amount_total
+                amount_before_discount = sum(
+                    move.invoice_line_ids.mapped('price_subtotal')
+                )
+
                 move.discount_amount = 0.0
                 continue
 
-            # Store the original amount before discount
-            amount_before_discount = move.amount_total
+            amount_before_discount = sum(
+                move.invoice_line_ids.mapped('price_subtotal')
+            )
+
             move.amount_before_discount = amount_before_discount
 
             # Calculate discount amount
@@ -67,7 +72,7 @@ class AccountMove(models.Model):
             move.discount_amount = discount_amount
 
             # Update total after discount
-            move.amount_total = amount_before_discount - discount_amount
+            move.amount_total = move.amount_before_discount - discount_amount
 
             # Update amount_residual to match the discounted total for unpaid/partially paid invoices
             if move.state == 'posted' and move.payment_state in ['not_paid', 'partial']:
