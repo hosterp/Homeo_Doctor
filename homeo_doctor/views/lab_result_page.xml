@@ -170,7 +170,7 @@
                     <field name="patient_name"/>
                     <field name="patient_phone"/>
                     <field name="test_on"/>
-                    <field name="staff"/>
+                    <field name="lab_incharge" string="Lab Incharge"/>
                     <field name="status" string="Payment Status"/>
                     <field name="sample_status" string="Sample Collected Status"/>
                     <field name="result_status" string="Result Status"/>
