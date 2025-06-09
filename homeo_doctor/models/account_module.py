@@ -417,11 +417,14 @@ class AccountPaymentRegister(models.TransientModel):
             # If there's a discount, explicitly set the amount
             if move.global_discount > 0:
                 res['amount'] = move.amount_total
-
                 # Also update payment_difference if it's in the fields
                 if 'payment_difference' in fields_list:
                     res['payment_difference'] = 0.0
-
+            else:
+                res['amount'] = move.amount_total
+                # Also update payment_difference if it's in the fields
+                if 'payment_difference' in fields_list:
+                    res['payment_difference'] = 0.0
         return res
 
     def write(self, vals):
