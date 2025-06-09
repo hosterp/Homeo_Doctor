@@ -66,7 +66,9 @@ class PatientRegistration(models.Model):
     bed_id = fields.Many2one('hospital.bed', string="Bed", )
     advance_amount = fields.Integer(string='Per Day')
     # bed_id = fields.Many2one('hospital.bed', string='Bed')
-    nurse_charge = fields.Integer(string='Nurse Fee')
+    nurse_charge = fields.Float(string='Nursing Charge')
+    doctor_visiting_charge= fields.Float("Doctor Charge")
+    service_charge =  fields.Float("Service Charge")
     alternate_no = fields.Char(string='Alternate Number')
     no_days = fields.Integer(string='Number Of Days', compute='_compute_no_days', store=True)
     admitted_date = fields.Datetime(string='Admitted Date')
@@ -392,6 +394,15 @@ class PatientRegistration(models.Model):
     register_card_no = fields.Char(string="Card No")
     register_bank_name = fields.Char(string="Bank")
 
+    # @api.onchange('doctor_visiting_charge','service_charge','nurse_charge')
+    # def charges_add(self):
+    #     for rec in self:
+    #         rec.admission_total_amount = rec.admission_total_amount + rec.doctor_visiting_charge + rec.service_charge + rec.nurse_charge
+    @api.onchange('nurse_charge', 'doctor_visiting_charge', 'service_charge')
+    def _onchange_charges(self):
+        """Calculate total amount when charge fields change"""
+        # Manually trigger the computation for immediate UI feedback
+        self._compute_total_unpaid_amount()
     def admit_reception(self):
         self.admission_boolean = True
         self.status = 'admitted'
@@ -540,6 +551,8 @@ class PatientRegistration(models.Model):
                     rent_half_value = float(rec.rent_half or 0) if rec.rent_half and rec.rent_half.strip() else 0
                     total += rent_half_value
 
+            total += (rec.nurse_charge or 0) + (rec.doctor_visiting_charge or 0) + (rec.service_charge or 0)
+
             rec.admission_total_amount = total
             rec.room_rent = full_days * rent_full_value + (rent_half_value if remaining_hours > 0 else 0.0)
 
@@ -609,17 +622,24 @@ class PatientRegistration(models.Model):
                     'pay_mode': record.advance_mode_payment,
 
                 })
-                record.unpaid_general_ids.write({'status': 'paid'})
-                if record.vssc_boolean:
-                    record.unpaid_lab_ids.write({'status': 'credit'})
-                    record.paid_lab_ids.write({'status': 'credit'})
-                else:
-                    record.unpaid_lab_ids.write({'status': 'paid'})
-                record.unpaid_pharmacy_ids.write({'status': 'paid'})
+                # record.unpaid_general_ids.write({'status': 'paid'})
+                # if record.vssc_boolean:
+                #     record.unpaid_lab_ids.write({'status': 'credit'})
+                #     record.paid_lab_ids.write({'status': 'credit'})
+                # else:
+                #     record.unpaid_lab_ids.write({'status': 'paid'})
+                # record.unpaid_pharmacy_ids.write({'status': 'paid'})
         return self.env.ref('homeo_doctor.action_report_discharge_challan').report_action(self)
 
     def finalize_discharge_cleanup(self):
         for record in self:
+            record.unpaid_general_ids.write({'status': 'paid'})
+            if record.vssc_boolean:
+                record.unpaid_lab_ids.write({'status': 'credit'})
+                record.paid_lab_ids.write({'status': 'credit'})
+            else:
+                record.unpaid_lab_ids.write({'status': 'paid'})
+            record.unpaid_pharmacy_ids.write({'status': 'paid'})
             record.admission_boolean = False
             record.update({
                 'room_number_new': False,
@@ -639,6 +659,11 @@ class PatientRegistration(models.Model):
                 'amount_in_advance': False,
                 'op_category': False,
                 'admission_total_amount': False,
+                'nurse_charge': False,
+                'doctor_visiting_charge': False,
+                'service_charge': False,
+                'Staff_name': False,
+                'staff_password': False,
 
             })
 
@@ -743,6 +768,9 @@ class PatientRegistration(models.Model):
 
         if self.vssc_boolean and self.consultation_fee != 400:
             self.consultation_fee = 400
+
+        self.register_staff_name = False
+        self.register_staff_password = False
 
         return self.env.ref('homeo_doctor.report_patient_challan_action').report_action(self)
 
