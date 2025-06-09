@@ -77,6 +77,7 @@
                                 <field name="manf_date"/>
                                 <field name="exp_date"/>
                                 <field name="batch"/>
+                                <field name="return_quantity"/>
                                 <field name="quantity"/>
                                 <field name="unit_price"/>
                                 <field name="subtotal" readonly="1"/>

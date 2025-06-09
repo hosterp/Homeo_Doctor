@@ -506,6 +506,23 @@ class PharmacyReturn(models.Model):
         default='/',
     )
 
+    @api.onchange('original_sale_id')
+    def _onchange_original_sale_id(self):
+        self.return_line_ids = [(5, 0, 0)]  # Clear existing return lines
+        if self.original_sale_id:
+            lines = []
+            for line in self.original_sale_id.prescription_line_ids:
+                lines.append((0, 0, {
+                    'product_id': line.product_id.id,
+                    'return_quantity': line.qty,
+                    'unit_price': line.per_ped,
+                    'manf_date': line.manf_date,
+                    'exp_date': line.exp_date,
+                    'batch': line.batch,
+                    'hsn': line.hsn,
+                }))
+            self.return_line_ids = lines
+
     @api.model
     def create(self, vals):
 
@@ -566,6 +583,7 @@ class PharmacyReturnLine(models.Model):
 
 
     product_id = fields.Many2one('product.product', string="Product")
+    return_quantity = fields.Float(string="Quantity")
     quantity = fields.Float(string="Returned Quantity")
     unit_price = fields.Float(string="Unit Price")
     manf_date = fields.Date(string='M.Date')
