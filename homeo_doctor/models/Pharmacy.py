@@ -506,6 +506,10 @@ class PharmacyReturn(models.Model):
         default='/',
     )
 
+    def print_original_bill(self):
+        self.ensure_one()
+        return self.env.ref('homeo_doctor.action_pharmacy_report').report_action(self.original_sale_id)
+
     @api.onchange('original_sale_id')
     def _onchange_original_sale_id(self):
         self.return_line_ids = [(5, 0, 0)]  # Clear existing return lines
