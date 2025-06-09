@@ -858,6 +858,7 @@
                                                     <field name="room_rent_total" string="Room Rent" sum="Total"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
+                                                     <button name="action_ip_print_general_bill" type="object" string="Print"/>
                                                 </tree>
                                             </field>
                                             <group>
@@ -868,8 +869,10 @@
                                                 <tree decoration-danger="status=='unpaid'"
                                                       class="billing_list_compact">
                                                     <field name="bill_date" string="Date"/>
+                                                    <field name="room_rent_total" string="Room Rent" sum="Total"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
+                                                     <button name="action_ip_print_general_bill" type="object" string="Print"/>
                                                 </tree>
                                             </field>
                                         </group>
@@ -883,10 +886,11 @@
 
                                             <field name="paid_general_ids" nolabel="1">
                                                 <tree decoration-success="status=='paid'"
-                                                      class="billing_list_compact">
+                                                      class="billing_list_compact" editable="bottom">
                                                     <field name="bill_date" string="Date"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
+                                                    <button name="action_print_general_bill" type="object" string="Print"/>
                                                 </tree>
                                             </field>
 
@@ -895,12 +899,13 @@
                                                 <separator string="Unpaid Bills" class="billing_separator_compact"/>
                                             </group>
 
-                                            <field name="unpaid_general_ids" nolabel="1">
+                                            <field name="unpaid_general_ids" nolabel="1" >
                                                 <tree decoration-danger="status=='unpaid'"
-                                                      class="billing_list_compact">
+                                                      class="billing_list_compact"  editable="bottom">
                                                     <field name="bill_date" string="Date"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
+                                                    <button name="action_print_general_bill" type="object" string="Print"/>
                                                 </tree>
                                             </field>
 
@@ -923,6 +928,10 @@
                                                     <field name="date" string="Date"/>
                                                     <field name="total_bill_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
+                                                    <button name="action_print_lab_bill"
+                                                            type="object"
+                                                            string="Print"
+                                                            class="btn-primary"/>
                                                 </tree>
                                             </field>
                                             <group>
@@ -935,6 +944,10 @@
                                                     <field name="date" string="Date"/>
                                                     <field name="total_bill_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
+                                                    <button name="action_print_lab_bill"
+                                                            type="object"
+                                                            string="Print"
+                                                            class="btn-primary"/>
                                                 </tree>
                                             </field>
                                         </group>
@@ -943,7 +956,7 @@
                                     <div class="col-md-6">
                                         <group string="Pharmacy Billing" class="billing_group_compact">
                                             <group>
-                                                 <separator string="Unpaid Bills" class="billing_separator_compact"/>
+                                                <separator string="Unpaid Bills" class="billing_separator_compact"/>
                                             </group>
 
                                             <field name="unpaid_pharmacy_ids" nolabel="1">
@@ -952,10 +965,11 @@
                                                     <field name="date" string="Date"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
+                                                    <button name="action_register_payment" type="object" string="Print" />
                                                 </tree>
                                             </field>
                                             <group>
-                                                  <separator string="Paid Bills" class="billing_separator_compact"/>
+                                                <separator string="Paid Bills" class="billing_separator_compact"/>
                                             </group>
 
                                             <field name="paid_pharmacy_ids" nolabel="1">
@@ -963,6 +977,7 @@
                                                     <field name="date" string="Date"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
+                                                    <button name="action_register_payment" type="object" string="Print"/>
                                                 </tree>
                                             </field>
                                         </group>
@@ -1178,6 +1193,7 @@
                     <field name="reference_no" string="Patient ID"/>
                     <field name="patient_id" string="Patient Name"/>
                     <field name="phone_number" string="Phone Number"/>
+                    <field name="status" string="Status"/>
                     <filter string="Patient ID"
                             name="reference_number_filter"
                             domain="[('reference_no', 'ilike', self)]"/>
@@ -1188,6 +1204,9 @@
                     <filter string="Mobile Number"
                             name="phone_number_filter"
                             domain="[('phone_number', 'ilike', self)]"/>
+                    <filter string="Status"
+                            name="status_filter"
+                            domain="[('status', 'ilike', self)]"/>
                 </search>
             </field>
         </record>

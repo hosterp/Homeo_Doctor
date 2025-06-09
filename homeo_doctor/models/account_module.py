@@ -45,6 +45,12 @@ class AccountMove(models.Model):
     discount_amount = fields.Monetary(string='Discount Amount',
                                       store=True, readonly=True, compute='_compute_amount')
 
+    @api.onchange('supplier_name')
+    def _onchange_supplier_name(self):
+        for rec in self:
+            rec.supplier_gst= rec.supplier_name.gst_no
+            rec.supplier_dl= rec.supplier_name.reg_no
+            rec.supplier_phone = rec.supplier_name.mobile
 
     @api.depends('invoice_line_ids', 'global_discount', 'amount_untaxed')
     def _compute_amount(self):

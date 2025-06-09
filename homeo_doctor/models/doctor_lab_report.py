@@ -89,6 +89,8 @@ class DoctorLabReport(models.Model):
     ], string="Active Investigation Type", default='all')
     admitted_patient_id = fields.Many2one('hospital.admitted.patient', string="Admitted Patient")
 
+    def action_print_lab_bill(self):
+        return self.env.ref('homeo_doctor.action_report_lab_invoice').report_action(self)
     def filter_xray_investigations(self):
         """Button action to filter X-Ray investigations"""
         self.active_investigation_type = 'xray'

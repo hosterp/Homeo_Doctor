@@ -325,6 +325,8 @@ class GeneralBilling(models.Model):
                 'total_amt': total,
             })]
 
+    def action_print_general_bill(self):
+        return self.env.ref('homeo_doctor.report_general_bill_report').report_action(self)
 
 class BillTYpe(models.Model):
     _name ='bill.type'
@@ -754,6 +756,8 @@ class IPPartBilling(models.Model):
                 'total_amt': total,
             })]
 
+    def action_ip_print_general_bill(self):
+        return self.env.ref('homeo_doctor.action_report_ip_part_billing').report_action(self)
 
 class IPPartBillLine(models.Model):
     _name = 'ip.part.bill.line'
