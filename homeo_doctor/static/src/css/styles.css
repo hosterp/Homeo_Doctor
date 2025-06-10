@@ -1496,3 +1496,9 @@ color: white ;
 .o_group.o_inner_group.billing_group_compact {
 	border: 1px solid;
 }
+
+
+a[href="/web/database/manager"],
+a[href*="odoo.com"] {
+    display: none !important;
+}
