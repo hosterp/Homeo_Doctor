@@ -279,6 +279,7 @@ class PharmacyPrescriptionLine(models.Model):
     manf_date = fields.Date(string="Manufacturing Date", compute="_compute_product_details", store=True)
     exp_date = fields.Date(string="Expiry Date", compute="_compute_product_details", store=True)
     rate = fields.Float(string="Rate", compute="_compute_product_details", store=True)
+    supplier_rate = fields.Float(string="Rate")
     hsn = fields.Char(string="HSN Code", compute="_compute_product_details", store=True)
     packing=fields.Char(string='Packing')
     mfc=fields.Char(string='MFC')
@@ -286,7 +287,7 @@ class PharmacyPrescriptionLine(models.Model):
     gst=fields.Integer(string='GST Rate(%)')
     discount=fields.Float(string='Disc %')
     stock_in_hand = fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
-    rate = fields.Float(string='Rate', store=True)
+    # rate = fields.Float(string='Rate', store=True)
     description_id = fields.Many2one('pharmacy.description', string="Sale Reference")
     @api.onchange('product_id')
     def _onchange_product_id(self):
@@ -342,6 +343,8 @@ class PharmacyPrescriptionLine(models.Model):
 
                 record.stock_in_hand = total_quantity
                 record.per_ped = record.product_id.lst_price
+                record.supplier_rate = record.product_id.standard_price
+
 
             else:
                 record.stock_in_hand = 0.0
