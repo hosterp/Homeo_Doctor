@@ -709,7 +709,7 @@ class LabReferral(models.Model):
                 ('test_name_bill_code', 'in', self.test_type.ids)
             ])
 
-            print("🔍 Found Tests: %s", resultant_tests)  # Log test records
+            # print("🔍 Found Tests: %s", resultant_tests)  # Log test records
 
 
             self.test_names = ', '.join(resultant_tests.mapped('test_name')) if resultant_tests else False
