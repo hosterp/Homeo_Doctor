@@ -392,7 +392,8 @@
                                         <field name="exp_date"/>
                                         <field name="mfc"/>
                                         <field name="qty"/>
-                                        <field name="per_ped" string="Rate"/>
+                                        <field name="supplier_rate" string="Rate"/>
+                                        <field name="per_ped" string="MRP"/>
                                         <field name="gst" invisible="1"/>
                                         <!--                                        <field name="discount"/>-->
                                         <field name="stock_in_hand"/>

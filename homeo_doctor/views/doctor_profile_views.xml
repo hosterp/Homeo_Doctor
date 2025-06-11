@@ -44,6 +44,7 @@
                 <tree string="Doctor Profile">
                     <field name="doctor_id"/>
                     <field name="name"/>
+                    <field name="department_id"/>
                     <field name="specialization"/>
                     <field name="phone"/>
                     <field name="email"/>
