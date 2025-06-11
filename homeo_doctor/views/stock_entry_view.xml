@@ -8,7 +8,10 @@
                 <field name="invoice_id" invisible="1"/>
                 <field name="date"/>
                 <field name="product_id" string="Medicine"/>
+                <field name="qty"/>
+                <field name="dispensed"/>
                 <field name="quantity"/>
+                <field name="company"/>
                 <field name="manf_date"/>
                 <field name="exp_date"/>
                 <field name="batch"/>

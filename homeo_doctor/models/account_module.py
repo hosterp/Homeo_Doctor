@@ -190,7 +190,9 @@ class AccountMove(models.Model):
                         'invoice_id': move.id,
                         'product_id': line.product_id.id,
                         'quantity': total_qty,
+                        'qty': line.quantity,
                         'hsn': line.hsn,
+                        'company': line.manufacturing_company,
                         'manf_date': line.manufacturing_date,
                         'exp_date': line.expiry_date,
                         'batch': line.batch,
@@ -505,6 +507,9 @@ class StockEntry(models.Model):
     exp_date=fields.Char(string='Exp.date')
     rack=fields.Char(string='Rack Position')
     batch=fields.Char(string='Batch Number')
+    company=fields.Char(string='Company')
+    qty=fields.Integer(string='QTY')
+    dispensed=fields.Integer('Dispensed',compute='_compute_dispensed')
     rate = fields.Float(string="Rate", required=True)
     uom_id = fields.Many2one('uom.uom', string="Unit of Measure")
     date=fields.Date(string='Date')
@@ -515,6 +520,10 @@ class StockEntry(models.Model):
         ('done', 'Done')
     ], string="Status", default="draft", tracking=True)
 
+    @api.depends('quantity')
+    def _compute_dispensed(self):
+        for record in self:
+            record.dispensed=record.qty-record.quantity
     @api.model
     def create(self, vals):
         if vals.get('name', 'New') == 'New':
