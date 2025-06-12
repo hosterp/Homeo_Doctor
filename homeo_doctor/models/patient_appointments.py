@@ -370,7 +370,7 @@ class PatientAppointment(models.Model):
 
                     # Check if VSSC is enabled for this patient
                     is_vssc = record.patient_id.vssc_boolean
-                    print(f"VSSC Boolean: {is_vssc}")
+                    # print(f"VSSC Boolean: {is_vssc}")
 
                     # Fetch consultation fee details
                     consultation_fee_limit = doctor.consultation_fee_limit or 0
@@ -378,16 +378,16 @@ class PatientAppointment(models.Model):
                     # Set consultation fee based on VSSC status
                     if is_vssc:
                         consultation_fee = 400  # Fixed fee for VSSC patients
-                        print(f"VSSC patient - consultation_fee set to: {consultation_fee}")
+                        # print(f"VSSC patient - consultation_fee set to: {consultation_fee}")
                     else:
                         consultation_fee = doctor.consultation_fee_doctor or 0
-                        print(f"Regular patient - consultation_fee: {consultation_fee}")
+                        # print(f"Regular patient - consultation_fee: {consultation_fee}")
 
-                    print(f"consultation_fee_limit: {consultation_fee_limit}, consultation_fee: {consultation_fee}")
+                    # print(f"consultation_fee_limit: {consultation_fee_limit}, consultation_fee: {consultation_fee}")
 
                     # Convert appointment_date to date for comparison
                     appointment_date = record.appointment_date
-                    print(f"Converted appointment_date to: {appointment_date}")
+                    # print(f"Converted appointment_date to: {appointment_date}")
 
                     # 1. Check last appointment
                     last_appointment = self.env['patient.appointment'].search([
@@ -399,11 +399,11 @@ class PatientAppointment(models.Model):
                     if last_appointment:
                         last_appointment_date = last_appointment.appointment_date
                         last_appointment_day = (appointment_date - last_appointment_date).days
-                        print(
-                            f"Last appointment found. Last appointment date: {last_appointment_date}, days since last appointment: {last_appointment_day}")
+                        # print(
+                        #     f"Last appointment found. Last appointment date: {last_appointment_date}, days since last appointment: {last_appointment_day}")
                     else:
                         last_appointment_day = 0
-                        print("No previous appointment found. Set last_appointment_day to 0.")
+                        # print("No previous appointment found. Set last_appointment_day to 0.")
 
                     # 2. Check last registration
                     last_registration = self.env['patient.reg'].search([
@@ -413,66 +413,66 @@ class PatientAppointment(models.Model):
 
                     if last_registration:
                         last_registration_day = (appointment_date - last_registration.date).days
-                        print(
-                            f"Last registration found. Last registration date: {last_registration.date}, days since last registration: {last_registration_day}")
+                        # print(
+                        #     f"Last registration found. Last registration date: {last_registration.date}, days since last registration: {last_registration_day}")
                     else:
                         last_registration_day = 0
-                        print("No previous registration found. Set last_registration_day to 0.")
+                        # print("No previous registration found. Set last_registration_day to 0.")
 
                     # Compare the two days and choose the smaller value for delta_days
                     if last_registration_day != 0 and last_appointment_day != 0:
                         delta_days = min(last_registration_day, last_appointment_day)
                         record.differance_appointment_days = delta_days
-                        print(f"Both last registration and last appointment exist. delta_days set to: {delta_days}")
+                        # print(f"Both last registration and last appointment exist. delta_days set to: {delta_days}")
                     elif last_appointment_day != 0 and last_registration_day == 0:
                         delta_days = last_appointment_day
                         record.differance_appointment_days = delta_days
-                        print(f"Only last appointment exists. delta_days set to: {delta_days}")
+                        # print(f"Only last appointment exists. delta_days set to: {delta_days}")
                     elif last_appointment_day == 0 and last_registration_day != 0:
                         delta_days = last_registration_day
                         record.differance_appointment_days = delta_days
-                        print(f"Only last registration exists. delta_days set to: {delta_days}")
+                        # print(f"Only last registration exists. delta_days set to: {delta_days}")
                     else:
                         # No previous registration or appointment - first time patient
                         if is_vssc:
                             # For VSSC patients, registration fee is always 0, but doctor fee applies
                             record.consultation_fee += consultation_fee
-                            print(f"VSSC first-time patient. Adding consultation fee: {consultation_fee}")
+                            # print(f"VSSC first-time patient. Adding consultation fee: {consultation_fee}")
                         else:
                             record.consultation_fee += consultation_fee
-                            print(f"Regular first-time patient. Adding consultation fee: {consultation_fee}")
+                            # print(f"Regular first-time patient. Adding consultation fee: {consultation_fee}")
                         continue
 
                     # Apply the consultation fee logic based on delta_days
                     if last_registration_day != 0 or last_appointment_day != 0:
                         if delta_days <= consultation_fee_limit:
-                            print(
-                                f"delta_days ({delta_days}) <= consultation_fee_limit ({consultation_fee_limit}). No additional fee added.")
+                            # print(
+                            #     f"delta_days ({delta_days}) <= consultation_fee_limit ({consultation_fee_limit}). No additional fee added.")
                             if is_vssc:
                                 # For VSSC patients within limit, registration fee is 0
                                 record.consultation_fee += 0.0
-                                print(f"VSSC patient within limit - no fee added")
+                                # print(f"VSSC patient within limit - no fee added")
                             else:
                                 record.consultation_fee += 0.0
-                                print(f"Regular patient within limit - no fee added")
+                                # print(f"Regular patient within limit - no fee added")
                         else:
-                            print(
-                                f"delta_days ({delta_days}) > consultation_fee_limit ({consultation_fee_limit}). Adding consultation fee: {consultation_fee}")
+                            # print(
+                                # f"delta_days ({delta_days}) > consultation_fee_limit ({consultation_fee_limit}). Adding consultation fee: {consultation_fee}")
                             if is_vssc:
                                 # For VSSC patients beyond limit, charge the VSSC consultation fee
                                 record.consultation_fee += consultation_fee
-                                print(f"VSSC patient beyond limit - adding VSSC consultation fee: {consultation_fee}")
+                                # print(f"VSSC patient beyond limit - adding VSSC consultation fee: {consultation_fee}")
                             else:
                                 record.consultation_fee += consultation_fee
-                                print(f"Regular patient beyond limit - adding consultation fee: {consultation_fee}")
+                                # print(f"Regular patient beyond limit - adding consultation fee: {consultation_fee}")
                     else:
                         # Fallback case
                         if is_vssc:
                             record.consultation_fee += consultation_fee
-                            print(f"VSSC fallback case. Adding consultation fee: {consultation_fee}")
+                            # print(f"VSSC fallback case. Adding consultation fee: {consultation_fee}")
                         else:
                             record.consultation_fee += consultation_fee
-                            print(f"Regular fallback case. Adding consultation fee: {consultation_fee}")
+                            # print(f"Regular fallback case. Adding consultation fee: {consultation_fee}")
     # @api.depends('doctor_ids', 'appointment_date', 'patient_id')
     # def _compute_consultation_fee(self):
     #     for record in self:
