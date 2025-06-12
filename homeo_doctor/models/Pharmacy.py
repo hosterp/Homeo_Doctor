@@ -278,7 +278,7 @@ class PharmacyPrescriptionLine(models.Model):
     batch = fields.Char(string="Batch", compute="_compute_product_details", store=True)
     manf_date = fields.Date(string="Manufacturing Date", compute="_compute_product_details", store=True)
     exp_date = fields.Date(string="Expiry Date", compute="_compute_product_details", store=True)
-    rate = fields.Float(string="Rate", compute="_compute_product_details", store=True)
+    rate = fields.Float(string="Rate", store=True)
     supplier_rate = fields.Float(string="Rate")
     hsn = fields.Char(string="HSN Code", compute="_compute_product_details", store=True)
     packing=fields.Char(string='Packing')
@@ -304,7 +304,7 @@ class PharmacyPrescriptionLine(models.Model):
                     line.batch = stock_entry.batch
                     line.manf_date = stock_entry.manf_date
                     line.exp_date = stock_entry.exp_date
-                    line.rate = stock_entry.rate
+                    # line.rate = stock_entry.rate
                     line.hsn = stock_entry.hsn
                     # line.uom_id = stock_entry.uom_id.id
 
@@ -323,7 +323,7 @@ class PharmacyPrescriptionLine(models.Model):
                     line.batch = stock_entry.batch
                     line.manf_date = stock_entry.manf_date
                     line.exp_date = stock_entry.exp_date
-                    line.rate = stock_entry.rate
+                    # line.rate = stock_entry.rate
                     line.hsn = stock_entry.hsn
                 # else:
 
