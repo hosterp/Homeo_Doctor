@@ -362,12 +362,12 @@ class PharmacyPrescriptionLine(models.Model):
             for entry in stock_entries:
                 if remaining_qty <= 0:
                     break
-                if entry.quantity >= remaining_qty:
-                    entry.quantity -= remaining_qty
+                if self.stock_in_hand >= remaining_qty:
+                    self.stock_in_hand -= remaining_qty
                     remaining_qty = 0
                 else:
-                    remaining_qty -= entry.quantity
-                    entry.quantity = 0
+                    remaining_qty -= self.stock_in_hand
+                    self.stock_in_hand = 0
 
         return record
 
