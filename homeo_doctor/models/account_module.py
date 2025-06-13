@@ -511,9 +511,11 @@ class StockEntry(models.Model):
     qty=fields.Integer(string='QTY')
     dispensed=fields.Integer('Dispensed',compute='_compute_dispensed')
     rate = fields.Float(string="Rate", required=True)
+    supplier_mrp = fields.Float(string="MRP")
     uom_id = fields.Many2one('uom.uom', string="Unit of Measure")
     date=fields.Date(string='Date')
     pack = fields.Integer(string="Pack",default=1)
+    pup = fields.Float(string="PUP")
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),

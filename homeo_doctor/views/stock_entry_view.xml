@@ -11,11 +11,14 @@
                 <field name="qty"/>
                 <field name="dispensed"/>
                 <field name="quantity"/>
+                <field name="pack"/>
                 <field name="company"/>
                 <field name="manf_date"/>
                 <field name="exp_date"/>
                 <field name="batch"/>
                 <field name="rate"/>
+                <field name="supplier_mrp" string="MRP"/>
+                <field name="pup" string="PUP"/>
                 <field name="rack"/>
                 <field name="uom_id" invisible="1"/>
                 <field name="state" invisible="1"/>
