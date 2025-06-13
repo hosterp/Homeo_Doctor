@@ -58,6 +58,36 @@
                 <t t-foreach="docs" t-as="o">
                     <t t-call="homeo_doctor.pharmacy_minimal_layout">
                         <div class="page">
+                        <div class="row">
+                        <div class="col-3">
+                            <img src="/web/binary/company_logo" style="max-height: 70px;" alt="Logo"/>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
+
+
+                            <div style="text-align: center;">
+                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
+                                    MULTI SPECIALITY HOSPITAL
+                                </h1>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                    THIRUVANANTHAPURAM -695 564
+                                </p>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                                    8590203321
+                                    dpmshospital@gmail.com
+                                </p>
+                                <!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
+                                <!--                                            <strong>PH:</strong>-->
+                                <!--                                            0471-2432121, 9188429198 |-->
+                                <!--                                            <strong>Email:</strong>-->
+                                <!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
+                                <!--                                               style="color: #007bff; text-decoration: none;">-->
+                                <!--                                                santhwanatvpm@gmail.com-->
+                                <!--                                            </a>-->
+                                <!--                                        </p>-->
+                            </div>
+                        </div>
+                    </div>
                             <!-- Document Title -->
                             <div class="row mb-4">
                                 <div class="col-12 text-center">
@@ -135,8 +165,6 @@
                                         <div style="display: table-cell; padding: 8px; text-align: center;">Timing</div>
                                         <div style="display: table-cell; padding: 8px; text-align: right;">Unit Price
                                         </div>
-                                        <div style="display: table-cell; padding: 8px; text-align: center;">GST (%)
-                                        </div>
                                         <div style="display: table-cell; padding: 8px; text-align: right;">Total</div>
                                     </div>
                                 </div>
@@ -183,9 +211,6 @@
                                                     <span t-field="medicine.per_ped"
                                                           t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
                                                 </td>
-                                                <td class="text-center" style="padding: 8px;"><span
-                                                        t-field="medicine.gst"/>%
-                                                </td>
                                                 <td class="text-right" style="padding: 8px;">
                                                     <span t-field="medicine.rate"
                                                           t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
@@ -195,7 +220,7 @@
 
                                         <!-- Subtotal Row -->
                                         <tr style="background-color: #f8f9fa;">
-                                            <td colspan="9" class="text-right" style="font-weight: bold; padding: 8px;">
+                                            <td colspan="8" class="text-right" style="font-weight: bold; padding: 8px;">
                                                 Subtotal:
                                             </td>
                                             <td class="text-right" style="font-weight: bold; padding: 8px;">
