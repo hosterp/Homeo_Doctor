@@ -200,6 +200,8 @@ class AccountMove(models.Model):
                         'rate': line.price_unit,
                         'date': move.invoice_date,
                         'pack': line.pack,
+                        'pup': line.pup,
+                        'supplier_mrp': line.supplier_mrp,
                         'state': 'confirmed',
                     })
                     stock_entries = self.env['stock.entry'].search([
