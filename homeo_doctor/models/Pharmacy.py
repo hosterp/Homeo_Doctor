@@ -277,7 +277,7 @@ class PharmacyDescription(models.Model):
                     paise_text = num2words(decimal_part, lang='en_IN').title()
                     result += f" and {paise_text} Paise"
 
-                return result
+                return result + " Only"
         except Exception as e:
             # Optional: log the error for debugging
             _logger = logging.getLogger(__name__)
