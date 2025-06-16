@@ -296,15 +296,16 @@ class PharmacyPrescriptionLine(models.Model):
                 stock_entry = self.env['stock.entry'].search([
                     ('product_id', '=', line.product_id.id),
                     ('quantity', '>', 0),
-                    ('state', '=', 'confirmed'),
-                    ('exp_date', '>', fields.Date.today()),
+                    # ('state', '=', 'confirmed'),
+                    # ('exp_date', '>', fields.Date.today()),
                 ], order='exp_date asc', limit=1)
 
                 if stock_entry:
                     line.batch = stock_entry.batch
                     line.manf_date = stock_entry.manf_date
                     line.exp_date = stock_entry.exp_date
-                    # line.rate = stock_entry.rate
+                    line.per_ped = stock_entry.supplier_mrp
+                    line.supplier_rate = stock_entry.rate
                     line.hsn = stock_entry.hsn
                     # line.uom_id = stock_entry.uom_id.id
 
@@ -341,8 +342,8 @@ class PharmacyPrescriptionLine(models.Model):
                 ]).mapped('quantity'))  # Summing up all quantities
 
                 record.stock_in_hand = total_quantity
-                record.per_ped = record.product_id.lst_price
-                record.supplier_rate = record.product_id.standard_price
+                # record.per_ped = record.product_id.lst_price
+                # record.supplier_rate = record.product_id.standard_price
 
 
             else:
