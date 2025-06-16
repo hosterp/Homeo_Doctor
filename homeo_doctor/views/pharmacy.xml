@@ -181,6 +181,7 @@
                                         <div style="display: table-cell; padding: 8px;">Particulars</div>
                                         <div style="display: table-cell; padding: 8px; text-align: center;">Qty</div>
                                         <div style="display: table-cell; padding: 8px; text-align: center;">Batch</div>
+                                        <div style="display: table-cell; padding: 8px; text-align: center;">Manf Date</div>
                                         <div style="display: table-cell; padding: 8px; text-align: center;">Expiry</div>
                                         <div style="display: table-cell; padding: 8px; text-align: center;">MRP</div>
                                         <!--                                        <div style="display: table-cell; padding: 8px; text-align: center;">Per Time-->
@@ -213,6 +214,10 @@
                                                 </td>
                                                 <td class="text-center" style="padding: 8px;">
                                                     <span t-field="medicine.batch"/>
+                                                </td>
+                                                <td class="text-center" style="padding: 8px;">
+                                                    <span t-field="medicine.manf_date"
+                                                          t-options='{"widget": "date", "format": "MM/yy"}'/>
                                                 </td>
                                                 <td class="text-center" style="padding: 8px;">
                                                     <span t-field="medicine.exp_date"
