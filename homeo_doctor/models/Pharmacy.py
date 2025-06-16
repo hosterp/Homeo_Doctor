@@ -315,7 +315,6 @@ class PharmacyPrescriptionLine(models.Model):
                 stock_entry = self.env['stock.entry'].search([
                     ('product_id', '=', line.product_id.id),
                     ('quantity', '>', 0),
-                    ('state', '=', 'confirmed'),
                     ('exp_date', '>', fields.Date.today()),
                 ], order='exp_date asc', limit=1)
 
