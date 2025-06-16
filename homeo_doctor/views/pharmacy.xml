@@ -3,7 +3,7 @@
         <!-- QWeb Template for Pharmacy Description Report -->
         <template id="pharmacy_minimal_layout">
             <t t-call="web.basic_layout">
-                <div class="header" style="border-bottom: 2px solid #1a73e8; padding-bottom: 10px;">
+                <div class="header" style="border-bottom: 2px solid #1a73e8; padding-bottom: 2px;">
                     <div class="row">
                         <div class="col-3">
                             <img src="/web/binary/company_logo" style="max-height: 70px;" alt="Logo"/>
@@ -58,36 +58,38 @@
                 <t t-foreach="docs" t-as="o">
                     <t t-call="homeo_doctor.pharmacy_minimal_layout">
                         <div class="page">
-                        <div class="row">
-                        <div class="col-3">
-                            <img src="/web/binary/company_logo" style="max-height: 70px;" alt="Logo"/>
-                        </div>
-                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                            <div class="row">
+                                <div class="col-3">
+                                    <img src="/web/binary/company_logo" style="max-height: 70px;" alt="Logo"/>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
 
 
-                            <div style="text-align: center;">
-                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
-                                    MULTI SPECIALITY HOSPITAL
-                                </h1>
-                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
-                                    THIRUVANANTHAPURAM -695 564
-                                </p>
-                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
-                                    8590203321
-                                    dpmshospital@gmail.com
-                                </p>
-                                <!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
-                                <!--                                            <strong>PH:</strong>-->
-                                <!--                                            0471-2432121, 9188429198 |-->
-                                <!--                                            <strong>Email:</strong>-->
-                                <!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
-                                <!--                                               style="color: #007bff; text-decoration: none;">-->
-                                <!--                                                santhwanatvpm@gmail.com-->
-                                <!--                                            </a>-->
-                                <!--                                        </p>-->
+                                    <div style="text-align: center;">
+                                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr.
+                                            PRIYA'S
+                                            MULTI SPECIALITY HOSPITAL
+                                        </h1>
+                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                            THIRUVANANTHAPURAM -695 564
+                                        </p>
+                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004,
+                                            Mobile No:
+                                            8590203321
+                                            dpmshospital@gmail.com
+                                        </p>
+                                        <!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
+                                        <!--                                            <strong>PH:</strong>-->
+                                        <!--                                            0471-2432121, 9188429198 |-->
+                                        <!--                                            <strong>Email:</strong>-->
+                                        <!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
+                                        <!--                                               style="color: #007bff; text-decoration: none;">-->
+                                        <!--                                                santhwanatvpm@gmail.com-->
+                                        <!--                                            </a>-->
+                                        <!--                                        </p>-->
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
                             <!-- Document Title -->
                             <div class="row mb-4">
                                 <div class="col-12 text-center">
@@ -111,6 +113,12 @@
                                     <div class="row p-3">
                                         <div class="col-6">
                                             <table class="table table-sm table-borderless mb-0">
+                                                <tr>
+                                                    <td style="width: 100px; color: #666;">Bill No:</td>
+                                                    <td style="font-weight: bold; color: #333;">
+                                                        <span t-field="o.bill_number"/>
+                                                    </td>
+                                                </tr>
                                                 <tr>
                                                     <td style="width: 100px; color: #666;">Patient ID:</td>
                                                     <td style="font-weight: bold; color: #333;">
@@ -271,31 +279,49 @@
                                                         <span t-esc="sum(o.prescription_line_ids.mapped('qty'))"/>
                                                     </td>
                                                 </tr>
-                                                <tr style="border-top: 1px dashed #ddd;">
-                                                    <td style="color: #333; font-weight: bold;">Total Amount:</td>
-                                                    <td class="text-right"
-                                                        style="font-weight: bold; color: #1a73e8; font-size: 16px;">
-                                                        <span t-field="o.bill_amount"
-                                                              t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
+
+                                                <tr>
+                                                    <td style="width: 70%;">
+                                                        <strong>Total Amount:</strong>
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <strong>₹
+                                                            <span t-field="o.total_amount"/>
+                                                        </strong>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td colspan="2"
+                                                        style="border-top: 1px solid #ddd; padding-top: 10px;">
+                                                        <strong>Amount in Words:</strong>
+                                                       <span t-esc="o.amount_to_text_indian()" style="text-transform: capitalize;"/>
+                                                    </td>
+                                                </tr>
+
+                                                <!--                                                <tr style="border-top: 1px dashed #ddd;">-->
+                                                <!--                                                    <td style="color: #333; font-weight: bold;">Total Amount:</td>-->
+                                                <!--                                                    <td class="text-right"-->
+                                                <!--                                                        style="font-weight: bold; color: #1a73e8; font-size: 16px;">-->
+                                                <!--                                                        <span t-field="o.bill_amount"-->
+                                                <!--                                                              t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>-->
+                                                <!--                                                    </td>-->
+                                                <!--                                                </tr>-->
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Doctor Signature -->
                             <div class="row mt-5">
-                                <div class="col-7">
-                                </div>
                                 <div class="col-5 text-center">
                                     <div style="border-top: 1px solid #777; padding-top: 10px; margin-top: 50px;">
-                                        <p style="margin-bottom: 0;">Doctor's Signature</p>
-                                        <p t-if="o.doctor_name" style="margin-bottom: 0; font-weight: bold;">
-                                            <span t-field="o.doctor_name"/>
+                                        <p style="margin-bottom: 0;">Prepaid By</p>
+                                        <p t-if="o.staff_name" style="margin-bottom: 0; font-weight: bold;">
+                                            <span t-field="o.staff_name"/>
                                         </p>
                                     </div>
+                                </div>
+                                <div class="col-7">
                                 </div>
                             </div>
 
@@ -315,7 +341,21 @@
             </t>
         </template>
 
-        <!-- Report Action -->
+        <record id="paperformat_landscape" model="report.paperformat">
+            <field name="name">A4 Landscape</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
         <record id="action_pharmacy_report" model="ir.actions.report">
             <field name="name">Pharmacy Prescription</field>
             <field name="model">pharmacy.description</field>
@@ -325,7 +365,7 @@
             <field name="print_report_name">'Prescription - ' + object.name</field>
             <field name="binding_model_id" ref="model_pharmacy_description"/>
             <field name="binding_type">report</field>
-            <field name="paperformat_id" ref="base.paperformat_euro"/>
+            <field name="paperformat_id" ref="paperformat_landscape"/>
         </record>
         <record id="action_pharmacy_return_print_original_bill" model="ir.actions.server">
             <field name="name">Print Original Bill</field>

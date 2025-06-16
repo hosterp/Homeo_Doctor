@@ -1,3 +1,4 @@
+import logging
 from datetime import date
 
 from odoo import api, fields, models
@@ -261,6 +262,32 @@ class PharmacyDescription(models.Model):
             'context': self.env.context,
         }
 
+    def amount_to_text_indian(self):
+        """Convert amount to words in Indian format (Rupees and Paise)."""
+        try:
+            from num2words import num2words
+            if self.total_amount:
+                amount_int = int(self.total_amount)
+                decimal_part = int(round((self.total_amount - amount_int) * 100))
+
+                rupees_text = num2words(amount_int, lang='en_IN').title()
+                result = f" {rupees_text}"
+
+                if decimal_part:
+                    paise_text = num2words(decimal_part, lang='en_IN').title()
+                    result += f" and {paise_text} Paise"
+
+                return result
+        except Exception as e:
+            # Optional: log the error for debugging
+            _logger = logging.getLogger(__name__)
+            _logger.warning("Failed to convert amount to Indian text: %s", e)
+
+            # Fallback
+            return self.currency_id.amount_to_text(self.total_amount)
+
+        return ""
+
 
 class PharmacyPrescriptionLine(models.Model):
     _name = 'pharmacy.prescription.line'
@@ -401,7 +428,7 @@ class PharmacyPrescriptionLine(models.Model):
     def _onchange_qty(self):
         for rec in self:
             if rec.qty:
-                rec.rate = rec.per_ped * rec.qty
+                rec.rate = rec.supplier_rate * rec.qty
     # @api.depends('product_id', 'total_med')
     # def _compute_rate(self):
     #     for record in self:
