@@ -498,15 +498,16 @@ class AccountPaymentRegister(models.TransientModel):
 class StockEntry(models.Model):
     _name = 'stock.entry'
     _description = 'Stock Entry'
-    _inherit = ['mail.thread', 'mail.activity.mixin']  # Optional for chatter
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _rec_name = 'product_id'
 
     name = fields.Char(string="Reference", required=True, copy=False, default=lambda self: _('New'))
     invoice_id = fields.Many2one('account.move', string="Invoice", domain=[('type', '=', 'in_invoice'), ('state', '=', 'posted')])
     product_id = fields.Many2one('product.product', string="Product", required=True)
     quantity = fields.Float(string="Stock In Hand", required=True)
-    manf_date=fields.Char(string='M.Date')
+    manf_date=fields.Date(string='M.Date')
     hsn=fields.Char(string='HSN')
-    exp_date=fields.Char(string='Exp.date')
+    exp_date=fields.Date(string='Exp.date')
     rack=fields.Char(string='Rack Position')
     batch=fields.Char(string='Batch Number')
     company=fields.Char(string='Company')
