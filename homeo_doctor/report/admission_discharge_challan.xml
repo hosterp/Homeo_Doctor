@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Report action definition for Discharge Challan -->
+        <record id="paperformat_discharge_challan_landscape" model="report.paperformat">
+            <field name="name">Discharge Challan Landscape</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+        </record>
+
         <record id="action_report_discharge_challan" model="ir.actions.report">
             <field name="name">Discharge Challan</field>
             <field name="model">patient.reg</field>
@@ -10,6 +21,7 @@
             <field name="report_file">homeo_doctor.report_discharge_challan</field>
             <field name="binding_model_id" ref="model_patient_reg"/>
             <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="homeo_doctor.paperformat_discharge_challan_landscape"/>
         </record>
 
         <!-- Report template for Discharge Challan -->
@@ -23,41 +35,81 @@
                                 <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
                                      style="width: 90px; height: 90px; border-radius: 50%; margin-right: 20px;"/>
                                 <div style="text-align: center;">
-                                    <h1 style="font-size: 32px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL</h1>
-                                    <p style="margin: 8px 0; font-size: 20px; color: #555;">EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM -695 564</p>
-                                    <p style="margin: 8px 0; font-size: 20px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321 dpmshospital@gmail.com</p>
+                                    <h1 style="font-size: 32px; margin: 0; font-weight: bold; color: #2c3e50;">Dr.
+                                        PRIYA'S MULTI SPECIALITY HOSPITAL
+                                    </h1>
+                                    <p style="margin: 8px 0; font-size: 20px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                        THIRUVANANTHAPURAM -695 564
+                                    </p>
+                                    <p style="margin: 8px 0; font-size: 20px; color: #555;">Phone: 0471-2373004, Mobile
+                                        No: 8590203321 dpmshospital@gmail.com
+                                    </p>
                                 </div>
                             </div>
 
-                            <h3 class="text-center" style="font-size: 28px; margin-bottom: 25px; font-weight: bold;">Discharge Bill</h3>
+                            <h3 class="text-center" style="font-size: 28px; margin-bottom: 25px; font-weight: bold;">
+                                Discharge Bill
+                            </h3>
 
                             <!-- Patient Information Table with increased dimensions -->
                             <div class="row mt-4">
                                 <div class="col-12">
                                     <table class="table table-bordered" style="font-size: 18px; line-height: 1.6;">
                                         <tr style="height: 50px;">
-                                            <td width="25%" style="padding: 15px; vertical-align: middle;"><strong>Bill No:</strong></td>
-                                            <td width="25%" style="padding: 15px; vertical-align: middle;"><span t-field="o.discharge_bill_number"/></td>
-                                            <td width="25%" style="padding: 15px; vertical-align: middle;"><strong>UHID No:</strong></td>
-                                            <td width="25%" style="padding: 15px; vertical-align: middle;"><span t-field="o.reference_no"/></td>
+                                            <td width="25%" style="padding: 15px; vertical-align: middle;">
+                                                <strong>Bill No:</strong>
+                                            </td>
+                                            <td width="25%" style="padding: 15px; vertical-align: middle;">
+                                                <span t-field="o.discharge_bill_number"/>
+                                            </td>
+                                            <td width="25%" style="padding: 15px; vertical-align: middle;">
+                                                <strong>UHID No:</strong>
+                                            </td>
+                                            <td width="25%" style="padding: 15px; vertical-align: middle;">
+                                                <span t-field="o.reference_no"/>
+                                            </td>
                                         </tr>
                                         <tr style="height: 50px;">
-                                            <td style="padding: 15px; vertical-align: middle;"><strong>Patient Name:</strong></td>
-                                            <td style="padding: 15px; vertical-align: middle;"><span t-field="o.patient_id"/></td>
-                                            <td style="padding: 15px; vertical-align: middle;"><strong>Patient Address:</strong></td>
-                                            <td style="padding: 15px; vertical-align: middle;"><span t-field="o.address"/></td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <strong>Patient Name:</strong>
+                                            </td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <span t-field="o.patient_id"/>
+                                            </td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <strong>Patient Address:</strong>
+                                            </td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <span t-field="o.address"/>
+                                            </td>
                                         </tr>
                                         <tr style="height: 50px;">
-                                            <td style="padding: 15px; vertical-align: middle;"><strong>Admitted Date:</strong></td>
-                                            <td style="padding: 15px; vertical-align: middle;"><span t-field="o.admitted_date"/></td>
-                                            <td style="padding: 15px; vertical-align: middle;"><strong>Discharge Date:</strong></td>
-                                            <td style="padding: 15px; vertical-align: middle;"><span t-field="o.discharge_date"/></td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <strong>Admitted Date:</strong>
+                                            </td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <span t-field="o.admitted_date"/>
+                                            </td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <strong>Discharge Date:</strong>
+                                            </td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <span t-field="o.discharge_date"/>
+                                            </td>
                                         </tr>
                                         <tr style="height: 50px;">
-                                            <td style="padding: 15px; vertical-align: middle;"><strong>Total Amount:</strong></td>
-                                            <td style="padding: 15px; vertical-align: middle;"><span t-field="o.temp_admission_total_amount"/></td>
-                                            <td style="padding: 15px; vertical-align: middle;"><strong>Payment Mode:</strong></td>
-                                            <td style="padding: 15px; vertical-align: middle;"><span t-field="o.advance_mode_payment"/></td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <strong>Total Amount:</strong>
+                                            </td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <span t-field="o.temp_admission_total_amount"/>
+                                            </td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <strong>Payment Mode:</strong>
+                                            </td>
+                                            <td style="padding: 15px; vertical-align: middle;">
+                                                <span t-field="o.advance_mode_payment"/>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -67,29 +119,46 @@
                             <div class="row mt-4">
                                 <div class="col-12">
                                     <!-- Bills Summary Table -->
-                                    <table class="table table-bordered table-striped" style="width: 100%; border-collapse: collapse; font-size: 18px;">
+                                    <table class="table table-bordered table-striped"
+                                           style="width: 100%; border-collapse: collapse; font-size: 18px;">
                                         <thead style="background-color: #007bff; color: white;">
                                             <tr style="height: 60px;">
-                                                <th style="padding: 18px; border: 2px solid #ddd; width: 25%; font-size: 20px; vertical-align: middle;">Bill Type</th>
-                                                <th style="padding: 18px; border: 2px solid #ddd; width: 40%; font-size: 20px; vertical-align: middle;">Description</th>
-                                                <th style="padding: 18px; border: 2px solid #ddd; width: 15%; text-align: center; font-size: 20px; vertical-align: middle;">Count</th>
-                                                <th style="padding: 18px; border: 2px solid #ddd; width: 20%; text-align: right; font-size: 20px; vertical-align: middle;">Total Amount</th>
+                                                <th style="padding: 18px; border: 2px solid #ddd; width: 25%; font-size: 20px; vertical-align: middle;">
+                                                    Bill Type
+                                                </th>
+                                                <th style="padding: 18px; border: 2px solid #ddd; width: 40%; font-size: 20px; vertical-align: middle;">
+                                                    Description
+                                                </th>
+                                                <th style="padding: 18px; border: 2px solid #ddd; width: 15%; text-align: center; font-size: 20px; vertical-align: middle;">
+                                                    Count
+                                                </th>
+                                                <th style="padding: 18px; border: 2px solid #ddd; width: 20%; text-align: right; font-size: 20px; vertical-align: middle;">
+                                                    Total Amount
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <!-- Room Rent (if room category exists) -->
                                             <t t-if="o.room_category_new">
                                                 <tr style="height: 55px;">
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;"><strong style="font-size: 18px;">Room Rent</strong></td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;"><span t-field="o.room_category_new"/> - Room Charges</td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                                        <strong style="font-size: 18px;">Room Rent</strong>
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                        <span t-field="o.room_category_new"/>
+                                                        - Room Charges
+                                                    </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                         <!-- Modified room count calculation with remainder logic -->
-                                                        <t t-set="room_days_calc" t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
-                                                        <t t-set="room_count" t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
+                                                        <t t-set="room_days_calc"
+                                                           t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
+                                                        <t t-set="room_count"
+                                                           t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
                                                         <span t-esc="room_count"/>
                                                     </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                        ₹ <span t-esc="'{:,.2f}'.format(o.room_rent or 0)"/>
+                                                        ₹
+                                                        <span t-esc="'{:,.2f}'.format(o.room_rent or 0)"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -97,11 +166,18 @@
                                             <!-- Nursing Charge (if exists) -->
                                             <t t-if="o.nurse_charge and o.nurse_charge > 0">
                                                 <tr style="height: 55px;">
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;"><strong style="font-size: 18px;">Nursing Charge</strong></td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">Nursing Services &amp; Care</td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">1</td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                                        <strong style="font-size: 18px;">Nursing Charge</strong>
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                        Nursing Services &amp; Care
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                        1
+                                                    </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                        ₹ <span t-esc="'{:,.2f}'.format(o.nurse_charge)"/>
+                                                        ₹
+                                                        <span t-esc="'{:,.2f}'.format(o.nurse_charge)"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -109,11 +185,18 @@
                                             <!-- Doctor Visiting Charge (if exists) -->
                                             <t t-if="o.doctor_visiting_charge and o.doctor_visiting_charge > 0">
                                                 <tr style="height: 55px;">
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;"><strong style="font-size: 18px;">Doctor Charge</strong></td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">Doctor Consultation &amp; Visits</td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">1</td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                                        <strong style="font-size: 18px;">Doctor Charge</strong>
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                        Doctor Consultation &amp; Visits
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                        1
+                                                    </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                        ₹ <span t-esc="'{:,.2f}'.format(o.doctor_visiting_charge)"/>
+                                                        ₹
+                                                        <span t-esc="'{:,.2f}'.format(o.doctor_visiting_charge)"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -121,11 +204,18 @@
                                             <!-- Service Charge (if exists) -->
                                             <t t-if="o.service_charge and o.service_charge > 0">
                                                 <tr style="height: 55px;">
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;"><strong style="font-size: 18px;">Service Charge</strong></td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">Additional Services &amp; Facilities</td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">1</td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                                        <strong style="font-size: 18px;">Service Charge</strong>
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                        Additional Services &amp; Facilities
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                        1
+                                                    </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                        ₹ <span t-esc="'{:,.2f}'.format(o.service_charge)"/>
+                                                        ₹
+                                                        <span t-esc="'{:,.2f}'.format(o.service_charge)"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -133,13 +223,18 @@
                                             <!-- IP Bills (if any) -->
                                             <t t-if="o.paid_ip_ids">
                                                 <tr style="height: 55px;">
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;"><strong style="font-size: 18px;">IP Bills</strong></td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">In-Patient Services</td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                                        <strong style="font-size: 18px;">IP Bills</strong>
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                        In-Patient Services
+                                                    </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                         <span t-esc="len(o.paid_ip_ids)"/>
                                                     </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                        ₹ <span t-esc="'{:,.2f}'.format(sum(o.paid_ip_ids.mapped('total_amount')))"/>
+                                                        ₹
+                                                        <span t-esc="'{:,.2f}'.format(sum(o.paid_ip_ids.mapped('total_amount')))"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -147,13 +242,18 @@
                                             <!-- General Bills (if any) -->
                                             <t t-if="o.unpaid_general_ids">
                                                 <tr style="height: 55px;">
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;"><strong style="font-size: 18px;">General Bills</strong></td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">General Consultation &amp; Services</td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                                        <strong style="font-size: 18px;">General Bills</strong>
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                        General Consultation &amp; Services
+                                                    </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                         <span t-esc="len(o.unpaid_general_ids)"/>
                                                     </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                        ₹ <span t-esc="'{:,.2f}'.format(sum(o.unpaid_general_ids.mapped('total_amount')))"/>
+                                                        ₹
+                                                        <span t-esc="'{:,.2f}'.format(sum(o.unpaid_general_ids.mapped('total_amount')))"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -161,13 +261,18 @@
                                             <!-- Lab Bills (if any) -->
                                             <t t-if="o.unpaid_lab_ids">
                                                 <tr style="height: 55px;">
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;"><strong style="font-size: 18px;">Lab Bills</strong></td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">Laboratory Tests &amp; Reports</td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                                        <strong style="font-size: 18px;">Lab Bills</strong>
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                        Laboratory Tests &amp; Reports
+                                                    </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                         <span t-esc="len(o.unpaid_lab_ids)"/>
                                                     </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                        ₹ <span t-esc="'{:,.2f}'.format(sum(o.unpaid_lab_ids.mapped('total_bill_amount')))"/>
+                                                        ₹
+                                                        <span t-esc="'{:,.2f}'.format(sum(o.unpaid_lab_ids.mapped('total_bill_amount')))"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -175,13 +280,18 @@
                                             <!-- Pharmacy Bills (if any) -->
                                             <t t-if="o.unpaid_pharmacy_ids">
                                                 <tr style="height: 55px;">
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;"><strong style="font-size: 18px;">Pharmacy Bills</strong></td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">Medicines &amp; Medical Supplies</td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                                        <strong style="font-size: 18px;">Pharmacy Bills</strong>
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                        Medicines &amp; Medical Supplies
+                                                    </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                         <span t-esc="len(o.unpaid_pharmacy_ids)"/>
                                                     </td>
                                                     <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                        ₹ <span t-esc="'{:,.2f}'.format(sum(o.unpaid_pharmacy_ids.mapped('total_amount')))"/>
+                                                        ₹
+                                                        <span t-esc="'{:,.2f}'.format(sum(o.unpaid_pharmacy_ids.mapped('total_amount')))"/>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -189,7 +299,8 @@
                                             <!-- Show message if no bills -->
                                             <t t-if="not o.room_category_new and not o.nurse_charge and not o.doctor_visiting_charge and not o.service_charge and not o.paid_ip_ids and not o.unpaid_general_ids and not o.unpaid_lab_ids and not o.unpaid_pharmacy_ids">
                                                 <tr style="height: 80px;">
-                                                    <td colspan="4" style="padding: 25px; border: 2px solid #ddd; text-align: center; font-style: italic; color: #666; font-size: 20px; vertical-align: middle;">
+                                                    <td colspan="4"
+                                                        style="padding: 25px; border: 2px solid #ddd; text-align: center; font-style: italic; color: #666; font-size: 20px; vertical-align: middle;">
                                                         No bills found for this patient.
                                                     </td>
                                                 </tr>
@@ -197,9 +308,13 @@
                                         </tbody>
                                         <tfoot style="background-color: #f8f9fa;">
                                             <tr style="font-weight: bold; font-size: 20px; height: 70px;">
-                                                <th colspan="3" style="padding: 20px; border: 2px solid #ddd; text-align: right; font-size: 22px; vertical-align: middle;">GRAND TOTAL:</th>
+                                                <th colspan="3"
+                                                    style="padding: 20px; border: 2px solid #ddd; text-align: right; font-size: 22px; vertical-align: middle;">
+                                                    GRAND TOTAL:
+                                                </th>
                                                 <th style="padding: 20px; border: 2px solid #ddd; text-align: right; font-size: 22px; color: #d32f2f; vertical-align: middle;">
-                                                    ₹ <span t-esc="'{:,.2f}'.format((o.room_rent or 0) +
+                                                    ₹
+                                                    <span t-esc="'{:,.2f}'.format((o.room_rent or 0) +
                                                               (o.nurse_charge or 0) +
                                                               (o.doctor_visiting_charge or 0) +
                                                               (o.service_charge or 0) +
@@ -222,8 +337,10 @@
                                             <div class="col-6">
                                             </div>
                                             <div class="col-6 text-right">
-                                                <p style="font-size: 20px; margin: 0;"><strong>Total Amount:</strong>
-                                                   ₹ <span t-esc="'{:,.2f}'.format((o.nurse_charge or 0) +
+                                                <p style="font-size: 20px; margin: 0;">
+                                                    <strong>Total Amount:</strong>
+                                                    ₹
+                                                    <span t-esc="'{:,.2f}'.format((o.nurse_charge or 0) +
                                                              (o.doctor_visiting_charge or 0) +
                                                              (o.service_charge or 0) +
                                                              sum(o.unpaid_general_ids.mapped('total_amount')) +
