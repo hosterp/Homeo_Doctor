@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Report action definition -->
+        <record id="paperformat_admission_challan_landscape" model="report.paperformat">
+            <field name="name">Admission Challan Landscape</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+        </record>
+
         <record id="action_report_admission_challan" model="ir.actions.report">
             <field name="name">Admission Challan</field>
             <field name="model">patient.reg</field>
@@ -10,6 +21,7 @@
             <field name="report_file">homeo_doctor.report_admission_challan</field>
             <field name="binding_model_id" ref="model_patient_reg"/>
             <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="homeo_doctor.paperformat_admission_challan_landscape"/>
         </record>
 
         <!-- Report template -->
@@ -19,29 +31,33 @@
                     <t t-call="web.external_layout">
                         <div class="page">
                             <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+                                <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                     style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
 
-                                    <div style="text-align: center;">
-                                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
-                                        </h1>
-                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
-                                            THIRUVANANTHAPURAM -695 564
-                                        </p>
-                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321
-                                            dpmshospital@gmail.com
-                                        </p>
+                                <div style="text-align: center;">
+                                    <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr.
+                                        PRIYA'S MULTI SPECIALITY HOSPITAL
+                                    </h1>
+                                    <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                        THIRUVANANTHAPURAM -695 564
+                                    </p>
+                                    <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile
+                                        No: 8590203321
+                                        dpmshospital@gmail.com
+                                    </p>
 
-                                    </div>
                                 </div>
+                            </div>
                             <h2 class="text-center">Admission Challan</h2>
 
                             <div class="row mt-4">
                                 <div class="col-6">
-                                    <strong>Challan No:</strong> <span t-field="o.admitted_bill_number"/>
+                                    <strong>Challan No:</strong>
+                                    <span t-field="o.admitted_bill_number"/>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <strong>Date:</strong> <span t-field="o.create_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    <strong>Date:</strong>
+                                    <span t-field="o.create_date" t-options='{"format": "dd/MM/yyyy"}'/>
                                 </div>
                             </div>
 
@@ -49,33 +65,60 @@
                                 <div class="col-12">
                                     <table class="table table-bordered">
                                         <tr>
-                                            <td width="30%"><strong>Patient Name:</strong></td>
-                                            <td width="70%"><span t-field="o.patient_id"/></td>
+                                            <td width="30%">
+                                                <strong>Patient Name:</strong>
+                                            </td>
+                                            <td width="70%">
+                                                <span t-field="o.patient_id"/>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Reference No.:</strong></td>
-                                            <td><span t-field="o.reference_no"/></td>
+                                            <td>
+                                                <strong>Reference No.:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.reference_no"/>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Room Category:</strong></td>
-                                            <td><span t-field="o.room_category_new"/></td>
+                                            <td>
+                                                <strong>Room Category:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.room_category_new"/>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Room Number:</strong></td>
-                                            <td><span t-field="o.room_number_new"/></td>
+                                            <td>
+                                                <strong>Room Number:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.room_number_new"/>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Bed:</strong></td>
-                                            <td><span t-field="o.bed_id"/></td>
+                                            <td>
+                                                <strong>Bed:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.bed_id"/>
+                                            </td>
                                         </tr>
 
                                         <tr>
-                                            <td><strong>Payment Mode:</strong></td>
-                                            <td><span t-field="o.advance_mode_payment"/></td>
+                                            <td>
+                                                <strong>Payment Mode:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.advance_mode_payment"/>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Advance Amount:</strong></td>
-                                            <td><span t-field="o.amount_in_advance" />
+                                            <td>
+                                                <strong>Advance Amount:</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.amount_in_advance"/>
                                             </td>
                                         </tr>
                                     </table>
@@ -83,9 +126,9 @@
                             </div>
 
                             <div class="row mt-5">
-<!--                                <div class="col-6">-->
-<!--                                    <p>Patient's Signature</p>-->
-<!--                                </div>-->
+                                <!--                                <div class="col-6">-->
+                                <!--                                    <p>Patient's Signature</p>-->
+                                <!--                                </div>-->
                                 <div class="col-6 text-right">
                                     <p>Authorized Signature</p>
                                 </div>
