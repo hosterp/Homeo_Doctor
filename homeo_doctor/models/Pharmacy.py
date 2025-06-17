@@ -331,7 +331,7 @@ class PharmacyPrescriptionLine(models.Model):
                     line.batch = stock_entry.batch
                     line.manf_date = stock_entry.manf_date
                     line.exp_date = stock_entry.exp_date
-                    line.per_ped = stock_entry.supplier_mrp
+                    line.per_ped = stock_entry.pup
                     line.supplier_rate = stock_entry.rate
                     line.hsn = stock_entry.hsn
                     # line.uom_id = stock_entry.uom_id.id
@@ -428,7 +428,7 @@ class PharmacyPrescriptionLine(models.Model):
     def _onchange_qty(self):
         for rec in self:
             if rec.qty:
-                rec.rate = rec.supplier_rate * rec.qty
+                rec.rate = rec.per_ped * rec.qty
     # @api.depends('product_id', 'total_med')
     # def _compute_rate(self):
     #     for record in self:
