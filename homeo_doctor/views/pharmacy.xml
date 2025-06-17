@@ -116,54 +116,94 @@
                                             </strong>
                                         </div>
                                     </div>
+                                    <tr>
+                                        <td colspan="12">
+                                            <div style="display: flex; flex-wrap: wrap; font-size: 14px;">
+                                                <!-- Shared styles for each field -->
+                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
+                                                    <span style="color: #333;">UHID:</span>
+                                                    <span style="font-weight: bold; color: #333;" t-field="o.uhid_id"/>
+                                                </div>
 
-                                    <div class="row p-3">
-                                        <div class="col-6">
-                                            <table class="table table-sm table-borderless mb-0">
+                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
+                                                    <span style="color:  #333;">Patient:</span>
+                                                    <span style="font-weight: bold; color: #333;" t-field="o.name"/>
+                                                </div>
 
-                                                <tr>
-                                                    <td style="width: 100px; color: #666;">Patient ID:</td>
-                                                    <td style="font-weight: bold; color: #333;">
-                                                        <span t-field="o.uhid_id"/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="color: #666;">Patient:</td>
-                                                    <td style="font-weight: bold; color: #333;">
-                                                        <span t-field="o.name"/>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="col-6">
-                                            <table class="table table-sm table-borderless mb-0">
-                                                <tr>
-                                                    <td style="width: 100px; color: #666;">Date&amp;Time:</td>
-                                                    <td style="font-weight: bold; color: #333;">
-                                                        <span t-field="o.date"/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 100px; color: #666;">Phone:</td>
-                                                    <td style="font-weight: bold; color: #333;">
-                                                        <span t-field="o.phone_number"/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="color: #666;">Doctor:</td>
-                                                    <td style="font-weight: bold; color: #333;">
-                                                        <span t-field="o.doctor_name"/>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="color: #666;">Mode of Payment:</td>
-                                                    <td style="font-weight: bold; color: #333;">
-                                                        <span t-field="o.payment_mathod"/>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
+                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
+                                                    <span style="color:  #333;">Date&amp;Time:</span>
+                                                    <span style="font-weight: bold; color: #333;" t-field="o.date"/>
+                                                </div>
+
+                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
+                                                    <span style="color: #333;">Phone:</span>
+                                                    <span style="font-weight: bold; color: #333;"
+                                                          t-field="o.phone_number"/>
+                                                </div>
+
+                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
+                                                    <span style="color:  #333;">Doctor:</span>
+                                                    <span style="font-weight: bold; color: #333;"
+                                                          t-field="o.doctor_name"/>
+                                                </div>
+
+                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
+                                                    <span style="color: #333;">Mode of Payment:</span>
+                                                    <span style="font-weight: bold; color: #333;"
+                                                          t-field="o.payment_mathod"/>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+                                    <!--                                    <div class="row p-3">-->
+                                    <!--                                        <div class="col-6">-->
+                                    <!--                                            <table class="table table-sm table-borderless mb-0">-->
+
+                                    <!--                                                <tr>-->
+                                    <!--                                                    <td style="width: 100px; color: #666;">Patient ID:</td>-->
+                                    <!--                                                    <td style="font-weight: bold; color: #333;">-->
+                                    <!--                                                        <span t-field="o.uhid_id"/>-->
+                                    <!--                                                    </td>-->
+                                    <!--                                                </tr>-->
+                                    <!--                                                <tr>-->
+                                    <!--                                                    <td style="color: #666;">Patient:</td>-->
+                                    <!--                                                    <td style="font-weight: bold; color: #333;">-->
+                                    <!--                                                        <span t-field="o.name"/>-->
+                                    <!--                                                    </td>-->
+                                    <!--                                                </tr>-->
+                                    <!--                                            </table>-->
+                                    <!--                                        </div>-->
+                                    <!--                                        <div class="col-6">-->
+                                    <!--                                            <table class="table table-sm table-borderless mb-0">-->
+                                    <!--                                                <tr>-->
+                                    <!--                                                    <td style="width: 100px; color: #666;">Date&amp;Time:</td>-->
+                                    <!--                                                    <td style="font-weight: bold; color: #333;">-->
+                                    <!--                                                        <span t-field="o.date"/>-->
+                                    <!--                                                    </td>-->
+                                    <!--                                                </tr>-->
+                                    <!--                                                <tr>-->
+                                    <!--                                                    <td style="width: 100px; color: #666;">Phone:</td>-->
+                                    <!--                                                    <td style="font-weight: bold; color: #333;">-->
+                                    <!--                                                        <span t-field="o.phone_number"/>-->
+                                    <!--                                                    </td>-->
+                                    <!--                                                </tr>-->
+                                    <!--                                                <tr>-->
+                                    <!--                                                    <td style="color: #666;">Doctor:</td>-->
+                                    <!--                                                    <td style="font-weight: bold; color: #333;">-->
+                                    <!--                                                        <span t-field="o.doctor_name"/>-->
+                                    <!--                                                    </td>-->
+                                    <!--                                                </tr>-->
+                                    <!--                                                <tr>-->
+                                    <!--                                                    <td style="color: #666;">Mode of Payment:</td>-->
+                                    <!--                                                    <td style="font-weight: bold; color: #333;">-->
+                                    <!--                                                        <span t-field="o.payment_mathod"/>-->
+                                    <!--                                                    </td>-->
+                                    <!--                                                </tr>-->
+                                    <!--                                            </table>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
                                 </div>
                             </div>
 
@@ -181,7 +221,8 @@
                                         <div style="display: table-cell; padding: 8px;">Particulars</div>
                                         <div style="display: table-cell; padding: 8px; text-align: center;">Qty</div>
                                         <div style="display: table-cell; padding: 8px; text-align: center;">Batch</div>
-                                        <div style="display: table-cell; padding: 8px; text-align: center;">Manf Date</div>
+                                        <div style="display: table-cell; padding: 8px; text-align: center;">Manf Date
+                                        </div>
                                         <div style="display: table-cell; padding: 8px; text-align: center;">Expiry</div>
                                         <div style="display: table-cell; padding: 8px; text-align: center;">MRP</div>
                                         <!--                                        <div style="display: table-cell; padding: 8px; text-align: center;">Per Time-->
