@@ -142,13 +142,17 @@
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
                 <field name="to_be_received"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
-                <field name="reason_for_rejection"
+                    <field name="to_be_received"
+                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>    
+                <field name="total_pack_qty"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
             <xpath expr="//field[@name='line_ids']/tree/field[@name='free_qty']" position="after">
                 <field name="rejected_qty"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
                 <field name="to_be_received"
+                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
+                       <field name="total_pack_qty"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
                 <field name="reason_for_rejection"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>

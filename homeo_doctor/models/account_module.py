@@ -189,7 +189,7 @@ class AccountMove(models.Model):
                     self.env['stock.entry'].create({
                         'invoice_id': move.id,
                         'product_id': line.product_id.id,
-                        'quantity': total_qty,
+                        'quantity': line.total_pack_qty,
                         'qty': line.quantity,
                         'hsn': line.hsn,
                         'company': line.manufacturing_company,
@@ -280,6 +280,16 @@ class AccountMoveLine(models.Model):
         store=True,
         readonly=True,
     )
+    total_pack_qty = fields.Integer("Total Pack",compute="_total_pack")
+
+    @api.depends('pack','quantity')
+    def _total_pack(self):
+        for line in self:
+            if line.free_qty > 1:
+             line.total_pack_qty = line.pack * line.quantity * line.free_qty
+            else:
+                line.total_pack_qty = line.pack * line.quantity
+        
 
     @api.depends('price_unit', 'quantity', 'discount', 'gst')
     def _compute_price_subtotal(self):
@@ -289,10 +299,10 @@ class AccountMoveLine(models.Model):
             line.price_subtotal = base + gst_amount
 
 
-    @api.depends('pack','price_unit')
+    @api.depends('pack','supplier_mrp')
     def pup_calculation(self):
         for line in self:
-            line.pup = line.price_unit/line.pack
+            line.pup = line.supplier_mrp/line.pack
 
     @api.onchange('product_id')
     def _onchange_product_id_hsn(self):
