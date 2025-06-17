@@ -25,6 +25,7 @@
         "views/doctor_department.xml",
         # "views/hr_module_custom.xml",
         "report/patient_report.xml",
+        "report/transfer_print.xml",
         "report/patient_registion_report.xml",
         "report/admitted_patient_report.xml",
         "report/consultation_report.xml",
