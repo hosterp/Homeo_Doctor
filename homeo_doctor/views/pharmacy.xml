@@ -389,7 +389,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">homeo_doctor.pharmacy_report_template</field>
             <field name="report_file">homeo_doctor.pharmacy_report_template</field>
-            <field name="print_report_name">'Prescription - ' + object.name</field>
+            <field name="print_report_name">'Prescription - ' + object.bill_number</field>
             <field name="binding_model_id" ref="model_pharmacy_description"/>
             <field name="binding_type">report</field>
             <field name="paperformat_id" ref="paperformat_landscape"/>
