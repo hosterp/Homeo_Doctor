@@ -3,7 +3,7 @@ from datetime import date
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-
+import math
 class PharmacyDescription(models.Model):
     _name = 'pharmacy.description'
     _description = 'Pharmacy Description'
@@ -428,7 +428,8 @@ class PharmacyPrescriptionLine(models.Model):
     def _onchange_qty(self):
         for rec in self:
             if rec.qty:
-                rec.rate = rec.per_ped * rec.qty
+                product = rec.per_ped * rec.qty
+                rec.rate = math.ceil(product)
     # @api.depends('product_id', 'total_med')
     # def _compute_rate(self):
     #     for record in self:
