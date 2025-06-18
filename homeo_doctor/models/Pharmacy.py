@@ -316,6 +316,8 @@ class PharmacyPrescriptionLine(models.Model):
     stock_in_hand = fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
     # rate = fields.Float(string='Rate', store=True)
     description_id = fields.Many2one('pharmacy.description', string="Sale Reference")
+   
+                    
     @api.onchange('product_id')
     def _onchange_product_id(self):
         for line in self:
@@ -335,6 +337,7 @@ class PharmacyPrescriptionLine(models.Model):
                     line.supplier_rate = stock_entry.rate
                     line.hsn = stock_entry.hsn
                     line.mfc = stock_entry.company
+                    line.gst = stock_entry.gst
                     # line.uom_id = stock_entry.uom_id.id
 
     @api.depends('product_id')

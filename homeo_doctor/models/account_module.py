@@ -202,6 +202,7 @@ class AccountMove(models.Model):
                         'pack': line.pack,
                         'pup': line.pup,
                         'supplier_mrp': line.supplier_mrp,
+                        'gst':line.gst,
                         'state': 'confirmed',
                     })
                     stock_entries = self.env['stock.entry'].search([
@@ -529,6 +530,7 @@ class StockEntry(models.Model):
     date=fields.Date(string='Date')
     pack = fields.Integer(string="Pack",default=1)
     pup = fields.Float(string="PUP")
+    gst = fields.Integer(string="GST")
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
