@@ -315,6 +315,7 @@
                                             <th style="text-align: center; border: 1px solid black;">Expiry</th>
                                             <th style="text-align: center; border: 1px solid black;">Manufacturer</th>
                                             <th style="text-align: center; border: 1px solid black;">MRP</th>
+                                            <th style="text-align: center; border: 1px solid black;">Rate</th>
                                             <th style="text-align: center; border: 1px solid black;">GST (%)</th>
                                             <th style="text-align: center; border: 1px solid black;">Total</th>
                                         </tr>
@@ -352,6 +353,9 @@
                                                     <span t-field="medicine.per_ped"/>
                                                 </td>
                                                 <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                                    <span t-field="medicine.per_ped"/>
+                                                </td>
+                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
                                                     <span t-field="medicine.gst"/>
                                                 </td>
                                                 <td style="text-align: right; padding: 8px; border: 1px solid black;">
@@ -363,7 +367,7 @@
 
                                         <!-- Subtotal Row -->
                                         <tr style="background-color: #f8f9fa;">
-                                            <td colspan="8"
+                                            <td colspan="9"
                                                 style="text-align: right; font-weight: bold; padding: 8px; border: 1px solid black;">
                                                 Subtotal:
                                             </td>
