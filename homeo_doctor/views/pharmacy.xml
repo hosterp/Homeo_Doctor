@@ -3,6 +3,14 @@
         <!-- QWeb Template for Pharmacy Description Report -->
         <template id="pharmacy_minimal_layout">
             <t t-call="web.basic_layout">
+                <t t-if="not request.env.context.get('no_auto_print')">
+                    <script type="text/javascript">
+                        window.onload = function() {
+                        window.print();
+                        };
+                    </script>
+                </t>
+
                 <!--                <div class="header" style="border-bottom: 2px solid #1a73e8; padding-bottom: 2px;">-->
                 <!--                    <div class="row">-->
                 <!--                        <div class="col-3">-->
@@ -57,6 +65,22 @@
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="homeo_doctor.pharmacy_minimal_layout">
+                        <style>
+                            @media print {
+                            @page {
+                            size: A4 landscape;
+                            margin: 5mm 7mm 5mm 7mm;
+                            }
+                            }
+
+                            .page {
+                            width: 297mm;
+                            height: 210mm;
+                            padding: 10mm;
+                            box-sizing: border-box;
+                            }
+                        </style>
+
                         <div class="page"
                              style="width: 100%; min-height: 18cm; margin: 0 auto; padding: 5px; box-sizing: border-box;">
 
@@ -213,105 +237,27 @@
                                     <strong style="color: #333; font-size: 16px;">Prescribed Medications</strong>
                                 </div>
 
-                                <!-- Header Row -->
-<!--                                <div style="display: table; width: 100%; background: #1a73e8; color: white; font-weight: bold; border: 1px solid #ddd;">-->
-<!--                                    <div style="display: table-row;">-->
-<!--                                        <div style="display: table-cell; padding: 8px; text-align: center;">Sl No</div>-->
-<!--                                        <div style="display: table-cell; padding: 8px;">Particulars</div>-->
-<!--                                        <div style="display: table-cell; padding: 8px; text-align: center;">Qty</div>-->
-<!--                                        <div style="display: table-cell; padding: 8px; text-align: center;">Batch</div>-->
-<!--                                        <div style="display: table-cell; padding: 8px; text-align: center;">Manf Date-->
-<!--                                        </div>-->
-<!--                                        <div style="display: table-cell; padding: 8px; text-align: center;">Expiry</div>-->
-<!--                                        <div style="display: table-cell; padding: 8px; text-align: center;">MRP</div>-->
-<!--                                        &lt;!&ndash;                                        <div style="display: table-cell; padding: 8px; text-align: center;">Per Time&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                        </div>&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                        <div style="display: table-cell; padding: 8px; text-align: center;">Timing</div>&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                        <div style="display: table-cell; padding: 8px; text-align: right;">Rate&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                        </div>&ndash;&gt;-->
-<!--                                        <div style="display: table-cell; padding: 8px; text-align: right;">GST(%)-->
-<!--                                        </div>-->
-<!--                                        <div style="display: table-cell; padding: 8px; text-align: right;">Total</div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
 
-                                <!-- Data Table -->
-                                <!--                                <table class="table table-bordered table-sm"-->
-                                <!--                                       style="border: 1px solid #ddd; margin-top: 0; width: 100%; table-layout: fixed;">-->
-                                <!--                                    <tbody>-->
-                                <!--                                        <t t-set="counter" t-value="1"/>-->
-                                <!--                                        <t t-foreach="o.prescription_line_ids" t-as="medicine">-->
-                                <!--                                            <tr t-att-style="'background-color: ' + ('rgba(245, 245, 245, 0.5)' if counter % 2 == 0 else 'white')">-->
-                                <!--                                                <td class="text-center" style="padding: 8px;">-->
-                                <!--                                                    <span t-esc="counter"/>-->
-                                <!--                                                    <t t-set="counter" t-value="counter + 1"/>-->
-                                <!--                                                </td>-->
-                                <!--                                                <td style="padding: 8px;">-->
-                                <!--                                                    <strong t-field="medicine.product_id.display_name"/>-->
-                                <!--                                                </td>-->
-                                <!--                                                <td class="text-center" style="padding: 8px;">-->
-                                <!--                                                    <span t-field="medicine.qty"/>-->
-                                <!--                                                </td>-->
-                                <!--                                                <td class="text-center" style="padding: 8px;">-->
-                                <!--                                                    <span t-field="medicine.batch"/>-->
-                                <!--                                                </td>-->
-                                <!--                                                <td class="text-center" style="padding: 8px;">-->
-                                <!--                                                    <span t-field="medicine.manf_date"-->
-                                <!--                                                          t-options='{"widget": "date", "format": "MM/yy"}'/>-->
-                                <!--                                                </td>-->
-                                <!--                                                <td class="text-center" style="padding: 8px;">-->
-                                <!--                                                    <span t-field="medicine.exp_date"-->
-                                <!--                                                          t-options='{"widget": "date", "format": "MM/yy"}'/>-->
-                                <!--                                                </td>-->
-                                <!--                                                <td class="text-center" style="padding: 8px;">-->
-                                <!--                                                    <span t-field="medicine.per_ped"/>-->
-                                <!--                                                </td>-->
-
-                                <!--                                                &lt;!&ndash;                                                <td class="text-center" style="padding: 8px;">&ndash;&gt;-->
-                                <!--                                                &lt;!&ndash;                                                    <span t-if="medicine.morn" class="badge badge-primary mr-1"&ndash;&gt;-->
-                                <!--                                                &lt;!&ndash;                                                          style="background-color: #1a73e8;">Morning&ndash;&gt;-->
-                                <!--                                                &lt;!&ndash;                                                    </span>&ndash;&gt;-->
-                                <!--                                                &lt;!&ndash;                                                    <span t-if="medicine.noon" class="badge badge-success mr-1"&ndash;&gt;-->
-                                <!--                                                &lt;!&ndash;                                                          style="background-color: #28a745;">Noon&ndash;&gt;-->
-                                <!--                                                &lt;!&ndash;                                                    </span>&ndash;&gt;-->
-                                <!--                                                &lt;!&ndash;                                                    <span t-if="medicine.night" class="badge badge-info"&ndash;&gt;-->
-                                <!--                                                &lt;!&ndash;                                                          style="background-color: #17a2b8;">Night&ndash;&gt;-->
-                                <!--                                                &lt;!&ndash;                                                    </span>&ndash;&gt;-->
-                                <!--                                                &lt;!&ndash;                                                </td>&ndash;&gt;-->
-                                <!--&lt;!&ndash;                                                <td class="text-right" style="padding: 8px;">&ndash;&gt;-->
-                                <!--&lt;!&ndash;                                                    <span t-field="medicine.supplier_rate"&ndash;&gt;-->
-                                <!--&lt;!&ndash;                                                          t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>&ndash;&gt;-->
-                                <!--&lt;!&ndash;                                                </td>&ndash;&gt;-->
-                                <!--                                                <td class="text-center" style="padding: 8px;">-->
-                                <!--                                                    <span t-field="medicine.gst"/>-->
-                                <!--                                                </td>-->
-                                <!--                                                <td class="text-right" style="padding: 8px;">-->
-                                <!--                                                    <span t-field="medicine.rate"-->
-                                <!--                                                          t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>-->
-                                <!--                                                </td>-->
-                                <!--                                            </tr>-->
-                                <!--                                        </t>-->
-
-                                <!--                                        &lt;!&ndash; Subtotal Row &ndash;&gt;-->
-                                <!--                                        <tr style="background-color: #f8f9fa;">-->
-                                <!--                                            <td colspan="9" class="text-right" style="font-weight: bold; padding: 8px;">-->
-                                <!--                                                Subtotal:-->
-                                <!--                                            </td>-->
-                                <!--                                            <td class="text-right" style="font-weight: bold; padding: 8px;">-->
-                                <!--                                                <span t-esc="sum(o.prescription_line_ids.mapped('rate'))"-->
-                                <!--                                                      t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>-->
-                                <!--                                            </td>-->
-                                <!--                                        </tr>-->
-                                <!--                                    </tbody>-->
-                                <!--                                </table>-->
                                 <table style="width: 100%; border: 1px solid black; border-collapse: collapse; font-size: 13px; table-layout: fixed;">
+                                    <colgroup>
+                                        <col style="width: 5%;"/>
+                                        <col style="width: 25%;"/> <!-- Particulars -->
+                                        <col style="width: 8%;"/>
+                                        <col style="width: 10%;"/>
+                                        <col style="width: 10%;"/>
+                                        <col style="width: 12%;"/>
+                                        <col style="width: 8%;"/>
+                                        <col style="width: 8%;"/>
+                                        <col style="width: 6%;"/>
+                                        <col style="width: 8%;"/>
+                                    </colgroup>
                                     <thead style="background: #1a73e8; color: white;">
                                         <tr>
                                             <th style="text-align: center; border: 1px solid black;">Sl No</th>
                                             <th style="text-align: center; border: 1px solid black;">Particulars</th>
                                             <th style="text-align: center; border: 1px solid black;">Qty</th>
                                             <th style="text-align: center; border: 1px solid black;">Batch</th>
-<!--                                            <th style="text-align: center; border: 1px solid black;">Manf Date</th>-->
+                                            <!--                                            <th style="text-align: center; border: 1px solid black;">Manf Date</th>-->
                                             <th style="text-align: center; border: 1px solid black;">Expiry</th>
                                             <th style="text-align: center; border: 1px solid black;">Manufacturer</th>
                                             <th style="text-align: center; border: 1px solid black;">MRP</th>
@@ -338,10 +284,10 @@
                                                 <td style="text-align: center; padding: 8px; border: 1px solid black;">
                                                     <span t-field="medicine.batch"/>
                                                 </td>
-<!--                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">-->
-<!--                                                    <span t-field="medicine.manf_date"-->
-<!--                                                          t-options='{"widget": "date", "format": "MM/yy"}'/>-->
-<!--                                                </td>-->
+                                                <!--                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">-->
+                                                <!--                                                    <span t-field="medicine.manf_date"-->
+                                                <!--                                                          t-options='{"widget": "date", "format": "MM/yy"}'/>-->
+                                                <!--                                                </td>-->
                                                 <td style="text-align: center; padding: 8px; border: 1px solid black;">
                                                     <span t-field="medicine.exp_date"
                                                           t-options='{"widget": "date", "format": "MM/yy"}'/>
@@ -501,7 +447,8 @@
         <record id="action_pharmacy_report" model="ir.actions.report">
             <field name="name">Pharmacy Prescription</field>
             <field name="model">pharmacy.description</field>
-            <field name="report_type">qweb-pdf</field>
+            <!--            <field name="report_type">qweb-pdf</field>-->
+            <field name="report_type">qweb-html</field>
             <field name="report_name">homeo_doctor.pharmacy_report_template</field>
             <field name="report_file">homeo_doctor.pharmacy_report_template</field>
             <field name="print_report_name">'Prescription - ' + object.bill_number</field>
