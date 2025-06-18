@@ -99,8 +99,7 @@
                                             Gender:
                                         </td>
                                         <td style="padding: 10px; border: 2px solid #000; vertical-align: middle;">
-                                          <t t-esc="str(doc.gender).upper()"/>
-
+                                         <t t-esc="(str(doc.gender).upper() if doc.gender else '')"/>
                                         </td>
 
                                     </tr>
