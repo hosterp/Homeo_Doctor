@@ -141,7 +141,7 @@
                                     </div>
                                     <tr>
                                         <td colspan="12">
-                                            <div style="display: flex; flex-wrap: wrap; font-size: 14px;">
+                                            <div style="display: flex; flex-wrap: wrap; font-size: 17px;">
                                                 <!-- Shared styles for each field -->
                                                 <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
                                                     <span style="color: #333;">UHID:</span>
@@ -251,19 +251,19 @@
                                         <col style="width: 6%;"/>
                                         <col style="width: 8%;"/>
                                     </colgroup>
-                                    <thead style="background: #1a73e8; color: white;">
+                                    <thead style="background: #1a73e8; color: Black;">
                                         <tr>
-                                            <th style="text-align: center; border: 1px solid black;">Sl No</th>
-                                            <th style="text-align: center; border: 1px solid black;">Particulars</th>
-                                            <th style="text-align: center; border: 1px solid black;">Qty</th>
-                                            <th style="text-align: center; border: 1px solid black;">Batch</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Sl No</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Particulars</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Qty</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Batch</th>
                                             <!--                                            <th style="text-align: center; border: 1px solid black;">Manf Date</th>-->
-                                            <th style="text-align: center; border: 1px solid black;">Expiry</th>
-                                            <th style="text-align: center; border: 1px solid black;">Manufacturer</th>
-                                            <th style="text-align: center; border: 1px solid black;">MRP</th>
-                                            <th style="text-align: center; border: 1px solid black;">Rate</th>
-                                            <th style="text-align: center; border: 1px solid black;">GST (%)</th>
-                                            <th style="text-align: center; border: 1px solid black;">Total</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Expiry</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Manufacturer</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">MRP</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Rate</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">GST (%)</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Total</th>
                                         </tr>
                                     </thead>
 
@@ -271,40 +271,40 @@
                                         <t t-set="counter" t-value="1"/>
                                         <t t-foreach="o.prescription_line_ids" t-as="medicine">
                                             <tr>
-                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                                <td style="text-align: center; padding: 8px; border: 1px solid black;font-size: 17px; ">
                                                     <t t-esc="counter"/>
                                                     <t t-set="counter" t-value="counter + 1"/>
                                                 </td>
-                                                <td style="padding: 8px; border: 1px solid black;">
+                                                <td style="padding: 8px; border: 1px solid black; font-size: 17px; ">
                                                     <strong t-field="medicine.product_id.display_name"/>
                                                 </td>
-                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                                <td style="text-align: center; padding: 8px; border: 1px solid black;font-size: 17px; ">
                                                     <span t-field="medicine.qty"/>
                                                 </td>
-                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                                <td style="text-align: center; padding: 8px; border: 1px solid black;font-size: 17px; ">
                                                     <span t-field="medicine.batch"/>
                                                 </td>
                                                 <!--                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">-->
                                                 <!--                                                    <span t-field="medicine.manf_date"-->
                                                 <!--                                                          t-options='{"widget": "date", "format": "MM/yy"}'/>-->
                                                 <!--                                                </td>-->
-                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                                <td style="text-align: center; padding: 8px; border: 1px solid black;font-size: 17px; ">
                                                     <span t-field="medicine.exp_date"
                                                           t-options='{"widget": "date", "format": "MM/yy"}'/>
                                                 </td>
-                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                                <td style="text-align: center; padding: 8px; border: 1px solid black;font-size: 17px; ">
                                                     <span t-field="medicine.mfc"/>
                                                 </td>
-                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                                <td style="text-align: center; padding: 8px; border: 1px solid black; font-size: 17px; ">
                                                     <span t-field="medicine.per_ped"/>
                                                 </td>
-                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                                <td style="text-align: center; padding: 8px; border: 1px solid black;font-size: 17px; ">
                                                     <span t-field="medicine.per_ped"/>
                                                 </td>
-                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                                <td style="text-align: center; padding: 8px; border: 1px solid black;font-size: 17px; ">
                                                     <span t-field="medicine.gst"/>
                                                 </td>
-                                                <td style="text-align: right; padding: 8px; border: 1px solid black;">
+                                                <td style="text-align: right; padding: 8px; border: 1px solid black;font-size: 17px; ">
                                                     <span t-field="medicine.rate"
                                                           t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
                                                 </td>
@@ -314,10 +314,10 @@
                                         <!-- Subtotal Row -->
                                         <tr style="background-color: #f8f9fa;">
                                             <td colspan="9"
-                                                style="text-align: right; font-weight: bold; padding: 8px; border: 1px solid black;">
+                                                style="text-align: right; font-weight: bold; padding: 8px; border: 1px solid black;font-size: 17px; " >
                                                 Subtotal:
                                             </td>
-                                            <td style="text-align: right; font-weight: bold; padding: 8px; border: 1px solid black;">
+                                            <td style="text-align: right; font-weight: bold; padding: 8px; border: 1px solid black;font-size: 17px; ">
                                                 <span t-esc="sum(o.prescription_line_ids.mapped('rate'))"
                                                       t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
                                             </td>
@@ -358,13 +358,13 @@
                                         <div class="p-3">
                                             <table class="table table-sm table-borderless mb-0">
                                                 <tr>
-                                                    <td style="width: 60%; color: #666;">Total Items:</td>
+                                                    <td style="width: 60%; color:black;">Total Items:</td>
                                                     <td class="text-right" style="font-weight: bold; color: #333;">
                                                         <span t-esc="len(o.prescription_line_ids)"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="color: #666;">Total Quantity:</td>
+                                                    <td style="color:black;">Total Quantity:</td>
                                                     <td class="text-right" style="font-weight: bold; color: #333;">
                                                         <span t-esc="sum(o.prescription_line_ids.mapped('qty'))"/>
                                                     </td>
@@ -429,21 +429,20 @@
             </t>
         </template>
 
-        <record id="paperformat_landscape" model="report.paperformat">
-            <field name="name">A4 Landscape</field>
+        <record id="paperformat_a3_landscape" model="report.paperformat">
+            <field name="name">A3 Landscape</field>
             <field name="default" eval="False"/>
-            <field name="format">A4</field>
-            <field name="page_height">0</field>
-            <field name="page_width">0</field>
+            <field name="format">A3</field>
             <field name="orientation">Landscape</field>
-            <field name="margin_top">5</field>
+            <field name="margin_top">5</field>         <!-- in mm -->
             <field name="margin_bottom">5</field>
             <field name="margin_left">7</field>
             <field name="margin_right">7</field>
             <field name="header_line" eval="False"/>
-            <field name="header_spacing">15</field>
+            <field name="header_spacing">10</field>
             <field name="dpi">90</field>
         </record>
+
         <record id="action_pharmacy_report" model="ir.actions.report">
             <field name="name">Pharmacy Prescription</field>
             <field name="model">pharmacy.description</field>
@@ -454,7 +453,7 @@
             <field name="print_report_name">'Prescription - ' + object.bill_number</field>
             <field name="binding_model_id" ref="model_pharmacy_description"/>
             <field name="binding_type">report</field>
-            <field name="paperformat_id" ref="paperformat_landscape"/>
+            <field name="paperformat_id" ref="homeo_doctor.paperformat_a3_landscape"/>
         </record>
         <record id="action_pharmacy_return_print_original_bill" model="ir.actions.server">
             <field name="name">Print Original Bill</field>
