@@ -309,7 +309,7 @@ class PharmacyPrescriptionLine(models.Model):
     supplier_rate = fields.Float(string="Rate")
     hsn = fields.Char(string="HSN Code", compute="_compute_product_details", store=True)
     packing=fields.Char(string='Packing')
-    mfc=fields.Char(string='MFC')
+    mfc=fields.Char(string='Manufacturer')
     qty=fields.Integer(string='QTY')
     gst=fields.Integer(string='GST Rate(%)')
     discount=fields.Float(string='Disc %')
@@ -334,6 +334,7 @@ class PharmacyPrescriptionLine(models.Model):
                     line.per_ped = stock_entry.pup
                     line.supplier_rate = stock_entry.rate
                     line.hsn = stock_entry.hsn
+                    line.mfc = stock_entry.company
                     # line.uom_id = stock_entry.uom_id.id
 
     @api.depends('product_id')

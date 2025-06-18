@@ -311,8 +311,9 @@
                                             <th style="text-align: center; border: 1px solid black;">Particulars</th>
                                             <th style="text-align: center; border: 1px solid black;">Qty</th>
                                             <th style="text-align: center; border: 1px solid black;">Batch</th>
-                                            <th style="text-align: center; border: 1px solid black;">Manf Date</th>
+<!--                                            <th style="text-align: center; border: 1px solid black;">Manf Date</th>-->
                                             <th style="text-align: center; border: 1px solid black;">Expiry</th>
+                                            <th style="text-align: center; border: 1px solid black;">Manufacturer</th>
                                             <th style="text-align: center; border: 1px solid black;">MRP</th>
                                             <th style="text-align: center; border: 1px solid black;">GST (%)</th>
                                             <th style="text-align: center; border: 1px solid black;">Total</th>
@@ -336,13 +337,16 @@
                                                 <td style="text-align: center; padding: 8px; border: 1px solid black;">
                                                     <span t-field="medicine.batch"/>
                                                 </td>
-                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
-                                                    <span t-field="medicine.manf_date"
-                                                          t-options='{"widget": "date", "format": "MM/yy"}'/>
-                                                </td>
+<!--                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">-->
+<!--                                                    <span t-field="medicine.manf_date"-->
+<!--                                                          t-options='{"widget": "date", "format": "MM/yy"}'/>-->
+<!--                                                </td>-->
                                                 <td style="text-align: center; padding: 8px; border: 1px solid black;">
                                                     <span t-field="medicine.exp_date"
                                                           t-options='{"widget": "date", "format": "MM/yy"}'/>
+                                                </td>
+                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                                    <span t-field="medicine.mfc"/>
                                                 </td>
                                                 <td style="text-align: center; padding: 8px; border: 1px solid black;">
                                                     <span t-field="medicine.per_ped"/>
