@@ -53,6 +53,8 @@ class StockTransfer(models.Model):
             'product_id': line.product_id.id,
             'quantity': line.quantity,
             'rate': line.rate,
+            'supplier_mrp': line.rate,
+            'pup': line.rate,
             'uom_id': line.uom_id.id,
             'date': self.date,
             'manf_date': line.manf_date,
