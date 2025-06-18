@@ -63,6 +63,12 @@ class CombinedReportWizard(models.TransientModel):
                 ('register_mode_payment', '=', code),
                 ('register_bool', '=', True),
             ])
+            revisit = self.env['patient.appointment'].search([
+                ('appointment_date', '>=', self.from_date),
+                ('appointment_date', '<=', self.to_date),
+                ('register_mode_payment', '=', code),
+                ('status', '=', 'confirmed'),
+            ])
             
             patient_records = self.env['discharged.patient.record'].search([
                 ('admitted_date', '>=', self.from_date),
@@ -79,6 +85,10 @@ class CombinedReportWizard(models.TransientModel):
             # Process payment-method specific records
             for rec in patients:
                 dept = 'OP'
+                department_totals.setdefault(dept, {m[0]: 0.0 for m in payment_methods})
+                department_totals[dept][code] += rec.register_total_amount or 0.0
+            for rec in revisit:
+                dept = 'Revisit'
                 department_totals.setdefault(dept, {m[0]: 0.0 for m in payment_methods})
                 department_totals[dept][code] += rec.register_total_amount or 0.0
                 
