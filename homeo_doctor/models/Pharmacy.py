@@ -106,21 +106,21 @@ class PharmacyDescription(models.Model):
         res = super(PharmacyDescription, self).create(vals)
         # res._process_payment()
 
-        # Ensure partner creation is only done if necessary
-        if not res.partner_id and res.name:
-            partner = self.env['res.partner'].search([
-                ('name', '=', res.name),
-                # Add other fields to match if needed
-            ], limit=1)
-
-            if not partner:
-                partner = self.env['res.partner'].create({
-                    'name': res.name,
-                    # Add other values as needed
-                })
-
-            res.partner_id = partner.id
-
+        # # Ensure partner creation is only done if necessary
+        # if not res.partner_id and res.name:
+        #     partner = self.env['res.partner'].search([
+        #         ('name', '=', res.name),
+        #         # Add other fields to match if needed
+        #     ], limit=1)
+        #
+        #     if not partner:
+        #         partner = self.env['res.partner'].create({
+        #             'name': res.name,
+        #             # Add other values as needed
+        #         })
+        #
+        #     res.partner_id = partner.id
+        #
         return res
 
     def write(self, vals):
