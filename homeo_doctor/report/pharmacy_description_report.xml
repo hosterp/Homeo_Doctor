@@ -4,33 +4,27 @@
         <!-- Report Template -->
         <template id="report_pharmacy_description_pdf">
             <t t-call="web.basic_layout">
-                <div class="page">
-                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                             style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
 
-                        <div style="text-align: center;">
-                            <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI
-                                SPECIALITY HOSPITAL
-                            </h1>
-                            <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
-                                THIRUVANANTHAPURAM -695 564
-                            </p>
-                            <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
-                                8590203321
-                                dpmshospital@gmail.com
-                            </p>
-                            <!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
-                            <!--                                            <strong>PH:</strong>-->
-                            <!--                                            0471-2432121, 9188429198 |-->
-                            <!--                                            <strong>Email:</strong>-->
-                            <!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
-                            <!--                                               style="color: #007bff; text-decoration: none;">-->
-                            <!--                                                santhwanatvpm@gmail.com-->
-                            <!--                                            </a>-->
-                            <!--                                        </p>-->
+                <div class="page">
+                    <div style="padding-top: 2mm; margin-bottom: 10px;">
+                        <!-- Hospital Header Block -->
+                        <div style="display: flex; align-items: center; justify-content: center; font-family: Arial, sans-serif;">
+                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                 style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+                            <div style="text-align: center;">
+                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
+                                    MULTI SPECIALITY HOSPITAL
+                                </h1>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                    THIRUVANANTHAPURAM -695 564
+                                </p>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                                    8590203321<br/>dpmshospital@gmail.com
+                                </p>
+                            </div>
                         </div>
                     </div>
+
                     <div style="text-align: center;">
                         <h5>Pharmacy Description Report</h5>
                         <p>
@@ -49,7 +43,7 @@
                                 <th>Date Time</th>
                                 <th>Name</th>
                                 <th>Payment Mode</th>
-<!--                                <th>gst</th>-->
+                                <!--                                <th>gst</th>-->
                                 <th>Payable Amount</th>
                                 <!--                                <th>Paying Amount</th>-->
                                 <!--                                <th>Balance Amount</th>-->
@@ -73,18 +67,18 @@
                                     <td>
                                         <t t-esc="line['payment_mathod']"/>
                                     </td>
-<!--                                    <td>-->
-<!--                                        <t t-esc="line['gst']"/>-->
-<!--                                    </td>-->
+                                    <!--                                    <td>-->
+                                    <!--                                        <t t-esc="line['gst']"/>-->
+                                    <!--                                    </td>-->
                                     <td>
                                         <t t-esc="line['payable_amount']"/>
                                     </td>
-<!--                                    <td>-->
-<!--                                        <t t-esc="line['paying_amount']"/>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <t t-esc="line['balance_amount']"/>-->
-<!--                                    </td>-->
+                                    <!--                                    <td>-->
+                                    <!--                                        <t t-esc="line['paying_amount']"/>-->
+                                    <!--                                    </td>-->
+                                    <!--                                    <td>-->
+                                    <!--                                        <t t-esc="line['balance_amount']"/>-->
+                                    <!--                                    </td>-->
                                 </tr>
                             </t>
                             <tr>
@@ -112,6 +106,18 @@
                 </div>
             </t>
         </template>
+        <record id="paperformat_pharmacy_description" model="report.paperformat">
+            <field name="name">Pharmacy Description A4</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="dpi">90</field>
+        </record>
 
         <record id="view_pharmacy_description_wizard" model="ir.ui.view">
             <field name="name">pharmacy.description.wizard.form</field>
@@ -148,6 +154,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">homeo_doctor.report_pharmacy_description_pdf</field>
             <field name="report_file">homeo_doctor.report_pharmacy_description_pdf</field>
+            <field name="paperformat_id" ref="homeo_doctor.paperformat_pharmacy_description"/>
         </record>
 
         <!-- Action for Pharmacy Report Wizard -->
