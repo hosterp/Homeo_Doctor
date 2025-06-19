@@ -13,12 +13,13 @@ class PharmacyDescriptionWizard(models.TransientModel):
                                  ('cheque', 'Cheque'),
                                  ('upi', 'UPI'), ], string='Payment Method')
     def action_generate_report(self):
-        # Search records within the date range
-        pharmacy_records = self.env['pharmacy.description'].search([
+        domain = [
             ('date', '>=', self.from_date),
             ('date', '<=', self.to_date),
-            ('payment_mathod', '=', self.mode_pay),
-        ], order='date asc')
+        ]
+        if self.mode_pay:
+            domain.append(('payment_mathod', '=', self.mode_pay))
+        pharmacy_records = self.env['pharmacy.description'].search(domain, order='date asc')
 
         report_data = []
         sl_no = 1
@@ -26,7 +27,7 @@ class PharmacyDescriptionWizard(models.TransientModel):
         for rec in pharmacy_records:
             report_data.append({
                 'sl_no': sl_no,
-                'receipt_no': rec.id,
+                'receipt_no': rec.bill_number,
                 'date_time': rec.date.strftime('%Y-%m-%d %H:%M:%S') if rec.date else '',
                 'name': rec.name,
                 'uhid_id': rec.uhid_id.id,
