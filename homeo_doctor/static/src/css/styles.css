@@ -1502,3 +1502,13 @@ a[href="/web/database/manager"],
 a[href*="odoo.com"] {
     display: none !important;
 }
+.o_list_view.prescription-tree-big-font .o_data_cell,
+.o_list_view.prescription-tree-big-font .o_field_cell,
+.o_list_view.prescription-tree-big-font td,
+.o_list_view.prescription-tree-big-font th,
+.o_list_view.prescription-tree-big-font input,
+.o_list_view.prescription-tree-big-font select,
+.o_list_view.prescription-tree-big-font span {
+    font-size: 18px !important;
+}
+
