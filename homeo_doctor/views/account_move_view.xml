@@ -140,8 +140,8 @@
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='free_qty']" position="after">
-                <field name="rejected_qty"
-                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
+<!--                <field name="rejected_qty"-->
+<!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
                 <field name="to_be_received"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
 <!--                <field name="to_be_received"-->
@@ -184,13 +184,13 @@
                 <field name="hsn"/>
                 <field name="batch"/>
                 <field name="pack"/>
-                <field name="manufacturing_date" string="M.Date"/>
+                <field name="manufacturing_date" string="M.Date" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='line_ids']/tree/field[@name='product_id']" position="after">
                 <field name="hsn"/>
                 <field name="batch"/>
                 <field name="pack"/>
-                <field name="manufacturing_date" string="M.Date"/>
+                <field name="manufacturing_date" string="M.Date" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -220,7 +220,7 @@
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="after">
                 <field name="product_uom_category_id" readonly="0" invisible="1"/>
-                <field name="category"/>
+                <field name="category" invisible="1"/>
             </xpath>
             <xpath expr="//page[@id='edi_documents']" position="attributes">
                 <attribute name="attrs">{'invisible': [('move_type', 'in', ('out_invoice', 'in_invoice'))]}</attribute>
