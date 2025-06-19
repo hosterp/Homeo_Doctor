@@ -140,12 +140,12 @@
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='free_qty']" position="after">
-<!--                <field name="rejected_qty"-->
-<!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
+                <!--                <field name="rejected_qty"-->
+                <!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
                 <field name="to_be_received"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
-<!--                <field name="to_be_received"-->
-<!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
+                <!--                <field name="to_be_received"-->
+                <!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
                 <field name="total_pack_qty"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
@@ -252,7 +252,9 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
-            <!-- Add global discount fields for supplier invoices -->
+            <xpath expr="//field[@name='invoice_line_ids']/tree" position="attributes">
+                <attribute name="class">prescription-tree-big-font</attribute>
+            </xpath>
             <xpath expr="//field[@name='amount_untaxed']" position="before">
                 <field name="amount_before_discount" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
                 <field name="global_discount" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
