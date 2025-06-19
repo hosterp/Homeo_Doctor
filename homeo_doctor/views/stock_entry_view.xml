@@ -19,6 +19,7 @@
                 <field name="rate"/>
                 <field name="supplier_mrp" string="MRP"/>
                 <field name="pup" string="PUP"/>
+                <field name="gst" string="GST"/>
                 <field name="rack"/>
                 <field name="uom_id" invisible="1"/>
                 <field name="state" invisible="1"/>
