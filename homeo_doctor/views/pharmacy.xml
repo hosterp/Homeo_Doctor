@@ -361,6 +361,14 @@
                                             Prepaid By :
                                             <span t-field="o.staff_name"/>
                                         </p>
+                                        <tr>
+                                            <td colspan="2"
+                                                style="border-top: 1px solid #ddd; padding-top: 10px;">
+                                                <strong>Amount in Words:</strong>
+                                                <span t-esc="o.amount_to_text_indian()"
+                                                      style="text-transform: capitalize;"/>
+                                            </td>
+                                        </tr>
                                         <!--                                        <div style="background-color: #f5f5f5; padding: 8px 15px; border-bottom: 1px solid #ddd;">-->
                                         <!--                                            <strong style="color: #333; font-size: 16px;">Instructions</strong>-->
                                         <!--                                        </div>-->
@@ -405,14 +413,7 @@
                                                         </strong>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td colspan="2"
-                                                        style="border-top: 1px solid #ddd; padding-top: 10px;">
-                                                        <strong>Amount in Words:</strong>
-                                                        <span t-esc="o.amount_to_text_indian()"
-                                                              style="text-transform: capitalize;"/>
-                                                    </td>
-                                                </tr>
+
 
                                                 <!--                                                <tr style="border-top: 1px dashed #ddd;">-->
                                                 <!--                                                    <td style="color: #333; font-weight: bold;">Total Amount:</td>-->
