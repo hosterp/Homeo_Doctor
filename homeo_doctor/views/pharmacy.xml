@@ -139,46 +139,51 @@
                                             </strong>
                                         </div>
                                     </div>
+
                                     <tr>
                                         <td colspan="12">
-                                            <div style="display: flex; flex-wrap: wrap; font-size: 17px;">
-                                                <!-- Shared styles for each field -->
-                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
-                                                    <span style="color: #333;">UHID:</span>
-                                                    <span style="font-weight: bold; color: #333;" t-field="o.uhid_id"/>
+                                            <div style="display: table; width: 100%; font-size: 16px;">
+                                                <!-- Row 1 -->
+                                                <div style="display: table-row;">
+                                                    <!-- Left -->
+                                                    <div style="display: table-cell; width: 33.33%; text-align: left; padding: 4px 8px;">
+                                                        <span style="color: #333;">UHID:</span>
+                                                        <span style="font-weight: bold; color: #333;"
+                                                              t-field="o.uhid_id"/>
+                                                    </div>
+                                                    <!-- Center -->
+                                                    <div style="display: table-cell; width: 33.33%; text-align: center; padding: 4px 8px;">
+                                                        <span style="color: #333;">Patient:</span>
+                                                        <span style="font-weight: bold; color: #333;" t-field="o.name"/>
+                                                    </div>
+                                                    <!-- Right with extra right space -->
+                                                    <div style="display: table-cell; width: 33.33%; text-align: right; padding: 4px 40px 4px 8px;">
+                                                        <span style="color: #333;">Date&amp;Time:</span>
+                                                        <span style="font-weight: bold; color: #333;" t-field="o.date"/>
+                                                    </div>
                                                 </div>
 
-                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
-                                                    <span style="color:  #333;">Patient:</span>
-                                                    <span style="font-weight: bold; color: #333;" t-field="o.name"/>
-                                                </div>
-
-                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
-                                                    <span style="color:  #333;">Date&amp;Time:</span>
-                                                    <span style="font-weight: bold; color: #333;" t-field="o.date"/>
-                                                </div>
-
-                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
-                                                    <span style="color: #333;">Phone:</span>
-                                                    <span style="font-weight: bold; color: #333;"
-                                                          t-field="o.phone_number"/>
-                                                </div>
-
-                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
-                                                    <span style="color:  #333;">Doctor:</span>
-                                                    <span style="font-weight: bold; color: #333;"
-                                                          t-field="o.doctor_name"/>
-                                                </div>
-
-                                                <div style="width: 16.66%; display: flex; gap: 4px; margin-bottom: 5px;">
-                                                    <span style="color: #333;">Mode of Payment:</span>
-                                                    <span style="font-weight: bold; color: #333;"
-                                                          t-field="o.payment_mathod"/>
+                                                <!-- Row 2 -->
+                                                <div style="display: table-row;">
+                                                    <div style="display: table-cell; width: 33.33%; text-align: left; padding: 4px 8px;">
+                                                        <span style="color: #333;">Phone:</span>
+                                                        <span style="font-weight: bold; color: #333;"
+                                                              t-field="o.phone_number"/>
+                                                    </div>
+                                                    <div style="display: table-cell; width: 33.33%; text-align: center; padding: 4px 8px;">
+                                                        <span style="color: #333;">Doctor:</span>
+                                                        <span style="font-weight: bold; color: #333;"
+                                                              t-field="o.doctor_name"/>
+                                                    </div>
+                                                    <div style="display: table-cell; width: 33.33%; text-align: right; padding: 4px 40px 4px 8px;">
+                                                        <span style="color: #333;">Mode of Payment:</span>
+                                                        <span style="font-weight: bold; color: #333;"
+                                                              t-field="o.payment_mathod"/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-
 
                                     <!--                                    <div class="row p-3">-->
                                     <!--                                        <div class="col-6">-->
@@ -232,16 +237,16 @@
 
                             <!-- Prescription Table -->
                             <div class="mb-4">
-                                <!-- Section Header -->
-                                <div style="background-color: #f5f5f5; padding: 8px 15px; border: 1px solid #ddd; border-top-left-radius: 5px; border-top-right-radius: 5px;">
-                                    <strong style="color: #333; font-size: 16px;">Prescribed Medications</strong>
-                                </div>
+<!--                                &lt;!&ndash; Section Header &ndash;&gt;-->
+<!--                                <div style="background-color: #f5f5f5; padding: 8px 15px; border: 1px solid #ddd; border-top-left-radius: 5px; border-top-right-radius: 5px;">-->
+<!--                                    <strong style="color: #333; font-size: 16px;">Prescribed Medications</strong>-->
+<!--                                </div>-->
 
 
                                 <table style="width: 100%; border: 1px solid black; border-collapse: collapse; font-size: 13px; table-layout: fixed;">
                                     <colgroup>
                                         <col style="width: 5%;"/>
-                                        <col style="width: 25%;"/> <!-- Particulars -->
+                                        <col style="width: 25%;"/>
                                         <col style="width: 8%;"/>
                                         <col style="width: 10%;"/>
                                         <col style="width: 10%;"/>
@@ -253,17 +258,37 @@
                                     </colgroup>
                                     <thead style="background: #1a73e8; color: Black;">
                                         <tr>
-                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Sl No</th>
-                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Particulars</th>
-                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Qty</th>
-                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Batch</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Sl
+                                                No
+                                            </th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">
+                                                Particulars
+                                            </th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">
+                                                Qty
+                                            </th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">
+                                                Batch
+                                            </th>
                                             <!--                                            <th style="text-align: center; border: 1px solid black;">Manf Date</th>-->
-                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Expiry</th>
-                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Manufacturer</th>
-                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">MRP</th>
-                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Rate</th>
-                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">GST (%)</th>
-                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">Total</th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">
+                                                Expiry
+                                            </th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">
+                                                Manufacturer
+                                            </th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">
+                                                MRP
+                                            </th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">
+                                                Rate
+                                            </th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">
+                                                GST (%)
+                                            </th>
+                                            <th style="text-align: center; border: 1px solid black;font-size: 17px; ">
+                                                Total
+                                            </th>
                                         </tr>
                                     </thead>
 
@@ -314,7 +339,7 @@
                                         <!-- Subtotal Row -->
                                         <tr style="background-color: #f8f9fa;">
                                             <td colspan="9"
-                                                style="text-align: right; font-weight: bold; padding: 8px; border: 1px solid black;font-size: 17px; " >
+                                                style="text-align: right; font-weight: bold; padding: 8px; border: 1px solid black;font-size: 17px; ">
                                                 Subtotal:
                                             </td>
                                             <td style="text-align: right; font-weight: bold; padding: 8px; border: 1px solid black;font-size: 17px; ">
@@ -403,15 +428,15 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-5">
-                                <div class="col-5 text-center">
-                                    <!--                                    <div style="border-top: 1px solid #777; padding-top: 10px; margin-top: 50px;">-->
+                            <!--                            <div class="row mt-5">-->
+                            <!--                                <div class="col-5 text-center">-->
+                            <!--                                    <div style="border-top: 1px solid #777; padding-top: 10px; margin-top: 50px;">-->
 
-                                    <!--                                    </div>-->
-                                </div>
-                                <div class="col-7">
-                                </div>
-                            </div>
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="col-7">-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
 
                             <!-- Footer Note -->
                             <!--                            <div class="row mt-5">-->
@@ -522,7 +547,7 @@
                                     </div>
                                 </div>
                                 <!-- <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                                    
+
                                 </div> -->
 
                             </div>
