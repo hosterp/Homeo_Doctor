@@ -237,10 +237,10 @@
 
                             <!-- Prescription Table -->
                             <div class="mb-4">
-<!--                                &lt;!&ndash; Section Header &ndash;&gt;-->
-<!--                                <div style="background-color: #f5f5f5; padding: 8px 15px; border: 1px solid #ddd; border-top-left-radius: 5px; border-top-right-radius: 5px;">-->
-<!--                                    <strong style="color: #333; font-size: 16px;">Prescribed Medications</strong>-->
-<!--                                </div>-->
+                                <!--                                &lt;!&ndash; Section Header &ndash;&gt;-->
+                                <!--                                <div style="background-color: #f5f5f5; padding: 8px 15px; border: 1px solid #ddd; border-top-left-radius: 5px; border-top-right-radius: 5px;">-->
+                                <!--                                    <strong style="color: #333; font-size: 16px;">Prescribed Medications</strong>-->
+                                <!--                                </div>-->
 
 
                                 <table style="width: 100%; border: 1px solid black; border-collapse: collapse; font-size: 13px; table-layout: fixed;">
@@ -632,6 +632,7 @@
             <field name="model">pharmacy.description</field>
             <field name="arch" type="xml">
                 <tree string="Pharmacy Description">
+                    <field name="date"/>
                     <field name="uhid_id" string='UHID'/>
                     <field name="name"/>
                     <!--                    <field name="date" string="Appointment Date"/>-->
