@@ -30,6 +30,7 @@ class PharmacyDescriptionWizard(models.TransientModel):
                 'receipt_no': rec.bill_number,
                 'date_time': rec.date.strftime('%Y-%m-%d %H:%M:%S') if rec.date else '',
                 'name': rec.name,
+                'payment_mathod': rec.payment_mathod,
                 'uhid_id': rec.uhid_id.id,
                 'payable_amount': rec.bill_amount,
                 'paying_amount': rec.paid_amount,

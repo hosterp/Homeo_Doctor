@@ -6,29 +6,31 @@
             <t t-call="web.basic_layout">
                 <div class="page">
                     <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                             style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
 
-                                    <div style="text-align: center;">
-                                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
-                                        </h1>
-                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
-                                            THIRUVANANTHAPURAM -695 564
-                                        </p>
-                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321
-                                            dpmshospital@gmail.com
-                                        </p>
-<!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
-<!--                                            <strong>PH:</strong>-->
-<!--                                            0471-2432121, 9188429198 |-->
-<!--                                            <strong>Email:</strong>-->
-<!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
-<!--                                               style="color: #007bff; text-decoration: none;">-->
-<!--                                                santhwanatvpm@gmail.com-->
-<!--                                            </a>-->
-<!--                                        </p>-->
-                                    </div>
-                                </div>
+                        <div style="text-align: center;">
+                            <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI
+                                SPECIALITY HOSPITAL
+                            </h1>
+                            <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                THIRUVANANTHAPURAM -695 564
+                            </p>
+                            <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                                8590203321
+                                dpmshospital@gmail.com
+                            </p>
+                            <!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
+                            <!--                                            <strong>PH:</strong>-->
+                            <!--                                            0471-2432121, 9188429198 |-->
+                            <!--                                            <strong>Email:</strong>-->
+                            <!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
+                            <!--                                               style="color: #007bff; text-decoration: none;">-->
+                            <!--                                                santhwanatvpm@gmail.com-->
+                            <!--                                            </a>-->
+                            <!--                                        </p>-->
+                        </div>
+                    </div>
                     <div style="text-align: center;">
                         <h5>Pharmacy Description Report</h5>
                         <p>
@@ -46,10 +48,11 @@
                                 <th>Receipt No</th>
                                 <th>Date Time</th>
                                 <th>Name</th>
-                                <!--                                <th>Bill No</th>-->
+                                <th>Payment Mode</th>
+<!--                                <th>gst</th>-->
                                 <th>Payable Amount</th>
-                                <th>Paying Amount</th>
-                                <th>Balance Amount</th>
+                                <!--                                <th>Paying Amount</th>-->
+                                <!--                                <th>Balance Amount</th>-->
                             </tr>
                         </thead>
                         <tbody>
@@ -67,22 +70,25 @@
                                     <td>
                                         <t t-esc="line['name']"/>
                                     </td>
-                                    <!--                                    <td>-->
-                                    <!--                                        <t t-esc="line['uhid_id']"/>-->
-                                    <!--                                    </td>-->
+                                    <td>
+                                        <t t-esc="line['payment_mathod']"/>
+                                    </td>
+<!--                                    <td>-->
+<!--                                        <t t-esc="line['gst']"/>-->
+<!--                                    </td>-->
                                     <td>
                                         <t t-esc="line['payable_amount']"/>
                                     </td>
-                                    <td>
-                                        <t t-esc="line['paying_amount']"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="line['balance_amount']"/>
-                                    </td>
+<!--                                    <td>-->
+<!--                                        <t t-esc="line['paying_amount']"/>-->
+<!--                                    </td>-->
+<!--                                    <td>-->
+<!--                                        <t t-esc="line['balance_amount']"/>-->
+<!--                                    </td>-->
                                 </tr>
                             </t>
                             <tr>
-                                <td colspan="4" style="text-align: right;">
+                                <td colspan="5" style="text-align: right;">
                                     <strong>Total:</strong>
                                 </td>
                                 <td>
@@ -90,16 +96,16 @@
                                         <t t-esc="data['payable_total']"/>
                                     </strong>
                                 </td>
-                                <td>
-                                    <strong>
-                                        <t t-esc="data['paying_total']"/>
-                                    </strong>
-                                </td>
-                                <td>
-                                    <strong>
-                                        <t t-esc="data['balance_total']"/>
-                                    </strong>
-                                </td>
+                                <!--                                <td>-->
+                                <!--                                    <strong>-->
+                                <!--                                        <t t-esc="data['paying_total']"/>-->
+                                <!--                                    </strong>-->
+                                <!--                                </td>-->
+                                <!--                                <td>-->
+                                <!--                                    <strong>-->
+                                <!--                                        <t t-esc="data['balance_total']"/>-->
+                                <!--                                    </strong>-->
+                                <!--                                </td>-->
                             </tr>
                         </tbody>
                     </table>
