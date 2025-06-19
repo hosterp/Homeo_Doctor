@@ -144,8 +144,8 @@
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
                 <field name="to_be_received"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
-                <field name="to_be_received"
-                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
+<!--                <field name="to_be_received"-->
+<!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
                 <field name="total_pack_qty"
                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
             </xpath>
