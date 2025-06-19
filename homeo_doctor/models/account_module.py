@@ -3,7 +3,7 @@ from datetime import date
 from odoo import models, fields,api,_
 from odoo.exceptions import ValidationError
 
-
+import math
 # from odoo.odoo.exceptions import ValidationError
 
 
@@ -297,7 +297,7 @@ class AccountMoveLine(models.Model):
         for line in self:
             base = line.price_unit * (1 - (line.discount or 0.0) / 100.0) * line.quantity
             gst_amount = base * (line.gst or 0.0) / 100.0
-            line.price_subtotal = base + gst_amount
+            line.price_subtotal = math.ceil(base + gst_amount)
 
 
     @api.depends('pack','supplier_mrp')
