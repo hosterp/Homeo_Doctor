@@ -1513,6 +1513,6 @@ a[href*="odoo.com"] {
 }
 
 .o_list_view .wide-column {
-    min-width: 384px !important;
-    width: 384px!important;
+    min-width: 400px !important;
+    width: 400px !important;
 }
