@@ -1063,7 +1063,7 @@ class PatientRegistration(models.Model):
             })
 
         return record
-
+    @api.depends('date')
     def _compute_formatted_date(self):
         for record in self:
             if record.date:
