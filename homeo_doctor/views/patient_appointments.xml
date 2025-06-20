@@ -316,6 +316,7 @@
             <search>
                 <field name="patient_id"/>
                 <field name="patient_name"/>
+                <field name="appointment_date"/>
             </search>
         </field>
     </record>
