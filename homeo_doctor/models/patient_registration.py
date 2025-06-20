@@ -149,7 +149,19 @@ class PatientRegistration(models.Model):
     unpaid_ip_ids = fields.Many2many(
         'ip.part.billing', string="Unpaid IP Bills", compute="_compute_all_totals"
     )
+    referred=fields.Boolean('Referred')
+    tt=fields.Boolean('TT')
 
+    @api.onchange('referred','tt')
+    def _onchange_refferd_boolean_and_tt(self):
+        for rec in self:
+            if rec.referred or rec.tt:
+                rec.consultation_fee = 0.0
+                fee = self.env['patient.registration.fee'].search([('fee', '=', 100)], limit=1)
+                if fee:
+                    rec.registration_fee = fee.id
+                else:
+                    rec.registration_fee = self._default_registration_fee()
 
     def action_view_consultations(self):
         if not self.patient_id:
@@ -951,15 +963,26 @@ class PatientRegistration(models.Model):
     #         else:
     #             pass
 
-    @api.depends('doc_name')
+    @api.depends('doc_name', 'referred', 'tt', 'vssc_boolean')
     def _compute_consultation_fee(self):
         for record in self:
             if record.doc_name:
                 if record.vssc_boolean:
                     record.register_total_amount = 400
+
                 else:
                     # Automatically populate consultation_fee from the selected doctor's record
                     record.consultation_fee = record.doc_name.consultation_fee_doctor
+                if record.doc_name:
+                    if record.referred or record.tt:
+                        record.consultation_fee = 0
+                        # Set registration_fee to the one with fee = 100
+                        fee = self.env['patient.registration.fee'].search([('fee', '=', 100)], limit=1)
+                        record.registration_fee = fee.id if fee else record._default_registration_fee()
+                    else:
+                        # Normal case: use doctor's consultation fee and default reg fee
+                        record.consultation_fee = record.doc_name.consultation_fee_doctor
+                        record.registration_fee = record._default_registration_fee()
 
     @api.onchange('department_id')
     def _onchange_department_id(self):

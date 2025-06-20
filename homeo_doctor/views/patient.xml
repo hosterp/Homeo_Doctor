@@ -280,6 +280,28 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row mx-n1">
+                                            <div class="col px-1" style="max-width: 20%;">
+                                                <div class="form-group row my-1">
+                                                    <label for="referred"
+                                                           class="col-md-5 col-form-label py-0 small text-nowrap">Referred
+                                                    </label>
+                                                    <div class="col-md-9 field-container py-0">
+                                                        <field name="referred"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col px-1" style="max-width: 20%;">
+                                                <div class="form-group row my-1">
+                                                    <label for="tt"
+                                                           class="col-md-5 col-form-label py-0 small text-nowrap">TT
+                                                    </label>
+                                                    <div class="col-md-9 field-container py-0">
+                                                        <field name="tt"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -633,7 +655,8 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="doctor_visiting_charge"
-                                                                   class="col-md-4 col-form-label py-0 text-nowrap">Doctor Charge
+                                                                   class="col-md-4 col-form-label py-0 text-nowrap">
+                                                                Doctor Charge
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
                                                                 <field name="doctor_visiting_charge"/>
@@ -643,7 +666,8 @@
                                                     <div class="col px-1" style="max-width: 20%;">
                                                         <div class="form-group row my-1">
                                                             <label for="nurse_charge"
-                                                                   class="col-md col-form-label py-0 text-nowrap">Nurse Charge
+                                                                   class="col-md col-form-label py-0 text-nowrap">Nurse
+                                                                Charge
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
                                                                 <field name="nurse_charge" style="width:100%;"/>
@@ -662,29 +686,31 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col px-1" style="max-width: 20%; border:none; box-shadow: none;">
-<!--                                                        <div class="form-group row my-1">-->
-<!--                                                            <label for="rent_full"-->
-<!--                                                                   class="col-md col-form-label py-0 text-nowrap">-->
-<!--                                                                Rent Full-->
-<!--                                                            </label>-->
-<!--                                                            <div class="col-md-8 field-container py-0">-->
-<!--                                                                <field name="rent_full" style="width:100%;"-->
-<!--                                                                       attrs="{'required': [('admission_boolean', '=', True)]}"/>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
+                                                    <div class="col px-1"
+                                                         style="max-width: 20%; border:none; box-shadow: none;">
+                                                        <!--                                                        <div class="form-group row my-1">-->
+                                                        <!--                                                            <label for="rent_full"-->
+                                                        <!--                                                                   class="col-md col-form-label py-0 text-nowrap">-->
+                                                        <!--                                                                Rent Full-->
+                                                        <!--                                                            </label>-->
+                                                        <!--                                                            <div class="col-md-8 field-container py-0">-->
+                                                        <!--                                                                <field name="rent_full" style="width:100%;"-->
+                                                        <!--                                                                       attrs="{'required': [('admission_boolean', '=', True)]}"/>-->
+                                                        <!--                                                            </div>-->
+                                                        <!--                                                        </div>-->
                                                     </div>
-                                                    <div class="col px-1" style="max-width: 20%;border:none;box-shadow: none;">
-<!--                                                        <div class="form-group row my-1">-->
-<!--                                                            <label for="amount_in_advance"-->
-<!--                                                                   class="col-md col-form-label py-0 text-nowrap">-->
-<!--                                                                Advance Amount-->
-<!--                                                            </label>-->
-<!--                                                            <div class="col-md-8 field-container py-0">-->
-<!--                                                                <field name="amount_in_advance" style="width:100%;"-->
-<!--                                                                       attrs="{'required': [('admission_boolean', '=', True)]}"/>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
+                                                    <div class="col px-1"
+                                                         style="max-width: 20%;border:none;box-shadow: none;">
+                                                        <!--                                                        <div class="form-group row my-1">-->
+                                                        <!--                                                            <label for="amount_in_advance"-->
+                                                        <!--                                                                   class="col-md col-form-label py-0 text-nowrap">-->
+                                                        <!--                                                                Advance Amount-->
+                                                        <!--                                                            </label>-->
+                                                        <!--                                                            <div class="col-md-8 field-container py-0">-->
+                                                        <!--                                                                <field name="amount_in_advance" style="width:100%;"-->
+                                                        <!--                                                                       attrs="{'required': [('admission_boolean', '=', True)]}"/>-->
+                                                        <!--                                                            </div>-->
+                                                        <!--                                                        </div>-->
                                                     </div>
                                                     <!-- Keep empty columns to maintain the 5-column layout -->
 
@@ -858,7 +884,8 @@
                                                     <field name="room_rent_total" string="Room Rent" sum="Total"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
-                                                     <button name="action_ip_print_general_bill" type="object" string="Print"/>
+                                                    <button name="action_ip_print_general_bill" type="object"
+                                                            string="Print"/>
                                                 </tree>
                                             </field>
                                             <group>
@@ -872,7 +899,8 @@
                                                     <field name="room_rent_total" string="Room Rent" sum="Total"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
-                                                     <button name="action_ip_print_general_bill" type="object" string="Print"/>
+                                                    <button name="action_ip_print_general_bill" type="object"
+                                                            string="Print"/>
                                                 </tree>
                                             </field>
                                         </group>
@@ -890,7 +918,8 @@
                                                     <field name="bill_date" string="Date"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
-                                                    <button name="action_print_general_bill" type="object" string="Print"/>
+                                                    <button name="action_print_general_bill" type="object"
+                                                            string="Print"/>
                                                 </tree>
                                             </field>
 
@@ -899,13 +928,14 @@
                                                 <separator string="Unpaid Bills" class="billing_separator_compact"/>
                                             </group>
 
-                                            <field name="unpaid_general_ids" nolabel="1" >
+                                            <field name="unpaid_general_ids" nolabel="1">
                                                 <tree decoration-danger="status=='unpaid'"
-                                                      class="billing_list_compact"  editable="bottom">
+                                                      class="billing_list_compact" editable="bottom">
                                                     <field name="bill_date" string="Date"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
-                                                    <button name="action_print_general_bill" type="object" string="Print"/>
+                                                    <button name="action_print_general_bill" type="object"
+                                                            string="Print"/>
                                                 </tree>
                                             </field>
 
@@ -965,7 +995,8 @@
                                                     <field name="date" string="Date"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
-                                                    <button name="action_register_payment" type="object" string="Print" />
+                                                    <button name="action_register_payment" type="object"
+                                                            string="Print"/>
                                                 </tree>
                                             </field>
                                             <group>
@@ -977,7 +1008,8 @@
                                                     <field name="date" string="Date"/>
                                                     <field name="total_amount" string="Amount" sum="Total"/>
                                                     <field name="status" string="Status"/>
-                                                    <button name="action_register_payment" type="object" string="Print"/>
+                                                    <button name="action_register_payment" type="object"
+                                                            string="Print"/>
                                                 </tree>
                                             </field>
                                         </group>
