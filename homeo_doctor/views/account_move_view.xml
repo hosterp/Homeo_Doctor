@@ -142,8 +142,8 @@
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='free_qty']" position="after">
                 <!--                <field name="rejected_qty"-->
                 <!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
-                <field name="to_be_received"
-                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
+                <!--                <field name="to_be_received"-->
+                <!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
                 <!--                <field name="to_be_received"-->
                 <!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
                 <field name="total_pack_qty"
@@ -200,6 +200,7 @@
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="attributes">
                 <attribute name="string">Medicine</attribute>
+                <attribute name="class">wide-column</attribute>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="attributes">
                 <attribute name="string">Received Qty</attribute>

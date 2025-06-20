@@ -1512,3 +1512,7 @@ a[href*="odoo.com"] {
     font-size: 18px !important;
 }
 
+.o_list_view .wide-column {
+    min-width: 384px !important;
+    width: 384px!important;
+}
