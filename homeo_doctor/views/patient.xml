@@ -386,7 +386,7 @@
                                                         <field name="register_staff_password"/>
                                                     </div>
                                                 </div>
-<!--                                                <field name="register_bool" invisible="1"/>-->
+                                                <field name="register_bool" invisible="1"/>
                                             </div>
                                             <div class="row pay_button_advance">
                                                 <div class="col-md-1">
