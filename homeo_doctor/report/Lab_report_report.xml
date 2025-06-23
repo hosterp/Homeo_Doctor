@@ -1,104 +1,142 @@
 <odoo>
     <!-- Custom minimal layout -->
-<!-- <template id="lab_minimal_layout">
-        <t t-call="web.basic_layout">
-            <div class="header">
-                <div class="text-center">
-                    <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
-                        </h1>
-                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO
-                            THIRUVANANTHAPURAM -695 564
-                        </p>
-                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004,2374004
-                            dpmshospital@gmail.com
-                        </p>
+    <!-- <template id="lab_minimal_layout">
+            <t t-call="web.basic_layout">
+                <div class="header">
+                    <div class="text-center">
+                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
+                            </h1>
+                            <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO
+                                THIRUVANANTHAPURAM -695 564
+                            </p>
+                            <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004,2374004
+                                dpmshospital@gmail.com
+                            </p>
+                    </div>
                 </div>
-            </div>
-            <t t-raw="0"/>
-        </t>
-    </template> -->
+                <t t-raw="0"/>
+            </t>
+        </template> -->
     <!-- Main invoice template -->
     <template id="report_lab_invoice">
         <t t-call="web.html_container">
+            <t t-if="not request.env.context.get('no_auto_print')">
+                <script type="text/javascript">
+                    window.onload = function() {
+                    window.print();
+                    };
+                </script>
+            </t>
             <t t-foreach="docs" t-as="o">
                 <t t-call="homeo_doctor.lab_minimal_layout">
-                    <div class="page">
-                        <!-- Header Section -->
-                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+                    <style>
+                        @media print {
+                        @page {
+                        size: A4 landscape;
+                        margin: 5mm 7mm 5mm 7mm;
+                        }
+                        }
 
-                                    <div style="text-align: center;">
-                                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
-                                        </h1>
-                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
-                                            THIRUVANANTHAPURAM -695 564
-                                        </p>
-                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321
-                                            dpmshospital@gmail.com
-                                        </p>
-<!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
-<!--                                            <strong>PH:</strong>-->
-<!--                                            0471-2432121, 9188429198 |-->
-<!--                                            <strong>Email:</strong>-->
-<!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
-<!--                                               style="color: #007bff; text-decoration: none;">-->
-<!--                                                santhwanatvpm@gmail.com-->
-<!--                                            </a>-->
-<!--                                        </p>-->
-                                    </div>
-                                </div>
+                        .page {
+                        width: 297mm;
+                        height: 210mm;
+                        padding: 10mm;
+                        box-sizing: border-box;
+                        }
+                    </style>
+                    <div class="page"
+                         style="width: 100%; min-height: 18cm; margin: 0 auto; padding: 5px; box-sizing: border-box;">
+                        <!-- Header Section -->
+                        <div style="max-width: 700px; margin: 0 auto; display: flex; align-items: center; margin-bottom: 10px; font-family: Arial, sans-serif;">
+                            <div style="flex: 0 0 100px; margin-right: 15px;">
+                                <img src="/web/binary/company_logo" alt="Logo"
+                                     style="max-height: 100px; max-width: 100px; border-radius: 50%;"/>
+                            </div>
+                            <!-- Text on the right, centered inside its block -->
+                            <div style="flex-grow: 1; text-align: center;">
+                                <h1 style="font-size: 22px; margin: 0; font-weight: bold; color: #2c3e50;">
+                                    Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
+                                </h1>
+                                <h2 style="font-size: 18px; margin: 0; font-weight: bold; color: #2c3e50;">
+                                    GST NO :32AAKFD0959P1Z1
+                                </h2>
+                                <h3 style="font-size: 16px; margin: 0; font-weight: bold; color: #2c3e50;">
+                                    DL NO :KL-TVM-108048,KL-TVM-108049
+                                </h3>
+                                <p style="margin: 2px 0; font-size: 14px; color: #555;">
+                                    EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564
+                                </p>
+                                <p style="margin: 2px 0; font-size: 14px; color: #555;">
+                                    Phone: 0471-2373004, Mobile: 8590203321, dpmshospital@gmail.com
+                                </p>
+                            </div>
+                        </div>
                         <div class="row">
-<!--                            <div class="col-12 text-center">-->
-<!--                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI-->
-<!--                                    SPECIALITY HOSPITAL-->
-<!--                                </h1>-->
-<!--                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO-->
-<!--                                    THIRUVANANTHAPURAM -695 564-->
-<!--                                </p>-->
-<!--                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321-->
-<!--                                     dpmshospital@gmail.com-->
-<!--                                </p>-->
-<!--                            </div>-->
+                            <!--                            <div class="col-12 text-center">-->
+                            <!--                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI-->
+                            <!--                                    SPECIALITY HOSPITAL-->
+                            <!--                                </h1>-->
+                            <!--                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO-->
+                            <!--                                    THIRUVANANTHAPURAM -695 564-->
+                            <!--                                </p>-->
+                            <!--                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321-->
+                            <!--                                     dpmshospital@gmail.com-->
+                            <!--                                </p>-->
+                            <!--                            </div>-->
                             <div class="col-12 text-center">
                                 <h5 class="mt-2 mb-4">LAB</h5>
                             </div>
                         </div>
 
-                        <!-- Invoice Information -->
-                        <div class="row mb-4">
-                            <div class="col-6">
-                                <table class="table table-borderless">
-                                    <tr>
-                                        <td class="pl-0"><strong>Invoice Date:</strong></td>
-                                        <td><span t-field="o.date"/></td>
-                                    </tr>
-                                    <!-- <tr>
-                                        <td class="pl-0"><strong>Referral ID:</strong></td>
-                                        <td><span t-field="o.referral_id"/></td>
-                                    </tr> -->
-                                </table>
-                            </div>
-                        </div>
+                        <!--                        &lt;!&ndash; Invoice Information &ndash;&gt;-->
+                        <!--                        <div class="row mb-4">-->
+                        <!--                            <div class="col-6">-->
+                        <!--                                <table class="table table-borderless">-->
+                        <!--                                    <tr>-->
+                        <!--                                        <td class="pl-0" style="font-size: 16px;">-->
+                        <!--                                            <strong>Invoice Date:</strong>-->
+                        <!--                                        </td>-->
+                        <!--                                        <td style="font-size: 16px;">-->
+                        <!--                                            <span t-field="o.date"/>-->
+                        <!--                                        </td>-->
+                        <!--                                    </tr>-->
+                        <!--                                    &lt;!&ndash; <tr>-->
+                        <!--                                        <td class="pl-0"><strong>Referral ID:</strong></td>-->
+                        <!--                                        <td><span t-field="o.referral_id"/></td>-->
+                        <!--                                    </tr> &ndash;&gt;-->
+                        <!--                                </table>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
 
-                         <!-- Patient and Doctor Information with reduced spacing -->
+                        <!-- Patient and Doctor Information with reduced spacing -->
                         <div class="row mb-4">
                             <div class="col-6">
                                 <div class="p-3" style="border: 1px solid #ddd; border-radius: 4px;">
                                     <table class="table table-borderless mb-0" style="margin-bottom: 0;">
                                         <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1"><strong>Patient ID:</strong></td>
-                                            <td class="py-1"><span t-field="o.user_ide"/></td>
+                                            <td class="pl-0 py-1" style="font-size: 16px;">
+                                                <strong>Patient ID:</strong>
+                                            </td>
+                                            <td class="py-1" style="font-size: 16px;">
+                                                <span t-field="o.user_ide"/>
+                                            </td>
                                         </tr>
                                         <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1"><strong>Name:</strong></td>
-                                            <td class="py-1"><span t-field="o.user_ide.patient_id"/></td>
+                                            <td class="pl-0 py-1" style="font-size: 16px;">
+                                                <strong>Name:</strong>
+                                            </td>
+                                            <td class="py-1" style="font-size: 16px;">
+                                                <span t-field="o.user_ide.patient_id"/>
+                                            </td>
                                         </tr>
                                         <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1"><strong>Age/Gender:</strong></td>
-                                            <td class="py-1">
-                                                <span t-field="o.patient_id.age"/> /
-                                                <span t-field="o.patient_id.gender"/>
+                                            <td class="pl-0 py-1" style="font-size: 16px;">
+                                                <strong>Age/Gender:</strong>
+                                            </td>
+                                            <td class="py-1" style="font-size: 16px;">
+                                                <span t-field="o.user_ide.age"/>
+                                                /
+                                                <span t-field="o.user_ide.gender"/>
                                             </td>
                                         </tr>
                                     </table>
@@ -108,12 +146,36 @@
                                 <div class="p-3" style="border: 1px solid #ddd; border-radius: 4px;">
                                     <table class="table table-borderless mb-0" style="margin-bottom: 0;">
                                         <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1"><strong>Name:</strong></td>
-                                            <td class="py-1"><span t-field="o.doctor_id.name"/></td>
+                                            <td class="pl-0 py-1" style="font-size: 16px;">
+                                                <strong>Date:</strong>
+                                            </td>
+                                            <td class="py-1" style="font-size: 16px;">
+                                                <span t-field="o.date"/>
+                                            </td>
                                         </tr>
                                         <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1"><strong>Department:</strong></td>
-                                            <td class="py-1"><span t-field="o.doctor_id.department_id"/></td>
+                                            <td class="pl-0 py-1" style="font-size: 16px;">
+                                                <strong>Doctor:</strong>
+                                            </td>
+                                            <td class="py-1" style="font-size: 16px;">
+                                                <span t-field="o.doctor_id.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr style="line-height: 1.2;">
+                                            <td class="pl-0 py-1" style="font-size: 16px;">
+                                                <strong>Department:</strong>
+                                            </td>
+                                            <td class="py-1" style="font-size: 16px;">
+                                                <span t-field="o.doctor_id.department_id"/>
+                                            </td>
+                                        </tr>
+                                        <tr style="line-height: 1.2;">
+                                            <td class="pl-0 py-1" style="font-size: 16px;">
+                                                <strong>Mode Of Payment:</strong>
+                                            </td>
+                                            <td class="py-1" style="font-size: 16px;">
+                                                <span t-field="o.mode_of_payment"/>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -129,30 +191,39 @@
                                         <th class="text-right">Amount (₹)</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="font-size: 17px;">
                                     <t t-set="counter" t-value="1"/>
                                     <tr t-foreach="o.lab_billing_ids" t-as="line">
                                         <td class="text-center" style="width: 5%;">
                                             <span t-esc="counter"/>
                                             <t t-set="counter" t-value="counter + 1"/>
                                         </td>
-                                        <td style="width: 35%;"><span t-field="line.lab_type_id"/></td>
+                                        <td style="width: 35%;">
+                                            <span t-field="line.lab_type_id"/>
+                                        </td>
                                         <td class="text-right" style="width: 25%;">
-                                            ₹ <span t-field="line.rate_id" t-options='{"widget": "float", "precision": 2}'/></td>
+                                            ₹
+                                            <span t-field="line.rate_id"
+                                                  t-options='{"widget": "float", "precision": 2}'/>
+                                        </td>
                                     </tr>
                                 </tbody>
+
                                 <tfoot>
-<!--                                    <tr>-->
-<!--                                        <td colspan="2" class="text-right"><strong>Sub Total</strong></td>-->
-<!--                                        <td class="text-right">-->
-<!--                                            ₹ <span t-esc="'%.2f'% sum(o.lab_line_ids.mapped('total_amount'))"/>-->
-<!--                                        </td>-->
-<!--                                    </tr>-->
+                                    <!--                                    <tr>-->
+                                    <!--                                        <td colspan="2" class="text-right"><strong>Sub Total</strong></td>-->
+                                    <!--                                        <td class="text-right">-->
+                                    <!--                                            ₹ <span t-esc="'%.2f'% sum(o.lab_line_ids.mapped('total_amount'))"/>-->
+                                    <!--                                        </td>-->
+                                    <!--                                    </tr>-->
                                     <tr>
-                                        <td colspan="2" class="text-right"><strong>Total Amount</strong></td>
-                                        <td class="text-right">
+                                        <td colspan="2" class="text-right" style="font-size: 16px;">
+                                            <strong>Total Amount</strong>
+                                        </td>
+                                        <td class="text-right" style="font-size: 16px;">
                                             <strong>
-                                             ₹ <span t-esc="'%.2f'% sum(o.lab_billing_ids.mapped('total_amount'))"/>
+                                                ₹
+                                                <span t-esc="'%.2f'% sum(o.lab_billing_ids.mapped('total_amount'))"/>
                                             </strong>
                                         </td>
                                     </tr>
@@ -164,20 +235,20 @@
                         <!-- Terms and Signature -->
                         <div class="row mt-5">
                             <div class="col-8">
-                                <p class="mt-5">
-                                    Prepared By
-                                </p>
+                                <strong>Prepared By:</strong>
+                                <span t-field="o.staff_name"/>
                             </div>
                             <div class="col-4 text-center">
                                 <p class="mt-5">
                                     Checked By
                                 </p>
                             </div>
-                        
+
                         </div>
                     </div>
                 </t>
             </t>
         </t>
     </template>
+
 </odoo>
