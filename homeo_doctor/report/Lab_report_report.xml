@@ -109,88 +109,88 @@
                         <!--                        </div>-->
 
                         <!-- Patient and Doctor Information with reduced spacing -->
-                        <div class="row mb-4">
-                            <div class="col-6">
-                                <div class="p-3" style="border: 1px solid #ddd; border-radius: 4px;">
-                                    <table class="table table-borderless mb-0" style="margin-bottom: 0;">
-                                        <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1" style="font-size: 16px;">
+                        <div class="row" style="font-size: 17px;">
+                            <div class="col-12">
+                                <div class="p-3" style="border: 1px solid #ccc; border-radius: 5px;">
+                                    <table class="table table-borderless mb-0" style="width: 100%;">
+                                        <!-- Row 1 -->
+                                        <tr style="line-height: 1.6;">
+                                            <td>
                                                 <strong>Patient ID:</strong>
                                             </td>
-                                            <td class="py-1" style="font-size: 16px;">
+                                            <td>
                                                 <span t-field="o.user_ide"/>
                                             </td>
-                                        </tr>
-                                        <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1" style="font-size: 16px;">
+
+                                            <td>
                                                 <strong>Name:</strong>
                                             </td>
-                                            <td class="py-1" style="font-size: 16px;">
+                                            <td>
                                                 <span t-field="o.user_ide.patient_id"/>
                                             </td>
-                                        </tr>
-                                        <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1" style="font-size: 16px;">
+
+                                            <td>
                                                 <strong>Age/Gender:</strong>
                                             </td>
-                                            <td class="py-1" style="font-size: 16px;">
+                                            <td>
                                                 <span t-field="o.user_ide.age"/>
                                                 /
                                                 <span t-field="o.user_ide.gender"/>
                                             </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="p-3" style="border: 1px solid #ddd; border-radius: 4px;">
-                                    <table class="table table-borderless mb-0" style="margin-bottom: 0;">
-                                        <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1" style="font-size: 16px;">
+
+                                            <td>
                                                 <strong>Date:</strong>
                                             </td>
-                                            <td class="py-1" style="font-size: 16px;">
+                                            <td>
                                                 <span t-field="o.date"/>
                                             </td>
                                         </tr>
-                                        <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1" style="font-size: 16px;">
+
+                                        <!-- Row 2 -->
+                                        <tr style="line-height: 1.6;">
+                                            <td>
                                                 <strong>Doctor:</strong>
                                             </td>
-                                            <td class="py-1" style="font-size: 16px;">
+                                            <td>
                                                 <span t-field="o.doctor_id.name"/>
                                             </td>
-                                        </tr>
-                                        <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1" style="font-size: 16px;">
+
+                                            <td>
                                                 <strong>Department:</strong>
                                             </td>
-                                            <td class="py-1" style="font-size: 16px;">
+                                            <td>
                                                 <span t-field="o.doctor_id.department_id"/>
                                             </td>
-                                        </tr>
-                                        <tr style="line-height: 1.2;">
-                                            <td class="pl-0 py-1" style="font-size: 16px;">
-                                                <strong>Mode Of Payment:</strong>
+
+                                            <td>
+                                                <strong>Mode of Payment:</strong>
                                             </td>
-                                            <td class="py-1" style="font-size: 16px;">
+                                            <td>
                                                 <span t-field="o.mode_of_payment"/>
+                                            </td>
+
+                                            <td>
+                                                <strong>Bill No</strong>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.report_reference"/>
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
                         </div>
+
                         <!-- Scan Details Table -->
                         <div class="mt-4">
                             <table class="table table-bordered">
-                                <thead class="thead-light">
+<!--                                <thead class="thead-light">-->
                                     <tr>
-                                        <th class="text-center">No.</th>
+                                        <th class="text-center">SL No.</th>
                                         <th>PARTICULARS</th>
                                         <th class="text-right">Amount (₹)</th>
                                     </tr>
-                                </thead>
+<!--                                </thead>-->
                                 <tbody style="font-size: 17px;">
                                     <t t-set="counter" t-value="1"/>
                                     <tr t-foreach="o.lab_billing_ids" t-as="line">
@@ -209,7 +209,7 @@
                                     </tr>
                                 </tbody>
 
-                                <tfoot>
+<!--                                <tfoot>-->
                                     <!--                                    <tr>-->
                                     <!--                                        <td colspan="2" class="text-right"><strong>Sub Total</strong></td>-->
                                     <!--                                        <td class="text-right">-->
@@ -227,24 +227,22 @@
                                             </strong>
                                         </td>
                                     </tr>
-                                </tfoot>
+<!--                                </tfoot>-->
                             </table>
                         </div>
 
 
                         <!-- Terms and Signature -->
-                        <div class="row mt-5">
-                            <div class="col-8">
+                        <div class="row mt-5" style="font-size: 16px;">
+                            <div class="col-6 text-left">
                                 <strong>Prepared By:</strong>
                                 <span t-field="o.staff_name"/>
                             </div>
-                            <div class="col-4 text-center">
-                                <p class="mt-5">
-                                    Checked By
-                                </p>
+                            <div class="col-6 text-right">
+                                <strong>Checked By:</strong>
                             </div>
-
                         </div>
+
                     </div>
                 </t>
             </t>
