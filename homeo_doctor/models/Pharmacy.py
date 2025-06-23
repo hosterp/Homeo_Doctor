@@ -47,7 +47,7 @@ class PharmacyDescription(models.Model):
 
     active = fields.Boolean(default=True)
     op_category=fields.Selection([('op','OP'),('ip','IP'),('others','OTHERS')])
-
+    vssc_boolean=fields.Boolean(string='VSSC')
     @api.onchange('patient_type')
     def  _onchange_patient_type(self):
         for rec in self:
@@ -77,6 +77,7 @@ class PharmacyDescription(models.Model):
         if self.uhid_id:
             self.name = self.uhid_id.patient_id
             self.phone_number = self.uhid_id.phone_number
+            self.vssc_boolean = self.uhid_id.vssc_boolean
             # self.patient_age = self.uhid_id.age
             # self.patient_gender = self.uhid_id.gender
 

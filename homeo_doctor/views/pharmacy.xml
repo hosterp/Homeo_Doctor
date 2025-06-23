@@ -541,6 +541,10 @@
                                         <span class="o_form_label" style="font-weight: bold;">Admitted:</span>
                                         <field name="admitted_boolean"/>
                                     </div>
+                                    <div style="flex: 1; min-width: 180px; max-width:16%;">
+                                        <span class="o_form_label" style="font-weight: bold;">VSSC:</span>
+                                        <field name="vssc_boolean"/>
+                                    </div>
                                     <div style="flex: 1; min-width: 180px; max-width:16%;"
                                          attrs="{'invisible': [('admitted_boolean', '!=', True)]}">
                                         <span class="o_form_label" style="font-weight: bold;">Patient Type:</span>
