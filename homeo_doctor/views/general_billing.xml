@@ -129,6 +129,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col px-1" style="max-width: 14.28%;">
+                                    <div class="form-group row my-1">
+                                        <label for="vssc_boolean" class="col-md-5 col-form-label py-0 small">VSSC
+                                        </label>
+                                        <div class="col-md-7 field-container py-0">
+                                            <field name="vssc_boolean"/>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col px-1" attrs="{'invisible': [('observation', '=', False)]}" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
                                         <label for="rent" class="col-md-5 col-form-label py-0 small">Rent

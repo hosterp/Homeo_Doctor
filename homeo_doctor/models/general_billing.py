@@ -72,7 +72,7 @@ class GeneralBilling(models.Model):
                           ('observation', 'Observation'),
                           ('discharge','Discharge')
                           ], string="Status")
-
+    vssc_boolean=fields.Boolean(string='VSSC')
     def action_observation(self):
         """Method to toggle observation field when Observation button is clicked"""
         self.observation = True
@@ -277,6 +277,7 @@ class GeneralBilling(models.Model):
             self.gender = self.mrd_no.gender
             self.mobile = self.mrd_no.phone_number
             self.doctor = self.mrd_no.doc_name
+            self.vssc_boolean = self.mrd_no.vssc_boolean
 
     @api.model
     def create(self, vals):
