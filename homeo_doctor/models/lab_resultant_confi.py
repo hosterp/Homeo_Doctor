@@ -7,14 +7,14 @@ class labResultantConfi(models.Model):
     _name = 'lab.resultant.confi'
     _description = 'Lab Resultant Configuration'
     _rec_name = 'test_name'
-    # _order = 'date desc'
+    _order = 'order ASC'
 
     test_name_bill_code = fields.Many2one('lab.investigation',string='Select Test Name/Bill Code')
     main_group = fields.Many2one('lab.main.group',String='Select Main Group')
     sub_group = fields.Many2one('lab.sub.group',string='Select Sub Group')
     test_name = fields.Char(string='Test Name')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female'),('both','Both')], string="Gender")
-    order = fields.Char(string='Order')
+    order = fields.Integer(string='Order')
     age_from = fields.Integer(string='Age From')
     age_to = fields.Integer(string='Age To')
     type = fields.Selection([('year','Year'),('month','Month'),('day','Day'),('hour','Hour')],string='Type')
