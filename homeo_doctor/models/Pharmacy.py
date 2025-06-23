@@ -104,7 +104,7 @@ class PharmacyDescription(models.Model):
 
             vals['bill_number'] = f"{seq_number}/{fiscal_suffix}"
         res = super(PharmacyDescription, self).create(vals)
-        # res._process_payment()
+        res._process_payment()
 
         # # Ensure partner creation is only done if necessary
         # if not res.partner_id and res.name:
