@@ -338,14 +338,9 @@
                                             </div>
                                             <div class="col-6 text-right">
                                                 <p style="font-size: 20px; margin: 0;">
-                                                    <strong>Total Amount:</strong>
+                                                    <strong>Balance To Be Paid:</strong>
                                                     ₹
-                                                    <span t-esc="'{:,.2f}'.format((o.nurse_charge or 0) +
-                                                             (o.doctor_visiting_charge or 0) +
-                                                             (o.service_charge or 0) +
-                                                             sum(o.unpaid_general_ids.mapped('total_amount')) +
-                                                             sum(o.unpaid_lab_ids.mapped('total_bill_amount')) +
-                                                             sum(o.unpaid_pharmacy_ids.mapped('total_amount')))"/>
+                                                  <strong><span t-field="o.temp_admission_total_amount"/></strong>
                                                 </p>
                                             </div>
                                         </div>
