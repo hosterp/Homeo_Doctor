@@ -67,17 +67,17 @@ class AccountMove(models.Model):
             for line in move.invoice_line_ids:
                 if line.gst and line.price_subtotal:
                     gst_amt = (line.price_subtotal * line.gst) / 100.0
-                    print(gst_amt,'gst_amt....................................................')
+                    # print(gst_amt,'gst_amt....................................................')
                     half_gst = gst_amt / 2.0
                     cgst += half_gst
                     sgst += half_gst
-                    print(cgst,sgst,'gst...................................................')
+                    # print(cgst,sgst,'gst...................................................')
             move.cgst_amount = float_round(cgst, precision_rounding=currency.rounding)
             move.sgst_amount = float_round(sgst, precision_rounding=currency.rounding)
-            move.amount_total_with_gst = base_total + move.cgst_amount + move.sgst_amount
+            move.amount_total_with_gst = round(base_total + move.cgst_amount + move.sgst_amount)
 
-            print(move.cgst_amount, move.sgst_amount, '✅ CGST/SGST split')
-            print(move.amount_total_with_gst, '✅ Total Incl. GST')
+            # print(move.cgst_amount, move.sgst_amount, '✅ CGST/SGST split')
+            # print(move.amount_total_with_gst, '✅ Total Incl. GST')
     @api.onchange('supplier_name')
     def _onchange_supplier_name(self):
         for rec in self:
@@ -111,8 +111,8 @@ class AccountMove(models.Model):
             move.discount_amount = discount_amount
 
             # Update total after discount
-            # move.amount_total = move.amount_before_discount - discount_amount
-            move.amount_total = self.amount_total_with_gst
+            # move.amount_total = move.amount_before_discount + move.amount_total_with_gst
+            move.amount_total =  move.amount_total_with_gst
             # Update amount_residual to match the discounted total for unpaid/partially paid invoices
             if move.state == 'posted' and move.payment_state in ['not_paid', 'partial']:
                 # Calculate the payment ratio if partially paid

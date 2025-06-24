@@ -301,7 +301,8 @@
                 <field name="amount_untaxed"/>
             </xpath>
             <xpath expr="//field[@name='amount_total_signed']" position="replace">
-                <field name="amount_total"/>
+                <field name="amount_total" invisible="1"/>
+                <field name="amount_total_with_gst"/>
             </xpath>
 
             <xpath expr="//field[@name='name']" position="after">
