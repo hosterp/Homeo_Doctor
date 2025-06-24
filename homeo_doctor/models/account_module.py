@@ -331,7 +331,7 @@ class AccountMoveLine(models.Model):
             base = line.price_unit * (1 - (line.discount or 0.0) / 100.0) * line.quantity
             gst_amount = base * (line.gst or 0.0) / 100.0
             # line.price_subtotal = math.ceil(base + gst_amount)
-            line.price_subtotal = math.ceil(base)
+            line.price_subtotal = base
 
 
     @api.depends('pack','supplier_mrp')
