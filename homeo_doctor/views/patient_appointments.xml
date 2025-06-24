@@ -5,10 +5,10 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="appointment_reference" invisible="1"/>
+                <field name="appointment_date" string="Revisit Date"/>
                 <field name="patient_id" string="UHID"/>
                 <field name="token_no"/>
                 <field name="patient_name"/>
-                <field name="appointment_date"/>
                 <field name="differance_appointment_days"/>
                 <field name="departments" widget="many2many_tags"/>
                 <field name="doctor_ids" widget="many2many_tags"/>
@@ -326,7 +326,7 @@
         <field name="res_model">patient.appointment</field>
         <field name="view_mode">tree,form</field>
         <field name="target">current</field>
-         <field name="search_view_id" ref="view_patient_appointment_search"/>
+        <field name="search_view_id" ref="view_patient_appointment_search"/>
     </record>
 
     <menuitem id="menu_patient_appointments" name="Revisit" action="action_patient_appointments"
