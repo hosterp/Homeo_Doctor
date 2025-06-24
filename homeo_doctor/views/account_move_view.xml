@@ -66,6 +66,12 @@
             <field name="amount_by_group" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
+            <xpath expr="//field[@name='amount_by_group']" position="after">
+                <field name="cgst_amount"/>
+                <field name="sgst_amount"/>
+                <field name="amount_total_with_gst" readonly="1"/>
+
+            </xpath>
             <xpath expr="//field[@name='narration']" position="attributes">
                 <attribute name="attrs">{'invisible': True}</attribute>
             </xpath>
@@ -239,7 +245,7 @@
             </xpath>
             <xpath expr="//field[@name='discount']" position="attributes">
                 <attribute name="optional"></attribute>
-<!--                <attribute name="invisible">1</attribute>-->
+                <!--                <attribute name="invisible">1</attribute>-->
             </xpath>
             <xpath expr="//field[@name='date_maturity']" position="attributes">
                 <attribute name="invisible">1</attribute>

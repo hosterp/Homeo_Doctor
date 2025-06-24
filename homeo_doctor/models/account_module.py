@@ -4,6 +4,10 @@ from odoo import models, fields,api,_
 from odoo.exceptions import ValidationError
 
 import math
+
+from odoo.tools import float_round
+
+
 # from odoo.odoo.exceptions import ValidationError
 
 
@@ -44,7 +48,36 @@ class AccountMove(models.Model):
                                              store=True, readonly=True, compute='_compute_amount')
     discount_amount = fields.Monetary(string='Discount Amount',
                                       store=True, readonly=True, compute='_compute_amount')
+    cgst_amount = fields.Monetary(string="CGST Amount", compute="_compute_tax_split", store=True)
+    sgst_amount = fields.Monetary(string="SGST Amount", compute="_compute_tax_split", store=True)
+    amount_total_with_gst = fields.Monetary(
+        string='Total (Incl. GST)',
+        compute='_compute_tax_split',
+        store=True,
+        currency_field='currency_id'
+    )
+    @api.depends('invoice_line_ids.gst', 'invoice_line_ids.price_subtotal')
+    def _compute_tax_split(self):
+        for move in self:
+            cgst = 0.0
+            sgst = 0.0
+            currency = move.currency_id
+            base_total = move.amount_before_discount
 
+            for line in move.invoice_line_ids:
+                if line.gst and line.price_subtotal:
+                    gst_amt = (line.price_subtotal * line.gst) / 100.0
+                    print(gst_amt,'gst_amt....................................................')
+                    half_gst = gst_amt / 2.0
+                    cgst += half_gst
+                    sgst += half_gst
+                    print(cgst,sgst,'gst...................................................')
+            move.cgst_amount = float_round(cgst, precision_rounding=currency.rounding)
+            move.sgst_amount = float_round(sgst, precision_rounding=currency.rounding)
+            move.amount_total_with_gst = base_total + move.cgst_amount + move.sgst_amount
+
+            print(move.cgst_amount, move.sgst_amount, '✅ CGST/SGST split')
+            print(move.amount_total_with_gst, '✅ Total Incl. GST')
     @api.onchange('supplier_name')
     def _onchange_supplier_name(self):
         for rec in self:
@@ -78,8 +111,8 @@ class AccountMove(models.Model):
             move.discount_amount = discount_amount
 
             # Update total after discount
-            move.amount_total = move.amount_before_discount - discount_amount
-
+            # move.amount_total = move.amount_before_discount - discount_amount
+            move.amount_total = self.amount_total_with_gst
             # Update amount_residual to match the discounted total for unpaid/partially paid invoices
             if move.state == 'posted' and move.payment_state in ['not_paid', 'partial']:
                 # Calculate the payment ratio if partially paid
@@ -297,7 +330,8 @@ class AccountMoveLine(models.Model):
         for line in self:
             base = line.price_unit * (1 - (line.discount or 0.0) / 100.0) * line.quantity
             gst_amount = base * (line.gst or 0.0) / 100.0
-            line.price_subtotal = math.ceil(base + gst_amount)
+            # line.price_subtotal = math.ceil(base + gst_amount)
+            line.price_subtotal = math.ceil(base)
 
 
     @api.depends('pack','supplier_mrp')
