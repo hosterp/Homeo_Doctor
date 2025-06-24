@@ -371,6 +371,7 @@
                     <field name="mrd_no"/>
                     <field name="patient_name"/>
                     <field name="gender"/>
+                    <field name="vssc_boolean"/>
                     <field name="doctor"/>
                     <field name="status" string="Payment Status"/>
                 </tree>
