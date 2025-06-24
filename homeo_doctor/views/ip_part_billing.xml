@@ -8,10 +8,10 @@
                 <form string="Patient Billing" class="lab_form general_form">
                     <header>
                         <field name="status" widget="statusbar"/>
-                        
-<!--                        <button name="action_create_admission" type="object" string="Admit" class="oe_highlight"/>-->
-<!--                        <button name="action_observation" type="object" string="Observation" class="oe_highlight"/>-->
-<!--                        <button name="action_observation_discharge" type="object" string="Discharge" class="oe_highlight"/>-->
+
+                        <!--                        <button name="action_create_admission" type="object" string="Admit" class="oe_highlight"/>-->
+                        <!--                        <button name="action_observation" type="object" string="Observation" class="oe_highlight"/>-->
+                        <!--                        <button name="action_observation_discharge" type="object" string="Discharge" class="oe_highlight"/>-->
                     </header>
                     <sheet>
                         <div class="oe_title" style="display:none;">
@@ -114,7 +114,8 @@
                                 </div>
                                 <div class="col px-1" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
-                                        <label for="department" class="col-md-5 col-form-label py-0 small">Department</label>
+                                        <label for="department" class="col-md-5 col-form-label py-0 small">Department
+                                        </label>
                                         <div class="col-md-7 field-container py-0">
                                             <field name="department"/>
                                         </div>
@@ -131,7 +132,8 @@
                                 </div>
                                 <div class="col px-1" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
-                                        <label for="admitted_date" class="col-md-5 col-form-label py-0 small">Admitted Date
+                                        <label for="admitted_date" class="col-md-5 col-form-label py-0 small">Admitted
+                                            Date
                                         </label>
                                         <div class="col-md-7 field-container py-0">
                                             <field name="admitted_date"/>
@@ -158,7 +160,8 @@
                                 </div>
                                 <div class="col px-1" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
-                                        <label for="rent_full_day" class="col-md-5 col-form-label py-0 small">rent_full_day
+                                        <label for="rent_full_day" class="col-md-5 col-form-label py-0 small">
+                                            rent_full_day
                                         </label>
                                         <div class="col-md-7 field-container py-0">
                                             <field name="rent_full_day"/>
@@ -167,14 +170,16 @@
                                 </div>
                                 <div class="col px-1" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
-                                        <label for="rent_half_day" class="col-md-5 col-form-label py-0 small">rent_half_day
+                                        <label for="rent_half_day" class="col-md-5 col-form-label py-0 small">
+                                            rent_half_day
                                         </label>
                                         <div class="col-md-7 field-container py-0">
                                             <field name="rent_half_day"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col px-1" attrs="{'invisible': [('observation', '=', False)]}" style="max-width: 14.28%;">
+                                <div class="col px-1" attrs="{'invisible': [('observation', '=', False)]}"
+                                     style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
                                         <label for="rent" class="col-md-5 col-form-label py-0 small">Rent
                                         </label>
@@ -185,7 +190,9 @@
                                 </div>
                                 <div class="col px-1" style="max-width: 14.28%;" attrs="{'invisible': True}">
                                     <div class="form-group row my-1">
-                                        <label for="observation" class="col-md-5 col-form-label py-0 small">Observation</label>
+                                        <label for="observation" class="col-md-5 col-form-label py-0 small">
+                                            Observation
+                                        </label>
                                         <div class="col-md-7 field-container py-0">
                                             <field name="observation"/>
                                         </div>
@@ -320,9 +327,10 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                
+
                                                 <div class="col-md-8 field-container">
-                                                   <button name="action_pay_button" type="object"  string="Pay" class="oe_highlight"/>
+                                                    <button name="action_pay_button" type="object" string="Pay"
+                                                            class="oe_highlight"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -392,11 +400,11 @@
                     <field name="bill_number"/>
                     <field name="bill_date"/>
                     <field name="bill_type" string="Type"/>
-                    <field name="department"/>
-                    <field name="op_category" string="Category"/>
                     <field name="mrd_no"/>
                     <field name="patient_name"/>
                     <field name="gender"/>
+                    <field name="department"/>
+                    <field name="op_category" string="Category"/>
                     <field name="doctor"/>
                     <field name="status" string="Payment Status"/>
                 </tree>
