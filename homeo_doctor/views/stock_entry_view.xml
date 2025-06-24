@@ -3,7 +3,7 @@
         <field name="name">stock.entry.tree</field>
         <field name="model">stock.entry</field>
         <field name="arch" type="xml">
-            <tree string="Stock Entries">
+            <tree string="Stock Entries" editable="top">
                 <field name="name" invisible="1"/>
                 <field name="invoice_id" invisible="1"/>
                 <field name="date"/>
