@@ -239,7 +239,7 @@
             </xpath>
             <xpath expr="//field[@name='discount']" position="attributes">
                 <attribute name="optional"></attribute>
-                <attribute name="invisible">1</attribute>
+<!--                <attribute name="invisible">1</attribute>-->
             </xpath>
             <xpath expr="//field[@name='date_maturity']" position="attributes">
                 <attribute name="invisible">1</attribute>
