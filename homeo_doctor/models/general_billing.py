@@ -20,6 +20,7 @@ class GeneralBilling(models.Model):
     _name = 'general.billing'
     _description = 'General Billing'
     _rec_name = 'bill_number'
+    _order = 'bill_number desc'
 
     bill_number = fields.Char(string='Bill Number',  copy=False, default='New')
     mrd_no = fields.Many2one('patient.reg', string='UHID')
