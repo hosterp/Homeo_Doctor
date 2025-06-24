@@ -20,7 +20,7 @@ class PatientRegistration(models.Model):
     _name = 'patient.reg'
     _description = 'Patient Registration'
     _rec_name = 'reference_no'
-    _order = 'reference_no desc'
+    _order = 'reference_no desc,formatted_date desc'
 
     reference_no = fields.Char(string="Reference")
     token_no = fields.Char(string="Token No")

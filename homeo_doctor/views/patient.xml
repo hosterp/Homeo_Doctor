@@ -284,7 +284,8 @@
                                             <div class="col px-1" style="max-width: 20%;">
                                                 <div class="form-group row my-1">
                                                     <label for="referred"
-                                                           class="col-md-5 col-form-label py-0 small text-nowrap">Referred
+                                                           class="col-md-5 col-form-label py-0 small text-nowrap">
+                                                        Referred
                                                     </label>
                                                     <div class="col-md-9 field-container py-0">
                                                         <field name="referred"/>
@@ -1174,11 +1175,11 @@
                                 class="oe_highlight"/>
 
                     </header>
+                    <field name="formatted_date" string="Registration Date"/>
                     <field name="reference_no" string="UHID"/>
                     <field name="patient_id"/>
                     <field name="token_no"/>
                     <field name="temp_reference_no" invisible="1"/>
-                    <field name="formatted_date" string="Registration Date"/>
                     <field name="time" string="Appointment Date"/>
                     <field name="vssc_boolean" string="VSSC"/>
                     <field name="age"/>
