@@ -515,7 +515,7 @@
                                     </div>
                                     <div style="flex: 1; min-width: 180px;">
                                         <span class="o_form_label" style="font-weight: bold;">UHID:</span>
-                                        <field name="uhid_id"/>
+                                        <field name="uhid_id" options="{'no_create': True, 'no_open': True}"/>
                                     </div>
                                     <div style="flex: 1; min-width: 180px;">
                                         <span class="o_form_label" style="font-weight: bold;">Patient Name:</span>
