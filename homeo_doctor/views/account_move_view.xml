@@ -258,7 +258,7 @@
             </xpath>
             <xpath expr="//field[@name='amount_untaxed']" position="before">
                 <field name="amount_before_discount" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
-                <field name="global_discount" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
+                <field name="global_discount" invisible="1"/>
                 <field name="discount_amount" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
             </xpath>
         </field>
