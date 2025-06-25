@@ -5,7 +5,7 @@
         <field name="model">pharmacy.prescription.report.wizard</field>
         <field name="arch" type="xml">
             <form string="Prescription Report">
-                <group col="3">
+                <group col="4">
                     <group >
                         <field name="date_from"/>
                     </group>
@@ -14,6 +14,9 @@
                     </group>
                     <group>
                         <field name="medicine_id"/>
+                    </group>
+                    <group>
+                        <field name="with_patient_name"/>
                     </group>
 
                 </group>
