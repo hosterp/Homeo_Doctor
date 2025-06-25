@@ -24,14 +24,27 @@
         <field name="paperformat_id" ref="homeo_doctor.paperformat_a3_landscape"/>
         <field name="print_report_name">'Lab Invoice'</field>
     </record>
+    <record id="paperformat_a3_portrait" model="report.paperformat">
+        <field name="name">A3 Portrait</field>
+        <field name="format">A3</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="dpi">90</field>
+        <field name="default" eval="False"/>
+    </record>
 
     <report
             id="report_lab_result_report"
             string="Lab Result"
             model="lab.result.page"
-            report_type="qweb-pdf"
+            report_type="qweb-html"
             name="homeo_doctor.report_lab_result_report_template"
             file="homeo_doctor.report_lab_result_report_template"
+            paperformat="homeo_doctor.paperformat_a3_portrait"
     />
     <report
             id="report_general_bill_report"
