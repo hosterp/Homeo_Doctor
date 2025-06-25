@@ -47,30 +47,32 @@
                     <div class="page"
                          style="width: 100%; min-height: 18cm; margin: 0 auto; padding: 5px; box-sizing: border-box;">
                         <!-- Header Section -->
-                        <div style="max-width: 700px; margin: 0 auto; display: flex; align-items: center; margin-bottom: 10px; font-family: Arial, sans-serif;">
-                            <div style="flex: 0 0 100px; margin-right: 15px;">
+                        <div style="max-width: 1000px; margin: 0 auto; display: flex; align-items: center; margin-bottom: 10px; font-family: Arial, sans-serif;">
+                            <div style="flex: 0 0 120px; margin-right: 15px;">
                                 <img src="/web/binary/company_logo" alt="Logo"
-                                     style="max-height: 100px; max-width: 100px; border-radius: 50%;"/>
+                                     style="max-height: 110px; max-width: 110px; border-radius: 50%;"/>
                             </div>
                             <!-- Text on the right, centered inside its block -->
                             <div style="flex-grow: 1; text-align: center;">
-                                <h1 style="font-size: 22px; margin: 0; font-weight: bold; color: #2c3e50;">
+                                <h1 style="font-size: 32px; margin: 0; font-weight: bold; color: #2c3e50;">
                                     Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
                                 </h1>
-                                <h2 style="font-size: 18px; margin: 0; font-weight: bold; color: #2c3e50;">
-                                    GST NO :32AAKFD0959P1Z1
+                                <h2 style="font-size: 24px; margin: 0; font-weight: bold; color: #2c3e50;">
+                                    GST NO : 32AAKFD0959P1Z1
                                 </h2>
-                                <h3 style="font-size: 16px; margin: 0; font-weight: bold; color: #2c3e50;">
-                                    DL NO :KL-TVM-108048,KL-TVM-108049
+                                <h3 style="font-size: 20px; margin: 0; font-weight: bold; color: #2c3e50;">
+                                    DL NO : KL-TVM-108048, KL-TVM-108049
                                 </h3>
-                                <p style="margin: 2px 0; font-size: 14px; color: #555;">
+                                <p style="margin: 5px 0; font-size: 18px; color: #555;">
                                     EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564
                                 </p>
-                                <p style="margin: 2px 0; font-size: 14px; color: #555;">
-                                    Phone: 0471-2373004, Mobile: 8590203321, dpmshospital@gmail.com
+                                <p style="margin: 5px 0; font-size: 18px; color: #555;">
+                                    Phone: 0471-2373004, Mobile: 8590203321,
+                                    <span style="color: #007bff;">dpmshospital@gmail.com</span>
                                 </p>
                             </div>
                         </div>
+
                         <div class="row">
                             <!--                            <div class="col-12 text-center">-->
                             <!--                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI-->
@@ -109,12 +111,13 @@
                         <!--                        </div>-->
 
                         <!-- Patient and Doctor Information with reduced spacing -->
-                        <div class="row" style="font-size: 17px;">
+                        <div class="row" style="font-size: 20px;"> <!-- Increased base font size -->
                             <div class="col-12">
-                                <div class="p-3" style="border: 1px solid #ccc; border-radius: 5px;">
-                                    <table class="table table-borderless mb-0" style="width: 100%;">
+                                <div class="p-3" style="border: 2px solid #999; border-radius: 8px;">
+                                    <table class="table table-borderless mb-0"
+                                           style="width: 100%; font-size: 20px;"> <!-- font-size applied to table too -->
                                         <!-- Row 1 -->
-                                        <tr style="line-height: 1.6;">
+                                        <tr style="line-height: 1;">
                                             <td>
                                                 <strong>Patient ID:</strong>
                                             </td>
@@ -147,7 +150,7 @@
                                         </tr>
 
                                         <!-- Row 2 -->
-                                        <tr style="line-height: 1.6;">
+                                        <tr style="line-height: 1;">
                                             <td>
                                                 <strong>Doctor:</strong>
                                             </td>
@@ -170,7 +173,7 @@
                                             </td>
 
                                             <td>
-                                                <strong>Bill No</strong>
+                                                <strong>Bill No:</strong>
                                             </td>
                                             <td>
                                                 <span t-field="o.report_reference"/>
@@ -181,27 +184,29 @@
                             </div>
                         </div>
 
+
                         <!-- Scan Details Table -->
                         <div class="mt-4">
-                            <table class="table table-bordered">
-<!--                                <thead class="thead-light">-->
-                                    <tr>
-                                        <th class="text-center">SL No.</th>
-                                        <th>PARTICULARS</th>
-                                        <th class="text-right">Amount (₹)</th>
+                            <table class="table table-bordered"
+                                   style="width: 100%; font-size: 20px; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background-color: #f2f2f2; height: 40px;">
+                                        <th class="text-center" style="width: 5%;">SL No.</th>
+                                        <th style="width: 65%;">PARTICULARS</th>
+                                        <th class="text-right" style="width: 30%;">Amount (₹)</th>
                                     </tr>
-<!--                                </thead>-->
-                                <tbody style="font-size: 17px;">
+                                </thead>
+                                <tbody>
                                     <t t-set="counter" t-value="1"/>
-                                    <tr t-foreach="o.lab_billing_ids" t-as="line">
-                                        <td class="text-center" style="width: 5%;">
+                                    <tr t-foreach="o.lab_billing_ids" t-as="line" style="line-height: 1.5;">
+                                        <td class="text-center">
                                             <span t-esc="counter"/>
                                             <t t-set="counter" t-value="counter + 1"/>
                                         </td>
-                                        <td style="width: 35%;">
+                                        <td>
                                             <span t-field="line.lab_type_id"/>
                                         </td>
-                                        <td class="text-right" style="width: 25%;">
+                                        <td class="text-right">
                                             ₹
                                             <span t-field="line.rate_id"
                                                   t-options='{"widget": "float", "precision": 2}'/>
@@ -209,31 +214,20 @@
                                     </tr>
                                 </tbody>
 
-<!--                                <tfoot>-->
-                                    <!--                                    <tr>-->
-                                    <!--                                        <td colspan="2" class="text-right"><strong>Sub Total</strong></td>-->
-                                    <!--                                        <td class="text-right">-->
-                                    <!--                                            ₹ <span t-esc="'%.2f'% sum(o.lab_line_ids.mapped('total_amount'))"/>-->
-                                    <!--                                        </td>-->
-                                    <!--                                    </tr>-->
-                                    <tr>
-                                        <td colspan="2" class="text-right" style="font-size: 16px;">
-                                            <strong>Total Amount</strong>
-                                        </td>
-                                        <td class="text-right" style="font-size: 16px;">
-                                            <strong>
-                                                ₹
-                                                <span t-esc="'%.2f'% sum(o.lab_billing_ids.mapped('total_amount'))"/>
-                                            </strong>
+                                    <tr style="font-size: 20px; font-weight: bold;">
+                                        <td colspan="2" class="text-right">Total Amount</td>
+                                        <td class="text-right">
+                                            ₹
+                                            <span t-esc="'%.2f' % sum(o.lab_billing_ids.mapped('total_amount'))"/>
                                         </td>
                                     </tr>
-<!--                                </tfoot>-->
+
                             </table>
+
                         </div>
 
 
-                        <!-- Terms and Signature -->
-                        <div class="row mt-5" style="font-size: 16px;">
+                        <div class="row mt-5" style="font-size: 20px">
                             <div class="col-6 text-left">
                                 <strong>Prepared By:</strong>
                                 <span t-field="o.staff_name"/>
