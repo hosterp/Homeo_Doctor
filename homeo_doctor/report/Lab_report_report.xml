@@ -73,53 +73,40 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <!--                            <div class="col-12 text-center">-->
-                            <!--                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI-->
-                            <!--                                    SPECIALITY HOSPITAL-->
-                            <!--                                </h1>-->
-                            <!--                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO-->
-                            <!--                                    THIRUVANANTHAPURAM -695 564-->
-                            <!--                                </p>-->
-                            <!--                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321-->
-                            <!--                                     dpmshospital@gmail.com-->
-                            <!--                                </p>-->
-                            <!--                            </div>-->
-                            <div class="col-12 text-center">
-                                <h5 class="mt-2 mb-4">LAB</h5>
-                            </div>
-                        </div>
+                        <table class="table table-borderless mb-0"
+                               style="width: 100%; margin-bottom: 10px; font-size: 16px;">
+                            <tr>
 
-                        <!--                        &lt;!&ndash; Invoice Information &ndash;&gt;-->
-                        <!--                        <div class="row mb-4">-->
-                        <!--                            <div class="col-6">-->
-                        <!--                                <table class="table table-borderless">-->
-                        <!--                                    <tr>-->
-                        <!--                                        <td class="pl-0" style="font-size: 16px;">-->
-                        <!--                                            <strong>Invoice Date:</strong>-->
-                        <!--                                        </td>-->
-                        <!--                                        <td style="font-size: 16px;">-->
-                        <!--                                            <span t-field="o.date"/>-->
-                        <!--                                        </td>-->
-                        <!--                                    </tr>-->
-                        <!--                                    &lt;!&ndash; <tr>-->
-                        <!--                                        <td class="pl-0"><strong>Referral ID:</strong></td>-->
-                        <!--                                        <td><span t-field="o.referral_id"/></td>-->
-                        <!--                                    </tr> &ndash;&gt;-->
-                        <!--                                </table>-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
+                                <td style="width: 33.33%; text-align: left; vertical-align: middle;">
+                                    <strong>DEPARTMENT:</strong>
+                                    <strong>LAB</strong>
+                                </td>
 
-                        <!-- Patient and Doctor Information with reduced spacing -->
-                        <div class="row" style="font-size: 20px;"> <!-- Increased base font size -->
+
+                                <td style="width: 33.33%; text-align: center; vertical-align: middle;">
+                                    <strong>
+                                        <span t-field="o.mode_of_payment"/>
+                                    </strong>
+                                    <strong>Bill</strong>
+                                </td>
+
+
+                                <td style="width: 33.33%; text-align: right; vertical-align: middle;">
+                                    <strong>Bill No:</strong>
+                                    <span t-field="o.report_reference"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="row" style=" font-size: 16px;"> <!-- Increased base font size -->
                             <div class="col-12">
                                 <div class="p-3" style="border: 2px solid #999; border-radius: 8px;">
                                     <table class="table table-borderless mb-0"
-                                           style="width: 100%; font-size: 20px;"> <!-- font-size applied to table too -->
+                                           style="width: 100%;  font-size: 16px;"> <!-- font-size applied to table too -->
                                         <!-- Row 1 -->
                                         <tr style="line-height: 1;">
                                             <td>
-                                                <strong>Patient ID:</strong>
+                                                <strong>UHID:</strong>
                                             </td>
                                             <td>
                                                 <span t-field="o.user_ide"/>
@@ -155,14 +142,22 @@
                                                 <strong>Doctor:</strong>
                                             </td>
                                             <td>
-                                                <span t-field="o.doctor_id.name"/>
+                                                <span>
+                                                    <t t-esc="o.doctor_id.display_name"/>
+
+                                                    <t t-if="o.doctor_id and o.doctor_id.department_id">
+                                                        (
+                                                        <t t-esc="o.doctor_id.department_id.display_name"/>
+                                                        )
+                                                    </t>
+                                                </span>
                                             </td>
 
                                             <td>
-                                                <strong>Department:</strong>
+                                                <strong>Mobile:</strong>
                                             </td>
                                             <td>
-                                                <span t-field="o.doctor_id.department_id"/>
+                                                <span t-field="o.user_ide.phone_number"/>
                                             </td>
 
                                             <td>
@@ -170,13 +165,6 @@
                                             </td>
                                             <td>
                                                 <span t-field="o.mode_of_payment"/>
-                                            </td>
-
-                                            <td>
-                                                <strong>Bill No:</strong>
-                                            </td>
-                                            <td>
-                                                <span t-field="o.report_reference"/>
                                             </td>
                                         </tr>
                                     </table>
@@ -188,7 +176,7 @@
                         <!-- Scan Details Table -->
                         <div class="mt-4">
                             <table class="table table-bordered"
-                                   style="width: 100%; font-size: 20px; border-collapse: collapse;">
+                                   style="width: 100%; font-size: 16px; border-collapse: collapse;">
                                 <thead>
                                     <tr style="background-color: #f2f2f2; height: 40px;">
                                         <th class="text-center" style="width: 5%;">SL No.</th>
@@ -212,22 +200,30 @@
                                                   t-options='{"widget": "float", "precision": 2}'/>
                                         </td>
                                     </tr>
-                                </tbody>
+                                    <tr style="font-size: 16px; font-weight: bold;">
 
-                                    <tr style="font-size: 20px; font-weight: bold;">
-                                        <td colspan="2" class="text-right">Total Amount</td>
-                                        <td class="text-right">
+                                        <td colspan="2" style="text-align: left; vertical-align: middle; padding: 8px;">
+                                            <strong>Amount in Words:</strong>
+                                            <span t-esc="o.amount_to_text_indian()"
+                                                  style="text-transform: capitalize;"/>
+                                        </td>
+
+
+                                        <td colspan="3"
+                                            style="text-align: right; vertical-align: middle; padding: 8px;">
+                                            <strong>Total Amount:</strong>
                                             ₹
                                             <span t-esc="'%.2f' % sum(o.lab_billing_ids.mapped('total_amount'))"/>
                                         </td>
                                     </tr>
+                                </tbody>
 
                             </table>
 
                         </div>
 
 
-                        <div class="row mt-5" style="font-size: 20px">
+                        <div class="row mt-5" style="font-size: 16px">
                             <div class="col-6 text-left">
                                 <strong>Prepared By:</strong>
                                 <span t-field="o.staff_name"/>

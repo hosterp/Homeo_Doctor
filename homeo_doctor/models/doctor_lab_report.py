@@ -5,7 +5,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
 # from odoo.odoo.exceptions import UserError
-
+import logging
 
 class DoctorLabReport(models.Model):
     _name = 'doctor.lab.report'
@@ -88,7 +88,31 @@ class DoctorLabReport(models.Model):
         ('lab', 'Lab')
     ], string="Active Investigation Type", default='all')
     admitted_patient_id = fields.Many2one('hospital.admitted.patient', string="Admitted Patient")
+    def amount_to_text_indian(self):
+        """Convert amount to words in Indian format (Rupees and Paise)."""
+        try:
+            from num2words import num2words
+            if self.total_bill_amount:
+                amount_int = int(self.total_bill_amount)
+                decimal_part = int(round((self.total_bill_amount - amount_int) * 100))
 
+                rupees_text = num2words(amount_int, lang='en_IN').title()
+                result = f" {rupees_text}"
+
+                if decimal_part:
+                    paise_text = num2words(decimal_part, lang='en_IN').title()
+                    result += f" and {paise_text} Paise"
+
+                return result + " Only"
+        except Exception as e:
+            # Optional: log the error for debugging
+            _logger = logging.getLogger(__name__)
+            _logger.warning("Failed to convert amount to Indian text: %s", e)
+
+            # Fallback
+            return self.currency_id.amount_to_text(self.total_bill_amount)
+
+        return ""
     def action_print_lab_bill(self):
         return self.env.ref('homeo_doctor.action_report_lab_invoice').report_action(self)
     def filter_xray_investigations(self):
