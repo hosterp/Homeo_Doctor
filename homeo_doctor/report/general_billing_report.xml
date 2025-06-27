@@ -103,11 +103,14 @@
                                 <t t-esc="o.mrd_no.display_name"/>
                             </p>
                             <p>
-                                <strong>Patient Name:</strong>
-                                <t t-esc="o.patient_name"/>
-                                <span style="margin-left: 10px;">
-                                    <t t-esc="str(o.age) + '/' + o.gender"/>
-                                </span>
+                                <p>
+                                    <strong>Patient Name:</strong>
+                                    <t t-esc="o.patient_name"/>
+                                    <span style="margin-left: 10px;">
+                                        <t t-esc="str(o.age) + '/' + dict(o._fields['gender'].selection).get(o.gender, '')"/>
+                                    </span>
+                                </p>
+
                             </p>
                             <p>
                                 <strong>Doctor:</strong>
