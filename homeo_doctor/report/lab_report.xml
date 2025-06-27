@@ -46,14 +46,28 @@
             file="homeo_doctor.report_lab_result_report_template"
             paperformat="homeo_doctor.paperformat_a3_portrait"
     />
-    <report
-            id="report_general_bill_report"
-            string="General Bill"
-            model="general.billing"
-            report_type="qweb-pdf"
-            name="homeo_doctor.report_general_Bill"
-            file="homeo_doctor.report_general_Bill"
-    />
+<!--    <record id="paperformat_a3_landscape" model="report.paperformat">-->
+<!--        <field name="name">A3 Landscape</field>-->
+<!--        <field name="default" eval="False"/>-->
+<!--        <field name="format">A3</field>-->
+<!--        <field name="orientation">Landscape</field>-->
+<!--        <field name="margin_top">10</field>-->
+<!--        <field name="margin_bottom">10</field>-->
+<!--        <field name="margin_left">15</field>-->
+<!--        <field name="margin_right">15</field>-->
+<!--        <field name="header_line" eval="False"/>-->
+<!--        <field name="header_spacing">10</field>-->
+<!--        <field name="dpi">90</field>-->
+<!--    </record>-->
+<!--    <report-->
+<!--            id="report_general_bill_report"-->
+<!--            string="General Bill"-->
+<!--            model="general.billing"-->
+<!--            report_type="qweb-html"-->
+<!--            name="homeo_doctor.report_general_Bill"-->
+<!--            file="homeo_doctor.report_general_Bill"-->
+<!--            paperformat="homeo_doctor.paperformat_a3_landscape"-->
+<!--    />-->
 
 
 </odoo>
