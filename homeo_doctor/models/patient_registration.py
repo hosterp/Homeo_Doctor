@@ -25,7 +25,7 @@ class PatientRegistration(models.Model):
     reference_no = fields.Char(string="Reference")
     token_no = fields.Char(string="Token No")
     date = fields.Date(default=dateutil.utils.today(), readonly=True)
-    formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date')
+    formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date',store=True)
     track_registration_date = fields.Date(default=dateutil.utils.today())
     patient_id = fields.Char(string="Name")
     address = fields.Text(string="Address")
@@ -1087,7 +1087,7 @@ class PatientRegistration(models.Model):
             })
 
         return record
-    @api.depends('date')
+    @api.depends('date','time')
     def _compute_formatted_date(self):
         for record in self:
             if record.date:
