@@ -4,7 +4,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo.addons.test_convert.tests.test_env import record
-
+import logging
 
 class PatientAppointment(models.Model):
     _name = 'patient.appointment'
@@ -63,6 +63,31 @@ class PatientAppointment(models.Model):
     vssc_boolean = fields.Boolean(related='patient_id.vssc_boolean',string='VSSC')
     differance_appointment_days = fields.Integer("No of Days")
 
+    def amount_to_text_indian(self):
+        """Convert amount to words in Indian format (Rupees and Paise)."""
+        try:
+            from num2words import num2words
+            if self.register_total_amount:
+                amount_int = int(self.register_total_amount)
+                decimal_part = int(round((self.register_total_amount - amount_int) * 100))
+
+                rupees_text = num2words(amount_int, lang='en_IN').title()
+                result = f" {rupees_text}"
+
+                if decimal_part:
+                    paise_text = num2words(decimal_part, lang='en_IN').title()
+                    result += f" and {paise_text} Paise"
+
+                return result + " Only"
+        except Exception as e:
+            # Optional: log the error for debugging
+            _logger = logging.getLogger(__name__)
+            _logger.warning("Failed to convert amount to Indian text: %s", e)
+
+            # Fallback
+            return self.currency_id.amount_to_text(self.register_total_amount)
+
+        return ""
     def cancel_appointment(self):
 
         for appointment in self:

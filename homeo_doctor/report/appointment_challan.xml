@@ -1,142 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Report Template -->
     <template id="report_patient_appointment_template">
         <t t-call="web.html_container">
-            <t t-call="web.external_layout">
+            <t t-if="not request.env.context.get('no_auto_print')">
+                <script type="text/javascript">
+                    window.onload = function(){
+                    setTimeout(function(){ window.print(); }, 500);
+                    };
+                </script>
+            </t>
+
+            <t t-foreach="docs" t-as="doc">
+                <style>
+                    /* =========================
+                    Screen + Print Styles
+                    ========================= */
+                    .page {
+                    font-family: Arial, sans-serif;
+                    color: #2c3e50;
+                    font-size: 19px;
+                    padding: 10mm 15mm;
+                    }
+
+                    table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 10px;
+                    }
+                    th, td {
+                    padding: 8px;
+                    }
+                    .right { text-align: right; }
+                    .center { text-align: center; }
+                    .bold { font-weight: bold; }
+
+                    /* =========================
+                    Print‐only Overrides
+                    ========================= */
+                    @media print {
+                    @page {
+                    size: A3 landscape;
+                    margin: 5mm 5mm;
+                    }
+                    /* You can override font‐sizes for print if you like */
+                    .page { font-size: 19px; }
+                    thead th { border-bottom: 1px solid #000; }
+                    tfoot td { border-top: 1px solid #000; font-weight: bold; }
+                    }
+                </style>
+
+
                 <div class="page">
-                    <t t-foreach="docs" t-as="doc">
-                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+                    <!-- Header -->
+                    <div style="display:flex; align-items:center; margin-bottom:15px;">
+                        <div style="flex: 0 0 120px; margin-right: 15px;">
+                            <img src="/web/binary/company_logo" alt="Logo"
+                                 style="max-height: 150px; max-width: 150px; border-radius: 50%;"/>
+                        </div>
+                        <div class="center" style="flex:1;">
+                            <h1>Dr. PRIYA’S MULTI SPECIALITY HOSPITAL</h1>
+                            <h2>GST NO : 32AAKFD0959P1Z1</h2>
+                            <h3>DL NO : KL-TVM-108048, KL-TVM-108049</h3>
+                            <p>EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564</p>
+                            <p>Phone: 0471-2373004 | Mobile: 8590203321 | 
+                                <span style="color:#007bff;">dpmshospital@gmail.com</span>
+                            </p>
+                        </div>
+                    </div>
 
-                                    <div style="text-align: center;">
-                                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
-                                        </h1>
-                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
-                                            THIRUVANANTHAPURAM -695 564
-                                        </p>
-                                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321
-                                            dpmshospital@gmail.com
-                                        </p>
-<!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
-<!--                                            <strong>PH:</strong>-->
-<!--                                            0471-2432121, 9188429198 |-->
-<!--                                            <strong>Email:</strong>-->
-<!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
-<!--                                               style="color: #007bff; text-decoration: none;">-->
-<!--                                                santhwanatvpm@gmail.com-->
-<!--                                            </a>-->
-<!--                                        </p>-->
-                                    </div>
-                                </div>
-                        <!-- Title Section -->
-                        <h5 class="text-center mb-4">Patient Appointment Bill</h5>
-                        
-                        <!-- Patient Details -->
-                        <div class="row mb-4">
-                            <div class="col-6">
-                                <strong>Bill No:</strong>
-                                <span t-field="doc.payment_receipt_number"/>
-                            </div>
-                            <div class="col-6 text-right">
-                                <strong>Appointment Date:</strong> 
-                                <span t-field="doc.appointment_date" t-options='{"format": "dd MMMM yyyy"}'/>
-                            </div>
-                        </div>
-                        
-                        <!-- Patient Information -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h3>Patient Details</h3>
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <th>Patient Name</th>
-                                        <td><span t-field="doc.patient_name"/></td>
-                                        <th>Gender</th>
-                                        <td><span t-field="doc.gender"/></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Age</th>
-                                        <td><span t-field="doc.age"/></td>
-                                        <th>Phone Number</th>
-                                        <td><span t-field="doc.phone_number"/></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Address</th>
-                                        <td colspan="3"><span t-field="doc.address"/></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <!-- Appointment Details -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h3>Appointment Information</h3>
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <th>Department</th>
-                                        <td><span t-field="doc.departments"/></td>
-                                        <th>Doctor</th>
-                                        <td><span t-field="doc.doctor_ids"/></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Consultation Fee</th>
-                                        <td><span t-field="doc.consultation_fee"/></td>
-                                        <th>Reason for Appointment</th>
-                                        <td><span t-field="doc.reason"/></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+                    <hr style="border: 1px solid #000; margin: 10px 0;"/>
+                    <table style="width: 100%; table-layout: fixed; border-collapse: collapse; margin-bottom: 10px; font-size: 19px;">
+                        <tr>
+                            <!-- Column 1: Left-aligned -->
+                            <td style="width: 33.33%; text-align: left; padding: 8px;">
+                                <span class="bold">DEPARTMENT: OUT PATIENT</span>
+                            </td>
 
-                        <!-- Multi-doctor/department section (if applicable) -->
-                        <t t-if="doc.doctor_ids and len(doc.doctor_ids) > 1">
-                            <div class="row mb-4">
-                                <div class="col-12">
-                                    <h3>Additional Doctors</h3>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Doctor Name</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <t t-foreach="doc.doctor_ids" t-as="doctor">
-                                                <tr>
-                                                    <td><span t-field="doctor.name"/></td>
-                                                </tr>
-                                            </t>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </t>
-                        
-                        <!-- Notes Section -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h3>Additional Notes</h3>
-                                <div class="border p-3">
-                                    <span t-field="doc.notes"/>
-                                </div>
-                            </div>
+                            <!-- Column 2: Centered -->
+                            <td style="width: 33.33%; text-align: center; padding: 8px;">
+                                <strong>
+                                    <t t-esc="doc.register_mode_payment.upper()"/>
+                                </strong>
+                                <span class="bold">BILL (Rev.)</span>
+                            </td>
+
+                            <!-- Column 3: Right-aligned -->
+                            <td style="width: 33.33%; text-align: right; padding: 8px;">
+                                <span class="bold">Bill No:</span>
+                                <t t-esc="doc.payment_receipt_number"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr style="border: 1px solid #000; margin: 10px 0;"/>
+                    <!-- Patient Info 2×3 Table -->
+                    <table style="font-size: 19px;">
+                        <tr>
+                            <td style="width:33.33%;">
+                                <span class="bold">UHID:</span>
+                                <t t-esc="doc.payment_receipt_number"/>
+                            </td>
+                            <td style="width:33.33%; text-align:center; padding:8px;">
+                                <strong>Doctor:</strong>
+                                <!-- Join all doctor names with commas -->
+                                <t t-esc="', '.join([dr.name for dr in doc.doctor_ids])"/>
+                                <!-- If there are any doctors, show their departments in parentheses -->
+                                <t t-if="doc.doctor_ids">
+                                    (
+                                    <t t-esc="', '.join([dr.department_id.display_name for dr in doc.doctor_ids])"/>
+                                    )
+                                </t>
+                            </td>
+                            <td style="width:50%;" class="right">
+                                <span class="bold">Date:</span>
+                                <span t-field="doc.appointment_date" t-options='{"format":"dd /MMM /yyyy"}'></span>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:33.33%;">
+                                <span class="bold">Patient:</span>
+                                <t t-esc="doc.patient_name"/>
+                                (<t t-esc="doc.age"/>/<t t-esc="doc.gender"/>)
+                            </td>
+                            <td style="width:33.33%;" class="center">
+                                <span class="bold">Mobile:</span>
+                                <t t-esc="doc.phone_number"/>
+                            </td>
+                            <td style="width:33.33%;" class="right">
+                                <span class="bold">Mode of Payment:</span>
+                                <t t-esc="doc.register_mode_payment.upper()"/>
+                            </td>
+
+                        </tr>
+                    </table>
+
+                    <table style="font-size: 19px;">
+                        <thead>
+                            <tr>
+                                <th>SL No</th>
+                                <th>PARTICULARS</th>
+                                <th class="right">AMOUNT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Registration Fee</td>
+                                <td class="right">
+                                    <t t-esc="doc.registration_fee"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Consultation Fee</td>
+                                <td class="right">
+                                    ₹
+                                    <t t-esc="doc.consultation_fee"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <!-- Left: spans first two columns -->
+                                <td colspan="2" style="padding:8px; text-align:left;">
+                                    <strong>Amount in Words:</strong>
+                                    <t t-esc="doc.amount_to_text_indian()" style="text-transform:capitalize;"/>
+                                </td>
+                                <!-- Right: total in the last column -->
+                                <td style="padding:8px; text-align:right;">
+                                    <strong>Total: ₹
+                                        <t t-esc="doc.consultation_fee"/>
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+                    <!-- Signatures -->
+                    <div style="display:flex; justify-content:space-between; margin-top:30px; font-size:19px;">
+                        <div>
+                            <span class="bold">Prepared By:</span>
+                            <t t-esc="doc.register_staff_name.display_name"/>
                         </div>
-                    </t>
+                        <div class="center">
+                            <span class="bold">Checked By:</span>
+
+                        </div>
+                        <div class="right">
+                            <span class="bold">Cashier:</span>
+
+                        </div>
+                    </div>
                 </div>
             </t>
         </t>
     </template>
 
-    <!-- Report Action -->
+
+    <record id="paperformat_a3_landscape" model="report.paperformat">
+        <field name="name">A3 Landscape</field>
+        <field name="default" eval="False"/>
+        <field name="format">A3</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+    </record>
+
     <record id="action_report_patient_appointment" model="ir.actions.report">
         <field name="name">Patient Appointment Report</field>
         <field name="model">patient.appointment</field>
-        <field name="report_type">qweb-pdf</field>
+        <field name="report_type">qweb-html</field>
         <field name="report_name">homeo_doctor.report_patient_appointment_template</field>
         <field name="report_file">patient_appointment_report</field>
         <field name="binding_model_id" ref="model_patient_appointment"/>
         <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="homeo_doctor.paperformat_a3_landscape"/>
     </record>
 </odoo>
