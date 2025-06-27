@@ -28,7 +28,7 @@
                     padding: 10mm 15mm;
                     width: 100%;
                     box-sizing: border-box;
-                    font-size: 22px;
+                    font-size: 25px;
                     }
 
                     h1 { font-size: 38px; }
@@ -41,7 +41,7 @@
                     width: 100%;
                     border-collapse: collapse;
                     margin-top: 15px;
-                    font-size: 22px;
+                    font-size: 25px;
                     }
 
                     th {
@@ -49,13 +49,13 @@
                     color: black;
                     padding: 12px;
                     text-align: left;
-                    font-size: 22px;
+                    font-size: 25px;
                     }
 
                     td {
                     padding: 10px;
                     border-bottom: 1px solid #ddd;
-                    font-size: 22px;
+                    font-size: 25px;
                     }
 
                     tr:nth-child(even) {
@@ -65,10 +65,10 @@
                     tfoot td {
                     font-weight: bold;
                     background: #f1f1f1;
-                    font-size: 22px;
+                    font-size: 25px;
                     }
                 </style>
-                <div class="page" style="padding: 15px; font-family: Arial, sans-serif; font-size: 22px;">
+                <div class="page" style="padding: 15px; font-family: Arial, sans-serif; font-size: 25px;">
 
                     <div style="display: flex; align-items: center; margin-bottom: 10px;">
                         <div style="flex: 0 0 120px; margin-right: 15px;">
@@ -88,28 +88,28 @@
 
                     <hr style="border: 1px solid #000; margin: 10px 0;"/>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                        <div style="flex: 1; text-align: left; font-weight: bold;">DEPARTMENT:
+                        <div style="flex: 1; text-align: left; font-weight: bold;font-size: 25px;">DEPARTMENT:
                             <t t-esc="o.department.display_name"/>
                         </div>
-                        <div style="flex: 1; text-align: center; font-weight: bold;">
+                        <div style="flex: 1; text-align: center; font-weight: bold;font-size: 25px;">
                             <t t-esc="o.mode_pay.upper()"/>
                             BILL
                         </div>
-                        <div style="flex: 1; text-align: right; font-weight: bold;">Bill No:
+                        <div style="flex: 1; text-align: right; font-weight: bold;font-size: 25px;">Bill No:
                             <t t-esc="o.bill_number"/>
                         </div>
                     </div>
 
                     <hr style="border: 1px solid #000; margin: 10px 0;"/>
-                    <div style="display: flex; justify-content: space-between; margin-top: 20px;  font-size: 22px;">
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px;  font-size: 25px;">
                         <div>
-                            <p>
+                            <p style="font-size: 25px;">
                                 <strong>UHID:</strong>
                                 <t t-esc="o.mrd_no.display_name"/>
                             </p>
                             <p>
-                                <p>
-                                    <strong>Patient Name:</strong>
+                                <p style="font-size: 25px;">
+                                    <strong  >Patient Name:</strong>
                                     <t t-esc="o.patient_name"/>
                                     <span style="margin-left: 10px;">(
                                         <t t-esc="str(o.age) + '/' + dict(o._fields['gender'].selection).get(o.gender, '')"/>
@@ -118,8 +118,8 @@
                                 </p>
 
                             </p>
-                            <p>
-                                <strong>Doctor:</strong>
+                            <p style="font-size: 25px;">
+                                <strong  >Doctor:</strong>
                                 <t t-esc="o.doctor.display_name"/>
                                 <t t-if="o.doctor and o.doctor.department_id">
                                     (
@@ -129,17 +129,17 @@
                             </p>
                         </div>
                         <div style="text-align: right;">
-                            <p>
+                            <p  style="font-size: 25px; ">
                                 <strong>Date &amp; Time:</strong>
                                 <t t-esc="o.bill_date"/>
                             </p>
-                            <p>
+                            <p style="font-size: 25px;">
                                 <strong>Mode of Payment:</strong>
                                 <strong>
                                     <t t-esc="o.mode_pay.upper()"/>
                                 </strong>
                             </p>
-                            <p>
+                            <p style="font-size: 25px;">
                                 <strong>Mobile:</strong>
                                 <t t-esc="o.mobile"/>
                             </p>
@@ -147,14 +147,14 @@
                     </div>
 
                     <!-- Table -->
-                    <table style=" font-size: 22px;">
+                    <table style=" font-size: 25px;">
                         <thead>
                             <tr style="border-bottom: 1px solid #000;">
-                                <th style="width: 5%;">Sl No</th>
-                                <th style="width: 40%;">Particulars</th>
-                                <th style="width: 20%;">Rate</th>
-                                <th style="width: 10%;">Qty</th>
-                                <th style="width: 15%;">Total</th>
+                                <th style="width: 5%;font-size: 25px;">Sl No</th>
+                                <th style="width: 40%;font-size: 25px;">Particulars</th>
+                                <th style="width: 20%;font-size: 25px;">Rate</th>
+                                <th style="width: 10%;font-size: 25px;">Qty</th>
+                                <th style="width: 15%;font-size: 25px;">Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -162,19 +162,19 @@
                             <t t-foreach="o.general_bill_line_ids" t-as="line">
                                 <t t-set="slno" t-value="slno + 1"/>
                                 <tr>
-                                    <td>
+                                    <td style="font-size: 25px;">
                                         <t t-esc="slno"/>
                                     </td>
-                                    <td>
+                                    <td style="font-size: 25px;">
                                         <t t-esc="line.particulars.particular_name"/>
                                     </td>
-                                    <td>
+                                    <td style="font-size: 25px;">
                                         <t t-esc="line.rate"/>
                                     </td>
-                                    <td>
+                                    <td style="font-size: 25px;">
                                         <t t-esc="line.quantity"/>
                                     </td>
-                                    <td>₹
+                                    <td style="font-size: 25px;">₹
                                         <t t-esc="line.total_amt"/>
                                     </td>
                                 </tr>
@@ -183,12 +183,12 @@
                         <tfoot>
                             <tr>
                                 <td colspan="4">
-                                    <p>
+                                    <p style="font-size: 25px;">
                                         <strong>In Words:</strong>
                                         <t t-esc="o.amount_in_words"/>
                                     </p>
                                 </td>
-                                <td colspan="4" style="font-weight: bold;">
+                                <td colspan="4" style="font-weight: bold;font-size: 25px;">
                                     Total: ₹
                                     <t t-esc="o.total_amount"/>
                                 </td>
@@ -197,7 +197,7 @@
                     </table>
 
                     <!-- Footer -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; font-size: 22px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; font-size: 25px;">
                         <div style="text-align: left; font-weight: bold;">Prepared By :
                             <t t-esc="o.staff_name.display_name"/>
                         </div>
