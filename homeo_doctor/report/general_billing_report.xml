@@ -106,7 +106,7 @@
                                 <strong>Patient Name:</strong>
                                 <t t-esc="o.patient_name"/>
                                 <span style="margin-left: 10px;">
-                                    <t t-esc="str(o.mrd_no.age) + '/' + o.mrd_no.gender"/>
+                                    <t t-esc="str(o.age) + '/' + o.gender"/>
                                 </span>
                             </p>
                             <p>
