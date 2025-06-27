@@ -28,19 +28,20 @@
                     padding: 10mm 15mm;
                     width: 100%;
                     box-sizing: border-box;
+                    font-size: 22px;
                     }
 
-                    h1 { font-size: 36px; }
-                    h2 { font-size: 30px; }
-                    h3 { font-size: 26px; }
-                    p, td, th { font-size: 18px; } <!-- Was 16px -->
+                    h1 { font-size: 38px; }
+                    h2 { font-size: 32px; }
+                    h3 { font-size: 28px; }
+                    p, td, th { font-size: 20px; }
                     }
 
                     table {
                     width: 100%;
                     border-collapse: collapse;
                     margin-top: 15px;
-                    font-size: 18px; <!-- Added or updated -->
+                    font-size: 22px;
                     }
 
                     th {
@@ -48,13 +49,13 @@
                     color: black;
                     padding: 12px;
                     text-align: left;
-                    font-size: 18px;
+                    font-size: 22px;
                     }
 
                     td {
                     padding: 10px;
                     border-bottom: 1px solid #ddd;
-                    font-size: 18px;
+                    font-size: 22px;
                     }
 
                     tr:nth-child(even) {
@@ -64,11 +65,10 @@
                     tfoot td {
                     font-weight: bold;
                     background: #f1f1f1;
-                    font-size: 18px;
+                    font-size: 22px;
                     }
                 </style>
-
-                <div class="page" style="padding: 15px; font-family: Arial, sans-serif; font-size: 18px;">
+                <div class="page" style="padding: 15px; font-family: Arial, sans-serif; font-size: 22px;">
 
                     <div style="display: flex; align-items: center; margin-bottom: 10px;">
                         <div style="flex: 0 0 120px; margin-right: 15px;">
@@ -101,7 +101,7 @@
                     </div>
 
                     <hr style="border: 1px solid #000; margin: 10px 0;"/>
-                    <div style="display: flex; justify-content: space-between; margin-top: 20px;  font-size: 16px;">
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px;  font-size: 22px;">
                         <div>
                             <p>
                                 <strong>UHID:</strong>
@@ -112,7 +112,8 @@
                                     <strong>Patient Name:</strong>
                                     <t t-esc="o.patient_name"/>
                                     <span style="margin-left: 10px;">(
-                                        <t t-esc="str(o.age) + '/' + dict(o._fields['gender'].selection).get(o.gender, '')"/>)
+                                        <t t-esc="str(o.age) + '/' + dict(o._fields['gender'].selection).get(o.gender, '')"/>
+                                        )
                                     </span>
                                 </p>
 
@@ -146,7 +147,7 @@
                     </div>
 
                     <!-- Table -->
-                    <table style=" font-size: 16px;">
+                    <table style=" font-size: 22px;">
                         <thead>
                             <tr style="border-bottom: 1px solid #000;">
                                 <th style="width: 5%;">Sl No</th>
@@ -196,7 +197,7 @@
                     </table>
 
                     <!-- Footer -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; font-size: 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; font-size: 22px;">
                         <div style="text-align: left; font-weight: bold;">Prepared By :
                             <t t-esc="o.staff_name.display_name"/>
                         </div>
