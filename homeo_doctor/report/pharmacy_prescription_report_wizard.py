@@ -22,7 +22,15 @@ class PharmacyPrescriptionReportWizard(models.TransientModel):
     #
     #     lines = self.env['pharmacy.prescription.line'].search(domain)
     #
-    #     return self.env.ref('homeo_doctor.report_pharmacy_prescription').report_action(lines)
+    #     return self.env.ref('homeo_doctor.report_pharmacy_prescription').report_action
+    def print_report_html(self):
+        self.ensure_one()
+        return self.env.ref('homeo_doctor.report_pharmacy_html_prescription').report_action(
+            self.with_context(report_type='qweb-html'),
+            config=False,
+            data=None
+        )
+
     def print_report(self):
         self.ensure_one()
         return self.env.ref('homeo_doctor.report_pharmacy_prescription').report_action(self)

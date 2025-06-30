@@ -1,7 +1,11 @@
 <odoo>
-    <template id="report_pharmacy_prescription_template">
-        <t t-call="web.external_layout">
-            <main class="page">
+      <template id="report_pharmacy_prescription_template">
+        <t t-call="web.html_container">
+            <t t-set="is_pdf" t-value="context.get('report_type') == 'qweb-pdf'"/>
+            <main class="page"
+                  t-attf-style="{{ 'margin: 0;' if is_pdf else 'margin: 5px;' }} font-family: Arial, sans-serif;">
+
+                <!-- Header -->
                 <div class="raw"
                      style="text-align: center; padding-bottom: 15px; border-bottom: 2px solid #000;">
                     <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
@@ -9,22 +13,28 @@
                     <h1 style="font-size: 26px; font-weight: bold; margin: 0; color: #2c3e50;">
                         Dr. PRIYA'S MULTI SPECIALITY HOSPITAL
                     </h1>
-                    <p style="margin: 5px 0; font-size: 14px; color: #555;">
+                    <h2 style="font-size: 16px; margin: 5px 0;">GST NO: 32AAKFD0959P1Z1</h2>
+                    <h3 style="font-size: 14px; margin: 5px 0;">DL NO: KL-TVM-108048, KL-TVM-108049</h3>
+                    <p style="margin: 5px 0; font-size: 13px;">
                         EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564
                     </p>
-                    <p style="margin: 5px 0; font-size: 14px; color: #555;">
-                        Phone: 0471-2373004, Mobile No: 8590203321| Email:
+                    <p style="margin: 5px 0; font-size: 13px;">
+                        Phone: 0471-2373004, Mobile: 8590203321,
                         <span style="color: #007bff;">dpmshospital@gmail.com</span>
                     </p>
                 </div>
-                <table class="table table-sm">
+
+                <!-- Table -->
+                <table class="table table-sm"
+                       style="width: 100%; font-size: 13px; border-collapse: collapse;">
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <t t-if="docs.with_patient_name">
-                                <th>Patient Name</th>
-                            </t>
-                            <th>Medicine</th>
+                            <th >Date</th>
+                            <th
+                                t-attf-style="{{ 'display: none; border: 1px solid #000;' if not docs.with_patient_name else 'border: 1px solid #000;' }}">
+                                Patient Name
+                            </th>
+                            <th >Medicine</th>
                             <th>Qty</th>
                         </tr>
                     </thead>
@@ -32,42 +42,38 @@
                         <t t-set="total_qty" t-value="0"/>
                         <t t-foreach="docs._get_prescription_lines()" t-as="line">
                             <tr>
-                                <td>
-                                    <t t-esc="line.pharmacy_id.date"/>
+                                <td ><t t-esc="line.pharmacy_id.date"/></td>
+                                <td
+                                    t-attf-style="{{ 'display: none;' if not docs.with_patient_name else 'border: 1px solid #000;' }}">
+                                    <t t-esc="line.pharmacy_id.name"/>
                                 </td>
-
-                                <t t-if="docs.with_patient_name">
-                                    <td>
-                                        <t t-esc="line.pharmacy_id.name"/>
-                                    </td>
-                                </t>
-
-                                <td>
-                                    <t t-esc="line.product_id.name"/>
-                                </td>
-                                <td>
-                                    <t t-esc="line.qty"/>
-                                </td>
+                                <td ><t t-esc="line.product_id.name"/></td>
+                                <td ><t t-esc="line.qty"/></td>
                             </tr>
                             <t t-set="total_qty" t-value="total_qty + (line.qty or 0)"/>
                         </t>
                         <tr>
-                            <td t-att-colspan="3 if docs.with_patient_name else 2" style="text-align: right;">
+                            <td t-att-colspan="3 if docs.with_patient_name else 2"
+                                style="text-align: right;">
                                 <strong>Total Quantity</strong>
                             </td>
-                            <td>
-                                <strong>
-                                    <t t-esc="total_qty"/>
-                                </strong>
-                            </td>
+                            <td ><strong><t t-esc="total_qty"/></strong></td>
                         </tr>
                     </tbody>
                 </table>
-
             </main>
         </t>
-
     </template>
+    <record id="custom_prescription_format" model="report.paperformat">
+        <field name="name">Custom Format</field>
+        <field name="format">A4</field>
+        <field name="margin_top">5</field> <!-- millimeters -->
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+    </record>
+
     <report
             id="report_pharmacy_prescription"
             string="Pharmacy Prescription Report"
@@ -76,5 +82,6 @@
             name="homeo_doctor.report_pharmacy_prescription_template"
             file="homeo_doctor.report_pharmacy_prescription_template"
             print_report_name="'Pharmacy Prescription Report'"
+            paperformat="custom_prescription_format"
     />
 </odoo>

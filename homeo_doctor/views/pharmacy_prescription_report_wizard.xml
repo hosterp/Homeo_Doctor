@@ -22,12 +22,21 @@
                 </group>
                 <footer>
                     <button string="Print Report" type="object" name="print_report" class="btn-primary"/>
+                    <button string="View" type="object" name="print_report_html" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
         </field>
     </record>
-
+     <report
+        id="report_pharmacy_html_prescription"
+        model="pharmacy.prescription.report.wizard"
+        string="Pharmacy Prescription"
+        report_type="qweb-html"
+        name="homeo_doctor.report_pharmacy_prescription_template"
+        file="homeo_doctor.report_pharmacy_prescription_template"
+        print_report_name="'Prescription - %s' % (object.id)"
+    />
     <record id="action_pharmacy_prescription_report_wizard" model="ir.actions.act_window">
         <field name="name">Medicine Report</field>
         <field name="res_model">pharmacy.prescription.report.wizard</field>
