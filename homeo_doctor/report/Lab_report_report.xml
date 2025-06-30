@@ -123,9 +123,9 @@
                                                 <strong>Age/Gender:</strong>
                                             </td>
                                             <td>
-                                                <span t-field="o.user_ide.age"/>
+                                                <span t-field="o.age"/>
                                                 /
-                                                <span t-field="o.user_ide.gender"/>
+                                                <span t-field="o.gender"/>
                                             </td>
 
                                             <td>
