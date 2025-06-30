@@ -56,6 +56,7 @@ class AccountMove(models.Model):
         store=True,
         currency_field='currency_id'
     )
+
     @api.depends('invoice_line_ids.gst', 'invoice_line_ids.price_subtotal')
     def _compute_tax_split(self):
         for move in self:
@@ -455,6 +456,7 @@ class AccountPaymentRegister(models.TransientModel):
     amount_before_discount = fields.Monetary(related='move_id.amount_before_discount', string='Amount Before Discount',
                                              readonly=True)
     discount_amount = fields.Monetary(related='move_id.discount_amount', string='Discount Amount', readonly=True)
+
 
     @api.model
     def default_get(self, fields_list):
