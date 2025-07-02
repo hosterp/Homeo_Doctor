@@ -39,3 +39,4 @@ from .import admitted_patient_history
 from .import stock_transfer
 from .import hr_model
 from .import res_partner_inherit
+from .import dashboard

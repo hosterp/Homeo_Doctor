@@ -97,6 +97,7 @@
         "views/hr_employee.xml",
         "views/pharmacy_prescription_report_wizard.xml",
         "views/res_partner_inherit.xml",
+        "views/dashboard_model_kanban.xml",
         "data/ir_sequence_data.xml",
 
     ],
