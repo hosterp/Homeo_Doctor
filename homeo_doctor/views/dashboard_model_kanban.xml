@@ -23,7 +23,9 @@
                 <field name="credit_amount"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-style="width: 23%; margin: 1%; display: inline-block; vertical-align: top;">
+                        <div t-attf-style="width: 23%; margin: 1%; display: inline-block; vertical-align: top; color: black; border: 1px solid black;">
+
+
                             <div class="oe_kanban_card"
                                  style="background: #2196F3; padding: 15px; border-radius: 10px;box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; min-height: 140px;">
 
@@ -119,8 +121,8 @@
         <field name="model">credit.billing.report</field>
         <field name="arch" type="xml">
             <tree string="Combined Credit Billing">
-<!--                <field name="bill_date"/>-->
-<!--                <field name="patient_name"/>-->
+                <!--                <field name="bill_date"/>-->
+                <!--                <field name="patient_name"/>-->
                 <field name="bill_type"/>
                 <field name="amount"/>
             </tree>
