@@ -51,8 +51,8 @@
     </record>
 
     <menuitem id="stock_entry_menu" name="Stock" sequence="41"/>
-    <menuitem id="menu_stock_entries" name="Stock Entries" parent="stock_entry_menu" sequence="10"/>
-    <menuitem id="menu_stock_entry_action" name="Stock Entries"
-              parent="menu_stock_entries" action="action_stock_entry"/>
+     <menuitem id="menu_pharmacy_root" name="Pharmacy" sequence="5" parent="menu_homeo_head"/>
+    <menuitem id="menu_stock_entry_action" name="Stock"
+              parent="menu_pharmacy_root" action="action_stock_entry"/>
 
 </odoo>
