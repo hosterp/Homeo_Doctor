@@ -573,6 +573,13 @@ class StockEntry(models.Model):
         ('done', 'Done')
     ], string="Status", default="draft", tracking=True)
 
+    is_expired = fields.Boolean(string="Is Expired", compute="_compute_is_expired")
+
+    @api.depends('exp_date')
+    def _compute_is_expired(self):
+        today = fields.Date.today()
+        for rec in self:
+            rec.is_expired = rec.exp_date and rec.exp_date < today
     @api.depends('quantity')
     def _compute_dispensed(self):
         for record in self:

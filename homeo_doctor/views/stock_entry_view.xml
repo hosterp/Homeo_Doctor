@@ -3,7 +3,7 @@
         <field name="name">stock.entry.tree</field>
         <field name="model">stock.entry</field>
         <field name="arch" type="xml">
-            <tree string="Stock Entries" editable="top">
+            <tree string="Stock Entries" editable="top" decoration-danger="is_expired">
                 <field name="name" invisible="1"/>
                 <field name="invoice_id" invisible="1"/>
                 <field name="date"/>
@@ -23,6 +23,7 @@
                 <field name="rack"/>
                 <field name="uom_id" invisible="1"/>
                 <field name="state" invisible="1"/>
+                <field name="is_expired" invisible="1"/>
             </tree>
         </field>
     </record>
