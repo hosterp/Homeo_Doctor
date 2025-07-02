@@ -1,8 +1,9 @@
 import logging
+from collections import defaultdict
 from datetime import date
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, _logger
 import math
 class PharmacyDescription(models.Model):
     _name = 'pharmacy.description'
@@ -864,5 +865,60 @@ class IPReturnLine(models.Model):
             line.amount = line.quantity * line.unit_price
 
 
+class FastMovingMedicineForm(models.TransientModel):
+    _name = 'fast.moving.medicine.form'
+    _description = 'Fast Moving Medicine Form'
+
+    name = fields.Char(default='Fast Moving Report')
+    from_date = fields.Date(required=True)
+    to_date = fields.Date(required=True)
+    line_ids = fields.One2many('fast.moving.medicine.line', 'form_id', string="Medicines")
+
+    def compute_fast_moving(self):
+        lines = self.env['pharmacy.prescription.line'].search([
+            ('pharmacy_id.date', '>=', self.from_date),
+            ('pharmacy_id.date', '<=', self.to_date),
+        ])
+
+        grouped = defaultdict(int)
+        for l in lines:
+            grouped[l.product_id.id] += l.qty or 0
+
+        # Clear previous lines
+        self.line_ids.unlink()
+
+        # Create new lines
+        for product_id, total_qty in grouped.items():
+            if total_qty > 20:
+                self.env['fast.moving.medicine.line'].create({
+                    'form_id': self.id,
+                    'product_id': product_id,
+                    'total_qty': total_qty,
+                })
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Fast Moving Medicines',
+            'res_model': 'fast.moving.medicine.form',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'new',
+        }
+
+    def print_fast_moving_report(self):
+        self.ensure_one()
+        self.compute_fast_moving()
+
+        print("Line count: %s", len(self.line_ids))  # Add logging to verify
+        for line in self.line_ids:
+            print("Line: %s - %s", line.product_id.name, line.total_qty)
+
+        return self.env.ref('homeo_doctor.action_report_fast_moving').report_action(self)
 
 
+class FastMovingMedicineLine(models.TransientModel):
+    _name = 'fast.moving.medicine.line'
+    _description = 'Fast Moving Medicine Line'
+
+    form_id = fields.Many2one('fast.moving.medicine.form', string="Form")
+    product_id = fields.Many2one('product.product', string="Medicine")
+    total_qty = fields.Integer(string="Total Quantity")

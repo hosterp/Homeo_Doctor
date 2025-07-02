@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+
+        <template id="report_fast_moving_pdf">
+            <t t-call="web.external_layout">
+                <t t-set="doc" t-value="docs[0]"/>
+                <main class="page">
+                    <h2 style="text-align: center;">Fast Moving Medicines</h2>
+
+                    <div style="text-align: center;">
+                        <p>
+                            <strong>From:</strong>
+                            <t t-esc="doc.from_date"/>
+                            <br/>
+                            <strong>To:</strong>
+                            <t t-esc="doc.to_date"/>
+                        </p>
+                    </div>
+
+                    <table class="table table-condensed" style="width: 100%; border: 1px solid black;">
+                        <thead>
+                            <tr>
+                                <th>SL No</th>
+                                <th>Medicine</th>
+                                <th>Total Qty</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="counter" t-value="1"/>
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <tr>
+                                    <td>
+                                        <t t-esc="counter"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.product_id.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.total_qty"/>
+                                    </td>
+                                </tr>
+                                <t t-set="counter" t-value="counter + 1"/>
+                            </t>
+                        </tbody>
+                    </table>
+                </main>
+            </t>
+        </template>
+
+
+        <report
+                id="action_report_fast_moving"
+                string="Fast Moving Medicines"
+                model="fast.moving.medicine.form"
+                report_type="qweb-pdf"
+                name="homeo_doctor.report_fast_moving_pdf"
+                file="homeo_doctor.report_fast_moving_pdf"
+                print_report_name="'Fast Moving Medicines'"
+        />
+
+
+    </data>
+</odoo>

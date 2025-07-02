@@ -1,0 +1,42 @@
+<odoo>
+    <record id="view_fast_moving_form" model="ir.ui.view">
+        <field name="name">fast.moving.medicine.form.view</field>
+        <field name="model">fast.moving.medicine.form</field>
+        <field name="arch" type="xml">
+            <form string="Fast Moving Medicine Report">
+                <group col="3">
+                    <group>
+                        <field name="from_date"/>
+                    </group>
+                    <group>
+                        <field name="to_date"/>
+                    </group>
+                    <group>
+                        <button name="compute_fast_moving" type="object" string="Go" class="btn-primary"/>
+                    </group>
+                </group>
+                <field name="line_ids">
+                    <tree readonly="1">
+                        <field name="product_id"/>
+                        <field name="total_qty"/>
+                    </tree>
+                </field>
+                <footer>
+                    <button name="print_fast_moving_report" type="object" string="Print" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_fast_moving_form" model="ir.actions.act_window">
+        <field name="name">Fast Moving Medicines</field>
+        <field name="res_model">fast.moving.medicine.form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
+    <menuitem id="menu_fast_moving_form"
+              name="Fast Moving Medicines"
+              parent="menu_reports_root"
+              action="action_fast_moving_form" sequence="11"/>
+
+</odoo>
