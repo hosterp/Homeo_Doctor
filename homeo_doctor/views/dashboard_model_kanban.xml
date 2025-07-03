@@ -21,23 +21,24 @@
                 <field name="general_amount"/>
                 <field name="ip_part_amount"/>
                 <field name="credit_amount"/>
+                <field name="op_count"/>
+                <field name="ip_bills"/>
+                <field name="other_bills"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-style="width: 23%; margin: 1%; display: inline-block; vertical-align: top; color: black; border: 1px solid black;">
 
-
                             <div class="oe_kanban_card"
-                                 style="background: #2196F3; padding: 15px; border-radius: 10px;box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; min-height: 140px;">
-
+                                 style="background: #2196F3; padding: 15px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between;">
 
                                 <!-- Card Title -->
                                 <div style="font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 10px;">
                                     <t t-esc="record.name.value"/>
                                 </div>
 
-                                <div style="font-size: 26px;color: #2c3e50;font-weight: bold; margin-bottom: 10px;">
+                                <!-- Card Content (Scroll Removed) -->
+                                <div style="font-size: 26px; color: #2c3e50; font-weight: bold; margin-bottom: 4px; flex-grow: 1;">
                                     <t t-if="record.name.raw_value == 'Today OP Details'">
-                                        <!--                                        <t t-esc="record.consultation_count.value"/>-->
                                         <t t-esc="record.consultation_amount.value"/>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Today Pharmacy Billing Details'">
@@ -65,17 +66,31 @@
                                     </t>
                                     <t t-if="record.name.raw_value == 'Today General Billing'">
                                         <t t-esc="record.general_amount.value"/>
+                                        <br/>
+                                        <span style="font-size:16px;">
+                                            OP:
+                                            <t t-esc="record.op_count.value"/> &#160;
+                                            IP:
+                                            <t t-esc="record.ip_bills.value"/> &#160;
+                                            Others:
+                                            <t t-esc="record.other_bills.value"/>
+                                        </span>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Today IP Part Billing'">
                                         <t t-esc="record.ip_part_amount.value"/>
+                                        <br/>
+                                        <span style="visibility: hidden;">padding</span>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Today Credit Billing'">
                                         <t t-esc="record.credit_amount.value"/>
+                                        <br/>
+                                        <span style="visibility: hidden;">padding</span>
                                     </t>
+
                                 </div>
 
-
-                                <div style="margin-top: 15px;">
+                                <!-- View Button -->
+                                <div style="margin-top: 4px;">
                                     <button type="object"
                                             name="open_card_action"
                                             class="btn btn-primary"
@@ -86,6 +101,7 @@
 
                             </div>
                         </div>
+
                     </t>
                 </templates>
             </kanban>

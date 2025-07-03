@@ -37,6 +37,9 @@ class DashboardModel(models.Model):
         compute='_compute_credit_amount',
         store=False,  # <-- never stored, recomputed per read
     )
+    op_count = fields.Integer(string="OP Count")
+    ip_bills = fields.Integer(string="IP Count")
+    other_bills = fields.Integer(string="Others Count")
 
     @api.depends()
     def _compute_credit_amount(self):
@@ -64,6 +67,9 @@ class DashboardModel(models.Model):
             rec.general_amount = rec.general_amount = 0.0
             rec.ip_part_amount = rec.ip_part_amount = 0.0
             rec.credit_amount = rec.credit_amount = 0.0
+            rec.op_count = rec.op_count = 0.0
+            rec.ip_bills = rec.ip_bills = 0.0
+            rec.other_bills = rec.other_bills = 0.0
 
             if rec.name == 'Today OP Details':
                 consultations = self.env['patient.reg'].search([('date', '=', today),('status','=','paid'),('register_mode_payment','!=','credit')])
@@ -134,6 +140,13 @@ class DashboardModel(models.Model):
                 ])
 
                 rec.general_amount = sum(general.mapped('total_amount'))
+                op_bills = general.filtered(lambda r: r.bill_type.bill_type == 'OP')
+                ip_bills = general.filtered(lambda r: r.bill_type.bill_type == 'IP')
+                other_bills = general.filtered(lambda r: r.bill_type.bill_type == 'Others')
+                print("OP Bills:", op_bills)
+                rec.op_count = len(op_bills)
+                rec.ip_bills = len(ip_bills)
+                rec.other_bills = len(other_bills)
             elif rec.name == 'Today IP Part Billing':
                 ip_part = self.env['ip.part.billing'].search([
                     ('bill_date', '>=', start_dt),

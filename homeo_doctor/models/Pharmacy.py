@@ -914,7 +914,7 @@ class FastMovingMedicineForm(models.TransientModel):
 
         return self.env.ref('homeo_doctor.action_report_fast_moving').report_action(self)
 
-
+    
 class FastMovingMedicineLine(models.TransientModel):
     _name = 'fast.moving.medicine.line'
     _description = 'Fast Moving Medicine Line'
