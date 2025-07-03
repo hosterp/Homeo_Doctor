@@ -7,7 +7,28 @@ class PatientReportWizard(models.TransientModel):
     date_from = fields.Date(string='From Date', required=True,default=fields.Date.today)
     date_to = fields.Date(string='To Date', required=True,default=fields.Date.today)
     doctor_id = fields.Many2one('doctor.profile', string='Doctor')
+    department_id = fields.Many2one(
+        'doctor.department',
+        string='Department',
+        related='doctor_id.department_id',
+        store=True,
+    )
 
+    @api.onchange('doctor_id')
+    def onchange_doctor_id(self):
+        if self.doctor_id and self.doctor_id.department_id:
+            return {
+                'domain': {
+                    'department_id': [('id', '=', self.doctor_id.department_id.id)]
+                },
+                'value': {
+                    'department_id': self.doctor_id.department_id.id
+                }
+            }
+        return {
+            'domain': {'department_id': []},
+            'value': {'department_id': False}
+        }
     def action_generate_report(self):
         # Code to generate report
         report_data = self._get_report_data()  # Call a method to get the report data
@@ -23,7 +44,8 @@ class PatientReportWizard(models.TransientModel):
         patients = self.env['patient.registration'].search([
             ('date', '>=', self.date_from),
             ('date', '<=', self.date_to),
-            ('doctor', '=', self.doctor_id.id)
+            ('doctor', '=', self.doctor_id.id),
+
         ])
         report_data = []
         for patient in patients:
