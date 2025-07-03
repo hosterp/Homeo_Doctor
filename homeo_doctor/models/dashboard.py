@@ -106,7 +106,8 @@ class DashboardModel(models.Model):
 
             elif rec.name == 'Expired Medicines':
                 rec.expired_count = self.env['stock.entry'].search_count([
-                    ('exp_date', '<', today)
+                    ('exp_date', '<', today),
+                    ('quantity', '>', 0),
                 ])
 
             elif rec.name == 'Today Purchase Details':
@@ -262,7 +263,7 @@ class DashboardModel(models.Model):
                 'res_model': 'stock.entry',
                 'view_mode': 'tree,form',
                 'target': 'current',
-                'domain': [('exp_date', '<', today_str), ]
+                'domain': [('exp_date', '<', today_str),('quantity', '>', 0), ]
             }
         elif self.name == 'Today Revisit Details':
             return {
