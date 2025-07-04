@@ -144,7 +144,7 @@ class DashboardModel(models.Model):
                 op_bills = general.filtered(lambda r: r.bill_type.bill_type == 'OP')
                 ip_bills = general.filtered(lambda r: r.bill_type.bill_type == 'IP')
                 other_bills = general.filtered(lambda r: r.bill_type.bill_type == 'Others')
-                print("OP Bills:", op_bills)
+                # print("OP Bills:", op_bills)
                 rec.op_count = len(op_bills)
                 rec.ip_bills = len(ip_bills)
                 rec.other_bills = len(other_bills)
