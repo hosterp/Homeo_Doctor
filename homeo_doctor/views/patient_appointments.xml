@@ -48,7 +48,7 @@
                                                    class="col-md-5 col-form-label py-0 small text-nowrap">UHID
                                             </label>
                                             <div class="col-md-7 field-container py-0">
-                                                <field name="patient_id"/>
+                                                <field name="patient_id" options="{'no_create': True, 'no_open': True}"/>
                                             </div>
                                         </div>
                                     </div>
