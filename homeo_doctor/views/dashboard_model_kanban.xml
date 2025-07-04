@@ -40,29 +40,45 @@
                                 <div style="font-size: 26px; color: #2c3e50; font-weight: bold; margin-bottom: 4px; flex-grow: 1;">
                                     <t t-if="record.name.raw_value == 'Today OP Details'">
                                         <t t-esc="record.consultation_amount.value"/>
+                                        <br/>
+                                        <span style="visibility: hidden;">padding</span>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Today Pharmacy Billing Details'">
                                         <t t-esc="record.sale_amount.value"/>
+                                        <br/>
+                                        <span style="visibility: hidden;">padding</span>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Discharged Patient Details'">
                                         <t t-esc="record.discharge_amount.value"/>
+                                        <br/>
+                                        <span style="visibility: hidden;">padding</span>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Admitted Patient Details'">
                                         Count :
                                         <t t-esc="record.admit_count.value"/>
+                                        <br/>
+                                        <span style="visibility: hidden;">padding</span>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Expired Medicines'">
                                         Count :
                                         <t t-esc="record.expired_count.value"/>
+                                        <br/>
+                                        <span style="visibility: hidden;">padding</span>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Today Purchase Details'">
                                         <t t-esc="record.purchase_amount.value"/>
+                                        <br/>
+                                        <span style="visibility: hidden;">padding</span>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Today Lab Billing'">
                                         <t t-esc="record.lab_amount.value"/>
+                                        <br/>
+                                        <span style="visibility: hidden;">padding</span>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Today Revisit Details'">
                                         <t t-esc="record.revisit_amount.value"/>
+                                        <br/>
+                                        <span style="visibility: hidden;">padding</span>
                                     </t>
                                     <t t-if="record.name.raw_value == 'Today General Billing'">
                                         <t t-esc="record.general_amount.value"/>
