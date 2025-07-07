@@ -1,0 +1,112 @@
+<odoo>
+    <data>
+        <template id="doctor_billing_pdf_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 style="text-align:center;">Doctor-wise Billing Report</h2>
+                        <p>
+                            <strong>From:</strong>
+                            <t t-esc="data['from_date']"/> &#160;&#160;
+                            <strong>To:</strong>
+                            <t t-esc="data['to_date']"/>
+                        </p>
+                        <t t-set="total" t-value="total_row or {}"/>
+
+                        <table class="table table-bordered" style="width:100%; border:1px solid #000;">
+                            <thead>
+                                <tr style="font-weight:bold; background:#f0f0f0;">
+                                    <th>Doctor</th>
+                                    <th class="text-right">Consultation</th>
+                                    <th class="text-right">Revisit</th>
+                                    <th class="text-right">General</th>
+                                    <th class="text-right">Lab</th>
+                                    <th class="text-right">Pharmacy</th>
+                                    <th class="text-right">IP Part</th>
+                                    <th class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- ✅ Loop over each doctor's data and compute row total -->
+                                <t t-foreach="report_data.items()" t-as="line">
+                                    <t t-set="row_total"
+                                       t-value="(line[1].get('consultation_amount', 0.0) or 0.0)
+                + (line[1].get('revisit_amount', 0.0) or 0.0)
+                + (line[1].get('general_amount', 0.0) or 0.0)
+                + (line[1].get('lab_amount', 0.0) or 0.0)
+                + (line[1].get('pharmacy_amount', 0.0) or 0.0)
+                + (line[1].get('ip_part_amount', 0.0) or 0.0)"/>
+
+                                    <tr>
+                                        <td>
+                                            <t t-esc="line[0]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="line[1].get('consultation_amount', 0.0)"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="line[1].get('revisit_amount', 0.0)"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="line[1].get('general_amount', 0.0)"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="line[1].get('lab_amount', 0.0)"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="line[1].get('pharmacy_amount', 0.0)"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="line[1].get('ip_part_amount', 0.0)"/>
+                                        </td>
+                                        <td class="text-right" style="font-weight:bold;">
+                                            <t t-esc="row_total"/>
+                                        </td>
+                                    </tr>
+                                </t>
+
+                                <!-- ✅ Final Column-Wise Totals Row -->
+                                <tr style="font-weight:bold; border-top:2px solid #000; background:#f9f9f9;">
+                                    <td>Grand Total</td>
+                                    <td class="text-right">
+                                        <t t-esc="total.get('consultation_amount', 0.0)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="total.get('revisit_amount', 0.0)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="total.get('general_amount', 0.0)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="total.get('lab_amount', 0.0)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="total.get('pharmacy_amount', 0.0)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="total.get('ip_part_amount', 0.0)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="total.get('row_total', 0.0)"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <report
+                id="action_doctor_billing_pdf_report"
+                string="Doctor Billing Report"
+                model="doctor.billing.report.wizard"
+                report_type="qweb-pdf"
+                name="homeo_doctor.doctor_billing_pdf_template"
+                file="homeo_doctor.doctor_billing_pdf_template"
+                print_report_name="'Doctor Billing Report'"
+        />
+
+    </data>
+</odoo>

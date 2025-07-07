@@ -68,6 +68,7 @@
         "report/combined_report_template.xml",
         "report/pharmacy_report_template.xml",
         "report/fast_moving_medicine_report.xml",
+        "report/doctor_wise_report.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",
@@ -100,6 +101,7 @@
         "views/res_partner_inherit.xml",
         "views/dashboard_model_kanban.xml",
         "views/fast_moving_medicines.xml",
+        "views/doctor_billing_report_wizard_view.xml",
         "data/ir_sequence_data.xml",
 
     ],
