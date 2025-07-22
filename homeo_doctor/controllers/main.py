@@ -436,3 +436,106 @@ class PatientReportController(http.Controller):
 #             return request.render('web.login', {'error': 'Invalid reCAPTCHA. Try again.'})
 #
 #         return http.redirect_with_hash('/web')
+
+
+
+class BillGSTReportExcel(http.Controller):
+
+    @http.route('/report/generate/bill_gst_excel', type='http', auth='user')
+    def generate_excel_report(self, from_date, to_date, **kwargs):
+        # Search the data
+        bills = request.env['pharmacy.description'].sudo().search([
+            ('date', '>=', from_date),
+            ('date', '<=', to_date)
+        ])
+
+        # Create Excel file in memory
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        sheet = workbook.add_worksheet("Bill GST Report")
+
+        # Define formats
+        bold = workbook.add_format({'bold': True})
+        date_format = workbook.add_format({'num_format': 'yyyy-mm-dd'})
+
+        # Header
+        headers = [
+            "Sl No", "Bill No", "Bill Date", "Patient", "Non Taxable",
+            "GST 5%", "CGST 2.5%", "SGST 2.5%",
+            "GST 12%", "CGST 6%", "SGST 6%",
+            "GST 18%", "CGST 9%", "SGST 9%",
+            "Total Amount"
+        ]
+        for col, header in enumerate(headers):
+            sheet.write(0, col, header, bold)
+
+        total_non_taxable = 0.0
+        total_gst_5 = total_cgst_2_5 = total_sgst_2_5 = 0.0
+        total_gst_12 = total_cgst_6 = total_sgst_6 = 0.0
+        total_gst_18 = total_cgst_9 = total_sgst_9 = 0.0
+        total_amount = 0.0
+        row = 1
+        sl = 1
+        for bill in bills:
+            line_items = bill.prescription_line_ids
+            gst_5 = sum(line.rate for line in line_items if line.gst == 5)
+            cgst_2_5 = sgst_2_5 = gst_5 * 0.025
+            gst_12 = sum(line.rate for line in line_items if line.gst == 12)
+            cgst_6 = sgst_6 = gst_12 * 0.06
+            gst_18 = sum(line.rate for line in line_items if line.gst == 18)
+            cgst_9 = sgst_9 = gst_18 * 0.09
+            non_taxable = sum(line.rate for line in line_items if not line.gst)
+
+            sheet.write(row, 0, sl)
+            sheet.write(row, 1, bill.bill_number or '')
+            sheet.write(row, 2, str(bill.date or ''))
+            sheet.write(row, 3, bill.name or '')
+            sheet.write(row, 4, round(non_taxable, 2))
+            sheet.write(row, 5, round(gst_5, 2))
+            sheet.write(row, 6, round(cgst_2_5, 2))
+            sheet.write(row, 7, round(sgst_2_5, 2))
+            sheet.write(row, 8, round(gst_12, 2))
+            sheet.write(row, 9, round(cgst_6, 2))
+            sheet.write(row, 10, round(sgst_6, 2))
+            sheet.write(row, 11, round(gst_18, 2))
+            sheet.write(row, 12, round(cgst_9, 2))
+            sheet.write(row, 13, round(sgst_9, 2))
+            sheet.write(row, 14, round(bill.total_amount, 2))
+
+            total_non_taxable += non_taxable
+            total_gst_5 += gst_5
+            total_cgst_2_5 += cgst_2_5
+            total_sgst_2_5 += sgst_2_5
+            total_gst_12 += gst_12
+            total_cgst_6 += cgst_6
+            total_sgst_6 += sgst_6
+            total_gst_18 += gst_18
+            total_cgst_9 += cgst_9
+            total_sgst_9 += sgst_9
+            total_amount += bill.total_amount
+
+            row += 1
+            sl += 1
+        sheet.write(row, 3, "Total", bold)
+        sheet.write(row, 4, round(total_non_taxable, 2), bold)
+        sheet.write(row, 5, round(total_gst_5, 2), bold)
+        sheet.write(row, 6, round(total_cgst_2_5, 2), bold)
+        sheet.write(row, 7, round(total_sgst_2_5, 2), bold)
+        sheet.write(row, 8, round(total_gst_12, 2), bold)
+        sheet.write(row, 9, round(total_cgst_6, 2), bold)
+        sheet.write(row, 10, round(total_sgst_6, 2), bold)
+        sheet.write(row, 11, round(total_gst_18, 2), bold)
+        sheet.write(row, 12, round(total_cgst_9, 2), bold)
+        sheet.write(row, 13, round(total_sgst_9, 2), bold)
+        sheet.write(row, 14, round(total_amount, 2), bold)
+        workbook.close()
+        output.seek(0)
+
+        filename = f"GST_Report_{from_date}_to_{to_date}.xlsx"
+        return request.make_response(
+            output.read(),
+            headers=[
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', f'attachment; filename={filename}')
+            ]
+        )

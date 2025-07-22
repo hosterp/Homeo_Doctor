@@ -208,6 +208,21 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">homeo_doctor.report_bill_gst_template</field>
         </record>
+<!--        <record id="action_report_bill_gst_excel" model="ir.actions.server">-->
+<!--            <field name="name">Bill GST Excel</field>-->
+<!--            <field name="model_id" ref="model_pharmacy_bill_gst_report"/>-->
+<!--            <field name="binding_model_id" ref="model_pharmacy_bill_gst_report"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">-->
+<!--                action = {-->
+<!--                'type': 'ir.actions.act_url',-->
+<!--                'url': '/report/generate/bill_gst_excel?from_date=' + record.from_date.isoformat() + '&amp;to_date=' +-->
+<!--                record.to_date.isoformat(),-->
+<!--                'target': 'new',-->
+<!--                }-->
+
+<!--            </field>-->
+<!--        </record>-->
 
 
     </data>

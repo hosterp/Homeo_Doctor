@@ -7,14 +7,18 @@
                 <form string="Bill GST Report">
                     <group>
                         <group>
-                             <field name="from_date"/>
+                            <field name="from_date"/>
                         </group>
-                       <group>
-                           <field name="to_date"/>
-                       </group>
+                        <group>
+                            <field name="to_date"/>
+                        </group>
                     </group>
                     <footer>
                         <button string="PDF Report" type="object" name="print_report" class="btn-primary"/>
+                        <button name="download_gst_excel" string="Excel Report" type="object"
+                                class="btn btn-primary"/>
+
+
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
@@ -29,10 +33,10 @@
         </record>
         <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
         <menuitem id="menu_bill_gst_report"
-          name="Sales GST Report"
-          parent="menu_reports_root"
-          action="action_bill_gst_report_wizard"
-          sequence="20"/>
+                  name="Sales GST Report"
+                  parent="menu_reports_root"
+                  action="action_bill_gst_report_wizard"
+                  sequence="20"/>
 
     </data>
 </odoo>
