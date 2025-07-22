@@ -69,6 +69,8 @@
         "report/pharmacy_report_template.xml",
         "report/fast_moving_medicine_report.xml",
         "report/doctor_wise_report.xml",
+        "report/slaes_gst_wise_report.xml",
+        "report/sales_gst_wise_report_wizard.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",
