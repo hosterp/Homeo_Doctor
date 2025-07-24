@@ -132,6 +132,9 @@
                             <field name="to_date"/>
                         </group>
                         <group>
+                            <field name="op_category"/>
+                        </group>
+                        <group>
                             <field name="mode_pay"/>
                         </group>
 

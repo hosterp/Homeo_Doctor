@@ -12,6 +12,7 @@ class PharmacyDescriptionWizard(models.TransientModel):
                                  ('card', 'Card'),
                                  ('cheque', 'Cheque'),
                                  ('upi', 'UPI'), ], string='Payment Method')
+    op_category = fields.Selection([('op', 'OP'), ('ip', 'IP'), ('others', 'OTHERS')])
     def action_generate_report(self):
         domain = [
             ('date', '>=', self.from_date),
@@ -19,6 +20,8 @@ class PharmacyDescriptionWizard(models.TransientModel):
         ]
         if self.mode_pay:
             domain.append(('payment_mathod', '=', self.mode_pay))
+        if self.op_category:
+            domain.append(('op_category', '=', self.op_category))
         pharmacy_records = self.env['pharmacy.description'].search(domain, order='date asc')
 
         report_data = []
