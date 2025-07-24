@@ -102,6 +102,9 @@
                         <group>
                             <field name="mode_pay"/>
                         </group>
+                        <group>
+                            <field name="bill_type"/>
+                        </group>
                     </group>
                     <footer>
                         <button string="Pdf Report" type="object" name="action_generate_report" class="btn-primary"/>

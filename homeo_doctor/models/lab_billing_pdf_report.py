@@ -13,14 +13,24 @@ class DoctorLabReportWizard(models.TransientModel):
                                  ('card', 'Card'),
                                  ('cheque', 'Cheque'),
                                  ('upi', 'UPI'), ], string='Payment Method')
+    bill_type = fields.Selection([
+        ('op', 'OP'), ('admitted', 'Admitted Patient'), ('others', 'Others')], string="Bill Type")
 
     def action_generate_report(self):
-        # Get the filtered data based on the provided dates
-        lab_reports = self.env['doctor.lab.report'].search([
+        domain = [
             ('date', '>=', self.from_date),
             ('date', '<=', self.to_date),
-            ('mode_of_payment', '=', self.mode_pay),
-        ])
+        ]
+
+        # Add optional filters if values are set
+        if self.mode_pay:
+            domain.append(('mode_of_payment', '=', self.mode_pay))
+
+        if self.bill_type:
+            domain.append(('bill_type', '=', self.bill_type))
+
+        # Search using the dynamic domain
+        lab_reports = self.env['doctor.lab.report'].search(domain)
 
         # Prepare data for the report
         report_data = []
