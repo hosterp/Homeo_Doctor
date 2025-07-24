@@ -318,8 +318,25 @@ class PharmacyPrescriptionLine(models.Model):
     stock_in_hand = fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
     # rate = fields.Float(string='Rate', store=True)
     description_id = fields.Many2one('pharmacy.description', string="Sale Reference")
-   
-                    
+
+
+    @api.depends('rate', 'gst')
+    def _compute_tax_components(self):
+        for rec in self:
+            if rec.gst:
+                base = rec.rate / (1 + rec.gst / 100.0)
+                rec.taxable = base
+                rec.cgst = base * (rec.gst / 200.0)
+                rec.sgst = base * (rec.gst / 200.0)
+            else:
+                rec.taxable = rec.rate
+                rec.cgst = 0.0
+                rec.sgst = 0.0
+
+    taxable = fields.Float("Taxable Amount", compute="_compute_tax_components", store=True)
+    cgst = fields.Float("CGST", compute="_compute_tax_components", store=True)
+    sgst = fields.Float("SGST", compute="_compute_tax_components", store=True)
+
     @api.onchange('product_id')
     def _onchange_product_id(self):
         for line in self:
@@ -444,7 +461,7 @@ class PharmacyPrescriptionLine(models.Model):
     #         else:
     #             record.rate = 0.0
 
-    
+
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
@@ -914,7 +931,7 @@ class FastMovingMedicineForm(models.TransientModel):
 
         return self.env.ref('homeo_doctor.action_report_fast_moving').report_action(self)
 
-    
+
 class FastMovingMedicineLine(models.TransientModel):
     _name = 'fast.moving.medicine.line'
     _description = 'Fast Moving Medicine Line'

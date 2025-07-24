@@ -71,6 +71,8 @@
         "report/doctor_wise_report.xml",
         "report/slaes_gst_wise_report.xml",
         "report/sales_gst_wise_report_wizard.xml",
+        "report/hsn_report_wizard_view.xml",
+        "report/report_hsn_wise.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",
