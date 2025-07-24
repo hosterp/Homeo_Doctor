@@ -3,7 +3,7 @@ from odoo import http
 from odoo.http import request
 import io
 import xlsxwriter
-from datetime import datetime
+from datetime import datetime, time
 from io import BytesIO
 from collections import defaultdict
 import base64
@@ -537,5 +537,77 @@ class BillGSTReportExcel(http.Controller):
             headers=[
                 ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
                 ('Content-Disposition', f'attachment; filename={filename}')
+            ]
+        )
+
+
+class HSNExcelReportController(http.Controller):
+
+    @http.route(['/report/excel/hsn_gst_summary'], type='http', auth='user')
+    def generate_hsn_excel(self, from_date, to_date, **kwargs):
+        from_date_dt = datetime.combine(datetime.strptime(from_date, '%Y-%m-%d').date(), time.min)
+        to_date_dt = datetime.combine(datetime.strptime(to_date, '%Y-%m-%d').date(), time.max)
+
+        lines = request.env['pharmacy.prescription.line'].sudo().search([
+            ('pharmacy_id.date', '>=', from_date_dt),
+            ('pharmacy_id.date', '<=', to_date_dt)
+        ])
+        print("LINES COUNT:", len(lines))
+        # Create Excel file in memory
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output)
+        worksheet = workbook.add_worksheet('HSN GST Summary')
+
+        bold = workbook.add_format({'bold': True})
+        money = workbook.add_format({'num_format': '#,##0.00'})
+
+        # Header
+        headers = [
+            'Sl No', 'HSN Code', 'Description', 'Type', 'Total Qty',
+            'GST%', 'Total Value', 'Taxable', 'CGST', 'SGST'
+        ]
+        for col, header in enumerate(headers):
+            worksheet.write(0, col, header, bold)
+
+        # Data
+        total_qty = total_rate = total_taxable = total_cgst = total_sgst = 0.0
+        row = 1
+        for sl, line in enumerate(lines, start=1):
+            pharmacy = line.pharmacy_id
+            worksheet.write(row, 0, sl)
+            worksheet.write(row, 1, line.hsn or '')
+            worksheet.write(row, 2, line.product_id.name or '')
+            worksheet.write(row, 3, pharmacy.op_category or '')
+            worksheet.write(row, 4, line.qty)
+            worksheet.write(row, 5, line.gst)
+            worksheet.write_number(row, 6, line.rate or 0.0, money)
+            worksheet.write_number(row, 7, line.taxable or 0.0, money)
+            worksheet.write_number(row, 8, line.cgst or 0.0, money)
+            worksheet.write_number(row, 9, line.sgst or 0.0, money)
+
+            total_qty += line.qty or 0
+            total_rate += line.rate or 0.0
+            total_taxable += line.taxable or 0.0
+            total_cgst += line.cgst or 0.0
+            total_sgst += line.sgst or 0.0
+            row += 1
+
+        # Totals row
+        worksheet.write(row, 3, 'Total', bold)
+        worksheet.write(row, 4, total_qty, bold)
+        worksheet.write_number(row, 6, total_rate, money)
+        worksheet.write_number(row, 7, total_taxable, money)
+        worksheet.write_number(row, 8, total_cgst, money)
+        worksheet.write_number(row, 9, total_sgst, money)
+
+        workbook.close()
+        output.seek(0)
+
+        filename = f"HSN_GST_Report_{from_date}_to_{to_date}.xlsx"
+        return request.make_response(
+            output.read(),
+            headers=[
+                ('Content-Disposition', f'attachment; filename={filename}'),
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             ]
         )
