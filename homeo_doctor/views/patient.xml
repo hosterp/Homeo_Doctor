@@ -687,6 +687,17 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1">
+                                                            <label for="discharge_date"
+                                                                   class="col-md col-form-label py-0 text-nowrap">
+                                                                Discharge Date
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="discharge_date" style="width:100%;"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="col px-1"
                                                          style="max-width: 20%; border:none; box-shadow: none;">
                                                         <!--                                                        <div class="form-group row my-1">-->
@@ -1089,7 +1100,7 @@
                         <group>
 
                             <field name="no_days" invisible="1"/>
-                            <field name="discharge_date" invisible="1"/>
+
                         </group>
                         <group>
                             <field name="nurse_charge" string="Nursing Fee" invisible="1"/>
