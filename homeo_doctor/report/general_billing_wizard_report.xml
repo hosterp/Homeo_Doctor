@@ -26,6 +26,7 @@
                                 <th style="border: 1px solid #ddd; padding: 8px;">Patient Name</th>
                                 <th style="border: 1px solid #ddd; padding: 8px;">Gender</th>
                                 <th style="border: 1px solid #ddd; padding: 8px;">Doctor</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Payment Method</th>
                                 <th style="border: 1px solid #ddd; padding: 8px;">Amount</th>
                             </tr>
                         </thead>
@@ -62,6 +63,9 @@
                                             <t t-esc="record['doctor']"/>
                                         </td>
                                         <td style="border: 1px solid #ddd; padding: 8px;">
+                                            <t t-esc="record['mode_pay']"/>
+                                        </td>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">
                                             <t t-esc="record['total_amount']"/>
                                             <t t-set="total_amount"
                                                t-value="total_amount + (float(record['total_amount']) if record['total_amount'] else 0)"/>
@@ -71,7 +75,7 @@
                             </t>
 
                             <tr>
-                                <td colspan="9" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                                <td colspan="10" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
                                     <strong>Total</strong>
                                 </td>
                                 <td style="border: 1px solid #ddd; padding: 8px;">
@@ -95,7 +99,7 @@
                 name="homeo_doctor.billing_report_template"
                 file="homeo_doctor.billing_report_template"
         />
-        <record id="view_billing_report_wizard_form" model="ir.ui.view">
+        <record id="view_billing_report_wizard_general_form" model="ir.ui.view">
             <field name="name">billing.report.wizard.form</field>
             <field name="model">billing.report.wizard</field>
             <field name="arch" type="xml">
@@ -110,6 +114,7 @@
                         <group>
                             <field name="mode_pay"/>
                         </group>
+
                     </group>
                     <footer>
                         <button string="Print PDF" type="object" name="action_generate_pdf_report" class="btn-primary"/>
@@ -124,6 +129,7 @@
             <field name="name">General Billing Report</field>
             <field name="res_model">billing.report.wizard</field>
             <field name="view_mode">form</field>
+            <field name="view_id" ref="view_billing_report_wizard_general_form"/>
             <field name="target">new</field>
         </record>
         <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>

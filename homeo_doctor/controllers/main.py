@@ -94,7 +94,7 @@ class GeneralBillingExcelDownload(http.Controller):
         # Header labels
         headers = [
             'SL No', 'Bill No', 'Bill Date', 'Type', 'Department',
-            'Category', 'MRD No', 'Patient Name', 'Gender', 'Doctor', 'Amount'
+            'Category', 'MRD No', 'Patient Name', 'Gender', 'Doctor','Payment Method', 'Amount'
         ]
 
         # Track max width for each column
@@ -118,6 +118,7 @@ class GeneralBillingExcelDownload(http.Controller):
                 rec.patient_name or '',
                 dict(rec._fields['gender'].selection).get(rec.gender, ''),
                 rec.doctor.display_name if rec.doctor else '',
+                rec.mode_pay if rec.mode_pay else '',
                 str(rec.total_amount or '')
             ]
 
