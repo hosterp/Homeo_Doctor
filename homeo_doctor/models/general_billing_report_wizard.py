@@ -43,7 +43,7 @@ class BillingReportWizard(models.TransientModel):
             'billing_records': billing_data,
             'mode_pay': self.mode_pay or 'All',
         }
-        print(data)  # This will help you debug the structure
+
         return self.env.ref('homeo_doctor.billing_report_action').report_action(self, data={'data': data})
 
     def action_generate_excel_report(self):
