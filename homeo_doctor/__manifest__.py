@@ -73,6 +73,8 @@
         "report/sales_gst_wise_report_wizard.xml",
         "report/hsn_report_wizard_view.xml",
         "report/report_hsn_wise.xml",
+        "report/bill_report_wizard.xml",
+        "report/ip_biling_report.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",

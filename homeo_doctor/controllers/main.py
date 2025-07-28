@@ -611,3 +611,16 @@ class HSNExcelReportController(http.Controller):
                 ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             ]
         )
+
+class ExcelDownloadController(http.Controller):
+    @http.route('/web/report/excel_download', type='http', auth='user')
+    def download_excel_report(self, data=None, **kwargs):
+        if not data:
+            return request.not_found()
+
+        decoded = base64.b64decode(data)
+        headers = [
+            ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+            ('Content-Disposition', 'attachment; filename=Billing_Report.xlsx'),
+        ]
+        return request.make_response(decoded, headers)
