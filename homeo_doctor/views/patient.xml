@@ -1175,7 +1175,8 @@
                                 class="oe_highlight"/>
 
                     </header>
-                    <field name="formatted_date" string="Registration Date"/>
+<!--                    <field name="formatted_date" string="Registration Date"/>-->
+                    <field name="time" string="Registration Date"/>
                     <field name="reference_no" string="UHID"/>
                     <field name="patient_id"/>
                     <field name="token_no"/>

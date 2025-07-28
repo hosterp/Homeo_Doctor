@@ -72,7 +72,7 @@ class DashboardModel(models.Model):
             rec.other_bills = rec.other_bills = 0.0
 
             if rec.name == 'Today OP Details':
-                consultations = self.env['patient.reg'].search([('date', '=', today),('status','=','paid'),('register_mode_payment','!=','credit')])
+                consultations = self.env['patient.reg'].search([('time', '=', today),('status','=','paid'),('register_mode_payment','!=','credit')])
                 rec.consultation_count = len(consultations)
                 rec.consultation_amount = sum(
                     consultations.mapped('register_total_amount'))
@@ -219,7 +219,7 @@ class DashboardModel(models.Model):
                 'res_model': 'patient.reg',
                 'view_mode': 'tree,form',
                 'target': 'current',
-                'domain': [('date', '=', today_str),('status','=','paid'),('register_mode_payment','!=','credit')],
+                'domain': [('time', '=', today_str),('status','=','paid'),('register_mode_payment','!=','credit')],
             }
         elif self.name == 'Today Pharmacy Billing Details':
             return {
