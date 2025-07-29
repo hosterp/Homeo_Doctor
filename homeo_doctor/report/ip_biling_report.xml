@@ -1,79 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Report Action -->
+    <!-- IP Part Billing Report -->
     <report
-            id="action_report_billing"
+            id="action_report_ip_billing"
             model="ip.part.billing"
             string="IP Billing Report"
             report_type="qweb-pdf"
-            name="homeo_doctor.report_billing_pdf"
-            file="homeo_doctor.report_billing_pdf"
-            print_report_name="'Billing Report'"
+            name="homeo_doctor.report_ip_billing_pdf"
+            file="homeo_doctor.report_ip_billing_pdf"
+            print_report_name="'IP Billing Report'"
     />
 
-    <!-- Report Template -->
-    <template id="report_billing_pdf">
-        <t t-name="homeo_doctor.report_billing_pdf">
+    <!-- Discharge Billing Report -->
+    <report
+            id="action_report_discharge_billing"
+            model="discharged.patient.record"
+            string="Discharge Billing Report"
+            report_type="qweb-pdf"
+            name="homeo_doctor.report_discharge_billing_pdf"
+            file="homeo_doctor.report_discharge_billing_pdf"
+            print_report_name="'Discharge Billing Report'"
+    />
+
+    <!-- Template for IP Part Billing -->
+    <template id="report_ip_billing_pdf">
+        <t t-name="homeo_doctor.report_ip_billing_pdf">
             <t t-call="web.basic_layout">
                 <div class="page">
+                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                             style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
 
-                    <p style="color: blue;">Debug data:
-                        <t t-esc="data"/>
+                        <div style="text-align: center;">
+                            <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI
+                                SPECIALITY HOSPITAL
+                            </h1>
+                            <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                THIRUVANANTHAPURAM -695 564
+                            </p>
+                            <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                                8590203321
+                                dpmshospital@gmail.com
+                            </p>
+                            <!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
+                            <!--                                            <strong>PH:</strong>-->
+                            <!--                                            0471-2432121, 9188429198 |-->
+                            <!--                                            <strong>Email:</strong>-->
+                            <!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
+                            <!--                                               style="color: #007bff; text-decoration: none;">-->
+                            <!--                                                santhwanatvpm@gmail.com-->
+                            <!--                                            </a>-->
+                            <!--                                        </p>-->
+                        </div>
+                    </div>
+                    <h3 style="text-align:center;">IP Part Billing Report</h3>
+                    <p style="text-align:center;">
+                        From
+                        <t t-esc="data.get('from_date')"/>
+                        to
+                        <t t-esc="data.get('to_date')"/>
                     </p>
 
-                    <t t-if="data">
-                        <t t-set="from_date" t-value="data.get('from_date')"/>
-                        <t t-set="to_date" t-value="data.get('to_date')"/>
-                        <t t-set="model_name" t-value="data.get('model_name')"/>
-                        <t t-set="record_ids" t-value="data.get('record_ids') or []"/>
-                        <t t-set="records" t-value="env[model_name].browse(record_ids)"/>
 
-                        <h2 style="text-align:center;">Billing Report</h2>
-                        <p>From:
-                            <t t-esc="from_date"/>
-                            — To:
-                            <t t-esc="to_date"/>
-                        </p>
-
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Bill No</th>
-                                    <th>Patient</th>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-if="not records">
-                                    <tr>
-                                        <td colspan="4">No records found.</td>
-                                    </tr>
-                                </t>
-                                <t t-foreach="records" t-as="rec">
-                                    <tr>
-                                        <td>
-                                            <t t-esc="rec.bill_number or rec.patient_id or rec.id"/>
-                                        </td>
-                                        <td>
-                                            <t t-esc="rec.patient_name or rec.name"/>
-                                        </td>
-                                        <td>
-                                            <t t-esc="rec.bill_date or rec.discharge_date"/>
-                                        </td>
-                                        <td>
-                                            <t t-esc="rec.net_amount or rec.total_amount or 0"/>
-                                        </td>
-                                    </tr>
-                                </t>
-                            </tbody>
-                        </table>
+                    <t t-if="not docs">
+                        <p>No records found.</p>
                     </t>
 
-                    <t t-if="not data">
-                        <p style="color:red;">❌ No data received</p>
+                    <t t-set="total_amt" t-value="0"/>
+                    <t t-foreach="range(0, len(docs), 500)" t-as="start">
+                        <div class="page">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Bill No</th>
+                                        <th>Patient</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="docs[start:start+500]" t-as="rec">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="rec.bill_number or rec.id"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rec.patient_name"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rec.bill_date"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rec.net_amount or 0"/>
+                                                <t t-set="total_amt" t-value="total_amt + (rec.net_amount or 0)"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <!-- Total Row -->
+                                    <tr>
+                                        <td colspan="3" style="text-align:right; font-weight:bold;">Total</td>
+                                        <td>
+                                            <t t-esc="total_amt"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Template for Discharge Billing -->
+    <template id="report_discharge_billing_pdf">
+        <t t-name="homeo_doctor.report_discharge_billing_pdf">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                <div style="padding-top: 2mm; margin-bottom: 10px;">
+                    <!-- Hospital Header Block -->
+                    <div style="display: flex; align-items: center; justify-content: center; font-family: Arial, sans-serif;">
+                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                             style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+                        <div style="text-align: center;">
+                            <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
+                                MULTI SPECIALITY HOSPITAL
+                            </h1>
+                            <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                THIRUVANANTHAPURAM -695 564
+                            </p>
+                            <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                                8590203321<br/>dpmshospital@gmail.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                    <h2 style="text-align:center;">Discharge Billing Report</h2>
+                    <p style="text-align:center;">
+                        From
+                        <t t-esc="data.get('from_date')"/>
+                        to
+                        <t t-esc="data.get('to_date')"/>
+                    </p>
+
+                    <t t-if="not docs">
+                        <p>No records found.</p>
                     </t>
 
+                    <t t-set="total_amt" t-value="0"/>
+                    <t t-foreach="range(0, len(docs), 500)" t-as="start">
+                        <div class="page">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Bill No</th>
+                                        <th>Patient</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="docs[start:start+500]" t-as="rec">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="rec.patient_id or rec.id"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rec.name"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rec.discharge_date"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rec.total_amount or 0"/>
+                                                <t t-set="total_amt" t-value="total_amt + (rec.total_amount or 0)"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <!-- Total Row -->
+                                    <tr>
+                                        <td colspan="3" style="text-align:right; font-weight:bold;">Total</td>
+                                        <td>
+                                            <t t-esc="total_amt"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
                 </div>
             </t>
         </t>
