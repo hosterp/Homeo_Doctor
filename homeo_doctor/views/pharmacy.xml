@@ -607,6 +607,7 @@
                     <field name="phone_number"/>
                     <field name="vssc_boolean"/>
                     <field name="doctor_name"/>
+                    <field name="payment_mathod"/>
                     <field name="status"/>
                     <field name="status_admitted"/>
                 </tree>
