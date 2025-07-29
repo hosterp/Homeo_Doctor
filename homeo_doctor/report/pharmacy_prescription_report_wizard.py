@@ -4,8 +4,8 @@ class PharmacyPrescriptionReportWizard(models.TransientModel):
     _name = 'pharmacy.prescription.report.wizard'
     _description = 'Pharmacy Prescription Report Wizard'
 
-    date_from = fields.Date(string='Date From', required=True)
-    date_to = fields.Date(string='Date To', required=True)
+    date_from = fields.Date(string='Date From', required=True,default=fields.Date.today)
+    date_to = fields.Date(string='Date To', required=True,default=fields.Date.today)
     medicine_id = fields.Many2one('product.product', string='Medicine')
     with_patient_name = fields.Boolean(string="Include Patient Name", default=False)
 

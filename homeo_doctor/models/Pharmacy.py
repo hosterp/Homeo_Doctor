@@ -887,8 +887,8 @@ class FastMovingMedicineForm(models.TransientModel):
     _description = 'Fast Moving Medicine Form'
 
     name = fields.Char(default='Fast Moving Report')
-    from_date = fields.Date(required=True)
-    to_date = fields.Date(required=True)
+    from_date = fields.Date(required=True,default=fields.Date.today)
+    to_date = fields.Date(required=True,default=fields.Date.today)
     line_ids = fields.One2many('fast.moving.medicine.line', 'form_id', string="Medicines")
 
     def compute_fast_moving(self):
