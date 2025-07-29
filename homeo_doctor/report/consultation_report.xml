@@ -98,6 +98,17 @@
             </t>
         </template>
 
+        <record id="consultation_billing_paperformat" model="report.paperformat">
+            <field name="name">consultation Billing PDF Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="orientation">Portrait</field>
+            <field name="header_line" eval="False"/>
+        </record>
 
         <!-- QWeb Report Action -->
         <report
@@ -107,7 +118,8 @@
                 report_type="qweb-pdf"
                 name="homeo_doctor.patient_pdf_template"
                 file="homeo_doctor.patient_pdf_template"
-                menu="False"/>
+                menu="False"
+                paperformat="consultation_billing_paperformat"/>
 
         <!-- Wizard Form View -->
         <record id="view_patient_report_wizard" model="ir.ui.view">
@@ -127,7 +139,7 @@
                         </group>
                         <group>
 
-                            <field name="department_id" />
+                            <field name="department_id"/>
 
                         </group>
 
