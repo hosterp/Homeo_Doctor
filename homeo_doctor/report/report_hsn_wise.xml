@@ -2,6 +2,32 @@
     <template id="report_hsn_gst_summary">
         <t t-call="web.basic_layout">
             <div class="page">
+                <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                    <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+
+                    <div style="text-align: center;">
+                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
+                            MULTI SPECIALITY HOSPITAL
+                        </h1>
+                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                            THIRUVANANTHAPURAM -695 564
+                        </p>
+                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                            8590203321
+                            dpmshospital@gmail.com
+                        </p>
+                        <!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
+                        <!--                                            <strong>PH:</strong>-->
+                        <!--                                            0471-2432121, 9188429198 |-->
+                        <!--                                            <strong>Email:</strong>-->
+                        <!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
+                        <!--                                               style="color: #007bff; text-decoration: none;">-->
+                        <!--                                                santhwanatvpm@gmail.com-->
+                        <!--                                            </a>-->
+                        <!--                                        </p>-->
+                    </div>
+                </div>
                 <h3 style="text-align: center;">HSN Wise GST Report</h3>
                 <p style="text-align: center;">From
                     <t t-esc="docs.from_date"/>
@@ -107,13 +133,24 @@
             </div>
         </t>
     </template>
-
+    <record id="sales_hsn_report_paperformat" model="report.paperformat">
+        <field name="name">Sales HSN Report PDF Format</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="orientation">Portrait</field>
+        <field name="header_line" eval="False"/>
+    </record>
     <record id="action_report_hsn_gst_summary" model="ir.actions.report">
         <field name="name">HSN GST Summary</field>
         <field name="model">hsn.report.wizard</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">homeo_doctor.report_hsn_gst_summary</field>
         <field name="report_file">homeo_doctor.report_hsn_gst_summary</field>
+        <field name="paperformat_id" ref="sales_hsn_report_paperformat"/>
     </record>
 
 
