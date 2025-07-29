@@ -101,7 +101,6 @@
 
                                 </tr>
                                 <t t-set="sl" t-value="sl + 1"/>
-                                <t t-set="sl" t-value="sl + 1"/>
                                 <t t-set="total_qty" t-value="total_qty + (line.qty or 0)"/>
                                 <t t-set="total_rate" t-value="total_rate + (line.rate or 0.0)"/>
                                 <t t-set="total_taxable" t-value="total_taxable + (line.taxable or 0.0)"/>
