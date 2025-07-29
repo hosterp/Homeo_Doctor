@@ -123,7 +123,7 @@
             <field name="name">Doctor Billing PDF Format</field>
             <field name="default" eval="False"/>
             <field name="format">A4</field>
-            <field name="margin_top">7</field>         <!-- 🔥 Top margin in mm -->
+            <field name="margin_top">7</field>
             <field name="margin_bottom">7</field>
             <field name="margin_left">7</field>
             <field name="margin_right">7</field>
