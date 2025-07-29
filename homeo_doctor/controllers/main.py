@@ -149,12 +149,22 @@ class DoctorLabReportController(http.Controller):
     def download_excel(self, **kw):
         from_date = kw.get('from_date')
         to_date = kw.get('to_date')
+        mode_pay = kw.get('mode_pay')
+        bill_type = kw.get('bill_type')
 
-        # Get the filtered data
-        lab_reports = request.env['doctor.lab.report'].sudo().search([
-            ('date', '>=', from_date),
-            ('date', '<=', to_date)
-        ])
+        # Build dynamic domain
+        domain = []
+        if from_date:
+            domain.append(('date', '>=', from_date))
+        if to_date:
+            domain.append(('date', '<=', to_date))
+        if mode_pay:
+            domain.append(('mode_of_payment', '=', mode_pay))
+        if bill_type:
+            domain.append(('bill_type', '=', bill_type))
+
+        # Search records with applied filters
+        lab_reports = request.env['doctor.lab.report'].sudo().search(domain)
 
         # Create an in-memory output file
         output = io.BytesIO()

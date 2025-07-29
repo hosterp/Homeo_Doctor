@@ -55,6 +55,11 @@ class DoctorLabReportWizard(models.TransientModel):
         base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url')
         return {
             'type': 'ir.actions.act_url',
-            'url': f'/doctor_lab_report/download_excel?from_date={self.from_date}&to_date={self.to_date}',
+            'url': (
+                f'/doctor_lab_report/download_excel'
+                f'?from_date={self.from_date}&to_date={self.to_date}'
+                f'&mode_pay={self.mode_pay or ""}&bill_type={self.bill_type or ""}'
+            ),
             'target': 'self',
         }
+
