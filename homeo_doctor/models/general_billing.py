@@ -357,6 +357,7 @@ class IPPartBilling(models.Model):
     _name = 'ip.part.billing'
     _description = 'IP Part Billing'
     _rec_name = 'mrd_no'
+    _order = 'bill_number desc'
 
     bill_number = fields.Char(string='Bill Number',  copy=False, default='New')
     mrd_no = fields.Many2one('patient.reg', string='UHID')
@@ -705,7 +706,7 @@ class IPPartBilling(models.Model):
 
     @api.model
     def create(self, vals):
-        """Generate a unique billing number in the format: 000001/24-25"""
+        """Generate a unique billing number in the format: 0001/24-25"""
         if vals.get('bill_number', 'New') == 'New':
             current_year = datetime.now().year
             next_year = current_year + 1
@@ -714,11 +715,10 @@ class IPPartBilling(models.Model):
             # Get the next sequence number
             sequence_number = self.env['ir.sequence'].next_by_code('ip.part.billing')
 
-            # Ensure sequence exists
             if not sequence_number:
-                sequence_number = '1'
-            formatted_seq = str(sequence_number).zfill(4)
-            vals['bill_number'] = f"{formatted_seq}/{year_range}"
+                raise ValueError("Sequence 'ip.part.billing' is not defined.")
+
+            vals['bill_number'] = f"{sequence_number}/{year_range}"
 
         return super(IPPartBilling, self).create(vals)
 
