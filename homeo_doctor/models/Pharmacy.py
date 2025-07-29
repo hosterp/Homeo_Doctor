@@ -925,9 +925,10 @@ class FastMovingMedicineForm(models.TransientModel):
         self.ensure_one()
         self.compute_fast_moving()
 
-        print("Line count: %s", len(self.line_ids))  # Add logging to verify
+        # print("Line count: %s", len(self.line_ids))  # Add logging to verify
         for line in self.line_ids:
-            print("Line: %s - %s", line.product_id.name, line.total_qty)
+            pass
+            # print("Line: %s - %s", line.product_id.name, line.total_qty)
 
         return self.env.ref('homeo_doctor.action_report_fast_moving').report_action(self)
 
