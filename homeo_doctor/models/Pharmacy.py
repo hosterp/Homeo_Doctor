@@ -936,6 +936,7 @@ class FastMovingMedicineForm(models.TransientModel):
 class FastMovingMedicineLine(models.TransientModel):
     _name = 'fast.moving.medicine.line'
     _description = 'Fast Moving Medicine Line'
+    _order = 'total_qty desc'
 
     form_id = fields.Many2one('fast.moving.medicine.form', string="Form")
     product_id = fields.Many2one('product.product', string="Medicine")
