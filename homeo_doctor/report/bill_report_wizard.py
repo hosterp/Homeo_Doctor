@@ -8,8 +8,8 @@ class BillingReportWizard(models.TransientModel):
     _name = 'ip.billing.report.wizard'
     _description = 'Billing Report Wizard'
 
-    from_date = fields.Date(string="From Date", required=True)
-    to_date = fields.Date(string="To Date", required=True)
+    from_date = fields.Date(string="From Date", required=True,default=fields.Date.today)
+    to_date = fields.Date(string="To Date", required=True,default=fields.Date.today)
     bill_type = fields.Selection([
         ('ip_part', 'IP Part Bill'),
         ('discharge', 'Discharge Bill')

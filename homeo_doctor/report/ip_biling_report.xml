@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- IP Part Billing Report -->
+    <record id="ip_billing_paperformat" model="report.paperformat">
+        <field name="name">Ip Billing PDF Format</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="margin_top">7</field>
+        <field name="margin_bottom">7</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="orientation">Portrait</field>
+        <field name="header_line" eval="False"/>
+    </record>
     <report
             id="action_report_ip_billing"
             model="ip.part.billing"
@@ -9,6 +19,7 @@
             name="homeo_doctor.report_ip_billing_pdf"
             file="homeo_doctor.report_ip_billing_pdf"
             print_report_name="'IP Billing Report'"
+            paperformat="ip_billing_paperformat"
     />
 
     <!-- Discharge Billing Report -->
@@ -20,6 +31,7 @@
             name="homeo_doctor.report_discharge_billing_pdf"
             file="homeo_doctor.report_discharge_billing_pdf"
             print_report_name="'Discharge Billing Report'"
+            paperformat="ip_billing_paperformat"
     />
 
     <!-- Template for IP Part Billing -->
@@ -117,24 +129,24 @@
         <t t-name="homeo_doctor.report_discharge_billing_pdf">
             <t t-call="web.basic_layout">
                 <div class="page">
-                <div style="padding-top: 2mm; margin-bottom: 10px;">
-                    <!-- Hospital Header Block -->
-                    <div style="display: flex; align-items: center; justify-content: center; font-family: Arial, sans-serif;">
-                        <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                             style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
-                        <div style="text-align: center;">
-                            <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
-                                MULTI SPECIALITY HOSPITAL
-                            </h1>
-                            <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
-                                THIRUVANANTHAPURAM -695 564
-                            </p>
-                            <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
-                                8590203321<br/>dpmshospital@gmail.com
-                            </p>
+                    <div style="padding-top: 2mm; margin-bottom: 10px;">
+                        <!-- Hospital Header Block -->
+                        <div style="display: flex; align-items: center; justify-content: center; font-family: Arial, sans-serif;">
+                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                 style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+                            <div style="text-align: center;">
+                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
+                                    MULTI SPECIALITY HOSPITAL
+                                </h1>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                    THIRUVANANTHAPURAM -695 564
+                                </p>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                                    8590203321<br/>dpmshospital@gmail.com
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
                     <h2 style="text-align:center;">Discharge Billing Report</h2>
                     <p style="text-align:center;">
                         From
