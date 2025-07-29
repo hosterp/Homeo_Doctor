@@ -4,14 +4,43 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                 style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+
+                            <div style="text-align: center;">
+                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
+                                    MULTI
+                                    SPECIALITY HOSPITAL
+                                </h1>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                    THIRUVANANTHAPURAM -695 564
+                                </p>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                                    8590203321
+                                    dpmshospital@gmail.com
+                                </p>
+                                <!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
+                                <!--                                            <strong>PH:</strong>-->
+                                <!--                                            0471-2432121, 9188429198 |-->
+                                <!--                                            <strong>Email:</strong>-->
+                                <!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
+                                <!--                                               style="color: #007bff; text-decoration: none;">-->
+                                <!--                                                santhwanatvpm@gmail.com-->
+                                <!--                                            </a>-->
+                                <!--                                        </p>-->
+                            </div>
+                        </div>
                         <div class="oe_structure"/>
-                        <h2 class="text-center">Patient Registration Report</h2>
-                        <p>
-                            <strong>From Date:</strong>
-                            <span t-esc="data['form']['from_date']"/>
-                            <strong>To Date:</strong>
-                            <span t-esc="data['form']['to_date']"/>
-                        </p>
+                        <div style="text-align: center;">
+                            <h2>Patient Registration Report</h2>
+                            <p>
+                                <strong>From Date:</strong>
+                                <span t-esc="data['form']['from_date']"/>
+                                <strong>To Date:</strong>
+                                <span t-esc="data['form']['to_date']"/>
+                            </p>
+                        </div>
 
                         <t t-if="data['form']['patients'] and len(data['form']['patients']) > 0">
                             <table class="table table-sm table-bordered mt-4" style="width: 100%;">
@@ -29,7 +58,8 @@
                                         </th>
                                         <th class="text-center" style="border: 1px solid #000; padding: 8px;">Doctor
                                         </th>
-                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Payment Mode
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Payment
+                                            Mode
                                         </th>
                                         <th class="text-center" style="border: 1px solid #000; padding: 8px;">Total
                                             Amount
@@ -118,7 +148,17 @@
                 </form>
             </field>
         </record>
-
+        <record id="patient_reg_billing_paperformat" model="report.paperformat">
+            <field name="name">Patient Reg Billing PDF Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="orientation">Portrait</field>
+            <field name="header_line" eval="False"/>
+        </record>
         <report
                 id="action_patient_registration_pdf"
                 model="patient.registration.report.wizard"
@@ -127,7 +167,7 @@
                 name="homeo_doctor.patient_registration_pdf_template"
                 file="homeo_doctor.patient_registration_pdf_template"
                 print_report_name="'Patient_Registration_Report_%s' % (object.from_date)"
-                paperformat="base.paperformat_euro"
+                paperformat="patient_reg_billing_paperformat"
         />
 
 
