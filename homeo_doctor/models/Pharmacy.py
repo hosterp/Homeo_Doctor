@@ -35,7 +35,7 @@ class PharmacyDescription(models.Model):
     staff_pwd = fields.Char(string='Staff Password')
     staff_name = fields.Many2one('hr.employee',string='Staff Name')
     description_line_ids = fields.One2many('pharmacy.prescription.line', 'description_id', string="Lines")
-    bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='New')
+    bill_number = fields.Char(string="Bill Number",  copy=False, default='New')
     admitted_boolean=fields.Boolean('Admitted')
     patient_type=fields.Selection([('insurance','Insurance Patient'),('normal','Normal Patient')])
     # @api.model
