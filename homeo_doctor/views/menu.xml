@@ -6,7 +6,6 @@
             <field name="code">discharge.bill</field>
             <field name="prefix"></field>
             <field name="padding">4</field>
-            <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
         <record id="seq_appointment_recept_bill" model="ir.sequence">
@@ -14,7 +13,6 @@
             <field name="code">payment.receipt</field>
             <field name="prefix"></field>
             <field name="padding">4</field>
-            <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
         <record id="seq_patient_bill" model="ir.sequence">
@@ -22,7 +20,6 @@
             <field name="code">patient.bill</field>
             <field name="prefix"></field>
             <field name="padding">4</field>
-            <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
         <record id="seq_patient_admitted_bill" model="ir.sequence">
@@ -30,7 +27,6 @@
             <field name="code">admitted.bill</field>
             <field name="prefix"></field>
             <field name="padding">4</field>
-            <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
 
@@ -39,7 +35,6 @@
             <field name="code">purchase.order.custom</field>
             <field name="prefix"></field>
             <field name="padding">4</field>
-            <field name="number_next">1</field>
             <field name="number_increment">1</field>
             <field name="implementation">no_gap</field>
         </record>
@@ -49,14 +44,12 @@
             <field name="code">account.move</field>
             <field name="prefix"></field>
             <field name="padding">4</field>
-            <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
         <record id="seq_pharmacy_description" model="ir.sequence">
             <field name="name">Pharmacy Bill Number</field>
             <field name="code">pharmacy.description</field>
             <field name="padding">4</field>
-            <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
 
@@ -83,7 +76,6 @@
             <field name="code">patient.appointment.sequence</field>
             <field name="padding">4</field>  <!-- Keeps the padding, e.g., 0001 -->
             <field name="number_increment">1</field>
-            <field name="number_next">1</field>  <!-- Starts from 1 -->
         </record>
 
         <record id="sequence_for_patient_registration" model="ir.sequence">
