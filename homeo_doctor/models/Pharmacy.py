@@ -925,9 +925,10 @@ class FastMovingMedicineForm(models.TransientModel):
         self.ensure_one()
         self.compute_fast_moving()
 
-        print("Line count: %s", len(self.line_ids))  # Add logging to verify
+        # print("Line count: %s", len(self.line_ids))  # Add logging to verify
         for line in self.line_ids:
-            print("Line: %s - %s", line.product_id.name, line.total_qty)
+            pass
+            # print("Line: %s - %s", line.product_id.name, line.total_qty)
 
         return self.env.ref('homeo_doctor.action_report_fast_moving').report_action(self)
 
@@ -935,6 +936,7 @@ class FastMovingMedicineForm(models.TransientModel):
 class FastMovingMedicineLine(models.TransientModel):
     _name = 'fast.moving.medicine.line'
     _description = 'Fast Moving Medicine Line'
+    _order = 'total_qty desc'
 
     form_id = fields.Many2one('fast.moving.medicine.form', string="Form")
     product_id = fields.Many2one('product.product', string="Medicine")

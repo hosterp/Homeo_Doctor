@@ -13,14 +13,14 @@ class PatientExcelReport(http.Controller):
     def download_excel(self, from_date=None, to_date=None, **kwargs):
         from_dt = datetime.strptime(from_date, '%Y-%m-%d').date()
         to_dt = datetime.strptime(to_date, '%Y-%m-%d').date()
-        records = request.env['patient.reg'].search([('date', '>=', from_dt), ('date', '<=', to_dt)])
+        records = request.env['patient.reg'].search([('time', '>=', from_dt), ('time', '<=', to_dt)])
 
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output)
         sheet = workbook.add_worksheet("Patient Report")
         bold = workbook.add_format({'bold': True})
 
-        headers = ['UHID', 'Name', 'Age', 'Address', 'Phone', 'Doctor Name', 'Total Amount']
+        headers = ['UHID', 'Name', 'Age', 'Address', 'Phone', 'Doctor Name','Payment Mode', 'Total Amount']
         for col, header in enumerate(headers):
             sheet.write(0, col, header, bold)
 
@@ -36,6 +36,7 @@ class PatientExcelReport(http.Controller):
                 str(rec.address),
                 str(rec.phone_number),
                 str(rec.doc_name.name),
+                str(rec.register_mode_payment),
                 str(rec.register_total_amount)
             ]
             for col, value in enumerate(row_data):
@@ -56,7 +57,8 @@ class PatientExcelReport(http.Controller):
             sheet.write(row, 3, str(rec.address))
             sheet.write(row, 4, rec.phone_number)
             sheet.write(row, 5, rec.doc_name.name)
-            sheet.write(row, 6, rec.register_total_amount)
+            sheet.write(row, 6, rec.register_mode_payment)
+            sheet.write(row, 7, rec.register_total_amount)
 
 
         sheet.write(len(records) + 1, 5, "Total Amount", bold)
@@ -92,7 +94,7 @@ class GeneralBillingExcelDownload(http.Controller):
         # Header labels
         headers = [
             'SL No', 'Bill No', 'Bill Date', 'Type', 'Department',
-            'Category', 'MRD No', 'Patient Name', 'Gender', 'Doctor', 'Amount'
+            'Category', 'MRD No', 'Patient Name', 'Gender', 'Doctor','Payment Method', 'Amount'
         ]
 
         # Track max width for each column
@@ -116,6 +118,7 @@ class GeneralBillingExcelDownload(http.Controller):
                 rec.patient_name or '',
                 dict(rec._fields['gender'].selection).get(rec.gender, ''),
                 rec.doctor.display_name if rec.doctor else '',
+                rec.mode_pay if rec.mode_pay else '',
                 str(rec.total_amount or '')
             ]
 

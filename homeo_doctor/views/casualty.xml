@@ -68,7 +68,6 @@
             <field name="name">Casualty Registration</field>
             <field name="code">casualty.reg</field>
             <field name="padding">5</field>
-            <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
 

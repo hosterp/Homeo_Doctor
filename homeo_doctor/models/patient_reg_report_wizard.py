@@ -1,18 +1,29 @@
 from odoo import api, models, fields
 
+
 class PatientRegistrationReportWizard(models.TransientModel):
     _name = 'patient.registration.report.wizard'
     _description = 'Patient Registration Report Wizard'
 
-    from_date = fields.Date(string="From Date", required=True,default=fields.Date.today)
-    to_date = fields.Date(string="To Date", required=True,default=fields.Date.today)
+    from_date = fields.Date(string="From Date", required=True, default=fields.Date.today)
+    to_date = fields.Date(string="To Date", required=True, default=fields.Date.today)
+    register_mode_payment = fields.Selection([('cash', 'Cash'),
+                                              ('card', 'Card'),
+                                              ('cheque', 'Cheque'),
+                                              ('credit', 'Credit'),
+                                              ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
 
     def action_print_pdf(self):
         # Search for patients within the given date range
-        patients = self.env['patient.reg'].search([
-            ('date', '>=', self.from_date),
-            ('date', '<=', self.to_date)
-        ])
+        domain = [
+            ('time', '>=', self.from_date),
+            ('time', '<=', self.to_date)
+        ]
+
+        if self.register_mode_payment:
+            domain.append(('register_mode_payment', '=', self.register_mode_payment))
+
+        patients = self.env['patient.reg'].search(domain)
 
         patient_list = []
         sl = 1
@@ -30,6 +41,7 @@ class PatientRegistrationReportWizard(models.TransientModel):
                 'consultation_fee': patient.consultation_fee or '',
                 'registration_fee': patient.registration_fee or '',
                 'register_total_amount': patient.register_total_amount or '',
+                'mode_of_payment': patient.register_mode_payment or '',
                 'doctor': patient.doc_name.name if hasattr(patient.doc_name, 'name') else patient.doc_name or '',
             })
             sl += 1
@@ -51,10 +63,17 @@ class PatientRegistrationReportWizard(models.TransientModel):
         # Return the PDF report action
         return self.env.ref('homeo_doctor.action_patient_registration_pdf').with_context(landscape=True).report_action(
             self, data=data)
+
     def action_export_excel(self):
+        base_url = '/web/binary/download_patient_excel'
+        url = f'{base_url}?from_date={self.from_date}&to_date={self.to_date}'
+
+        if self.register_mode_payment:
+            url += f'&register_mode_payment={self.register_mode_payment}'
+
         return {
             'type': 'ir.actions.act_url',
-            'url': '/web/binary/download_patient_excel?from_date=%s&to_date=%s' % (self.from_date, self.to_date),
+            'url': url,
             'target': 'new',
         }
 

@@ -3,6 +3,26 @@
         <template id="billing_report_template">
             <t t-call="web.html_container">
                 <div class="page">
+                    <div style="padding-top: 2mm; margin-bottom: 10px;">
+                        <!-- Hospital Header Block -->
+                        <div style="display: flex; align-items: center; justify-content: center; font-family: Arial, sans-serif;">
+                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                 style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+                            <div style="text-align: center;">
+                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr.
+                                    PRIYA'S
+                                    MULTI SPECIALITY HOSPITAL
+                                </h1>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                    THIRUVANANTHAPURAM -695 564
+                                </p>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile
+                                    No:
+                                    8590203321<br/>dpmshospital@gmail.com
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     <h2 style="text-align: center;">General Billing Report</h2>
                     <h3 style="text-align: center;">
 
@@ -26,6 +46,7 @@
                                 <th style="border: 1px solid #ddd; padding: 8px;">Patient Name</th>
                                 <th style="border: 1px solid #ddd; padding: 8px;">Gender</th>
                                 <th style="border: 1px solid #ddd; padding: 8px;">Doctor</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Payment Method</th>
                                 <th style="border: 1px solid #ddd; padding: 8px;">Amount</th>
                             </tr>
                         </thead>
@@ -62,6 +83,9 @@
                                             <t t-esc="record['doctor']"/>
                                         </td>
                                         <td style="border: 1px solid #ddd; padding: 8px;">
+                                            <t t-esc="record['mode_pay']"/>
+                                        </td>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">
                                             <t t-esc="record['total_amount']"/>
                                             <t t-set="total_amount"
                                                t-value="total_amount + (float(record['total_amount']) if record['total_amount'] else 0)"/>
@@ -71,7 +95,7 @@
                             </t>
 
                             <tr>
-                                <td colspan="9" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                                <td colspan="10" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
                                     <strong>Total</strong>
                                 </td>
                                 <td style="border: 1px solid #ddd; padding: 8px;">
@@ -87,6 +111,18 @@
                 </div>
             </t>
         </template>
+        <record id="general_report_billing_paperformat" model="report.paperformat">
+            <field name="name">Doctor Billing PDF Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="margin_top">7</field>
+            <field name="margin_bottom">7</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="orientation">Portrait</field>
+            <field name="header_line" eval="False"/>
+        </record>
+
         <report
                 id="billing_report_action"
                 model="general.billing"
@@ -94,8 +130,9 @@
                 report_type="qweb-pdf"
                 name="homeo_doctor.billing_report_template"
                 file="homeo_doctor.billing_report_template"
+                 paperformat="general_report_billing_paperformat"
         />
-        <record id="view_billing_report_wizard_form" model="ir.ui.view">
+        <record id="view_billing_report_wizard_general_form" model="ir.ui.view">
             <field name="name">billing.report.wizard.form</field>
             <field name="model">billing.report.wizard</field>
             <field name="arch" type="xml">
@@ -110,6 +147,7 @@
                         <group>
                             <field name="mode_pay"/>
                         </group>
+
                     </group>
                     <footer>
                         <button string="Print PDF" type="object" name="action_generate_pdf_report" class="btn-primary"/>
@@ -124,6 +162,7 @@
             <field name="name">General Billing Report</field>
             <field name="res_model">billing.report.wizard</field>
             <field name="view_mode">form</field>
+            <field name="view_id" ref="view_billing_report_wizard_general_form"/>
             <field name="target">new</field>
         </record>
         <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
