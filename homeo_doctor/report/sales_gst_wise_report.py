@@ -7,6 +7,7 @@ class PharmacyBillGSTReport(models.TransientModel):
 
     from_date = fields.Date("From Date", required=True,default=fields.Date.today)
     to_date = fields.Date("To Date", required=True,default=fields.Date.today)
+    op_category = fields.Selection([('op', 'OP'), ('ip', 'IP'), ('others', 'OTHERS')])
 
     def print_report(self):
         return self.env.ref('homeo_doctor.action_report_bill_gst').report_action(self)

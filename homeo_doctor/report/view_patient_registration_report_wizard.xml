@@ -181,7 +181,7 @@
         <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
         <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
         <menuitem id="menu_patient_registration_report"
-                  name="Patient Report"
+                  name="OP Patient"
                   parent="menu_reports_root"
                   action="action_patient_registration_report_wizard"/>
 

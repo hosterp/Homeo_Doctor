@@ -5,12 +5,15 @@
             <field name="model">pharmacy.bill.gst.report</field>
             <field name="arch" type="xml">
                 <form string="Bill GST Report">
-                    <group>
+                    <group col="3">
                         <group>
                             <field name="from_date"/>
                         </group>
                         <group>
                             <field name="to_date"/>
+                        </group>
+                        <group>
+                            <field name="op_category"/>
                         </group>
                     </group>
                     <footer>
@@ -26,7 +29,7 @@
         </record>
 
         <record id="action_bill_gst_report_wizard" model="ir.actions.act_window">
-            <field name="name">GST Bill Report</field>
+            <field name="name">Pharmacy GST Bill Report</field>
             <field name="res_model">pharmacy.bill.gst.report</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
