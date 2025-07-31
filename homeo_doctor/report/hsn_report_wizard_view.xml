@@ -4,12 +4,20 @@
         <field name="model">hsn.report.wizard</field>
         <field name="arch" type="xml">
             <form string="HSN Wise Report">
-                <group col="2">
+                <group col="3">
                     <group>
                         <field name="from_date"/>
                     </group>
                     <group>
                         <field name="to_date"/>
+                    </group>
+                    <group>
+                        <field name="op_category"/>
+                    </group>
+                </group>
+                <group col="3">
+                    <group>
+                        <field name="payment_method"/>
                     </group>
                 </group>
                 <footer>

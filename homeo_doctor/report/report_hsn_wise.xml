@@ -1,49 +1,56 @@
 <odoo>
-    <template id="report_hsn_gst_summary">
+        <template id="report_hsn_gst_summary">
         <t t-call="web.basic_layout">
             <div class="page">
+                <!-- Header -->
                 <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
                     <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
-
+                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;" />
                     <div style="text-align: center;">
-                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
-                            MULTI SPECIALITY HOSPITAL
-                        </h1>
-                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
-                            THIRUVANANTHAPURAM -695 564
-                        </p>
-                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
-                            8590203321
-                            dpmshospital@gmail.com
-                        </p>
-                        <!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
-                        <!--                                            <strong>PH:</strong>-->
-                        <!--                                            0471-2432121, 9188429198 |-->
-                        <!--                                            <strong>Email:</strong>-->
-                        <!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
-                        <!--                                               style="color: #007bff; text-decoration: none;">-->
-                        <!--                                                santhwanatvpm@gmail.com-->
-                        <!--                                            </a>-->
-                        <!--                                        </p>-->
+                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL</h1>
+                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564</p>
+                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321<br/>dpmshospital@gmail.com</p>
                     </div>
                 </div>
+
+                <!-- Title & Filters -->
                 <h3 style="text-align: center;">HSN Wise GST Report</h3>
-                <p style="text-align: center;">From
-                    <t t-esc="docs.from_date"/>
-                    to
-                    <t t-esc="docs.to_date"/>
+                <p style="text-align: center;">
+                    From <t t-esc="docs.from_date"/> to <t t-esc="docs.to_date"/>
+                    <t t-if="docs.op_category">
+                        - <strong>Type:</strong>
+                        <t t-if="docs.op_category == 'op'">OP</t>
+                        <t t-if="docs.op_category == 'ip'">IP</t>
+                        <t t-if="docs.op_category == 'others'">OTHERS</t>
+                    </t>
+                    <t t-if="docs.payment_method">
+                        - <strong>Payment:</strong>
+                        <t t-if="docs.payment_method == 'cash'">Cash</t>
+                        <t t-if="docs.payment_method == 'card'">Card</t>
+                        <t t-if="docs.payment_method == 'upi'">UPI</t>
+                        <t t-if="docs.payment_method == 'credit'">Credit</t>
+                    </t>
                 </p>
 
-                <t t-set="lines" t-value="env['pharmacy.prescription.line'].search([
-          ('pharmacy_id.date', '&gt;=', docs.from_date),
-          ('pharmacy_id.date', '&lt;=', docs.to_date)
-      ])"/>
+                <!-- Filter Domain -->
+                <t t-set="domain" t-value="[
+                    ('pharmacy_id.date', '&gt;=', docs.from_date),
+                    ('pharmacy_id.date', '&lt;=', docs.to_date)
+                ]"/>
+                <t t-if="docs.op_category">
+                    <t t-set="domain" t-value="domain + [('pharmacy_id.op_category', '=', docs.op_category)]"/>
+                </t>
+                <t t-if="docs.payment_method">
+                    <t t-set="domain" t-value="domain + [('pharmacy_id.payment_mathod', '=', docs.payment_method)]"/>
+                </t>
+                <t t-set="lines" t-value="env['pharmacy.prescription.line'].search(domain)"/>
 
+                <!-- Empty Case -->
                 <t t-if="not lines">
                     <p style="color:red; text-align:center;">No data found in selected range.</p>
                 </t>
 
+                <!-- Report Table -->
                 <t t-if="lines">
                     <table class="table table-sm table-bordered" style="font-size: 12px; width: 100%;">
                         <thead>
@@ -67,39 +74,22 @@
                             <t t-set="total_taxable" t-value="0.0"/>
                             <t t-set="total_cgst" t-value="0.0"/>
                             <t t-set="total_sgst" t-value="0.0"/>
+
                             <t t-foreach="lines" t-as="line">
                                 <tr>
-                                    <td>
-                                        <t t-esc="sl"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="line.hsn or ''"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="line.product_id.name"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="line.pharmacy_id.op_category"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="line.qty"/>
-                                    </td>
-                                    <td><t t-esc="line.gst"/>%
-                                    </td>
-                                    <td>
-                                        <t t-esc="line.rate"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="'%.2f' % (line.taxable or 0.0)"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="'%.2f' % (line.cgst or 0.0)"/>
-                                    </td>
-                                    <td>
-                                        <t t-esc="'%.2f' % (line.sgst or 0.0)"/>
-                                    </td>
-
+                                    <td><t t-esc="sl"/></td>
+                                    <td><t t-esc="line.hsn or ''"/></td>
+                                    <td><t t-esc="line.product_id.name"/></td>
+                                    <td><t t-esc="line.pharmacy_id.op_category"/></td>
+                                    <td><t t-esc="line.qty"/></td>
+                                    <td><t t-esc="line.gst"/>%</td>
+                                    <td><t t-esc="line.rate"/></td>
+                                    <td><t t-esc="'%.2f' % (line.taxable or 0.0)"/></td>
+                                    <td><t t-esc="'%.2f' % (line.cgst or 0.0)"/></td>
+                                    <td><t t-esc="'%.2f' % (line.sgst or 0.0)"/></td>
                                 </tr>
+
+                                <!-- Totals -->
                                 <t t-set="sl" t-value="sl + 1"/>
                                 <t t-set="total_qty" t-value="total_qty + (line.qty or 0)"/>
                                 <t t-set="total_rate" t-value="total_rate + (line.rate or 0.0)"/>
@@ -107,24 +97,16 @@
                                 <t t-set="total_cgst" t-value="total_cgst + (line.cgst or 0.0)"/>
                                 <t t-set="total_sgst" t-value="total_sgst + (line.sgst or 0.0)"/>
                             </t>
+
+                            <!-- Totals Row -->
                             <tr style="font-weight: bold; background: #f0f0f0;">
                                 <td colspan="4" style="text-align:right;">Total</td>
-                                <td>
-                                    <t t-esc="total_qty"/>
-                                </td>
+                                <td><t t-esc="total_qty"/></td>
                                 <td></td>
-                                <td>
-                                    <t t-esc="'%.2f' % total_rate"/>
-                                </td>
-                                <td>
-                                    <t t-esc="'%.2f' % total_taxable"/>
-                                </td>
-                                <td>
-                                    <t t-esc="'%.2f' % total_cgst"/>
-                                </td>
-                                <td>
-                                    <t t-esc="'%.2f' % total_sgst"/>
-                                </td>
+                                <td><t t-esc="'%.2f' % total_rate"/></td>
+                                <td><t t-esc="'%.2f' % total_taxable"/></td>
+                                <td><t t-esc="'%.2f' % total_cgst"/></td>
+                                <td><t t-esc="'%.2f' % total_sgst"/></td>
                             </tr>
                         </tbody>
                     </table>
