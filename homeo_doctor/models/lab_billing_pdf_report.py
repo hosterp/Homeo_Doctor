@@ -14,7 +14,7 @@ class DoctorLabReportWizard(models.TransientModel):
                                  ('cheque', 'Cheque'),
                                  ('upi', 'UPI'), ], string='Payment Method')
     bill_type = fields.Selection([
-        ('op', 'OP'), ('admitted', 'Admitted Patient'), ('others', 'Others')], string="Bill Type")
+        ('op', 'OP'), ('admitted', 'IP'), ('others', 'Others')], string="Bill Type")
 
     def action_generate_report(self):
         domain = [
