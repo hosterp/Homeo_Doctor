@@ -141,12 +141,12 @@
 
         <!-- Menu Items -->
         <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
-        <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
+        <menuitem id="menu_auditing_root" name="Auditing Reports" parent="menu_homeo_head" sequence="22"/>
 
 
         <menuitem id="menu_lab_billing_wizard_reports"
                   name="Lab billing Wizard Report"
-                  parent="menu_reports_root"
+                  parent="menu_auditing_root"
                   action="action_doctor_lab_report_wizard"
                   sequence="3"/>
     </data>

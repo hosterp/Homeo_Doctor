@@ -19,7 +19,7 @@
                     </group>
                     <group col="3">
                         <group>
-                             <field name="payment_method"/>
+                            <field name="payment_method"/>
                         </group>
                     </group>
 
@@ -41,10 +41,10 @@
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
-        <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
+        <menuitem id="menu_auditing_root" name="Auditing Reports" parent="menu_homeo_head" sequence="22"/>
         <menuitem id="menu_bill_gst_report"
                   name="Sales GST Report"
-                  parent="menu_reports_root"
+                  parent="menu_auditing_root"
                   action="action_bill_gst_report_wizard"
                   sequence="20"/>
 

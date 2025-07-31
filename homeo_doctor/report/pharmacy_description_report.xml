@@ -170,8 +170,8 @@
 
         <!-- Menu Items -->
         <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
-        <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
-        <menuitem id="menu_pharmacy_report_wizard" name="Pharmacy Report" parent="menu_reports_root"
+        <menuitem id="menu_auditing_root" name="Auditing Reports" parent="menu_homeo_head" sequence="22"/>
+        <menuitem id="menu_pharmacy_report_wizard" name="Pharmacy Report" parent="menu_auditing_root"
                   action="action_pharmacy_description_wizard" sequence="4"/>
 
     </data>
