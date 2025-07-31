@@ -16,6 +16,11 @@
                             <field name="bill_type" required="1"/>
                         </group>
                     </group>
+                    <group col="3">
+                        <group>
+                            <field name="mode_pay"/>
+                        </group>
+                    </group>
                     <footer>
 <!--                        <button string="Get Records" type="object" name="action_get_records" class="btn-primary"/>-->
                         <button name="action_print_report"

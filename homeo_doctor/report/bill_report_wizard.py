@@ -8,30 +8,40 @@ class BillingReportWizard(models.TransientModel):
     _name = 'ip.billing.report.wizard'
     _description = 'Billing Report Wizard'
 
-    from_date = fields.Date(string="From Date", required=True,default=fields.Date.today)
-    to_date = fields.Date(string="To Date", required=True,default=fields.Date.today)
+    from_date = fields.Date(string="From Date", required=True, default=fields.Date.today)
+    to_date = fields.Date(string="To Date", required=True, default=fields.Date.today)
     bill_type = fields.Selection([
         ('ip_part', 'IP Part Bill'),
         ('discharge', 'Discharge Bill')
     ], string='Bill Type', )
+    mode_pay = fields.Selection([('cash', 'Cash'),
+                                 ('credit', 'Credit'),
+                                 ('card', 'Card'),
+                                 ('cheque', 'Cheque'),
+                                 ('upi', 'UPI'), ], string='Payment Method', )
 
     # Show filtered records in tree/form
-    def action_get_records(self):
-        model_name = 'ip.part.billing' if self.bill_type == 'ip_part' else 'discharged.patient.record'
-        date_field = 'bill_date' if self.bill_type == 'ip_part' else 'discharge_date'
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        from_date = data.get('from_date')
+        to_date = data.get('to_date')
+        model_name = data.get('model_name')
+        date_field = data.get('date_field')
+        pay_field = data.get('pay_field')  # can be 'mode_pay'
+        pay_value = data.get('pay_value')  # e.g., 'cash', 'upi'
 
-        records = self.env[model_name].search([
-            (date_field, '>=', self.from_date),
-            (date_field, '<=', self.to_date)
-        ])
+        domain = [(date_field, '>=', from_date), (date_field, '<=', to_date)]
+
+        if pay_value:
+            domain.append((pay_field, '=', pay_value))
+
+        docs = self.env[model_name].search(domain)
 
         return {
-            'type': 'ir.actions.act_window',
-            'name': 'Filtered Bills',
-            'view_mode': 'tree,form',
-            'res_model': model_name,
-            'domain': [('id', 'in', records.ids)],
-            'target': 'current'
+            'doc_ids': docs.ids,
+            'doc_model': model_name,
+            'docs': docs,
+            'data': data,
         }
 
     # PDF report
@@ -40,10 +50,12 @@ class BillingReportWizard(models.TransientModel):
             model_name = 'ip.part.billing'
             report_ref = 'homeo_doctor.action_report_ip_billing'
             date_field = 'bill_date'
+            pay_field = 'mode_pay'
         else:
             model_name = 'discharged.patient.record'
             report_ref = 'homeo_doctor.action_report_discharge_billing'
             date_field = 'discharge_date'
+            pay_field = 'pay_mode'
 
         # Pass bill type and date info to the report
         return self.env.ref(report_ref).report_action(
@@ -53,7 +65,9 @@ class BillingReportWizard(models.TransientModel):
                 'to_date': str(self.to_date),
                 'bill_type': self.bill_type,
                 'model_name': model_name,
-                'date_field': date_field
+                'date_field': date_field,
+                'pay_field': pay_field,
+                'pay_value': self.mode_pay
             }
         )
 
