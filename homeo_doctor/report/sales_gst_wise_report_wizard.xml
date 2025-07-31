@@ -15,7 +15,14 @@
                         <group>
                             <field name="op_category"/>
                         </group>
+
                     </group>
+                    <group col="3">
+                        <group>
+                             <field name="payment_method"/>
+                        </group>
+                    </group>
+
                     <footer>
                         <button string="PDF Report" type="object" name="print_report" class="btn-primary"/>
                         <button name="download_gst_excel" string="Excel Report" type="object"
