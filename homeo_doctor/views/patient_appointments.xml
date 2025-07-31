@@ -10,6 +10,7 @@
                 <field name="token_no"/>
                 <field name="patient_name"/>
                 <field name="differance_appointment_days"/>
+                <field name="vssc_boolean"/>
                 <field name="departments" widget="many2many_tags"/>
                 <field name="doctor_ids" widget="many2many_tags"/>
                 <field name="register_mode_payment"/>
