@@ -394,106 +394,64 @@ class PatientAdmissionReportController(http.Controller):
 class PatientReportController(http.Controller):
 
     @http.route('/patient/excel_report', type='http', auth='user')
-    def action_print_excel(self):
-        # Determine model and date field based on bill_type
-        model_name = 'ip.part.billing' if self.bill_type == 'ip_part' else 'discharged.patient.record'
-        date_field = 'bill_date' if self.bill_type == 'ip_part' else 'discharge_date'
+    def download_excel_report(self, **kwargs):
+        date_from = kwargs.get('date_from')
+        date_to = kwargs.get('date_to')
+        doctor_id = kwargs.get('doctor_id')
 
-        # Fetch records in the date range
-        records = self.env[model_name].search([
-            (date_field, '>=', self.from_date),
-            (date_field, '<=', self.to_date)
-        ], order=f"{date_field} asc")  # Ensure date order
+        domain = []
+        if date_from:
+            domain.append(('date', '>=', date_from))
+        if date_to:
+            domain.append(('date', '<=', date_to))
+        if doctor_id:
+            domain.append(('doctor', '=', int(doctor_id)))
 
-        # Prepare Excel workbook
+        patients = request.env['patient.registration'].sudo().search(domain)
+
+        # Generate Excel file in memory
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-        sheet = workbook.add_worksheet("Report")
+        sheet = workbook.add_worksheet('Patient Report')
 
-        # === FORMATS ===
-        title_format = workbook.add_format({
-            'align': 'center', 'valign': 'vcenter',
-            'bold': True, 'font_size': 20, 'font_color': '#2c3e50'
-        })
-        subtitle_format = workbook.add_format({
-            'align': 'center', 'valign': 'vcenter',
-            'font_size': 12, 'font_color': '#555555'
-        })
-        header_format = workbook.add_format({
-            'align': 'center', 'valign': 'vcenter',
-            'bold': True, 'bg_color': '#D9D9D9', 'border': 1
-        })
-        total_format = workbook.add_format({
-            'align': 'right', 'bold': True, 'border': 1
-        })
-
-        # === HOSPITAL HEADER ===
-        sheet.merge_range('A1:D1', "Dr. PRIYA'S MULTI SPECIALITY HOSPITAL", title_format)
-        sheet.merge_range('A2:D2', "EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564", subtitle_format)
-        sheet.merge_range('A3:D3', "Phone: 0471-2373004, Mobile: 8590203321, dpmshospital@gmail.com", subtitle_format)
-
-        # # === Dynamic Report Title ===
-        # if self.bill_type and self.bill_type == 'ip_part':
-        #     report_title = "IP Part Billing Report"
-        # else:
-        #     report_title = "Discharged Patient Bill Report"
-        # sheet.merge_range('A4:D4', report_title, header_format)
-
-        # Date range
-        sheet.merge_range('A5:D5', f"From: {self.from_date}   To: {self.to_date}", subtitle_format)
-
-        # === TABLE HEADERS ===
-        headers = ['Bill No', 'Patient', 'Date', 'Amount']
-        row_offset = 6  # Table starts after header (row 7)
+        bold = workbook.add_format({'bold': True})
+        headers = ['UHID', 'Appointment Date', 'Patient Name', 'Age', 'Gender', 'Mobile', 'Doctor', 'Consultation Fee']
         for col, header in enumerate(headers):
-            sheet.write(row_offset, col, header, header_format)
+            sheet.write(0, col, header, bold)
 
-        # === WRITE DATA ===
-        total_amount = 0
-        row = row_offset + 1  # Start data from next row
-        for rec in records:
-            if self.bill_type == 'ip_part':
-                # IP Part Billing fields
-                sheet.write(row, 0, rec.bill_number or rec.id)
-                sheet.write(row, 1, rec.patient_name)
-                sheet.write(row, 2, str(rec.bill_date))
-                sheet.write(row, 3, rec.net_amount or 0)
-                total_amount += rec.net_amount or 0
-            else:
-                # Discharged Patient fields
-                sheet.write(row, 0, rec.patient_id or rec.id)
-                sheet.write(row, 1, rec.name)
-                sheet.write(row, 2, str(rec.discharge_date))
-                sheet.write(row, 3, rec.total_amount or 0)
-                total_amount += rec.total_amount or 0
+        row = 1
+        total_fee = 0  # To calculate total consultation fee
+
+        for rec in patients:
+            sheet.write(row, 0, rec.reference_no)
+            sheet.write(row, 1, rec.date.strftime('%Y-%m-%d') if rec.date else '')
+            sheet.write(row, 2, rec.patient_name)
+            sheet.write(row, 3, rec.age)
+            sheet.write(row, 4, rec.gender)
+            sheet.write(row, 5, rec.phone_number)
+            sheet.write(row, 6, rec.doctor.name if rec.doctor else '')
+            sheet.write(row, 7, rec.consultation_fee or 0)
+
+            # Add to total
+            total_fee += rec.consultation_fee or 0
+
             row += 1
 
-        # === TOTAL ROW ===
-        sheet.write(row, 2, "Total", total_format)
-        sheet.write(row, 3, total_amount, total_format)
+        # Write Total row
+        sheet.write(row, 6, 'Total', bold)  # Label in Doctor column
+        sheet.write(row, 7, total_fee, bold)  # Total in Consultation Fee column
 
-        # Adjust column width
-        sheet.set_column('A:D', 20)
-
-        # Finalize workbook
         workbook.close()
         output.seek(0)
 
-        # Create attachment for download
-        attachment = self.env['ir.attachment'].create({
-            'name': f'Billing_Report_{self.from_date}_to_{self.to_date}.xlsx',
-            'type': 'binary',
-            'datas': base64.b64encode(output.read()),
-            'res_model': 'ip.billing.report.wizard',
-            'res_id': self.id,
-            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        })
-
-        return {
-            'type': 'ir.actions.act_url',
-            'url': f'/web/content/{attachment.id}?download=true',
-            'target': 'self',
-        }
+        filename = f"Patient_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        return request.make_response(
+            output.read(),
+            headers=[
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', f'attachment; filename="{filename}"')
+            ]
+        )
 
 
 # class AuthLogin(http.Controller):
