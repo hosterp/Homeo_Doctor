@@ -10,46 +10,39 @@ import base64
 class PatientExcelReport(http.Controller):
 
     @http.route('/web/binary/download_patient_excel', type='http', auth="user")
-    def download_excel(self, from_date=None, to_date=None, **kwargs):
-        from_dt = datetime.strptime(from_date, '%Y-%m-%d').date()
-        to_dt = datetime.strptime(to_date, '%Y-%m-%d').date()
-        records = request.env['patient.reg'].search([('time', '>=', from_dt), ('time', '<=', to_dt)])
+    def download_excel(self, from_date=None, to_date=None, register_mode_payment=None, **kwargs):
+        from_dt = datetime.strptime(from_date, '%Y-%m-%d').date() if from_date else None
+        to_dt = datetime.strptime(to_date, '%Y-%m-%d').date() if to_date else None
 
+        # Build domain with date filter
+        domain = []
+        if from_dt:
+            domain.append(('time', '>=', from_dt))
+        if to_dt:
+            domain.append(('time', '<=', to_dt))
+
+        # Add payment filter if provided
+        if register_mode_payment:
+            domain.append(('register_mode_payment', '=', register_mode_payment))
+
+        # Search patient records
+        records = request.env['patient.reg'].sudo().search(domain)
+
+        # Create Excel file
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output)
         sheet = workbook.add_worksheet("Patient Report")
         bold = workbook.add_format({'bold': True})
 
-        headers = ['UHID', 'Name', 'Age', 'Address', 'Phone', 'Doctor Name','Payment Mode', 'Total Amount']
+        # Headers
+        headers = ['UHID', 'Name', 'Age', 'Address', 'Phone', 'Doctor Name', 'Payment Mode', 'Total Amount']
         for col, header in enumerate(headers):
             sheet.write(0, col, header, bold)
-
 
         max_lengths = [len(header) for header in headers]
         total_amount = 0
 
-        for rec in records:
-            row_data = [
-                str(rec.reference_no),
-                str(rec.patient_id),
-                str(rec.age),
-                str(rec.address),
-                str(rec.phone_number),
-                str(rec.doc_name.name),
-                str(rec.register_mode_payment),
-                str(rec.register_total_amount)
-            ]
-            for col, value in enumerate(row_data):
-                max_lengths[col] = max(max_lengths[col], len(value))
-
-
-            total_amount += rec.register_total_amount
-
-
-        for col, max_len in enumerate(max_lengths):
-            sheet.set_column(col, col, max_len + 2)
-
-
+        # Write data rows
         for row, rec in enumerate(records, start=1):
             sheet.write(row, 0, rec.reference_no)
             sheet.write(row, 1, rec.patient_id)
@@ -58,19 +51,41 @@ class PatientExcelReport(http.Controller):
             sheet.write(row, 4, rec.phone_number)
             sheet.write(row, 5, rec.doc_name.name)
             sheet.write(row, 6, rec.register_mode_payment)
-            sheet.write(row, 7, rec.register_total_amount)
+            sheet.write(row, 7, rec.register_total_amount or 0)
 
+            total_amount += rec.register_total_amount or 0
 
-        sheet.write(len(records) + 1, 5, "Total Amount", bold)
-        sheet.write(len(records) + 1, 6, total_amount)
+            # Adjust column width dynamically
+            row_data = [
+                str(rec.reference_no), str(rec.patient_id), str(rec.age),
+                str(rec.address), str(rec.phone_number), str(rec.doc_name.name),
+                str(rec.register_mode_payment), str(rec.register_total_amount or 0)
+            ]
+            for col, value in enumerate(row_data):
+                max_lengths[col] = max(max_lengths[col], len(value))
+
+        # Auto column width
+        for col, max_len in enumerate(max_lengths):
+            sheet.set_column(col, col, max_len + 2)
+
+        # Add total row aligned in Total Amount column (Column 7)
+        total_row = len(records) + 1
+        sheet.write(total_row, 6, "Total", bold)  # Label in Payment Mode column
+        sheet.write(total_row, 7, total_amount, bold)  # Total in Total Amount column
 
         workbook.close()
         output.seek(0)
-        response = request.make_response(output.read(),
-            headers=[('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
-                     ('Content-Disposition', 'attachment; filename="patient_report.xlsx"')],
-            cookies={'fileToken': '123'})
-        return response
+
+        return request.make_response(
+            output.read(),
+            headers=[
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+                ('Content-Disposition', 'attachment; filename="patient_report.xlsx"')
+            ],
+            cookies={'fileToken': '123'}
+        )
+
+
 class GeneralBillingExcelDownload(http.Controller):
 
     @http.route('/general_billing_excel/download', type='http', auth="user")
