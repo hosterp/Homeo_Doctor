@@ -73,55 +73,61 @@ class BillingReportWizard(models.TransientModel):
 
     # Excel export
     def action_print_excel(self):
-        model_name = 'ip.part.billing' if self.bill_type == 'ip_part' else 'discharged.patient.record'
-        date_field = 'bill_date' if self.bill_type == 'ip_part' else 'discharge_date'
+        # Select model, report title and payment/date fields
+        if self.bill_type == 'ip_part':
+            model_name = 'ip.part.billing'
+            date_field = 'bill_date'
+            pay_field = 'mode_pay'
+            report_title = "IP Part Billing Report"
+        else:
+            model_name = 'discharged.patient.record'
+            date_field = 'discharge_date'
+            pay_field = 'pay_mode'
+            report_title = "Discharge Billing Report"
 
-        records = self.env[model_name].search([
+        # === Build domain dynamically ===
+        domain = [
             (date_field, '>=', self.from_date),
             (date_field, '<=', self.to_date)
-        ])
+        ]
+        if self.mode_pay:
+            domain.append((pay_field, '=', self.mode_pay))
 
+        # Fetch ordered records
+        records = self.env[model_name].search(domain, order=f"{date_field} asc")
+
+        # Excel generation
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         sheet = workbook.add_worksheet("Report")
 
-        # === FORMATS ===
-        title_format = workbook.add_format({
+        # Formats
+        header_format = workbook.add_format({
             'align': 'center', 'valign': 'vcenter',
-            'bold': True, 'font_size': 20, 'font_color': '#2c3e50'
+            'bold': True, 'bg_color': '#D9D9D9', 'border': 1
         })
         subtitle_format = workbook.add_format({
             'align': 'center', 'valign': 'vcenter',
             'font_size': 12, 'font_color': '#555555'
         })
-        header_format = workbook.add_format({
-            'align': 'center', 'valign': 'vcenter',
-            'bold': True, 'bg_color': '#D9D9D9', 'border': 1
-        })
         total_format = workbook.add_format({
             'align': 'right', 'bold': True, 'border': 1
         })
 
-        # === HOSPITAL HEADER ===
-        sheet.merge_range('A1:D1', "Dr. PRIYA'S MULTI SPECIALITY HOSPITAL", title_format)
-        sheet.merge_range('A2:D2', "EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564", subtitle_format)
-        sheet.merge_range('A3:D3', "Phone: 0471-2373004, Mobile: 8590203321, dpmshospital@gmail.com", subtitle_format)
+        # Report title (row 1) and date range (row 2)
+        sheet.merge_range('A1:D1', report_title, header_format)
+        sheet.merge_range('A2:D2', f"From: {self.from_date}   To: {self.to_date}", subtitle_format)
 
-        # Report title
-        sheet.merge_range('A4:D4', "IP Part Billing Report", header_format)
-
-        # Date Range (row 5)
-        sheet.merge_range('A5:D5', f"From: {self.from_date}   To: {self.to_date}", subtitle_format)
-
-        # === TABLE HEADERS ===
+        # Table headers
         headers = ['Bill No', 'Patient', 'Date', 'Amount']
-        row_offset = 6  # table starts after header (row 7)
+        row_offset = 4
         for col, header in enumerate(headers):
             sheet.write(row_offset, col, header, header_format)
 
-        # === WRITE DATA ===
+        # Write data
         total_amount = 0
-        for row, rec in enumerate(records, start=row_offset + 1):
+        row = row_offset + 1
+        for rec in records:
             if self.bill_type == 'ip_part':
                 sheet.write(row, 0, rec.bill_number or rec.id)
                 sheet.write(row, 1, rec.patient_name)
@@ -134,9 +140,10 @@ class BillingReportWizard(models.TransientModel):
                 sheet.write(row, 2, str(rec.discharge_date))
                 sheet.write(row, 3, rec.total_amount or 0)
                 total_amount += rec.total_amount or 0
+            row += 1
 
-        # === TOTAL ROW ===
-        total_row = row + 2
+        # Total row
+        total_row = row + 1
         sheet.write(total_row, 2, "Total", total_format)
         sheet.write(total_row, 3, total_amount, total_format)
 
@@ -161,3 +168,4 @@ class BillingReportWizard(models.TransientModel):
             'url': f'/web/content/{attachment.id}?download=true',
             'target': 'self',
         }
+
