@@ -18,8 +18,18 @@ class HSNReportWizard(models.TransientModel):
         return self.env.ref('homeo_doctor.action_report_hsn_gst_summary').report_action(self)
 
     def action_download_excel(self):
+        if not self.from_date or not self.to_date:
+            raise UserError("Please provide From and To dates")
+
+        url = f"/report/excel/hsn_gst_summary?from_date={self.from_date}&to_date={self.to_date}"
+
+        if self.op_category:
+            url += f"&op_category={self.op_category}"
+        if self.payment_method:
+            url += f"&payment_method={self.payment_method}"
+
         return {
             'type': 'ir.actions.act_url',
-            'url': f"/report/excel/hsn_gst_summary?from_date={self.from_date}&to_date={self.to_date}",
+            'url': url,
             'target': 'new',
         }

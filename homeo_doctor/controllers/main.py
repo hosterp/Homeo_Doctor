@@ -525,219 +525,104 @@ class PatientReportController(http.Controller):
 class BillGSTReportExcel(http.Controller):
 
     @http.route('/report/generate/bill_gst_excel', type='http', auth='user')
-    def generate_excel_report(self, from_date, to_date, op_category=None, payment_method=None, **kwargs):
-        # Build domain similar to PDF
-        domain = [
-            ('date', '>=', from_date),
-            ('date', '<=', to_date)
-        ]
-        if op_category:
-            domain.append(('op_category', '=', op_category))
-        if payment_method:
-            domain.append(('payment_mathod', '=', payment_method))
+    class HSNExcelReportController(http.Controller):
 
-        # Search bills
-        bills = request.env['pharmacy.description'].sudo().search(domain)
+        @http.route(['/report/excel/hsn_gst_summary'], type='http', auth='user')
+        def generate_hsn_excel(self, from_date, to_date, **kwargs):
+            # Convert dates to datetime
+            from_date_dt = datetime.combine(datetime.strptime(from_date, '%Y-%m-%d').date(), time.min)
+            to_date_dt = datetime.combine(datetime.strptime(to_date, '%Y-%m-%d').date(), time.max)
 
-        # Create Excel file in memory
-        output = io.BytesIO()
-        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-        sheet = workbook.add_worksheet("Bill GST Report")
+            # Extract optional filters from kwargs (same as PDF)
+            op_category = kwargs.get('op_category')  # e.g., 'op', 'ip', 'others'
+            payment_method = kwargs.get('payment_method')  # e.g., 'cash', 'card', 'upi', 'credit'
 
-        # Define formats
-        bold = workbook.add_format({'bold': True})
-        date_format = workbook.add_format({'num_format': 'yyyy-mm-dd'})
-
-        # Report Title (Hospital name, filter range, etc.)
-        sheet.merge_range('A1:O1', "Dr. PRIYA'S MULTI SPECIALITY HOSPITAL",
-                          workbook.add_format({'align': 'center', 'bold': True, 'font_size': 16}))
-        sheet.merge_range('A2:O2', "EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564 | Phone: 0471-2373004",
-                          workbook.add_format({'align': 'center'}))
-        filter_text = f"From {from_date} to {to_date}"
-        if op_category:
-            filter_text += f" | Type: {op_category.upper()}"
-        if payment_method:
-            filter_text += f" | Payment: {payment_method.capitalize()}"
-        sheet.merge_range('A3:O3', filter_text, workbook.add_format({'align': 'center', 'italic': True}))
-
-        # Header row
-        headers = [
-            "Sl No", "Bill No", "Bill Date", "Patient", "Non Taxable",
-            "GST 5%", "CGST 2.5%", "SGST 2.5%",
-            "GST 12%", "CGST 6%", "SGST 6%",
-            "GST 18%", "CGST 9%", "SGST 9%",
-            "Total Amount"
-        ]
-        for col, header in enumerate(headers):
-            sheet.write(4, col, header, bold)  # Start at row 5 (index 4)
-
-        # Initialize totals
-        total_non_taxable = total_gst_5 = total_cgst_2_5 = total_sgst_2_5 = 0.0
-        total_gst_12 = total_cgst_6 = total_sgst_6 = 0.0
-        total_gst_18 = total_cgst_9 = total_sgst_9 = 0.0
-        total_amount = 0.0
-
-        # Data rows
-        row = 5
-        sl = 1
-        for bill in bills:
-            line_items = bill.prescription_line_ids
-
-            # Calculate GST components
-            gst_5 = sum(line.rate for line in line_items if line.gst == 5)
-            cgst_2_5 = sgst_2_5 = gst_5 * 0.025
-            gst_12 = sum(line.rate for line in line_items if line.gst == 12)
-            cgst_6 = sgst_6 = gst_12 * 0.06
-            gst_18 = sum(line.rate for line in line_items if line.gst == 18)
-            cgst_9 = sgst_9 = gst_18 * 0.09
-            non_taxable = sum(line.rate for line in line_items if not line.gst)
-
-            # Write row
-            sheet.write(row, 0, sl)
-            sheet.write(row, 1, bill.bill_number or '')
-            sheet.write(row, 2, str(bill.date or ''))
-            sheet.write(row, 3, bill.name or '')
-            sheet.write(row, 4, round(non_taxable, 2))
-            sheet.write(row, 5, round(gst_5, 2))
-            sheet.write(row, 6, round(cgst_2_5, 2))
-            sheet.write(row, 7, round(sgst_2_5, 2))
-            sheet.write(row, 8, round(gst_12, 2))
-            sheet.write(row, 9, round(cgst_6, 2))
-            sheet.write(row, 10, round(sgst_6, 2))
-            sheet.write(row, 11, round(gst_18, 2))
-            sheet.write(row, 12, round(cgst_9, 2))
-            sheet.write(row, 13, round(sgst_9, 2))
-            sheet.write(row, 14, round(bill.total_amount, 2))
-
-            # Accumulate totals
-            total_non_taxable += non_taxable
-            total_gst_5 += gst_5
-            total_cgst_2_5 += cgst_2_5
-            total_sgst_2_5 += sgst_2_5
-            total_gst_12 += gst_12
-            total_cgst_6 += cgst_6
-            total_sgst_6 += sgst_6
-            total_gst_18 += gst_18
-            total_cgst_9 += cgst_9
-            total_sgst_9 += sgst_9
-            total_amount += bill.total_amount
-
-            row += 1
-            sl += 1
-
-        # Totals row
-        sheet.write(row, 3, "Total", bold)
-        sheet.write(row, 4, round(total_non_taxable, 2), bold)
-        sheet.write(row, 5, round(total_gst_5, 2), bold)
-        sheet.write(row, 6, round(total_cgst_2_5, 2), bold)
-        sheet.write(row, 7, round(total_sgst_2_5, 2), bold)
-        sheet.write(row, 8, round(total_gst_12, 2), bold)
-        sheet.write(row, 9, round(total_cgst_6, 2), bold)
-        sheet.write(row, 10, round(total_sgst_6, 2), bold)
-        sheet.write(row, 11, round(total_gst_18, 2), bold)
-        sheet.write(row, 12, round(total_cgst_9, 2), bold)
-        sheet.write(row, 13, round(total_sgst_9, 2), bold)
-        sheet.write(row, 14, round(total_amount, 2), bold)
-
-        workbook.close()
-        output.seek(0)
-
-        # Response
-        filename = f"GST_Report_{from_date}_to_{to_date}.xlsx"
-        return request.make_response(
-            output.read(),
-            headers=[
-                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
-                ('Content-Disposition', f'attachment; filename={filename}')
+            # Build domain filters
+            domain = [
+                ('pharmacy_id.date', '>=', from_date_dt),
+                ('pharmacy_id.date', '<=', to_date_dt)
             ]
-        )
+            if op_category:
+                domain.append(('pharmacy_id.op_category', '=', op_category))
+            if payment_method:
+                # Note: Field in PDF is `payment_mathod` (check model spelling)
+                domain.append(('pharmacy_id.payment_mathod', '=', payment_method))
 
+            # Fetch lines based on domain
+            lines = request.env['pharmacy.prescription.line'].sudo().search(domain)
+            print("LINES COUNT:", len(lines))
 
-class HSNExcelReportController(http.Controller):
+            # Create Excel file in memory
+            output = io.BytesIO()
+            workbook = xlsxwriter.Workbook(output)
+            worksheet = workbook.add_worksheet('HSN GST Summary')
 
-    @http.route(['/report/excel/hsn_gst_summary'], type='http', auth='user')
-    def generate_hsn_excel(self, from_date, to_date, **kwargs):
-        # Convert dates to datetime
-        from_date_dt = datetime.combine(datetime.strptime(from_date, '%Y-%m-%d').date(), time.min)
-        to_date_dt = datetime.combine(datetime.strptime(to_date, '%Y-%m-%d').date(), time.max)
+            # Formats
+            bold = workbook.add_format({'bold': True})
+            money = workbook.add_format({'num_format': '#,##0.00'})
+            bold_money = workbook.add_format({'bold': True, 'num_format': '#,##0.00'})
 
-        # Extract optional filters from kwargs (same as PDF)
-        op_category = kwargs.get('op_category')  # e.g., 'op', 'ip', 'others'
-        payment_method = kwargs.get('payment_method')  # e.g., 'cash', 'card', 'upi', 'credit'
+            # Optional: Title and filter info like PDF
+            worksheet.merge_range('A1:J1', "HSN Wise GST Report",
+                                  workbook.add_format({'align': 'center', 'bold': True, 'font_size': 14}))
+            filter_text = f"From {from_date} to {to_date}"
+            if op_category:
+                filter_text += f" | Type: {op_category.upper()}"
+            if payment_method:
+                filter_text += f" | Payment: {payment_method.capitalize()}"
+            worksheet.merge_range('A2:J2', filter_text, workbook.add_format({'align': 'center', 'italic': True}))
 
-        # Build domain filters
-        domain = [
-            ('pharmacy_id.date', '>=', from_date_dt),
-            ('pharmacy_id.date', '<=', to_date_dt)
-        ]
-        if op_category:
-            domain.append(('pharmacy_id.op_category', '=', op_category))
-        if payment_method:
-            # Note: Field in PDF is `payment_mathod` (check model spelling)
-            domain.append(('pharmacy_id.payment_mathod', '=', payment_method))
-
-        # Fetch lines based on domain
-        lines = request.env['pharmacy.prescription.line'].sudo().search(domain)
-        print("LINES COUNT:", len(lines))
-
-        # Create Excel file in memory
-        output = io.BytesIO()
-        workbook = xlsxwriter.Workbook(output)
-        worksheet = workbook.add_worksheet('HSN GST Summary')
-
-        bold = workbook.add_format({'bold': True})
-        money = workbook.add_format({'num_format': '#,##0.00'})
-
-        # Header row
-        headers = [
-            'Sl No', 'HSN Code', 'Description', 'Type', 'Total Qty',
-            'GST%', 'Total Value', 'Taxable', 'CGST', 'SGST'
-        ]
-        for col, header in enumerate(headers):
-            worksheet.write(0, col, header, bold)
-
-        # Data rows
-        total_qty = total_rate = total_taxable = total_cgst = total_sgst = 0.0
-        row = 1
-        for sl, line in enumerate(lines, start=1):
-            pharmacy = line.pharmacy_id
-            worksheet.write(row, 0, sl)
-            worksheet.write(row, 1, line.hsn or '')
-            worksheet.write(row, 2, line.product_id.name or '')
-            worksheet.write(row, 3, pharmacy.op_category or '')
-            worksheet.write(row, 4, line.qty)
-            worksheet.write(row, 5, line.gst)
-            worksheet.write_number(row, 6, line.rate or 0.0, money)
-            worksheet.write_number(row, 7, line.taxable or 0.0, money)
-            worksheet.write_number(row, 8, line.cgst or 0.0, money)
-            worksheet.write_number(row, 9, line.sgst or 0.0, money)
-
-            total_qty += line.qty or 0
-            total_rate += line.rate or 0.0
-            total_taxable += line.taxable or 0.0
-            total_cgst += line.cgst or 0.0
-            total_sgst += line.sgst or 0.0
-            row += 1
-
-        # Totals row
-        worksheet.write(row, 3, 'Total', bold)
-        worksheet.write(row, 4, total_qty, bold)
-        worksheet.write_number(row, 6, total_rate, money)
-        worksheet.write_number(row, 7, total_taxable, money)
-        worksheet.write_number(row, 8, total_cgst, money)
-        worksheet.write_number(row, 9, total_sgst, money)
-
-        workbook.close()
-        output.seek(0)
-
-        filename = f"HSN_GST_Report_{from_date}_to_{to_date}.xlsx"
-        return request.make_response(
-            output.read(),
-            headers=[
-                ('Content-Disposition', f'attachment; filename={filename}'),
-                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            # Header row
+            headers = [
+                'Sl No', 'HSN Code', 'Description', 'Type', 'Total Qty',
+                'GST%', 'Total Value', 'Taxable', 'CGST', 'SGST'
             ]
-        )
+            for col, header in enumerate(headers):
+                worksheet.write(3, col, header, bold)  # Start at row 4 (index 3)
+
+            # Data rows
+            total_qty = total_rate = total_taxable = total_cgst = total_sgst = 0.0
+            row = 4
+            for sl, line in enumerate(lines, start=1):
+                pharmacy = line.pharmacy_id
+                worksheet.write(row, 0, sl)
+                worksheet.write(row, 1, line.hsn or '')
+                worksheet.write(row, 2, line.product_id.name or '')
+                worksheet.write(row, 3, pharmacy.op_category or '')
+                worksheet.write(row, 4, line.qty)
+                worksheet.write(row, 5, line.gst)
+                worksheet.write_number(row, 6, line.rate or 0.0, money)
+                worksheet.write_number(row, 7, line.taxable or 0.0, money)
+                worksheet.write_number(row, 8, line.cgst or 0.0, money)
+                worksheet.write_number(row, 9, line.sgst or 0.0, money)
+
+                total_qty += line.qty or 0
+                total_rate += line.rate or 0.0
+                total_taxable += line.taxable or 0.0
+                total_cgst += line.cgst or 0.0
+                total_sgst += line.sgst or 0.0
+                row += 1
+
+            # Totals row (bold + numeric formatting)
+            worksheet.write(row, 3, 'Total', bold)  # Total label
+            worksheet.write(row, 4, total_qty, bold)  # Total Qty (bold)
+            worksheet.write_number(row, 6, total_rate, bold_money)  # Total Value
+            worksheet.write_number(row, 7, total_taxable, bold_money)  # Taxable
+            worksheet.write_number(row, 8, total_cgst, bold_money)  # CGST
+            worksheet.write_number(row, 9, total_sgst, bold_money)  # SGST
+
+            # Close workbook and return response
+            workbook.close()
+            output.seek(0)
+
+            filename = f"HSN_GST_Report_{from_date}_to_{to_date}.xlsx"
+            return request.make_response(
+                output.read(),
+                headers=[
+                    ('Content-Disposition', f'attachment; filename={filename}'),
+                    ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                ]
+            )
 
 
 class ExcelDownloadController(http.Controller):
