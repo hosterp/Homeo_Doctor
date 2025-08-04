@@ -525,12 +525,19 @@ class PatientReportController(http.Controller):
 class BillGSTReportExcel(http.Controller):
 
     @http.route('/report/generate/bill_gst_excel', type='http', auth='user')
-    def generate_excel_report(self, from_date, to_date, **kwargs):
-        # Search the data
-        bills = request.env['pharmacy.description'].sudo().search([
+    def generate_excel_report(self, from_date, to_date, op_category=None, payment_method=None, **kwargs):
+        # Build domain similar to PDF
+        domain = [
             ('date', '>=', from_date),
             ('date', '<=', to_date)
-        ])
+        ]
+        if op_category:
+            domain.append(('op_category', '=', op_category))
+        if payment_method:
+            domain.append(('payment_mathod', '=', payment_method))
+
+        # Search bills
+        bills = request.env['pharmacy.description'].sudo().search(domain)
 
         # Create Excel file in memory
         output = io.BytesIO()
@@ -541,7 +548,19 @@ class BillGSTReportExcel(http.Controller):
         bold = workbook.add_format({'bold': True})
         date_format = workbook.add_format({'num_format': 'yyyy-mm-dd'})
 
-        # Header
+        # Report Title (Hospital name, filter range, etc.)
+        sheet.merge_range('A1:O1', "Dr. PRIYA'S MULTI SPECIALITY HOSPITAL",
+                          workbook.add_format({'align': 'center', 'bold': True, 'font_size': 16}))
+        sheet.merge_range('A2:O2', "EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564 | Phone: 0471-2373004",
+                          workbook.add_format({'align': 'center'}))
+        filter_text = f"From {from_date} to {to_date}"
+        if op_category:
+            filter_text += f" | Type: {op_category.upper()}"
+        if payment_method:
+            filter_text += f" | Payment: {payment_method.capitalize()}"
+        sheet.merge_range('A3:O3', filter_text, workbook.add_format({'align': 'center', 'italic': True}))
+
+        # Header row
         headers = [
             "Sl No", "Bill No", "Bill Date", "Patient", "Non Taxable",
             "GST 5%", "CGST 2.5%", "SGST 2.5%",
@@ -550,17 +569,21 @@ class BillGSTReportExcel(http.Controller):
             "Total Amount"
         ]
         for col, header in enumerate(headers):
-            sheet.write(0, col, header, bold)
+            sheet.write(4, col, header, bold)  # Start at row 5 (index 4)
 
-        total_non_taxable = 0.0
-        total_gst_5 = total_cgst_2_5 = total_sgst_2_5 = 0.0
+        # Initialize totals
+        total_non_taxable = total_gst_5 = total_cgst_2_5 = total_sgst_2_5 = 0.0
         total_gst_12 = total_cgst_6 = total_sgst_6 = 0.0
         total_gst_18 = total_cgst_9 = total_sgst_9 = 0.0
         total_amount = 0.0
-        row = 1
+
+        # Data rows
+        row = 5
         sl = 1
         for bill in bills:
             line_items = bill.prescription_line_ids
+
+            # Calculate GST components
             gst_5 = sum(line.rate for line in line_items if line.gst == 5)
             cgst_2_5 = sgst_2_5 = gst_5 * 0.025
             gst_12 = sum(line.rate for line in line_items if line.gst == 12)
@@ -569,6 +592,7 @@ class BillGSTReportExcel(http.Controller):
             cgst_9 = sgst_9 = gst_18 * 0.09
             non_taxable = sum(line.rate for line in line_items if not line.gst)
 
+            # Write row
             sheet.write(row, 0, sl)
             sheet.write(row, 1, bill.bill_number or '')
             sheet.write(row, 2, str(bill.date or ''))
@@ -585,6 +609,7 @@ class BillGSTReportExcel(http.Controller):
             sheet.write(row, 13, round(sgst_9, 2))
             sheet.write(row, 14, round(bill.total_amount, 2))
 
+            # Accumulate totals
             total_non_taxable += non_taxable
             total_gst_5 += gst_5
             total_cgst_2_5 += cgst_2_5
@@ -599,6 +624,8 @@ class BillGSTReportExcel(http.Controller):
 
             row += 1
             sl += 1
+
+        # Totals row
         sheet.write(row, 3, "Total", bold)
         sheet.write(row, 4, round(total_non_taxable, 2), bold)
         sheet.write(row, 5, round(total_gst_5, 2), bold)
@@ -611,9 +638,11 @@ class BillGSTReportExcel(http.Controller):
         sheet.write(row, 12, round(total_cgst_9, 2), bold)
         sheet.write(row, 13, round(total_sgst_9, 2), bold)
         sheet.write(row, 14, round(total_amount, 2), bold)
+
         workbook.close()
         output.seek(0)
 
+        # Response
         filename = f"GST_Report_{from_date}_to_{to_date}.xlsx"
         return request.make_response(
             output.read(),

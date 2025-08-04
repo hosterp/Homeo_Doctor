@@ -22,13 +22,23 @@ class PharmacyBillGSTReport(models.TransientModel):
         if not self.from_date or not self.to_date:
             raise UserError("Please provide both From and To dates.")
 
+        # Build base URL
         url = '/report/generate/bill_gst_excel?from_date=%s&to_date=%s' % (
             self.from_date.isoformat(),
             self.to_date.isoformat()
         )
+
+        # Append op_category if provided
+        if self.op_category:
+            url += '&op_category=%s' % self.op_category
+
+        # Append payment_method if provided
+        if self.payment_method:
+            url += '&payment_method=%s' % self.payment_method
 
         return {
             'type': 'ir.actions.act_url',
             'url': url,
             'target': 'self',
         }
+
