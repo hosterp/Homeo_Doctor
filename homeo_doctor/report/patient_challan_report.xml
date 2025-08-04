@@ -163,9 +163,14 @@
                             <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 25px;">
                                 <thead>
                                     <tr style="border-bottom: 1px solid #000;font-size: 25px;">
-                                        <th style="padding: 8px; width: 10%; text-align: left; font-size: 25px;">SL No</th>
-                                        <th style="padding: 8px; width: 60%; text-align: left;font-size: 25px;">PARTICULARS</th>
-                                        <th style="padding: 8px; width: 30%; text-align: right;font-size: 25px;">AMOUNT(₹)</th>
+                                        <th style="padding: 8px; width: 10%; text-align: left; font-size: 25px;">SL No
+                                        </th>
+                                        <th style="padding: 8px; width: 60%; text-align: left;font-size: 25px;">
+                                            PARTICULARS
+                                        </th>
+                                        <th style="padding: 8px; width: 30%; text-align: right;font-size: 25px;">
+                                            AMOUNT(₹)
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -173,8 +178,15 @@
                                         <td style="padding: 8px;font-size: 25px;">1</td>
                                         <td style="padding: 8px;font-size: 25px;">Registration Fee</td>
                                         <td style="padding: 8px; text-align: right;font-size: 25px;">
-                                            <t t-esc="doc.registration_fee.fee"/>
+                                            <t t-if="doc.vssc_boolean">
+                                                0
+                                            </t>
+                                            <t t-else="">
+                                                <t t-esc="doc.registration_fee.fee"/>
+                                            </t>
+
                                         </td>
+
                                     </tr>
                                     <tr style="font-size: 25px;">
                                         <td style="padding: 8px;font-size: 25px;">2</td>
