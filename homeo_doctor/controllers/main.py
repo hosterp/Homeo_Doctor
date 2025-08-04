@@ -231,33 +231,68 @@ class PharmacyDescriptionReportController(http.Controller):
     def download_excel(self, **kw):
         from_date = kw.get('from_date')
         to_date = kw.get('to_date')
+        mode_pay = kw.get('mode_pay')  # Payment method
+        op_category = kw.get('op_category')  # OP/IP/Other
 
-        pharmacy_records = request.env['pharmacy.description'].sudo().search([
+        # --- Build domain with filters ---
+        domain = [
             ('date', '>=', from_date),
-            ('date', '<=', to_date)
-        ], order='date asc')  # You can change to desc if needed
+            ('date', '<=', to_date),
+        ]
+        if mode_pay:
+            domain.append(('payment_mathod', '=', mode_pay))
+        if op_category:
+            domain.append(('op_category', '=', op_category))
 
+        # --- Fetch records ---
+        pharmacy_records = request.env['pharmacy.description'].sudo().search(domain, order='date asc')
+
+        # --- Create Excel workbook ---
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('Pharmacy Report')
 
-        headers = ['SL No', 'Receipt No', 'Date & Time', 'Name', 'Bill No', 'Payable Amount', 'Paying Amount', 'Balance Amount']
-        for col_num, header in enumerate(headers):
-            worksheet.write(0, col_num, header)
+        # --- Formats ---
+        bold = workbook.add_format({'bold': True})
+        bold_border = workbook.add_format({'bold': True, 'border': 1})
 
+        # --- Headers ---
+        headers = [
+            'SL No', 'Receipt No', 'Date & Time', 'Name', 'Bill No',
+            'Payment Method', 'Payable Amount', 'Paying Amount', 'Balance Amount'
+        ]
+        for col_num, header in enumerate(headers):
+            worksheet.write(0, col_num, header, bold)
+
+        # --- Data Rows ---
         row = 1
         sl_no = 1
+        total_payable = total_paying = total_balance = 0
+
         for record in pharmacy_records:
             worksheet.write(row, 0, sl_no)
-            worksheet.write(row, 1, record.id)  # Assuming Receipt No is ID
+            worksheet.write(row, 1, record.bill_number or '')  # Receipt No
             worksheet.write(row, 2, record.date.strftime('%Y-%m-%d %H:%M:%S') if record.date else '')
             worksheet.write(row, 3, record.name or '')
-            worksheet.write(row, 4, record.id)  # Assuming Bill No is same as Receipt No (else adjust)
-            worksheet.write(row, 5, record.bill_amount or 0.0)
-            worksheet.write(row, 6, record.paid_amount or 0)
-            worksheet.write(row, 7, record.balance or 0)
+            worksheet.write(row, 4, record.bill_number or '')  # Bill No
+            worksheet.write(row, 5, record.payment_mathod or '')  # Payment method
+            worksheet.write(row, 6, record.bill_amount or 0.0)
+            worksheet.write(row, 7, record.paid_amount or 0.0)
+            worksheet.write(row, 8, record.balance or 0.0)
+
+            # Totals
+            total_payable += record.bill_amount or 0.0
+            total_paying += record.paid_amount or 0.0
+            total_balance += record.balance or 0.0
+
             row += 1
             sl_no += 1
+
+        # --- Total Row (Bold) ---
+        worksheet.write(row, 5, 'Total', bold)
+        worksheet.write(row, 6, total_payable, bold)
+        worksheet.write(row, 7, total_paying, bold)
+        worksheet.write(row, 8, total_balance, bold)
 
         workbook.close()
         output.seek(0)
@@ -269,7 +304,6 @@ class PharmacyDescriptionReportController(http.Controller):
                 ('Content-Disposition', 'attachment; filename=pharmacy_description_report.xlsx')
             ]
         )
-
 
 
 class VendorBillExcelController(http.Controller):
@@ -594,14 +628,29 @@ class HSNExcelReportController(http.Controller):
 
     @http.route(['/report/excel/hsn_gst_summary'], type='http', auth='user')
     def generate_hsn_excel(self, from_date, to_date, **kwargs):
+        # Convert dates to datetime
         from_date_dt = datetime.combine(datetime.strptime(from_date, '%Y-%m-%d').date(), time.min)
         to_date_dt = datetime.combine(datetime.strptime(to_date, '%Y-%m-%d').date(), time.max)
 
-        lines = request.env['pharmacy.prescription.line'].sudo().search([
+        # Extract optional filters from kwargs (same as PDF)
+        op_category = kwargs.get('op_category')  # e.g., 'op', 'ip', 'others'
+        payment_method = kwargs.get('payment_method')  # e.g., 'cash', 'card', 'upi', 'credit'
+
+        # Build domain filters
+        domain = [
             ('pharmacy_id.date', '>=', from_date_dt),
             ('pharmacy_id.date', '<=', to_date_dt)
-        ])
+        ]
+        if op_category:
+            domain.append(('pharmacy_id.op_category', '=', op_category))
+        if payment_method:
+            # Note: Field in PDF is `payment_mathod` (check model spelling)
+            domain.append(('pharmacy_id.payment_mathod', '=', payment_method))
+
+        # Fetch lines based on domain
+        lines = request.env['pharmacy.prescription.line'].sudo().search(domain)
         print("LINES COUNT:", len(lines))
+
         # Create Excel file in memory
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output)
@@ -610,7 +659,7 @@ class HSNExcelReportController(http.Controller):
         bold = workbook.add_format({'bold': True})
         money = workbook.add_format({'num_format': '#,##0.00'})
 
-        # Header
+        # Header row
         headers = [
             'Sl No', 'HSN Code', 'Description', 'Type', 'Total Qty',
             'GST%', 'Total Value', 'Taxable', 'CGST', 'SGST'
@@ -618,7 +667,7 @@ class HSNExcelReportController(http.Controller):
         for col, header in enumerate(headers):
             worksheet.write(0, col, header, bold)
 
-        # Data
+        # Data rows
         total_qty = total_rate = total_taxable = total_cgst = total_sgst = 0.0
         row = 1
         for sl, line in enumerate(lines, start=1):
@@ -660,6 +709,7 @@ class HSNExcelReportController(http.Controller):
                 ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             ]
         )
+
 
 class ExcelDownloadController(http.Controller):
     @http.route('/web/report/excel_download', type='http', auth='user')
