@@ -311,26 +311,35 @@ class VendorBillExcelController(http.Controller):
     @http.route('/vendor/bill/excel', type='http', auth='user')
     def download_excel_report(self, from_date, to_date, **kwargs):
         user = request.env.user
-        ReportWizard = request.env['in.invoice.report.wizard'].sudo()
 
         # Parse the dates
         from_dt = datetime.strptime(from_date, "%Y-%m-%d")
         to_dt = datetime.strptime(to_date, "%Y-%m-%d")
 
-        # Search the bills
-        records = request.env['account.move'].sudo().search([
+        # Extract optional filters (same as PDF)
+        mode_pay = kwargs.get('mode_pay')
+
+        # Build domain filters (same as PDF)
+        domain = [
             ('move_type', '=', 'in_invoice'),
             ('invoice_date', '>=', from_dt),
             ('invoice_date', '<=', to_dt),
-        ])
+        ]
+        if mode_pay:
+            domain.append(('pay_mode', '=', mode_pay))
+
+        # Search the bills
+        records = request.env['account.move'].sudo().search(domain)
 
         # Create Excel file in memory
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet("Vendor Bills")
 
+        # Header formatting
         header_format = workbook.add_format({'bold': True, 'bg_color': '#D7E4BC'})
 
+        # Headers
         headers = [
             'Supplier Name', 'Invoice No', 'Phone No', 'Email Id',
             'GST No', 'DL/REG No', 'Bill Date', 'PO Number'
@@ -338,6 +347,7 @@ class VendorBillExcelController(http.Controller):
         for col_num, header in enumerate(headers):
             worksheet.write(0, col_num, header, header_format)
 
+        # Data rows
         row = 1
         for rec in records:
             worksheet.write(row, 0, rec.supplier_name.name if rec.supplier_name else '')
@@ -350,6 +360,7 @@ class VendorBillExcelController(http.Controller):
             worksheet.write(row, 7, rec.po_number.name if rec.po_number else '')
             row += 1
 
+        # Close and return file
         workbook.close()
         output.seek(0)
         file_data = output.read()
@@ -363,6 +374,8 @@ class VendorBillExcelController(http.Controller):
                 ('Content-Disposition', f'attachment; filename="{filename}"')
             ]
         )
+
+
 class PatientAdmissionReportController(http.Controller):
 
     @http.route('/export_patient_admission_report', type='http', auth='user', website=True)

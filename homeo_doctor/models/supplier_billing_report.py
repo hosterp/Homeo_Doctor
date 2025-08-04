@@ -47,8 +47,11 @@ class InInvoiceReportWizard(models.TransientModel):
         return self.env.ref('homeo_doctor.in_invoice_pdf_report_action').report_action(self, data={'data': data})
 
     def action_print_excel(self):
+        url = f'/vendor/bill/excel?from_date={self.from_date}&to_date={self.to_date}'
+        if self.mode_pay:
+            url += f'&mode_pay={self.mode_pay}'
         return {
             'type': 'ir.actions.act_url',
-            'url': f'/vendor/bill/excel?from_date={self.from_date}&to_date={self.to_date}',
+            'url': url,
             'target': 'self',
         }
