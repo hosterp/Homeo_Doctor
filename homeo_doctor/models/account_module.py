@@ -1,6 +1,6 @@
 from datetime import date
 
-from odoo import models, fields,api,_
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 import math
@@ -17,22 +17,22 @@ class AccountMove(models.Model):
     # partner_id = fields.Many2one('res.partner', string='Customer', required=False)
 
     custom_reference = fields.Char(string="Custom Reference")
-    doctor=fields.Many2one('doctor.profile',string='Doctor')
-    uhid=fields.Many2one('patient.reg',string='UHID')
-    patient_name=fields.Char(related='uhid.patient_id',string='Patient Name')
-    address=fields.Text(related='uhid.address',string='Address')
-    mobile=fields.Char(related='uhid.phone_number',string='Mobile No')
-    invoice_line_ids=fields.One2many('account.move.line','move_id')
-    supplier_name = fields.Many2one('res.partner',string='Supplier Name')
+    doctor = fields.Many2one('doctor.profile', string='Doctor')
+    uhid = fields.Many2one('patient.reg', string='UHID')
+    patient_name = fields.Char(related='uhid.patient_id', string='Patient Name')
+    address = fields.Text(related='uhid.address', string='Address')
+    mobile = fields.Char(related='uhid.phone_number', string='Mobile No')
+    invoice_line_ids = fields.One2many('account.move.line', 'move_id')
+    supplier_name = fields.Many2one('res.partner', string='Supplier Name')
     supplier_invoice = fields.Char('Invoice No')
     supplier_phone = fields.Char('Phone No')
     supplier_email = fields.Char('Email Id')
     supplier_gst = fields.Char('GST No')
     supplier_dl = fields.Char('DL/REG No')
     supplier_bill_date = fields.Date(string='Bill Date', default=lambda self: date.today())
-    po_number=fields.Many2one('purchase.order',string='PO Number', domain="[('state', '=', 'purchase')]",)
-    with_po=fields.Boolean()
-    without_po=fields.Boolean()
+    po_number = fields.Many2one('purchase.order', string='PO Number', domain="[('state', '=', 'purchase')]", )
+    with_po = fields.Boolean()
+    without_po = fields.Boolean()
     invoice_date = fields.Date(
         string="Date",
         default=lambda self: date.today()
@@ -42,7 +42,7 @@ class AccountMove(models.Model):
         ('upi', 'UPI'),
         ('card', 'Card'),
         ('credit', 'Credit'),
-    ], string='Payment Mode',default='cash')
+    ], string='Payment Mode', default='cash')
     global_discount = fields.Float(string='Discount (%)', digits=(16, 2), default=0.0)
     amount_before_discount = fields.Monetary(string='Amount Before Discount',
                                              store=True, readonly=True, compute='_compute_amount')
@@ -79,11 +79,12 @@ class AccountMove(models.Model):
 
             # print(move.cgst_amount, move.sgst_amount, '✅ CGST/SGST split')
             # print(move.amount_total_with_gst, '✅ Total Incl. GST')
+
     @api.onchange('supplier_name')
     def _onchange_supplier_name(self):
         for rec in self:
-            rec.supplier_gst= rec.supplier_name.gst_no
-            rec.supplier_dl= rec.supplier_name.reg_no
+            rec.supplier_gst = rec.supplier_name.gst_no
+            rec.supplier_dl = rec.supplier_name.reg_no
             rec.supplier_phone = rec.supplier_name.mobile
 
     @api.depends('invoice_line_ids', 'global_discount', 'amount_untaxed')
@@ -113,7 +114,7 @@ class AccountMove(models.Model):
 
             # Update total after discount
             # move.amount_total = move.amount_before_discount + move.amount_total_with_gst
-            move.amount_total =  move.amount_total_with_gst
+            move.amount_total = move.amount_total_with_gst
             # Update amount_residual to match the discounted total for unpaid/partially paid invoices
             if move.state == 'posted' and move.payment_state in ['not_paid', 'partial']:
                 # Calculate the payment ratio if partially paid
@@ -141,7 +142,6 @@ class AccountMove(models.Model):
 
             vals['name'] = f"{padded_seq}/{fiscal_suffix}"
         return super(AccountMove, self).create(vals)
-
 
     @api.onchange('po_number')
     def _onchange_po_number(self):
@@ -204,6 +204,7 @@ class AccountMove(models.Model):
         #    If you wanted to override out_invoice as well, you could add an elif for move_type == 'out_invoice'.
 
         return super(AccountMove, self).create(vals)
+
     def action_post(self):
         res = super(AccountMove, self).action_post()
 
@@ -223,8 +224,8 @@ class AccountMove(models.Model):
                     self.env['stock.entry'].create({
                         'invoice_id': move.id,
                         'product_id': line.product_id.id,
-                        'quantity': line.total_pack_qty,
-                        'qty': line.quantity,
+                        'quantity': line.total_pack_qty,  # now correctly includes free qty
+                        'qty': (line.quantity or 0) + (line.free_qty or 0),
                         'hsn': line.hsn,
                         'company': line.manufacturing_company,
                         'manf_date': line.manufacturing_date,
@@ -236,7 +237,7 @@ class AccountMove(models.Model):
                         'pack': line.pack,
                         'pup': line.pup,
                         'supplier_mrp': line.supplier_mrp,
-                        'gst':line.gst,
+                        'gst': line.gst,
                         'state': 'confirmed',
                     })
                     stock_entries = self.env['stock.entry'].search([
@@ -275,34 +276,33 @@ class AccountMove(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-
-    gst=fields.Integer(string='GST Rate(%)')
-    hsn=fields.Char(string='HSN')
-    move_id=fields.Many2one('account.move')
+    gst = fields.Integer(string='GST Rate(%)')
+    hsn = fields.Char(string='HSN')
+    move_id = fields.Many2one('account.move')
     category = fields.Many2one(
         'medicine.category',
         string="Category",
         store=True,
         ondelete="set null"
     )
-    manufacturing_company = fields.Char(string='MFC',store=True)
-    batch = fields.Char(string='Batch',store=True)
-    manufacturing_date = fields.Date(string='M.Date',store=True)
-    expiry_date = fields.Date(string='Exp.Date',store=True)
+    manufacturing_company = fields.Char(string='MFC', store=True)
+    batch = fields.Char(string='Batch', store=True)
+    manufacturing_date = fields.Date(string='M.Date', store=True)
+    expiry_date = fields.Date(string='Exp.Date', store=True)
     move_type = fields.Selection(related='move_id.move_type', store=True)
-    ord_qty = fields.Integer(string='Ord.QTY',store=True)
-    to_be_received = fields.Integer(string='To Be Rec.',store=True)
-    free_qty = fields.Integer(string='Free',store=True)
-    rejected_qty = fields.Integer(string='Rejected',store=True)
-    supplier_mrp = fields.Float(string='MRP',store=True)
-    quantity = fields.Integer(string='Quantity',store=True)
+    ord_qty = fields.Integer(string='Ord.QTY', store=True)
+    to_be_received = fields.Integer(string='To Be Rec.', store=True)
+    free_qty = fields.Integer(string='Free', store=True)
+    rejected_qty = fields.Integer(string='Rejected', store=True)
+    supplier_mrp = fields.Float(string='MRP', store=True)
+    quantity = fields.Integer(string='Quantity', store=True)
     supplier_packing = fields.Many2one('supplier.packing', string='Packing')
-    stock_in_hand=fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
+    stock_in_hand = fields.Char(string='Stock In Hand', compute="_compute_stock_in_hand", store=True)
     product_uom_category_id = fields.Many2one('uom.category', string="Category")
-    supplier_rack=fields.Many2one('supplier.rack')
-    reason_for_rejection=fields.Char('Reason For Rejection')
-    pack = fields.Integer('Pack',default=1)
-    pup = fields.Float('PUP',compute="pup_calculation")
+    supplier_rack = fields.Many2one('supplier.rack')
+    reason_for_rejection = fields.Char('Reason For Rejection')
+    pack = fields.Integer('Pack', default=1)
+    pup = fields.Float('PUP', compute="pup_calculation")
     price_subtotal = fields.Monetary(
         compute="_compute_price_subtotal",
         store=True,
@@ -315,16 +315,15 @@ class AccountMoveLine(models.Model):
         store=True,
         readonly=True,
     )
-    total_pack_qty = fields.Integer("Total Pack",compute="_total_pack")
+    total_pack_qty = fields.Integer("Total Pack", compute="_total_pack")
 
-    @api.depends('pack','quantity')
+    @api.depends('pack', 'quantity', 'free_qty')
     def _total_pack(self):
         for line in self:
-            if line.free_qty > 1:
-             line.total_pack_qty = line.pack * line.quantity * line.free_qty
-            else:
-                line.total_pack_qty = line.pack * line.quantity
-        
+            # Sum normal + free qty first
+            total_units = (line.quantity or 0) + (line.free_qty or 0)
+            # Multiply by pack (if pack > 1)
+            line.total_pack_qty = total_units * (line.pack or 1)
 
     @api.depends('price_unit', 'quantity', 'discount', 'gst')
     def _compute_price_subtotal(self):
@@ -334,11 +333,10 @@ class AccountMoveLine(models.Model):
             # line.price_subtotal = math.ceil(base + gst_amount)
             line.price_subtotal = base
 
-
-    @api.depends('pack','supplier_mrp')
+    @api.depends('pack', 'supplier_mrp')
     def pup_calculation(self):
         for line in self:
-            line.pup = line.supplier_mrp/line.pack
+            line.pup = line.supplier_mrp / line.pack
 
     @api.onchange('product_id')
     def _onchange_product_id_hsn(self):
@@ -365,7 +363,7 @@ class AccountMoveLine(models.Model):
             if line.ord_qty is not None and line.quantity is not None:
                 line.to_be_received = line.ord_qty - line.quantity
 
-            if (line.ord_qty < line.quantity )and (line.ord_qty >0):
+            if (line.ord_qty < line.quantity) and (line.ord_qty > 0):
                 line.free_qty = line.quantity - line.ord_qty
                 line.quantity = line.ord_qty
             else:
@@ -412,14 +410,15 @@ class AccountMoveLine(models.Model):
 
 
 class SupplierRack(models.Model):
-    _name='supplier.rack'
-    _rec_name='rack'
-    rack=fields.Char('Rack')
+    _name = 'supplier.rack'
+    _rec_name = 'rack'
+    rack = fields.Char('Rack')
+
 
 class UoMCategory(models.Model):
     _inherit = 'uom.category'
     _description = 'Product UoM Categories'
-    _rec_name='name'
+    _rec_name = 'name'
 
     name = fields.Char('Category', required=True, translate=True)
 
@@ -436,11 +435,12 @@ class MedicineCategory(models.Model):
         vals['sequence'] = self.env['ir.sequence'].next_by_code('medicine.category') or '/'
         return super(MedicineCategory, self).create(vals)
 
+
 class SupplierPacking(models.Model):
-    _name='supplier.packing'
+    _name = 'supplier.packing'
     _rec_name = 'supplier_packing'
 
-    supplier_packing=fields.Char(string='Packing')
+    supplier_packing = fields.Char(string='Packing')
 
 
 class AccountPaymentRegister(models.TransientModel):
@@ -456,7 +456,6 @@ class AccountPaymentRegister(models.TransientModel):
     amount_before_discount = fields.Monetary(related='move_id.amount_before_discount', string='Amount Before Discount',
                                              readonly=True)
     discount_amount = fields.Monetary(related='move_id.discount_amount', string='Discount Amount', readonly=True)
-
 
     @api.model
     def default_get(self, fields_list):
@@ -542,6 +541,7 @@ class AccountPaymentRegister(models.TransientModel):
             if wizard.move_id and wizard.move_id.global_discount > 0:
                 wizard.amount = wizard.move_id.amount_total
 
+
 class StockEntry(models.Model):
     _name = 'stock.entry'
     _description = 'Stock Entry'
@@ -549,22 +549,23 @@ class StockEntry(models.Model):
     _rec_name = 'product_id'
 
     name = fields.Char(string="Reference", required=True, copy=False, default=lambda self: _('New'))
-    invoice_id = fields.Many2one('account.move', string="Invoice", domain=[('type', '=', 'in_invoice'), ('state', '=', 'posted')])
+    invoice_id = fields.Many2one('account.move', string="Invoice",
+                                 domain=[('type', '=', 'in_invoice'), ('state', '=', 'posted')])
     product_id = fields.Many2one('product.product', string="Product", required=True)
     quantity = fields.Float(string="Stock In Hand", required=True)
-    manf_date=fields.Date(string='M.Date')
-    hsn=fields.Char(string='HSN')
-    exp_date=fields.Date(string='Exp.date')
-    rack=fields.Char(string='Rack Position')
-    batch=fields.Char(string='Batch Number')
-    company=fields.Char(string='Company')
-    qty=fields.Integer(string='QTY')
-    dispensed=fields.Integer('Dispensed',compute='_compute_dispensed')
+    manf_date = fields.Date(string='M.Date')
+    hsn = fields.Char(string='HSN')
+    exp_date = fields.Date(string='Exp.date')
+    rack = fields.Char(string='Rack Position')
+    batch = fields.Char(string='Batch Number')
+    company = fields.Char(string='Company')
+    qty = fields.Integer(string='QTY')
+    dispensed = fields.Integer('Dispensed', compute='_compute_dispensed')
     rate = fields.Float(string="Rate", required=True)
     supplier_mrp = fields.Float(string="MRP")
     uom_id = fields.Many2one('uom.uom', string="Unit of Measure")
-    date=fields.Date(string='Date')
-    pack = fields.Integer(string="Pack",default=1)
+    date = fields.Date(string='Date')
+    pack = fields.Integer(string="Pack", default=1)
     pup = fields.Float(string="PUP")
     gst = fields.Integer(string="GST")
     state = fields.Selection([
@@ -580,10 +581,12 @@ class StockEntry(models.Model):
         today = fields.Date.today()
         for rec in self:
             rec.is_expired = rec.exp_date and rec.exp_date < today
+
     @api.depends('quantity')
     def _compute_dispensed(self):
         for record in self:
-            record.dispensed=record.qty-record.quantity
+            record.dispensed = record.qty - record.quantity
+
     @api.model
     def create(self, vals):
         if vals.get('name', 'New') == 'New':
