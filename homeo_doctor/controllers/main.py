@@ -105,11 +105,12 @@ class GeneralBillingExcelDownload(http.Controller):
 
         # Set styles
         bold = workbook.add_format({'bold': True})
+        money = workbook.add_format({'bold': True, 'num_format': '#,##0.00'})  # For total row
 
         # Header labels
         headers = [
             'SL No', 'Bill No', 'Bill Date', 'Type', 'Department',
-            'Category', 'MRD No', 'Patient Name', 'Gender', 'Doctor','Payment Method', 'Amount'
+            'Category', 'MRD No', 'Patient Name', 'Gender', 'Doctor', 'Payment Method', 'Amount'
         ]
 
         # Track max width for each column
@@ -120,6 +121,9 @@ class GeneralBillingExcelDownload(http.Controller):
             sheet.write(0, col, header, bold)
             max_col_widths[col] = len(header)
 
+        # Initialize total amount
+        total_amount = 0.0
+
         # Write data rows and update max column widths
         for row_num, rec in enumerate(records, start=1):
             row_data = [
@@ -128,18 +132,27 @@ class GeneralBillingExcelDownload(http.Controller):
                 rec.bill_date.strftime('%d/%m/%Y %H:%M') if rec.bill_date else '',
                 rec.bill_type.display_name if rec.bill_type else '',
                 rec.department.display_name if hasattr(rec.department, 'display_name') else str(rec.department or ''),
-                rec.op_category.display_name if hasattr(rec.op_category, 'display_name') else str(rec.op_category or ''),
+                rec.op_category.display_name if hasattr(rec.op_category, 'display_name') else str(
+                    rec.op_category or ''),
                 rec.mrd_no.display_name if hasattr(rec.mrd_no, 'display_name') else str(rec.mrd_no or ''),
                 rec.patient_name or '',
                 dict(rec._fields['gender'].selection).get(rec.gender, ''),
                 rec.doctor.display_name if rec.doctor else '',
                 rec.mode_pay if rec.mode_pay else '',
-                str(rec.total_amount or '')
+                rec.total_amount or 0.0
             ]
+
+            # Accumulate total amount
+            total_amount += rec.total_amount or 0.0
 
             for col, value in enumerate(row_data):
                 sheet.write(row_num, col, value)
                 max_col_widths[col] = max(max_col_widths[col], len(str(value)))
+
+        # Write Total row
+        total_row = len(records) + 2  # Leave one blank line after data
+        sheet.write(total_row, 10, "Total", bold)  # Column before Amount
+        sheet.write_number(total_row, 11, total_amount, money)
 
         # Adjust column widths based on max content width + padding
         for col, width in max_col_widths.items():
