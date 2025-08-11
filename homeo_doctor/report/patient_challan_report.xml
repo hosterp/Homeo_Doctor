@@ -136,10 +136,11 @@
                                                 (<t t-esc="doc.doc_name.department_id.display_name"/>)
                                             </t>
                                         </td>
-                                        <td style="width: 33.33%; text-align: right; padding: 8px;font-size: 25px;">
+                                        <td style="width: 33.33%; text-align: right; padding: 8px; font-size: 25px;">
                                             <strong style="font-size: 25px;">Date:</strong>
-                                            <t t-esc="doc.time"/>
+                                            <t t-esc="doc.time and doc.time.strftime('%d/%m/%Y') or ''"/>
                                         </td>
+
                                     </tr>
                                     <!-- Row 2 -->
                                     <tr>
