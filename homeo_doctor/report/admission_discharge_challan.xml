@@ -204,11 +204,16 @@
                                                     Nursing Services &amp; Care
                                                 </td>
                                                 <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                    1
+                                                    <!-- Modified room count calculation with remainder logic -->
+                                                    <t t-set="room_days_calc"
+                                                       t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
+                                                    <t t-set="room_count"
+                                                       t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
+                                                    <span t-esc="room_count"/>
                                                 </td>
                                                 <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
-                                                    <span t-esc="'{:,.2f}'.format(o.nurse_charge)"/>
+                                                    <span t-esc="'{:,.2f}'.format(o.nurse_charge * room_count)"/>
                                                 </td>
                                             </tr>
                                         </t>
@@ -223,11 +228,16 @@
                                                     Doctor Consultation &amp; Visits
                                                 </td>
                                                 <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                    1
+                                                    <!-- Modified room count calculation with remainder logic -->
+                                                    <t t-set="room_days_calc"
+                                                       t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
+                                                    <t t-set="room_count"
+                                                       t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
+                                                    <span t-esc="room_count"/>
                                                 </td>
                                                 <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
-                                                    <span t-esc="'{:,.2f}'.format(o.doctor_visiting_charge)"/>
+                                                    <span t-esc="'{:,.2f}'.format(o.doctor_visiting_charge * room_count)"/>
                                                 </td>
                                             </tr>
                                         </t>
@@ -242,11 +252,16 @@
                                                     Additional Services &amp; Facilities
                                                 </td>
                                                 <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                    1
+                                                    <!-- Modified room count calculation with remainder logic -->
+                                                    <t t-set="room_days_calc"
+                                                       t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
+                                                    <t t-set="room_count"
+                                                       t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)+1"/>
+                                                    <span t-esc="room_count"/>
                                                 </td>
                                                 <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
-                                                    <span t-esc="'{:,.2f}'.format(o.service_charge)"/>
+                                                    <span t-esc="'{:,.2f}'.format(o.service_charge * room_count)"/>
                                                 </td>
                                             </tr>
                                         </t>
@@ -345,14 +360,15 @@
                                             </th>
                                             <th style="padding: 20px; border: 2px solid #ddd; text-align: right; font-size: 22px; color: #d32f2f; vertical-align: middle;">
                                                 ₹
-                                                <span t-esc="'{:,.2f}'.format((o.room_rent or 0) +
-                                                              (o.nurse_charge or 0) +
-                                                              (o.doctor_visiting_charge or 0) +
-                                                              (o.service_charge or 0) +
-                                                              ((sum(o.paid_ip_ids.mapped('total_amount')) - sum(o.paid_ip_ids.mapped('room_rent_total'))) if o.paid_ip_ids else 0) +
-                                                              (sum(o.unpaid_general_ids.mapped('total_amount')) if o.unpaid_general_ids else 0) +
-                                                              (sum(o.unpaid_lab_ids.mapped('total_bill_amount')) if o.unpaid_lab_ids else 0) +
-                                                              (sum(o.unpaid_pharmacy_ids.mapped('total_amount')) if o.unpaid_pharmacy_ids else 0))"/>
+                                                <!--                                                <span t-esc="'{:,.2f}'.format((o.room_rent or 0) +-->
+                                                <!--                                                              (o.nurse_charge or 0) +-->
+                                                <!--                                                              (o.doctor_visiting_charge or 0) +-->
+                                                <!--                                                              (o.service_charge or 0) +-->
+                                                <!--                                                              ((sum(o.paid_ip_ids.mapped('total_amount')) - sum(o.paid_ip_ids.mapped('room_rent_total'))) if o.paid_ip_ids else 0) +-->
+                                                <!--                                                              (sum(o.unpaid_general_ids.mapped('total_amount')) if o.unpaid_general_ids else 0) +-->
+                                                <!--                                                              (sum(o.unpaid_lab_ids.mapped('total_bill_amount')) if o.unpaid_lab_ids else 0) +-->
+                                                <!--                                                              (sum(o.unpaid_pharmacy_ids.mapped('total_amount')) if o.unpaid_pharmacy_ids else 0))"/>-->
+                                                <span t-field="o.temp_admission_total_amount"/>
                                             </th>
                                         </tr>
                                     </tfoot>

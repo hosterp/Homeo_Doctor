@@ -71,11 +71,11 @@ class PatientRegistration(models.Model):
     service_charge =  fields.Float("Service Charge")
     alternate_no = fields.Char(string='Alternate Number')
     no_days = fields.Integer(string='Number Of Days', compute='_compute_no_days', store=True)
-    admitted_date = fields.Datetime(string='Admitted Date')
+    admitted_date = fields.Date(string='Admitted Date')
     temp_admitted_date = fields.Datetime(string='Admitted Date')
     admission_boolean = fields.Boolean(default=False)
     dob = fields.Date(string='DOB')
-    discharge_date = fields.Datetime(string='Discharge Date')
+    discharge_date = fields.Date(string='Discharge Date')
     temp_discharge_date = fields.Datetime(string='Discharge Date')
     vssc_boolean = fields.Boolean(string='VSSC', default=False)
     consultation_check = fields.Boolean(default=False)
@@ -521,14 +521,60 @@ class PatientRegistration(models.Model):
     #         rec.paid_total += sum(p.total_amount for p in rec.paid_pharmacy_ids)
     #         print(rec.paid_total,'paid_totalpaid_totalpaid_totalpaid_totalpaid_totalpaid_totalpaid_totalpaid_totalpaid_totalpaid_totalpaid_totalpaid_total.................')
 
+    # @api.depends('unpaid_general_ids', 'unpaid_lab_ids', 'unpaid_pharmacy_ids', 'admitted_date', 'discharge_date',
+    #              'rent_half', 'rent_full')
+    # def _compute_total_unpaid_amount(self):
+    #     for rec in self:
+    #         total = 0.0
+    #         full_days = 0
+    #         rent_full_value = 0
+    #         remaining_hours = 0
+    #         # Calculate service totals
+    #         for general in rec.unpaid_general_ids:
+    #             total += general.total_amount or 0.0
+    #
+    #         for lab in rec.unpaid_lab_ids:
+    #             total += lab.total_bill_amount or 0.0
+    #
+    #         for pharmacy in rec.unpaid_pharmacy_ids:
+    #             total += pharmacy.total_amount or 0.0
+    #
+    #         # Calculate rent if discharge date is present
+    #         if rec.admitted_date and rec.discharge_date:
+    #             # Convert to datetime objects if they're not already
+    #             admitted = fields.Datetime.from_string(rec.admitted_date) if isinstance(rec.admitted_date,
+    #                                                                                     str) else rec.admitted_date
+    #             discharge = fields.Datetime.from_string(rec.discharge_date) if isinstance(rec.discharge_date,
+    #                                                                                       str) else rec.discharge_date
+    #
+    #             # Calculate the duration in days (including partial days)
+    #             duration_hours = (discharge - admitted).total_seconds() / 3600
+    #
+    #             # Calculate full days and remaining hours
+    #             full_days = int(duration_hours / 24)
+    #             remaining_hours = duration_hours % 24
+    #
+    #             # Add full day rent - convert Char field to float for calculation
+    #             rent_full_value = float(rec.rent_full or 0) if rec.rent_full and rec.rent_full.strip() else 0
+    #             total += full_days * rent_full_value -(rec.paid_room_rent)
+    #
+    #             # Add half day rent if remaining hours > 0
+    #             if remaining_hours > 0:
+    #                 rent_half_value = float(rec.rent_half or 0) if rec.rent_half and rec.rent_half.strip() else 0
+    #                 total += rent_half_value
+    #
+    #         total += (rec.nurse_charge or 0) + (rec.doctor_visiting_charge or 0) + (rec.service_charge or 0)
+    #
+    #         rec.admission_total_amount = total
+    #         rec.room_rent = full_days * rent_full_value + (rent_half_value if remaining_hours > 0 else 0.0)
     @api.depends('unpaid_general_ids', 'unpaid_lab_ids', 'unpaid_pharmacy_ids', 'admitted_date', 'discharge_date',
-                 'rent_half', 'rent_full')
+                 'rent_full')
     def _compute_total_unpaid_amount(self):
         for rec in self:
             total = 0.0
             full_days = 0
             rent_full_value = 0
-            remaining_hours = 0
+
             # Calculate service totals
             for general in rec.unpaid_general_ids:
                 total += general.total_amount or 0.0
@@ -539,34 +585,26 @@ class PatientRegistration(models.Model):
             for pharmacy in rec.unpaid_pharmacy_ids:
                 total += pharmacy.total_amount or 0.0
 
-            # Calculate rent if discharge date is present
+            # Calculate rent only based on full days
             if rec.admitted_date and rec.discharge_date:
-                # Convert to datetime objects if they're not already
-                admitted = fields.Datetime.from_string(rec.admitted_date) if isinstance(rec.admitted_date,
-                                                                                        str) else rec.admitted_date
-                discharge = fields.Datetime.from_string(rec.discharge_date) if isinstance(rec.discharge_date,
-                                                                                          str) else rec.discharge_date
+                admitted = fields.Date.from_string(rec.admitted_date) if isinstance(rec.admitted_date,
+                                                                                    str) else rec.admitted_date
+                discharge = fields.Date.from_string(rec.discharge_date) if isinstance(rec.discharge_date,
+                                                                                      str) else rec.discharge_date
 
-                # Calculate the duration in days (including partial days)
-                duration_hours = (discharge - admitted).total_seconds() / 3600
+                # Get difference in days (no hours)
+                full_days = (discharge - admitted).days
 
-                # Calculate full days and remaining hours
-                full_days = int(duration_hours / 24)
-                remaining_hours = duration_hours % 24
+                # Add full day rent (char to float)
+                rent_full_value = float(rec.rent_full or 0) if rec.rent_full and str(rec.rent_full).strip() else 0
+                total += (full_days * rent_full_value) - (rec.paid_room_rent or 0)
 
-                # Add full day rent - convert Char field to float for calculation
-                rent_full_value = float(rec.rent_full or 0) if rec.rent_full and rec.rent_full.strip() else 0
-                total += full_days * rent_full_value -(rec.paid_room_rent)
+            # Add other charges
+            total += (rec.nurse_charge * full_days or 0) + (rec.doctor_visiting_charge * full_days or 0) + (rec.service_charge * (full_days+1) or 0)
 
-                # Add half day rent if remaining hours > 0
-                if remaining_hours > 0:
-                    rent_half_value = float(rec.rent_half or 0) if rec.rent_half and rec.rent_half.strip() else 0
-                    total += rent_half_value
-
-            total += (rec.nurse_charge or 0) + (rec.doctor_visiting_charge or 0) + (rec.service_charge or 0)
-
+            # Assign final values
             rec.admission_total_amount = total
-            rec.room_rent = full_days * rent_full_value + (rent_half_value if remaining_hours > 0 else 0.0)
+            rec.room_rent = full_days * rent_full_value
 
     discharge_bill_number = fields.Char(
         string="Discharge Bill #",
@@ -942,12 +980,13 @@ class PatientRegistration(models.Model):
         if self.vssc_boolean:
             self.registration_fee = 0.0
 
-    @api.depends('discharge_date')
+    @api.depends('discharge_date', 'admitted_date')
     def _compute_no_days(self):
         for record in self:
             if record.admitted_date:
-                admitted_date = fields.Datetime.from_string(record.admitted_date)
-                current_date = record.discharge_date
+                admitted_date = fields.Datetime.to_datetime(record.admitted_date).date()
+                current_date = fields.Datetime.to_datetime(
+                    record.discharge_date).date() if record.discharge_date else fields.Date.today()
                 record.no_days = (current_date - admitted_date).days + 1
             else:
                 record.no_days = 0
