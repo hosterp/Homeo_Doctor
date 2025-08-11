@@ -421,14 +421,13 @@ class PatientAppointment(models.Model):
                         ('id', '!=', record.id) if record.id else ('id', '!=', False),
                     ], order='appointment_date desc', limit=1)
 
-                    if last_appointment:
+                    if last_appointment and last_appointment.appointment_date:
                         last_appointment_date = last_appointment.appointment_date
                         last_appointment_day = (appointment_date - last_appointment_date).days
                         # print(
                         #     f"Last appointment found. Last appointment date: {last_appointment_date}, days since last appointment: {last_appointment_day}")
                     else:
                         last_appointment_day = 0
-                        # print("No previous appointment found. Set last_appointment_day to 0.")
 
                     # 2. Check last registration
                     last_registration = self.env['patient.reg'].search([
