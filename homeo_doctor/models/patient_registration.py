@@ -151,7 +151,7 @@ class PatientRegistration(models.Model):
     )
     referred=fields.Boolean('Referred')
     tt=fields.Boolean('TT')
-
+    discount=fields.Integer('Discount')
     def get_grouped_general_lines(self):
         grouped = defaultdict(lambda: {'quantity': 0, 'total_amt': 0})
         for line in self.unpaid_general_ids.mapped('general_bill_line_ids'):
