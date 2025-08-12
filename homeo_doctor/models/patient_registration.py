@@ -2,7 +2,7 @@ import re
 from datetime import date, datetime
 import logging
 from gevent.util import print_run_info
-
+from collections import defaultdict
 from odoo.exceptions import UserError
 
 import dateutil.utils
@@ -151,6 +151,15 @@ class PatientRegistration(models.Model):
     )
     referred=fields.Boolean('Referred')
     tt=fields.Boolean('TT')
+
+    def get_grouped_general_lines(self):
+        grouped = defaultdict(lambda: {'quantity': 0, 'total_amt': 0})
+        for line in self.unpaid_general_ids.mapped('general_bill_line_ids'):
+            key = line.particulars.display_name
+            grouped[key]['quantity'] += line.quantity or 0
+            grouped[key]['total_amt'] += line.total_amt or 0
+        return [{'name': k, 'quantity': v['quantity'], 'total_amt': v['total_amt']}
+                for k, v in grouped.items()]
 
     @api.onchange('referred','tt')
     def _onchange_refferd_boolean_and_tt(self):

@@ -154,9 +154,9 @@
                                        style="width: 100%; border-collapse: collapse; font-size: 18px;">
                                     <thead style="background-color: #007bff; color: white;">
                                         <tr style="height: 60px;">
-                                            <th style="padding: 18px; border: 2px solid #ddd; width: 25%; font-size: 20px; vertical-align: middle;">
-                                                Bill Type
-                                            </th>
+                                            <!--                                            <th style="padding: 18px; border: 2px solid #ddd; width: 25%; font-size: 20px; vertical-align: middle;">-->
+                                            <!--                                                Bill Type-->
+                                            <!--                                            </th>-->
                                             <th style="padding: 18px; border: 2px solid #ddd; width: 40%; font-size: 20px; vertical-align: middle;">
                                                 Description
                                             </th>
@@ -172,9 +172,9 @@
                                         <!-- Room Rent (if room category exists) -->
                                         <t t-if="o.room_category_new">
                                             <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
-                                                    <strong style="font-size: 18px;">Room Rent</strong>
-                                                </td>
+                                                <!--                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">-->
+                                                <!--                                                    <strong style="font-size: 18px;">Room Rent</strong>-->
+                                                <!--                                                </td>-->
                                                 <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     <span t-field="o.room_category_new"/>
                                                     - Room Charges
@@ -197,9 +197,9 @@
                                         <!-- Nursing Charge (if exists) -->
                                         <t t-if="o.nurse_charge and o.nurse_charge > 0">
                                             <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
-                                                    <strong style="font-size: 18px;">Nursing Charge</strong>
-                                                </td>
+                                                <!--                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">-->
+                                                <!--                                                    <strong style="font-size: 18px;">Nursing Charge</strong>-->
+                                                <!--                                                </td>-->
                                                 <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     Nursing Services &amp; Care
                                                 </td>
@@ -221,9 +221,9 @@
                                         <!-- Doctor Visiting Charge (if exists) -->
                                         <t t-if="o.doctor_visiting_charge and o.doctor_visiting_charge > 0">
                                             <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
-                                                    <strong style="font-size: 18px;">Doctor Charge</strong>
-                                                </td>
+                                                <!--                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">-->
+                                                <!--                                                    <strong style="font-size: 18px;">Doctor Charge</strong>-->
+                                                <!--                                                </td>-->
                                                 <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     Doctor Consultation &amp; Visits
                                                 </td>
@@ -245,9 +245,9 @@
                                         <!-- Service Charge (if exists) -->
                                         <t t-if="o.service_charge and o.service_charge > 0">
                                             <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
-                                                    <strong style="font-size: 18px;">Service Charge</strong>
-                                                </td>
+                                                <!--                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">-->
+                                                <!--                                                    <strong style="font-size: 18px;">Service Charge</strong>-->
+                                                <!--                                                </td>-->
                                                 <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     Additional Services &amp; Facilities
                                                 </td>
@@ -287,29 +287,53 @@
 
                                         <!-- General Bills (if any) -->
                                         <t t-if="o.unpaid_general_ids">
-                                            <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
-                                                    <strong style="font-size: 18px;">General Bills</strong>
-                                                </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
-                                                    General Consultation &amp; Services
-                                                </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                    <span t-esc="len(o.unpaid_general_ids)"/>
-                                                </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                    ₹
-                                                    <span t-esc="'{:,.2f}'.format(sum(o.unpaid_general_ids.mapped('total_amount')))"/>
-                                                </td>
-                                            </tr>
+                                            <!-- Main summary row -->
+                                            <!--                                            <tr style="height: 55px;">-->
+                                            <!--                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">-->
+                                            <!--                                                    <strong style="font-size: 18px;">General Bills</strong>-->
+                                            <!--                                                </td>-->
+                                            <!--                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">-->
+                                            <!--                                                    General Consultation &amp; Services-->
+                                            <!--                                                </td>-->
+                                            <!--                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">-->
+                                            <!--                                                    <span t-esc="len(o.unpaid_general_ids)"/>-->
+                                            <!--                                                </td>-->
+                                            <!--                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">-->
+                                            <!--                                                    ₹-->
+                                            <!--                                                    <span t-esc="'{:,.2f}'.format(sum(o.unpaid_general_ids.mapped('total_amount')))"/>-->
+                                            <!--                                                </td>-->
+                                            <!--                                            </tr>-->
+
+                                            <!-- Sub-rows for each pname -->
+                                            <t t-foreach="o.get_grouped_general_lines()" t-as="line">
+                                                <tr>
+                                                    <td style="padding: 8px 18px; border: 2px solid #ddd; font-size: 16px;">
+                                                        <t t-esc="line['name']"/>
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                        <strong>
+                                                            <t t-esc="line['quantity']"/>
+                                                        </strong>
+                                                    </td>
+                                                    <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                        ₹
+                                                        <strong>
+                                                            <t t-esc="line['total_amt']"/>
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+
                                         </t>
+
 
                                         <!-- Lab Bills (if any) -->
                                         <t t-if="o.unpaid_lab_ids">
                                             <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
-                                                    <strong style="font-size: 18px;">Lab Bills</strong>
-                                                </td>
+                                                <!--                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">-->
+                                                <!--                                                    <strong style="font-size: 18px;">Lab Bills</strong>-->
+                                                <!--                                                </td>-->
                                                 <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     Laboratory Tests &amp; Reports
                                                 </td>
@@ -326,9 +350,9 @@
                                         <!-- Pharmacy Bills (if any) -->
                                         <t t-if="o.unpaid_pharmacy_ids">
                                             <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
-                                                    <strong style="font-size: 18px;">Pharmacy Bills</strong>
-                                                </td>
+                                                <!--                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">-->
+                                                <!--                                                    <strong style="font-size: 18px;">Pharmacy Bills</strong>-->
+                                                <!--                                                </td>-->
                                                 <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     Medicines &amp; Medical Supplies
                                                 </td>
@@ -354,7 +378,7 @@
                                     </tbody>
                                     <tfoot style="background-color: #f8f9fa;">
                                         <tr style="font-weight: bold; font-size: 20px; height: 70px;">
-                                            <th colspan="3"
+                                            <th colspan="2"
                                                 style="padding: 20px; border: 2px solid #ddd; text-align: right; font-size: 22px; vertical-align: middle;">
                                                 GRAND TOTAL:
                                             </th>
