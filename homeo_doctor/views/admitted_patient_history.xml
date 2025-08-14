@@ -18,7 +18,9 @@
                                 <div class="row mx-n1">
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="patient_id" class="col-md-4 col-form-label py-0 small text-nowrap">Patient ID</label>
+                                            <label for="patient_id"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Patient ID
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="patient_id"/>
                                             </div>
@@ -26,7 +28,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="bystander_name" class="col-md-4 col-form-label py-0 small text-nowrap">Bystander Name</label>
+                                            <label for="bystander_name"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Bystander Name
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="bystander_name"/>
                                             </div>
@@ -34,7 +38,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="relation" class="col-md-4 col-form-label py-0 small text-nowrap">Relation</label>
+                                            <label for="relation"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Relation
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="relation"/>
                                             </div>
@@ -42,7 +48,10 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="bystander_mobile" class="col-md-4 col-form-label py-0 small text-nowrap">Bystander Mobile</label>
+                                            <label for="bystander_mobile"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Bystander
+                                                Mobile
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="bystander_mobile"/>
                                             </div>
@@ -54,7 +63,9 @@
                                 <div class="row mx-n1">
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="room_category_new" class="col-md-4 col-form-label py-0 small text-nowrap">Room Category</label>
+                                            <label for="room_category_new"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Room Category
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="room_category_new"/>
                                             </div>
@@ -62,7 +73,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="new_block" class="col-md-4 col-form-label py-0 small text-nowrap">Block</label>
+                                            <label for="new_block"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Block
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="new_block"/>
                                             </div>
@@ -70,7 +83,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="bed_id" class="col-md-4 col-form-label py-0 small text-nowrap">Bed</label>
+                                            <label for="bed_id" class="col-md-4 col-form-label py-0 small text-nowrap">
+                                                Bed
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="bed_id"/>
                                             </div>
@@ -78,7 +93,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="room_number" class="col-md-4 col-form-label py-0 small text-nowrap">Room Number</label>
+                                            <label for="room_number"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Room Number
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="room_number"/>
                                             </div>
@@ -90,7 +107,9 @@
                                 <div class="row mx-n1">
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="op_category" class="col-md-4 col-form-label py-0 small text-nowrap">OP Category</label>
+                                            <label for="op_category"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">OP Category
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="op_category"/>
                                             </div>
@@ -98,7 +117,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="doctor" class="col-md-4 col-form-label py-0 small text-nowrap">Doctor</label>
+                                            <label for="doctor" class="col-md-4 col-form-label py-0 small text-nowrap">
+                                                Doctor
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="doctor"/>
                                             </div>
@@ -106,7 +127,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="admitted_date" class="col-md-4 col-form-label py-0 small text-nowrap">Admitted Date</label>
+                                            <label for="admitted_date"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Admitted Date
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="admitted_date"/>
                                             </div>
@@ -114,7 +137,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="discharge_date" class="col-md-4 col-form-label py-0 small text-nowrap">Discharge Date</label>
+                                            <label for="discharge_date"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Discharge Date
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="discharge_date"/>
                                             </div>
@@ -126,7 +151,10 @@
                                 <div class="row mx-n1">
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="amount_in_advance" class="col-md-4 col-form-label py-0 small text-nowrap">Amount in Advance</label>
+                                            <label for="amount_in_advance"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Amount in
+                                                Advance
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="amount_in_advance"/>
                                             </div>
@@ -134,12 +162,25 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="total_amount" class="col-md-4 col-form-label py-0 small text-nowrap">Total Amount</label>
+                                            <label for="total_amount"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">Total Amount
+                                            </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="total_amount"/>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="discharge_pdf"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">discharge_pdf
+                                            </label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="discharge_pdf"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <field name="file_name" invisible="1"/>
                                 </div>
                             </div>
                         </div>
@@ -169,6 +210,7 @@
                     <field name="pay_mode"/>
                     <field name="amount_in_advance"/>
                     <field name="total_amount"/>
+                    <field name="discharge_pdf" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -179,7 +221,8 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="menu_discharged_patient_root" name="Discharged Patients History" parent="menu_my_patient_template_root"
+        <menuitem id="menu_discharged_patient_root" name="Discharged Patients History"
+                  parent="menu_my_patient_template_root"
                   action="action_discharged_patient_record" sequence="2"/>
 
     </data>

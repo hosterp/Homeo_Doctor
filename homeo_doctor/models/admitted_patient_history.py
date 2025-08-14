@@ -3,7 +3,7 @@ from odoo import api, fields, models, _
 class DischargedPatientRecord(models.Model):
     _name = 'discharged.patient.record'
     _description = 'Discharged Patient Record'
-    _order='admitted_date desc'
+    _order='discharge_date desc'
 
     patient_id = fields.Char(string='UHID')
     name = fields.Char(string='Patient Name')
@@ -29,7 +29,8 @@ class DischargedPatientRecord(models.Model):
         ('upi', 'UPI')
     ], string='Payment Method')
     op_category=fields.Many2one('op.category',string='OP Category')
-
+    discharge_pdf = fields.Binary("Discharge Report")
+    file_name = fields.Char("File Name")
 
 class AdmittedAdvanceAmount(models.Model):
     _name = 'advance.patient.record'

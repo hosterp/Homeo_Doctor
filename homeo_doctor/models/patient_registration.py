@@ -11,7 +11,7 @@ import odoo.addons
 from odoo.exceptions import ValidationError
 
 # from odoo.odoo.exceptions import ValidationError
-
+import base64
 
 # from datetime import datetime, date
 # default=date.today()
@@ -660,7 +660,7 @@ class PatientRegistration(models.Model):
                 record.discharge_bill_number = f"{padded_seq}/{fiscal_suffix}"
             if admitted_patient:
                 admitted_patient.status = 'discharged'
-                self.env['discharged.patient.record'].create({
+                rec=self.env['discharged.patient.record'].create({
                     'patient_id': record.reference_no,
                     'name': record.patient_id,
                     'discharge_date': record.discharge_date,
@@ -681,6 +681,18 @@ class PatientRegistration(models.Model):
                     'pay_mode': record.advance_mode_payment,
 
                 })
+
+                report = self.env.ref('homeo_doctor.action_report_discharge_challan')
+                pdf_content, _ = report._render_qweb_pdf(self.ids)
+                pdf_base64 = base64.b64encode(pdf_content)
+
+                rec.write({
+                    'discharge_pdf': pdf_base64,
+                    'file_name': f"Discharge_{record.discharge_bill_number}.pdf"
+                })
+
+                # ✅ Return PDF as usual
+                # return report.report_action(self)
                 # record.unpaid_general_ids.write({'status': 'paid'})
                 # if record.vssc_boolean:
                 #     record.unpaid_lab_ids.write({'status': 'credit'})
