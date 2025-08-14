@@ -97,7 +97,7 @@
                         <tr>
                             <td style="width:33.33%;font-size: 25px;">
                                 <span class="bold">UHID:</span>
-                                <t t-esc="doc.payment_receipt_number"/>
+                                <t t-esc="doc.patient_id.display_name"/>
                             </td>
                             <td style="width:33.33%; text-align:center; padding:8px;font-size: 25px;">
                                 <strong>Doctor:</strong>
