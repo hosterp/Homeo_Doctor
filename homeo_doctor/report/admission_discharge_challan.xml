@@ -40,7 +40,7 @@
                         @media print {
                         @page {
                         size: A4 portrait; /* Changed from landscape to portrait */
-                        margin: 5mm 7mm 5mm 7mm;
+                        margin: 15mm 7mm 5mm 7mm;
                         }
                         }
 
