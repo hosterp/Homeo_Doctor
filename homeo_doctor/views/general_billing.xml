@@ -373,6 +373,7 @@
                     <field name="gender"/>
                     <field name="vssc_boolean"/>
                     <field name="doctor"/>
+                    <field name="total_amount"/>
                     <field name="status" string="Payment Status"/>
                 </tree>
             </field>

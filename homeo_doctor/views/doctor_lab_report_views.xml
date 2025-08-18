@@ -22,6 +22,7 @@
                     <field name="staff_name"/>
                     <field name="vssc_check" string="VSSC"/>
                     <field name="register_visible" invisible="1"/>
+                    <field name="total_bill_amount"/>
                     <field name="status" string="Payment Status"/>
                     <field name="sample_status" string="Sample Collected Status"/>
                     <field name="result_status" string="Lab Result Status"/>
@@ -76,7 +77,7 @@
                         <field name="status" widget="statusbar"/>
                         <button name="action_confirm_payment" string="Print Invoice" type="object"
                                 class="btn-primary" groups="base.group_user" invisible="1"/>
-                        
+
                         <button string="Unpaid" class="btn-primary"/>
                         <button name="action_sample_collected" type="object" string="Sample Collected"
                                 class="btn-primary"/>
@@ -349,10 +350,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label for="staff_pwd" class="col-md-4 col-form-label">Staff Password</label>
+                                            <label for="staff_pwd" class="col-md-4 col-form-label">Staff Password
+                                            </label>
                                             <div class="col-md-8 field-container">
                                                 <field name="staff_pwd"/>
                                             </div>
@@ -360,9 +362,10 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                    
+
                                             <div class="col-md-8 field-container">
-                                                <button name='action_confirm_payment' type="object" string="Pay" class="btn-primary"/>
+                                                <button name='action_confirm_payment' type="object" string="Pay"
+                                                        class="btn-primary"/>
                                             </div>
                                         </div>
                                     </div>

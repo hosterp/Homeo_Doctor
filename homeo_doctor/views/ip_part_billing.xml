@@ -406,6 +406,7 @@
                     <field name="department"/>
                     <field name="op_category" string="Category"/>
                     <field name="doctor"/>
+                    <field name="total_amount"/>
                     <field name="status" string="Payment Status"/>
                 </tree>
             </field>
