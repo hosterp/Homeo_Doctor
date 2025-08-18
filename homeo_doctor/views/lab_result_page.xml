@@ -9,27 +9,28 @@
                         <field name="result_status" widget="statusbar"/>
                         <field name="sample_status" widget="statusbar"/>
                         <field name="status" widget="statusbar"/>
-                          <button name="action_sample_collected" type="object" string="Sample Collected" class="btn-primary"/>
-                          <button name="action_result_ready" type="object" string="Result Ready" class="btn-primary"/>
+                        <button name="action_sample_collected" type="object" string="Sample Collected"
+                                class="btn-primary"/>
+                        <button name="action_result_ready" type="object" string="Result Ready" class="btn-primary"/>
                     </header>
                     <sheet>
                         <div class="row custom_lab_result ">
-                        <div class="col-md-3">
-                            <div class="form-group row">
-                                <label for="from_date" class="col-md-4 col-form-label">From Date</label>
-                                <div class="col-md-8 field-container">
-                                    <field name="from_date"/>
-                                </div>
-                            </div>
-                        </div>
                             <div class="col-md-3">
-                            <div class="form-group row">
-                                <label for="to_date" class="col-md-4 col-form-label">To Date</label>
-                                <div class="col-md-8 field-container">
-                                    <field name="to_date"/>
+                                <div class="form-group row">
+                                    <label for="from_date" class="col-md-4 col-form-label">From Date</label>
+                                    <div class="col-md-8 field-container">
+                                        <field name="from_date"/>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="col-md-3">
+                                <div class="form-group row">
+                                    <label for="to_date" class="col-md-4 col-form-label">To Date</label>
+                                    <div class="col-md-8 field-container">
+                                        <field name="to_date"/>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-md-12 custom_lab_result_second">
@@ -39,15 +40,19 @@
                                 <div class="row mx-n1">
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="bill_number" class="col-md-5 col-form-label py-0 small text-nowrap">Bill Number</label>
+                                            <label for="bill_number"
+                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Bill Number
+                                            </label>
                                             <div class="col-md-7 field-container py-0">
-                                                <field name="bill_number" />
+                                                <field name="bill_number"/>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="patient_id" class="col-md-5 col-form-label py-0 small text-nowrap">Patient ID</label>
+                                            <label for="patient_id"
+                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Patient ID
+                                            </label>
                                             <div class="col-md-7 field-container py-0">
                                                 <field name="patient_id"/>
                                             </div>
@@ -55,7 +60,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="patient_name" class="col-md-5 col-form-label py-0 small text-nowrap">Patient Name</label>
+                                            <label for="patient_name"
+                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Patient Name
+                                            </label>
                                             <div class="col-md-7 field-container py-0">
                                                 <field name="patient_name"/>
                                             </div>
@@ -63,7 +70,10 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="internal_doctor" class="col-md-5 col-form-label py-0 small text-nowrap">Internal Doctor</label>
+                                            <label for="internal_doctor"
+                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Internal
+                                                Doctor
+                                            </label>
                                             <div class="col-md-7 field-container py-0">
                                                 <field name="internal_doctor"/>
                                             </div>
@@ -75,7 +85,9 @@
                                 <div class="row mx-n1">
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="doctor" class="col-md-5 col-form-label py-0 text-nowrap">Doctor</label>
+                                            <label for="doctor" class="col-md-5 col-form-label py-0 text-nowrap">
+                                                Doctor
+                                            </label>
                                             <div class="col-md-7 field-container py-0">
                                                 <field name="doctor"/>
                                             </div>
@@ -83,7 +95,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="sample_collected" class="col-md-5 col-form-label py-0 text-nowrap">Sample Collected</label>
+                                            <label for="sample_collected"
+                                                   class="col-md-5 col-form-label py-0 text-nowrap">Sample Collected
+                                            </label>
                                             <div class="col-md-7 field-container py-0">
                                                 <field name="sample_collected"/>
                                             </div>
@@ -91,7 +105,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="lab_incharge" class="col-md-5 col-form-label py-0 text-nowrap">Lab Incharge</label>
+                                            <label for="lab_incharge" class="col-md-5 col-form-label py-0 text-nowrap">
+                                                Lab Incharge
+                                            </label>
                                             <div class="col-md-7 field-container py-0">
                                                 <field name="lab_incharge"/>
                                             </div>
@@ -99,7 +115,9 @@
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="lab_collection" class="col-md-5 col-form-label py-0 text-nowrap">Lab Collection</label>
+                                            <label for="lab_collection"
+                                                   class="col-md-5 col-form-label py-0 text-nowrap">Lab Collection
+                                            </label>
                                             <div class="col-md-7 field-container py-0">
                                                 <field name="lab_collection"/>
                                             </div>
@@ -111,15 +129,19 @@
                                 <div class="row mx-n1">
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="test_on" class="col-md-5 col-form-label py-0 small text-nowrap">Test On</label>
+                                            <label for="test_on" class="col-md-5 col-form-label py-0 small text-nowrap">
+                                                Test On
+                                            </label>
                                             <div class="col-md-7 field-container py-0">
-                                                <field name="test_on" />
+                                                <field name="test_on"/>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
-                                            <label for="lab_technician" class="col-md-5 col-form-label py-0 small text-nowrap">Lab Technician</label>
+                                            <label for="lab_technician"
+                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Lab Technician
+                                            </label>
                                             <div class="col-md-7 field-container py-0">
                                                 <field name="lab_technician"/>
                                             </div>
@@ -132,7 +154,6 @@
                                         <!-- Empty column for consistent layout -->
                                     </div>
                                 </div>
-
 
 
                             </div>
@@ -160,6 +181,21 @@
                 </form>
             </field>
         </record>
+        <record id="view_lab_result_search" model="ir.ui.view">
+            <field name="name">doctor.lab.result.search</field>
+            <field name="model">lab.result.page</field>
+            <field name="arch" type="xml">
+                <search string="Search Lab Results">
+                    <field name="bill_number" string="Bill No"/>
+                    <field name="patient_id" string="UHID"/>
+                    <field name="patient_name" string="Patient Name"/>
+
+                    <!-- Filters -->
+
+                </search>
+            </field>
+        </record>
+
         <record id="view_lab_result_tree" model="ir.ui.view">
             <field name="name">doctor.lab.result.tree</field>
             <field name="model">lab.result.page</field>
@@ -182,6 +218,7 @@
             <field name="res_model">lab.result.page</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_lab_result_tree"/>
+            <field name="search_view_id" ref="view_lab_result_search"/>
         </record>
         <menuitem id="menu_lab_result_page" name="Lab Result" parent="menu_lab_reports" action="action_lab_result_page"
                   sequence="2"/>
