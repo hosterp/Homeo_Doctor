@@ -101,55 +101,57 @@
                             <div class="col-12">
                                 <table class="table table-bordered"
                                        style="width: 100%; border-collapse: collapse; font-size: 18px; line-height: 0.5;">
-                                    <tr style="height: 50px;">
-                                        <td style="padding: 15px; vertical-align: middle; width: 20%; white-space: nowrap;">
+                                    <tr style="height: 35px;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 20%; white-space: nowrap;">
                                             <strong>UHID No:</strong>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: middle; width: 30%;">
-                                            <span t-field="o.reference_no"/>
+                                        <td style="padding: 8px; vertical-align: middle; width: 30%;">
+                                            <strong>
+                                                <span t-field="o.reference_no"/>
+                                            </strong>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: middle; width: 20%; white-space: nowrap;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 20%; white-space: nowrap;">
                                             <strong>Bill Date:</strong>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: middle; width: 30%;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 30%;">
                                             <span t-field="o.discharge_date"/>
                                         </td>
                                     </tr>
-                                    <tr style="height: 50px;">
-                                        <td style="padding: 15px; vertical-align: middle; width: 20%; white-space: nowrap;">
+                                    <tr style="height: 35px;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 20%; white-space: nowrap;">
                                             <strong>Patient Name:</strong>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: middle; width: 30%;">
-                                            <span t-field="o.patient_id"/>
+                                        <td style="padding: 8px; vertical-align: middle; width: 30%;">
+                                            <strong><span t-field="o.patient_id"/></strong>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: middle; width: 20%; white-space: nowrap;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 20%; white-space: nowrap;">
                                             <strong>Payment Mode:</strong>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: middle; width: 30%;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 30%;text-transform: uppercase;">
                                             <strong>
                                                 <span t-field="o.advance_mode_payment"/>
                                             </strong>
                                         </td>
                                     </tr>
-                                    <tr style="height: 50px;">
-                                        <td style="padding: 15px; vertical-align: middle; width: 20%; white-space: nowrap;">
+                                    <tr style="height: 35px;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 20%; white-space: nowrap;">
                                             <strong>Mobile:</strong>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: middle; width: 30%;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 30%;">
                                             <span t-field="o.phone_number"/>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: middle; width: 20%; white-space: nowrap;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 20%; white-space: nowrap;">
                                             <strong>Admitted Date:</strong>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: middle; width: 30%;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 30%;">
                                             <span t-field="o.admitted_date"/>
                                         </td>
                                     </tr>
-                                    <tr style="height: 50px;">
-                                        <td style="padding: 15px; vertical-align: middle; width: 20%; white-space: nowrap;">
+                                    <tr style="height: 35px;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 20%; white-space: nowrap;">
                                             <strong>Doctor:</strong>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: top; width: 30%; word-wrap: break-word; white-space: normal; line-height: 1.4;">
+                                        <td style="padding: 8px; vertical-align: top; width: 30%; word-wrap: break-word; white-space: normal; line-height: 1.4;">
                                             <span style="display:block;" t-field="o.doctor"/>
                                             <t t-if="o.department_id">
                                                 <span style="display:block; font-size: 13px; margin-top: 3px;">
@@ -159,10 +161,10 @@
                                         </td>
 
 
-                                        <td style="padding: 15px; vertical-align: middle; width: 20%; white-space: nowrap;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 20%; white-space: nowrap;">
                                             <strong>Discharge Date:</strong>
                                         </td>
-                                        <td style="padding: 15px; vertical-align: middle; width: 30%;">
+                                        <td style="padding: 8px; vertical-align: middle; width: 30%;">
                                             <span t-field="o.discharge_date"/>
                                         </td>
                                     </tr>
@@ -176,22 +178,23 @@
                                 <!-- Bills Summary Table -->
                                 <table class="table table-bordered table-striped"
                                        style="width: 100%; border-collapse: collapse; font-size: 18px;">
-                                    <thead style="background-color: #007bff; color: Black;">
-                                        <tr style="height: 60px;">
-                                            <th style="padding: 18px; border: 2px solid #ddd; border-bottom: 2px solid black; width: 25%; font-size: 18px; vertical-align: middle;">
+                                    <thead style="background-color: #007bff; color: Black; width:100%; border-top:2px solid #000; border-bottom:2px solid #000; margin-bottom:10px;">
+                                        <tr>
+                                            <th style="padding: 8px; border: 2px solid #ddd; border-bottom: 2px solid black; width: 25%; font-size: 16px; vertical-align: middle;">
                                                 Sl No
                                             </th>
-                                            <th style="padding: 18px; border: 2px solid #ddd; border-bottom: 2px solid black; width: 40%; font-size: 18px; vertical-align: middle;">
+                                            <th style="padding: 8px; border: 2px solid #ddd; border-bottom: 2px solid black; width: 40%; font-size: 16px; vertical-align: middle;">
                                                 PARTICULARS
                                             </th>
-                                            <th style="padding: 18px; border: 2px solid #ddd; border-bottom: 2px solid black; width: 15%; text-align: center; font-size: 18px; vertical-align: middle;">
+                                            <th style="padding: 8px; border: 2px solid #ddd; border-bottom: 2px solid black; width: 15%; text-align: center; font-size: 16px; vertical-align: middle;">
                                                 Qty
                                             </th>
-                                            <th style="padding: 18px; border: 2px solid #ddd; border-bottom: 2px solid black; width: 20%; text-align: right; font-size: 18px; vertical-align: middle;">
+                                            <th style="padding: 8px; border: 2px solid #ddd; border-bottom: 2px solid black; width: 20%; text-align: right; font-size: 16px; vertical-align: middle;">
                                                 AMOUNT
                                             </th>
                                         </tr>
                                     </thead>
+
 
                                     <tbody>
                                         <t t-set="sl" t-value="0"/>
@@ -199,22 +202,22 @@
                                         <!-- Room Rent (if room category exists) -->
                                         <t t-if="o.room_category_new">
                                             <t t-set="sl" t-value="sl + 1"/>
-                                            <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                            <tr style="height: 35px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     <t t-esc="sl"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     <span t-field="o.room_category_new"/>
                                                     - Room Rent
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     <t t-set="room_days_calc"
                                                        t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
                                                     <t t-set="room_count"
                                                        t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
                                                     <span t-esc="room_count"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
                                                     <span t-esc="'{:,.2f}'.format(o.room_rent or 0)"/>
                                                 </td>
@@ -224,21 +227,21 @@
                                         <!-- Nursing Charge (if exists) -->
                                         <t t-if="o.nurse_charge and o.nurse_charge > 0">
                                             <t t-set="sl" t-value="sl + 1"/>
-                                            <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                            <tr style="height: 35px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     <t t-esc="sl"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     Nursing Charge
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     <t t-set="room_days_calc"
                                                        t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
                                                     <t t-set="room_count"
                                                        t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
                                                     <span t-esc="room_count"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
                                                     <span t-esc="'{:,.2f}'.format(o.nurse_charge * room_count)"/>
                                                 </td>
@@ -248,21 +251,21 @@
                                         <!-- Doctor Visiting Charge (if exists) -->
                                         <t t-if="o.doctor_visiting_charge and o.doctor_visiting_charge > 0">
                                             <t t-set="sl" t-value="sl + 1"/>
-                                            <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                            <tr style="height: 35px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     <t t-esc="sl"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     Doctor Consultation &amp; Visits
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     <t t-set="room_days_calc"
                                                        t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
                                                     <t t-set="room_count"
                                                        t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
                                                     <span t-esc="room_count"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
                                                     <span t-esc="'{:,.2f}'.format(o.doctor_visiting_charge * room_count)"/>
                                                 </td>
@@ -272,21 +275,21 @@
                                         <!-- Service Charge (if exists) -->
                                         <t t-if="o.service_charge and o.service_charge > 0">
                                             <t t-set="sl" t-value="sl + 1"/>
-                                            <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                            <tr style="height: 35px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     <t t-esc="sl"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     Services Charge
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     <t t-set="room_days_calc"
                                                        t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
                                                     <t t-set="room_count"
                                                        t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)+1"/>
                                                     <span t-esc="room_count"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
                                                     <span t-esc="'{:,.2f}'.format(o.service_charge * room_count)"/>
                                                 </td>
@@ -296,17 +299,17 @@
                                         <!-- IP Bills (if any) -->
                                         <t t-if="o.paid_ip_ids">
                                             <t t-set="sl" t-value="sl + 1"/>
-                                            <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                            <tr style="height: 35px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle;">
                                                     <t t-esc="sl"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     <strong style="font-size: 18px;">IP Bills</strong>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     <span t-esc="len(o.paid_ip_ids)"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
                                                     <span t-esc="'{:,.2f}'.format(sum(o.paid_ip_ids.mapped('total_amount')) - sum(o.paid_ip_ids.mapped('room_rent_total')))"/>
                                                 </td>
@@ -318,18 +321,18 @@
                                             <t t-foreach="o.get_grouped_general_lines()" t-as="line">
                                                 <t t-set="sl" t-value="sl + 1"/>
                                                 <tr>
-                                                    <td style="padding: 8px 18px; border: 2px solid #ddd; font-size: 16px;">
+                                                    <td style="padding: 8px 8px; border: 2px solid #ddd; font-size: 16px;">
                                                         <t t-esc="sl"/>
                                                     </td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                    <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                         <t t-esc="line['name']"/>
                                                     </td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                    <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                         <strong>
                                                             <t t-esc="line['quantity']"/>
                                                         </strong>
                                                     </td>
-                                                    <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                    <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                         ₹
                                                         <strong>
                                                             <t t-esc="line['total_amt']"/>
@@ -342,17 +345,17 @@
                                         <!-- Lab Bills (if any) -->
                                         <t t-if="o.unpaid_lab_ids">
                                             <t t-set="sl" t-value="sl + 1"/>
-                                            <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                            <tr style="height: 35px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle;">
                                                     <t t-esc="sl"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     Laboratory Charges
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     <span t-esc="len(o.unpaid_lab_ids)"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
                                                     <span t-esc="'{:,.2f}'.format(sum(o.unpaid_lab_ids.mapped('total_bill_amount')))"/>
                                                 </td>
@@ -362,17 +365,17 @@
                                         <!-- Pharmacy Bills (if any) -->
                                         <t t-if="o.unpaid_pharmacy_ids">
                                             <t t-set="sl" t-value="sl + 1"/>
-                                            <tr style="height: 55px;">
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle;">
+                                            <tr style="height: 35px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle;">
                                                     <t t-esc="sl"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
                                                     Pharmacy Charges
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     <span t-esc="len(o.unpaid_pharmacy_ids)"/>
                                                 </td>
-                                                <td style="padding: 18px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
+                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
                                                     <span t-esc="'{:,.2f}'.format(sum(o.unpaid_pharmacy_ids.mapped('total_amount')))"/>
                                                 </td>
@@ -391,12 +394,12 @@
                                     </tbody>
 
                                     <!--                                    <tfoot style="background-color: #f8f9fa;">-->
-                                    <tr style="font-weight: bold; font-size: 20px; height: 70px;">
+                                    <tr style="font-weight: bold; font-size: 20px; height: 40px; width:100%; border-top:2px solid #000; margin-bottom:10px;">
                                         <th colspan="3"
-                                            style="padding: 20px; border: 2px solid #ddd; text-align: right; font-size: 20px; vertical-align: middle;">
+                                            style="padding: 10px; border: 2px solid #ddd; text-align: right; font-size: 20px; vertical-align: middle;">
                                             TOTAL:
                                         </th>
-                                        <th style="padding: 20px; border: 2px solid #ddd; text-align: right; font-size: 20px; color: black; vertical-align: middle;">
+                                        <th style="padding: 10px; border: 2px solid #ddd; text-align: right; font-size: 20px; color: black; vertical-align: middle;">
                                             ₹
                                             <!--                                                <span t-esc="'{:,.2f}'.format((o.room_rent or 0) +-->
                                             <!--                                                              (o.nurse_charge or 0) +-->
@@ -473,7 +476,7 @@
                         <!--                        </div>-->
 
                         <!-- Signature Section with larger font -->
-                        <div style="border: 2px solid black; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                        <div style="border: 2px solid black; padding: 10px; border-radius: 8px; margin-top: 7px;">
                             <!-- First row -->
                             <table style="width: 100%; font-size: 20px; border-collapse: collapse; margin-top: 10px;">
                                 <tr>
