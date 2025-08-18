@@ -58,8 +58,8 @@ class CombinedReportWizard(models.TransientModel):
             ])
 
             patients = self.env['patient.reg'].search([
-                ('date', '>=', self.from_date),
-                ('date', '<=', self.to_date),
+                ('time', '>=', self.from_date),
+                ('time', '<=', self.to_date),
                 ('register_mode_payment', '=', code),
                 ('register_bool', '=', True),
             ])
