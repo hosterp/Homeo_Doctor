@@ -96,7 +96,7 @@
 
                         <div class="row mb-4" style="font-size: 20px;">
                             <div class="col-6">
-                                <div class="p-3" style="border: 2px solid #aaa; border-radius: 6px;">
+                                <div class="p-3" style="border: 2px  border-radius: 6px;">
                                     <table class="table table-borderless mb-0" style="width: 100%; line-height: 1.6;">
                                         <tr>
                                             <td style="padding: 4px 8px;">
@@ -145,7 +145,7 @@
                             </div>
 
                             <div class="col-6">
-                                <div class="p-3" style="border: 2px solid #aaa; border-radius: 6px;">
+                                <div class="p-3" style="border: 2px  border-radius: 6px;">
                                     <table class="table table-borderless mb-0" style="width: 100%; line-height: 1.6;">
                                         <tr>
                                             <td style="padding: 4px 8px;">
@@ -193,9 +193,9 @@
                         </div>
 
                         <div class="mt-4">
-                            <table class="table table-bordered"
+                            <table
                                    style="width: 100%; font-size: 20px; border-collapse: collapse;">
-                                <thead style="background-color: #f9f9f9;">
+                                <thead style="background-color: #f9f9f9; color: Black; width:100%; border-top:2px solid #000; border-bottom:2px solid #000; margin-bottom:10px;">
                                     <tr style="line-height: 1.6;">
                                         <th class="text-center" style="width: 5%;">No.</th>
                                         <th style="width: 30%;">Test Name</th>

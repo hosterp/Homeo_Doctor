@@ -89,7 +89,8 @@ class LabResultPage(models.Model):
         for record in self:
             record.sample_status = 'sample_collected'
             if record.bill_number:
-                record.bill_number.sample_status = 'sample_collected'  # Update billing status
+                record.bill_number.sample_status = 'sample_collected'
+                record.sample_collected = fields.Datetime.now()
 
     def action_result_ready(self):
         """Change status to 'Result Ready' and update billing."""
@@ -97,6 +98,7 @@ class LabResultPage(models.Model):
             record.result_status = 'result_ready'
             if record.bill_number:
                 record.bill_number.result_status = 'result_ready'
+                record.test_on = fields.Datetime.now()
 
     @api.onchange('from_date', 'to_date')
     def _onchange_date_filter(self):
