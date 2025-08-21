@@ -1,0 +1,193 @@
+<odoo>
+    <data>
+        <template id="patient_revisit_pdf_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                            <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                                 style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
+
+                            <div style="text-align: center;">
+                                <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S
+                                    MULTI
+                                    SPECIALITY HOSPITAL
+                                </h1>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                                    THIRUVANANTHAPURAM -695 564
+                                </p>
+                                <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                                    8590203321
+                                    dpmshospital@gmail.com
+                                </p>
+                                <!--                                        <p style="margin: 5px 0; font-size: 15px; color: #555;">-->
+                                <!--                                            <strong>PH:</strong>-->
+                                <!--                                            0471-2432121, 9188429198 |-->
+                                <!--                                            <strong>Email:</strong>-->
+                                <!--                                            <a href="mailto:santhwanatvpm@gmail.com"-->
+                                <!--                                               style="color: #007bff; text-decoration: none;">-->
+                                <!--                                                santhwanatvpm@gmail.com-->
+                                <!--                                            </a>-->
+                                <!--                                        </p>-->
+                            </div>
+                        </div>
+                        <div class="oe_structure"/>
+                        <div style="text-align: center;">
+                            <h2>Patient Revisit Report</h2>
+                            <p>
+                                <strong>From Date:</strong>
+                                <span t-esc="data['form']['from_date']"/>
+                                <strong>To Date:</strong>
+                                <span t-esc="data['form']['to_date']"/>
+                            </p>
+                        </div>
+
+                        <t t-if="data['form']['patients'] and len(data['form']['patients']) > 0">
+                            <table class="table table-sm table-bordered mt-4" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">SL</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">
+                                            Reference
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Name</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Age</th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Address
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Mobile
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Doctor
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Payment
+                                            Mode
+                                        </th>
+                                        <th class="text-center" style="border: 1px solid #000; padding: 8px;">Total
+                                            Amount
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="data['form']['patients']" t-as="p">
+                                        <tr>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['sl']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['reference_no']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['patient_name']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['age']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['address']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['phone']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['doctor']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['mode_of_payment']"/>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 8px;">
+                                                <span t-esc="p['register_total_amount']"/>
+                                            </td>
+
+                                        </tr>
+                                    </t>
+                                    <tr>
+                                        <td colspan="8"
+                                            style="border: 1px solid #000; padding: 8px; text-align: right; font-weight: bold;">
+                                            Total Amount
+                                        </td>
+                                        <t t-set="total_amount" t-value="0"/>
+                                        <t t-foreach="data['form']['patients']" t-as="p">
+                                            <t t-set="total_amount"
+                                               t-value="total_amount + (float(p['register_total_amount'] or 0))"/>
+                                        </t>
+                                        <td style="border: 1px solid #000; padding: 8px; font-weight: bold;">
+                                            <span t-esc="total_amount"/>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-if="not data['form']['patients'] or len(data['form']['patients']) == 0">
+                            <div class="alert alert-warning mt-4">
+                                <p>No patient records found in this date range.</p>
+                            </div>
+                        </t>
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <record id="view_patient_revisit_report_wizard" model="ir.ui.view">
+            <field name="name">Patient Revisit Report Wizard</field>
+            <field name="model">patient.revisit.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Report">
+                    <group col="3">
+                        <group>
+                            <field name="from_date"/>
+                        </group>
+                        <group>
+                            <field name="to_date"/>
+                        </group>
+                        <group>
+                            <field name="register_mode_payment"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_print_pdf" type="object" string="PDF Report" class="btn-primary"/>
+                        <!--                        <button name="action_export_excel" type="object" string="Excel Report" class="btn-secondary"/>-->
+                        <button string="Cancel" special="cancel" class="btn-link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="patient_reg_billing_paperformat" model="report.paperformat">
+            <field name="name">Patient Reg Billing PDF Format</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="orientation">Portrait</field>
+            <field name="header_line" eval="False"/>
+        </record>
+        <report
+                id="action_patient_revisit_pdf"
+                model="patient.revisit.report.wizard"
+                string="Patient Revisit PDF"
+                report_type="qweb-pdf"
+                name="homeo_doctor.patient_revisit_pdf_template"
+                file="homeo_doctor.patient_revisit_pdf_template"
+                print_report_name="'Patient_Revisit_Report_%s' % (object.from_date)"
+                paperformat="patient_reg_billing_paperformat"
+        />
+
+
+        <!-- Menu & Action -->
+        <act_window id="action_patient_revisit_report_wizard"
+                    name="Patient Revisit Report"
+                    res_model="patient.revisit.report.wizard"
+                    view_mode="form"
+                    target="new"/>
+
+        <menuitem id="menu_lab_root" name="Home" parent="menu_homeo_head" sequence="11"/>
+        <menuitem id="menu_reports_root" name="Reports" parent="menu_homeo_head" sequence="21"/>
+        <menuitem id="menu_patient_revisit_report"
+                  name="OP Revisit"
+                  parent="menu_reports_root"
+                  action="action_patient_revisit_report_wizard"/>
+
+    </data>
+</odoo>

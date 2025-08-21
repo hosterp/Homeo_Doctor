@@ -75,6 +75,7 @@
         "report/report_hsn_wise.xml",
         "report/bill_report_wizard.xml",
         "report/ip_biling_report.xml",
+        "report/op_revisit_report.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",
