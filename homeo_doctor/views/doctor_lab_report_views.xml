@@ -350,13 +350,21 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div class="form-group row">
                                             <label for="staff_pwd" class="col-md-4 col-form-label">Staff Password
                                             </label>
                                             <div class="col-md-8 field-container">
                                                 <field name="staff_pwd"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="discount_amount" class="col-md-4 col-form-label">Discount
+                                            </label>
+                                            <div class="col-md-8 field-container">
+                                                <field name="discount_amount"/>
                                             </div>
                                         </div>
                                     </div>

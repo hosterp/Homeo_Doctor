@@ -88,6 +88,7 @@ class DoctorLabReport(models.Model):
         ('lab', 'Lab')
     ], string="Active Investigation Type", default='all')
     admitted_patient_id = fields.Many2one('hospital.admitted.patient', string="Admitted Patient")
+    discount_amount = fields.Integer(string="Discount amount")
     def amount_to_text_indian(self):
         """Convert amount to words in Indian format (Rupees and Paise)."""
         try:
@@ -232,10 +233,11 @@ class DoctorLabReport(models.Model):
                 lab_result.write({'sample_status': 'sample_collected'})
 
 
-    @api.depends('lab_billing_ids')
+    @api.depends('lab_billing_ids','discount_amount')
     def _onchange_lab_billing_ids(self):
         for rec in self:
-            rec.total_bill_amount = sum(rec.lab_billing_ids.mapped('total_amount'))
+            total = sum(rec.lab_billing_ids.mapped('total_amount'))
+            rec.total_bill_amount = total - (rec.discount_amount or 0)
         # self.display_amount = self.total_bill_amount
 
     @api.depends('lab_line_ids')
