@@ -169,7 +169,7 @@
                                 <!-- Right: total in the last column -->
                                 <td style="padding:8px; text-align:right;font-size: 25px;">
                                     <strong>Total: ₹
-                                        <t t-esc="doc.consultation_fee"/>
+                                        <t t-esc="doc.register_total_amount"/>
                                     </strong>
                                 </td>
                             </tr>
