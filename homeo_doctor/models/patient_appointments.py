@@ -1,5 +1,6 @@
 from odoo import api, fields, models, _
 import datetime
+from datetime import datetime, timedelta
 
 from dateutil.relativedelta import relativedelta
 
@@ -16,7 +17,7 @@ class PatientAppointment(models.Model):
     token_no = fields.Char("Token No")
     patient_id = fields.Many2one('patient.reg', string='UHID', required=True)
     patient_name= fields.Char(related='patient_id.patient_id', string='Patient Name', required=True)
-    appointment_date = fields.Date(string="Appointment Date")
+    appointment_date = fields.Datetime(string="Appointment Date")
     doctor_id = fields.Many2one('doctor.profile', string='Doctor')
     department=fields.Many2one('doctor.department',string='Department')
     departments=fields.Many2many('doctor.department',string='Departments')
@@ -324,7 +325,7 @@ class PatientAppointment(models.Model):
                     ], order='formatted_date desc', limit=1)
 
                     if last_registration:
-                        last_registration_day = (appointment_date - last_registration.date).days
+                        last_registration_day = (appointment_date - datetime.combine(last_registration.date, datetime.min.time())).days
                         print(
                             f"Last registration found. Last registration date: {last_registration.date}, days since last registration: {last_registration_day}")
                     else:
@@ -440,7 +441,7 @@ class PatientAppointment(models.Model):
                     ], order='formatted_date desc', limit=1)
 
                     if last_registration:
-                        last_registration_day = (appointment_date - last_registration.date).days
+                        last_registration_day = (appointment_date - datetime.combine(last_registration.date, datetime.min.time())).days
                         # print(
                         #     f"Last registration found. Last registration date: {last_registration.date}, days since last registration: {last_registration_day}")
                     else:
