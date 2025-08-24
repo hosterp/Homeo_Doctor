@@ -19,7 +19,7 @@ class DoctorLabReport(models.Model):
     patient_phone = fields.Char(related='patient_id.phone_number', string="Mobile No")
     reference_no = fields.Char(string="Reference No")
     report_reference = fields.Char(string="Report Reference", readonly=True, default=lambda self: _('New'))
-    date = fields.Date(string="Report Date", default=fields.Date.context_today)
+    date = fields.Datetime(string="Report Date",default=fields.Datetime.now)
     doctor_id = fields.Many2one('doctor.profile', string="Doctor")
     report_details = fields.Text(string="Report Details")
     attachment = fields.Binary(string="Result")
