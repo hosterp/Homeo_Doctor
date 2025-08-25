@@ -170,22 +170,32 @@ class DoctorLabReport(models.Model):
                 continue
 
             if lab_test:
-                # Search for test configurations
+
                 test_results = self.env['lab.resultant.confi'].search([
                     ('test_name_bill_code', '=', lab_test.id),
-                    '|',
+                    '|', '|',
                     ('gender', '=', self.gender),
-                    ('gender', '=', False)
+                    ('gender', '=', False),
+                    ('gender', '=', 'both'),
                 ])
-
-                # Create lab scan lines for each test configuration
-                for test_result in test_results:
+             
+                if test_results:
+                    for test_result in test_results:
+                        self.env['lab.scan.line'].create({
+                            'lab_id': self.id,
+                            'lab_type_id': lab_test.id,
+                            'lab_test_name': test_result.test_name,
+                            'lab_reference_range': test_result.referral_range,
+                            'unit': test_result.unit,
+                        })
+                else:
+                    # fallback: no config found, still create default
                     self.env['lab.scan.line'].create({
                         'lab_id': self.id,
                         'lab_type_id': lab_test.id,
-                        'lab_test_name': test_result.test_name,
-                        'lab_reference_range': test_result.referral_range,
-                        'unit': test_result.unit,
+                        'lab_test_name': lab_test.display_name,
+                        'lab_reference_range': '',
+                        'unit': '',
                     })
 
     def generate_lab_scan_lines(self):
