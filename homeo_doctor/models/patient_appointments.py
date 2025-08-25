@@ -147,7 +147,7 @@ class PatientAppointment(models.Model):
                 padded_seq = str(raw_seq).zfill(4)
 
                 # Compute fiscal year suffix (e.g. if today is June 2025 → "25-26")
-                today = datetime.date.today()
+                today = datetime.today().date()
                 year_start = today.year % 100
                 year_end = (today.year + 1) % 100
                 fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
