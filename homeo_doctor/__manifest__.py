@@ -77,6 +77,8 @@
         "report/ip_biling_report.xml",
         "report/op_revisit_report.xml",
         "report/consolidated_discharge_bill.xml",
+        "report/insurance_patient_challan.xml",
+        "views/ip_insurance_billing.xml",
         "views/custom_title.xml",
         "views/account_move_view.xml",
         "views/register_paymeny.xml",

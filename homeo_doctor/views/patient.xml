@@ -709,6 +709,23 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col px-1" style="max-width: 20%;">
+                                                        <div class="form-group row my-1 align-items-center">
+                                                            <label for="insurance_boolean"
+                                                                   class="col-md col-form-label py-0 text-nowrap">
+                                                                Insurance
+                                                            </label>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="insurance_boolean" style="width:100%;"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-center mt-1">
+                                                            <button name="insurance_bill" string="Insurance Bill"
+                                                                    type="object"
+                                                                    class="btn btn-primary btn-sm"  attrs="{'invisible': [('insurance_boolean','=',False)]}"/>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="col px-1"
                                                          style="max-width: 20%; border:none; box-shadow: none;">
                                                         <!--                                                        <div class="form-group row my-1">-->
@@ -848,18 +865,18 @@
 
                                             <div class="row pay_button"
                                                  attrs="{'invisible': [('status', 'in', ['proceed_discharge','admitted'])]}"
-                                                    style="margin-left: 30px; display: flex; gap: 10px;">
+                                                 style="margin-left: 30px; display: flex; gap: 10px;">
 
-                                                    <button name="finalize_discharge_cleanup"
-                                                            string="Discharged"
-                                                            type="object"
-                                                            class="btn btn-sm btn-primary"
-                                                            title="Discharge"/>
-                                                    <button name="consolidated_bill"
-                                                            string="Consolidated Bill"
-                                                            type="object"
-                                                            class="btn btn-sm btn-primary"
-                                                            title="Consolidated Bill"/>
+                                                <button name="finalize_discharge_cleanup"
+                                                        string="Discharged"
+                                                        type="object"
+                                                        class="btn btn-sm btn-primary"
+                                                        title="Discharge"/>
+                                                <button name="consolidated_bill"
+                                                        string="Consolidated Bill"
+                                                        type="object"
+                                                        class="btn btn-sm btn-primary"
+                                                        title="Consolidated Bill"/>
 
                                             </div>
                                             <div class="row pay_button_admit" style="margin-left:20%">

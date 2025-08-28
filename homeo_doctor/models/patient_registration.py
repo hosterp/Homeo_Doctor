@@ -139,6 +139,18 @@ class PatientRegistration(models.Model):
     room_rent = fields.Float(string="Room Rent", compute="_compute_total_unpaid_amount", store=True)
     paid_room_rent = fields.Float(string="Paid Room Rent", store=True)
     register_bool = fields.Boolean(default=False)
+    unpaid_insurance_ids = fields.One2many(
+        'ip.insurance.billing', 'mrd_no',  # use correct foreign key here!
+        string="Unpaid Insurance Bills",
+        compute="_compute_all_totals",
+        store=False
+    )
+
+    # Total of unpaid insurance bills
+    unpaid_insurance_total = fields.Float(
+        string="Unpaid Insurance Total",
+        compute="_compute_all_totals",
+        store=False)
     unpaid_pharmacy_ids = fields.One2many(
         'pharmacy.description', 'uhid_id', string="Unpaid Pharmacy Bills", compute='_compute_all_totals',
         store=False)
@@ -154,9 +166,17 @@ class PatientRegistration(models.Model):
     referred = fields.Boolean('Referred')
     tt = fields.Boolean('TT')
     discount = fields.Integer('Discount')
-    insurance_boolean = fields.Boolean()
+    insurance_boolean = fields.Boolean(string='Insurance')
 
     def get_grouped_general_lines(self):
+        grouped = defaultdict(lambda: {'quantity': 0, 'total_amt': 0})
+        for line in self.unpaid_general_ids.mapped('general_bill_line_ids'):
+            key = line.particulars.display_name
+            grouped[key]['quantity'] += line.quantity or 0
+            grouped[key]['total_amt'] += line.total_amt or 0
+        return [{'name': k, 'quantity': v['quantity'], 'total_amt': v['total_amt']}
+                for k, v in grouped.items()]
+    def get_grouped_insurance_lines(self):
         grouped = defaultdict(lambda: {'quantity': 0, 'total_amt': 0})
         for line in self.unpaid_general_ids.mapped('general_bill_line_ids'):
             key = line.particulars.display_name
@@ -237,6 +257,7 @@ class PatientRegistration(models.Model):
             rec.unpaid_lab_total = 0.0
             paid_general = 0.0
             unpaid_general = 0.0
+            rec.unpaid_insurance_total = 0.0
             today = fields.Date.today()
             # -----------------------------
             # General Billing
@@ -257,7 +278,23 @@ class PatientRegistration(models.Model):
                 ])
                 rec.paid_general_ids = paid_general
                 rec.unpaid_general_ids = unpaid_general
+            # paid_insurance = self.env['ip.insurance.billing'].search([
+            #     ('patient_id', '=', rec.id),
+            #     ('state', '=', 'paid'),
+            #     ('bill_date', '>=', rec.admitted_date),
+            #     ('bill_date', '<=', today),
+            # ])
+            unpaid_insurance = self.env['ip.insurance.billing'].search([
+                ('mrd_no', '=', rec.id),
+                ('status', '!=', 'paid'),
+                ('bill_date', '>=', rec.admitted_date),
+                ('bill_date', '<=', today),
+            ])
 
+            # rec.paid_insurance_ids = paid_insurance
+            rec.unpaid_insurance_ids = unpaid_insurance
+            # rec.paid_insurance_total = sum(b.total_amount or 0.0 for b in paid_insurance)
+            rec.unpaid_insurance_total = sum(b.total_amount or 0.0 for b in unpaid_insurance)
             # -----------------------------
             # Pharmacy Billing
             # -----------------------------
@@ -339,7 +376,7 @@ class PatientRegistration(models.Model):
                     sum(u.total_amount or 0.0 for u in rec.unpaid_general_ids) +
                     sum(u.total_amount or 0.0 for u in rec.unpaid_pharmacy_ids) +
                     sum(u.total_amount or 0.0 for u in rec.unpaid_ip_ids) +
-                    rec.unpaid_lab_total
+                    rec.unpaid_lab_total +  rec.unpaid_insurance_total
             )
 
             rec.grant_total = rec.paid_total + rec.unpaid_total + (rec.room_rent or 0.0)
@@ -731,6 +768,9 @@ class PatientRegistration(models.Model):
     def consolidated_bill(self):
         self.action_discharged_patient_reg()
         return self.env.ref('homeo_doctor.action_report_consolidated_discharge_challan').report_action(self)
+    def insurance_bill(self):
+        self.action_discharged_patient_reg()
+        return self.env.ref('homeo_doctor.action_report_insurance_challan').report_action(self)
 
     def finalize_discharge_cleanup(self):
         for record in self:
@@ -765,6 +805,7 @@ class PatientRegistration(models.Model):
                 'service_charge': False,
                 'Staff_name': False,
                 'staff_password': False,
+                'insurance_boolean': False,
 
             })
 
