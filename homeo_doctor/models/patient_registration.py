@@ -701,7 +701,9 @@ class PatientRegistration(models.Model):
                 #     record.unpaid_lab_ids.write({'status': 'paid'})
                 # record.unpaid_pharmacy_ids.write({'status': 'paid'})
         return self.env.ref('homeo_doctor.action_report_discharge_challan').report_action(self)
-
+    def consolidated_bill(self):
+        self.action_discharged_patient_reg()
+        return self.env.ref('homeo_doctor.action_report_consolidated_discharge_challan').report_action(self)
     def finalize_discharge_cleanup(self):
         for record in self:
             record.unpaid_general_ids.write({'status': 'paid'})

@@ -702,7 +702,7 @@
                                                         <div class="form-group row my-1">
                                                             <label for="discount"
                                                                    class="col-md col-form-label py-0 text-nowrap">
-                                                               Discount
+                                                                Discount
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
                                                                 <field name="discount" style="width:100%;"/>
@@ -830,25 +830,37 @@
                                             </div>
                                             <div class="row pay_button"
                                                  attrs="{'invisible': [('status', '=', 'discharged')]}"
-                                                 style="margin-left: 30px">
-                                                <div class="col-md-1">
-                                                    <button name="action_discharged_patient_reg"
-                                                            string="Pay To Discharge"
-                                                            type="object"
-                                                            class="btn btn-sm btn-primary"
-                                                            title="Discharge"/>
-                                                </div>
+                                                 style="margin-left: 30px; display: flex; gap: 10px;">
+
+                                                <button name="action_discharged_patient_reg"
+                                                        string="Pay To Discharge"
+                                                        type="object"
+                                                        class="btn btn-sm btn-primary"
+                                                        title="Discharge"/>
+                                                <button name="consolidated_bill"
+                                                        string="Consolidated Bill"
+                                                        type="object"
+                                                        class="btn btn-sm btn-primary"
+                                                        title="Consolidated Bill"/>
+
+
                                             </div>
+
                                             <div class="row pay_button"
                                                  attrs="{'invisible': [('status', 'in', ['proceed_discharge','admitted'])]}"
-                                                 style="margin-left: 30px">
-                                                <div class="col-md-1">
+                                                    style="margin-left: 30px; display: flex; gap: 10px;">
+
                                                     <button name="finalize_discharge_cleanup"
                                                             string="Discharged"
                                                             type="object"
                                                             class="btn btn-sm btn-primary"
                                                             title="Discharge"/>
-                                                </div>
+                                                    <button name="consolidated_bill"
+                                                            string="Consolidated Bill"
+                                                            type="object"
+                                                            class="btn btn-sm btn-primary"
+                                                            title="Consolidated Bill"/>
+
                                             </div>
                                             <div class="row pay_button_admit" style="margin-left:20%">
                                                 <div class="col-md-1">
@@ -1197,7 +1209,7 @@
                                 class="oe_highlight"/>
 
                     </header>
-<!--                    <field name="formatted_date" string="Registration Date"/>-->
+                    <!--                    <field name="formatted_date" string="Registration Date"/>-->
                     <field name="time" string="Registration Date"/>
                     <field name="reference_no" string="UHID"/>
                     <field name="patient_id"/>
