@@ -95,8 +95,8 @@
 
                                 <!-- Right Column -->
                                 <td style="width:33.3%; text-align:right; vertical-align:middle; font-size:16px; font-weight:bold; padding:5px 0;">
-                                    <!--                                    Bill No:-->
-                                    <!--                                    <span t-field="o.discharge_bill_number"/>-->
+                                    Bill No:
+                                                                        <span t-field="o.discharge_bill_number"/>
                                 </td>
                             </tr>
                         </table>

@@ -13,6 +13,7 @@ from odoo.exceptions import ValidationError
 # from odoo.odoo.exceptions import ValidationError
 import base64
 
+
 # from datetime import datetime, date
 # default=date.today()
 
@@ -25,7 +26,7 @@ class PatientRegistration(models.Model):
     reference_no = fields.Char(string="Reference")
     token_no = fields.Char(string="Token No")
     date = fields.Date(default=dateutil.utils.today(), readonly=True)
-    formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date',store=True)
+    formatted_date = fields.Char(string='Formatted Date', compute='_compute_formatted_date', store=True)
     track_registration_date = fields.Date(default=dateutil.utils.today())
     patient_id = fields.Char(string="Name")
     address = fields.Text(string="Address")
@@ -47,7 +48,8 @@ class PatientRegistration(models.Model):
     ct_report_ids = fields.One2many('scanning.ct', 'patient_id', string="CT Reports")
     xray_report_ids = fields.One2many('scanning.x.ray', 'patient_id', string="X-Ray Reports")
     audiology_report_ids = fields.One2many('audiology.ref', 'patient_id', string="Audiology")
-    consultation_fee = fields.Integer(string='Consultation Fee', compute='_compute_consultation_fee', store=True,readonly=False)
+    consultation_fee = fields.Integer(string='Consultation Fee', compute='_compute_consultation_fee', store=True,
+                                      readonly=False)
     # prescription_line_ids = fields.One2many('pharmacy.prescription.line', 'admission_id', string="Prescriptions")
     lab_report_reg_ids = fields.One2many('lab.result.page', 'patient_re_id_name', string="Lab")
     mri_report_reg_ids = fields.One2many('scanning.mri', 'user_ide', string="MRI")
@@ -67,8 +69,8 @@ class PatientRegistration(models.Model):
     advance_amount = fields.Integer(string='Per Day')
     # bed_id = fields.Many2one('hospital.bed', string='Bed')
     nurse_charge = fields.Float(string='Nursing Charge')
-    doctor_visiting_charge= fields.Float("Doctor Charge")
-    service_charge =  fields.Float("Service Charge")
+    doctor_visiting_charge = fields.Float("Doctor Charge")
+    service_charge = fields.Float("Service Charge")
     alternate_no = fields.Char(string='Alternate Number')
     no_days = fields.Integer(string='Number Of Days', compute='_compute_no_days', store=True)
     admitted_date = fields.Date(string='Admitted Date')
@@ -105,7 +107,7 @@ class PatientRegistration(models.Model):
     temp_admission_total_amount = fields.Integer("Total Amount")
     admission_amount_paid = fields.Integer(string="Amount Paid")
     admission_balance = fields.Integer(string="Balance")
-    Staff_name = fields.Many2one('hr.employee',"Staff Name")
+    Staff_name = fields.Many2one('hr.employee', "Staff Name")
     staff_password = fields.Char("Password")
     admit_card_no = fields.Char(string="Card No")
     admit_bank = fields.Char(string="Bank")
@@ -149,9 +151,11 @@ class PatientRegistration(models.Model):
     unpaid_ip_ids = fields.Many2many(
         'ip.part.billing', string="Unpaid IP Bills", compute="_compute_all_totals"
     )
-    referred=fields.Boolean('Referred')
-    tt=fields.Boolean('TT')
-    discount=fields.Integer('Discount')
+    referred = fields.Boolean('Referred')
+    tt = fields.Boolean('TT')
+    discount = fields.Integer('Discount')
+    insurance_boolean = fields.Boolean()
+
     def get_grouped_general_lines(self):
         grouped = defaultdict(lambda: {'quantity': 0, 'total_amt': 0})
         for line in self.unpaid_general_ids.mapped('general_bill_line_ids'):
@@ -161,7 +165,7 @@ class PatientRegistration(models.Model):
         return [{'name': k, 'quantity': v['quantity'], 'total_amt': v['total_amt']}
                 for k, v in grouped.items()]
 
-    @api.onchange('referred','tt')
+    @api.onchange('referred', 'tt')
     def _onchange_refferd_boolean_and_tt(self):
         for rec in self:
             if rec.referred or rec.tt:
@@ -339,7 +343,8 @@ class PatientRegistration(models.Model):
             )
 
             rec.grant_total = rec.paid_total + rec.unpaid_total + (rec.room_rent or 0.0)
-            rec.paid_room_rent=sum(p.room_rent_total or 0.0 for p in rec.paid_ip_ids)
+            rec.paid_room_rent = sum(p.room_rent_total or 0.0 for p in rec.paid_ip_ids)
+
     # @api.depends('reference_no')
     # def _compute_unpaid_general(self):
     #     for rec in self:
@@ -405,7 +410,7 @@ class PatientRegistration(models.Model):
     register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")
     register_amount_paid = fields.Integer(string="Amount Paid")
     register_balance = fields.Integer(string="Balance")
-    register_staff_name = fields.Many2one('hr.employee',"Staff Name")
+    register_staff_name = fields.Many2one('hr.employee', "Staff Name")
     register_staff_password = fields.Char("Password")
     register_mode_payment = fields.Selection([('cash', 'Cash'),
                                               ('card', 'Card'),
@@ -424,6 +429,7 @@ class PatientRegistration(models.Model):
         """Calculate total amount when charge fields change"""
         # Manually trigger the computation for immediate UI feedback
         self._compute_total_unpaid_amount()
+
     def admit_reception(self):
         self.admission_boolean = True
         self.status = 'admitted'
@@ -609,7 +615,8 @@ class PatientRegistration(models.Model):
                 total += (full_days * rent_full_value) - (rec.paid_room_rent or 0)
 
             # Add other charges
-            total += (rec.nurse_charge * full_days or 0) + (rec.doctor_visiting_charge * full_days or 0) + (rec.service_charge * (full_days+1) or 0)
+            total += (rec.nurse_charge * full_days or 0) + (rec.doctor_visiting_charge * full_days or 0) + (
+                        rec.service_charge * (full_days + 1) or 0)
 
             # Assign final values
             rec.admission_total_amount = total
@@ -621,6 +628,25 @@ class PatientRegistration(models.Model):
         copy=False,
         default='/'
     )
+
+    def write(self, vals):
+        res = super(PatientRegistration, self).write(vals)
+        for record in self:
+            if 'admitted_date' in vals and vals.get('admitted_date'):
+                record.discharge_bill_number = record._generate_bill_number(record.admitted_date)
+        return res
+
+    def _generate_bill_number(self, admitted_date):
+        raw_seq = self.env['ir.sequence'].next_by_code('discharge.bill') or '0'
+        padded_seq = str(raw_seq).zfill(4)
+
+        # if admitted_date is empty, use today's date
+        today = admitted_date or date.today()
+        year_start = today.year % 100
+        year_end = (today.year + 1) % 100
+        fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+        return f"{padded_seq}/{fiscal_suffix}"
 
     def action_discharged_patient_reg(self):
         if self.Staff_name and self.staff_password:
@@ -660,7 +686,7 @@ class PatientRegistration(models.Model):
                 record.discharge_bill_number = f"{padded_seq}/{fiscal_suffix}"
             if admitted_patient:
                 admitted_patient.status = 'discharged'
-                rec=self.env['discharged.patient.record'].create({
+                rec = self.env['discharged.patient.record'].create({
                     'patient_id': record.reference_no,
                     'name': record.patient_id,
                     'discharge_date': record.discharge_date,
@@ -701,9 +727,11 @@ class PatientRegistration(models.Model):
                 #     record.unpaid_lab_ids.write({'status': 'paid'})
                 # record.unpaid_pharmacy_ids.write({'status': 'paid'})
         return self.env.ref('homeo_doctor.action_report_discharge_challan').report_action(self)
+
     def consolidated_bill(self):
         self.action_discharged_patient_reg()
         return self.env.ref('homeo_doctor.action_report_consolidated_discharge_challan').report_action(self)
+
     def finalize_discharge_cleanup(self):
         for record in self:
             record.unpaid_general_ids.write({'status': 'paid'})
@@ -741,6 +769,7 @@ class PatientRegistration(models.Model):
             })
 
         return
+
     @api.onchange('room_category_new')
     def _onchange_room_category_new(self):
         if self.room_category_new:
@@ -847,7 +876,6 @@ class PatientRegistration(models.Model):
                 raise ValidationError("The password does not match.")
         else:
             raise ValidationError("Please enter both staff name and password.")
-
 
         if not self.bill_number or self.bill_number == '/':
             raw_seq = self.env['ir.sequence'].next_by_code('patient.bill') or '0'
@@ -1149,7 +1177,8 @@ class PatientRegistration(models.Model):
             })
 
         return record
-    @api.depends('date','time')
+
+    @api.depends('date', 'time')
     def _compute_formatted_date(self):
         for record in self:
             if record.date:
