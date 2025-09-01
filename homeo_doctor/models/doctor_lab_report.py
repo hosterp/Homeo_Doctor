@@ -177,8 +177,10 @@ class DoctorLabReport(models.Model):
                     ('gender', '=', self.gender),
                     ('gender', '=', False),
                     ('gender', '=', 'both'),
+                    ('age_from', '<=', self.age),
+                    ('age_to', '>=', self.age),
                 ])
-             
+
                 if test_results:
                     for test_result in test_results:
                         self.env['lab.scan.line'].create({
@@ -397,6 +399,7 @@ class DoctorLabReport(models.Model):
             'patient_name': self.patient_name,
             'doctor': self.doctor_id.id,
             'status': 'paid',
+            'age':self.age,
             'patient_phone': self.patient_phone,
             'sample_collected': fields.Datetime.now(),
             'lab_collection': fields.Datetime.now(),

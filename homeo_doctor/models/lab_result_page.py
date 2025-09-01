@@ -41,7 +41,7 @@ class LabResultPage(models.Model):
         string="Admitted Patient",
         ondelete='cascade'
     )
-
+    age=fields.Integer(string='Age')
 
 
     @api.model
