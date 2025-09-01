@@ -117,7 +117,7 @@ class PatientRegistration(models.Model):
         [('unpaid', 'Unpaid'), ('paid', 'Paid'), ('cancelled', 'Cancelled'), ('admitted', 'Admitted'),
          ('proceed_discharge', 'Proceed to Discharge'), ('discharged', 'Discharged')], default='unpaid')
 
-    unpaid_general_ids = fields.One2many('general.billing', compute='_compute_all_totals', string="Unpaid General")
+    unpaid_general_ids = fields.One2many('general.billing', 'mrd_no' ,compute='_compute_all_totals', string="Unpaid General")
     # unpaid_lab_ids = fields.One2many('doctor.lab.report', compute='_compute_unpaid_lab', string="Unpaid Lab")
     # unpaid_pharmacy_ids = fields.One2many('pharmacy.description', compute='_compute_unpaid_pharmacy',
     #                                       string="Unpaid Pharmacy")

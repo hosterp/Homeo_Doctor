@@ -208,7 +208,7 @@
                                     <t t-set="seen_lab_types" t-value="[]"/>
                                     <t t-set="counter" t-value="1"/>
 
-                                    <t t-foreach="o.lab_line_ids" t-as="line">
+                                    <t t-foreach="o.lab_line_ids.filtered(lambda l: l.include_in_report)" t-as="line">
                                         <t t-if="line.lab_type_id.id not in seen_lab_types">
                                             <!-- Subheading -->
                                             <tr>
@@ -219,7 +219,7 @@
                                             </tr>
 
                                             <!-- Test Lines for This Group -->
-                                            <t t-foreach="o.lab_line_ids.filtered(lambda l: l.lab_type_id.id == line.lab_type_id.id)"
+                                            <t t-foreach="o.lab_line_ids.filtered(lambda l: l.include_in_report and l.lab_type_id.id == line.lab_type_id.id)"
                                                t-as="subline">
                                                 <tr style="line-height: 1.6;">
                                                     <td class="text-center">

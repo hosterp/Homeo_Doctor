@@ -173,6 +173,7 @@
                                         <field name="lab_result" string="Result" invisible="1"/>
                                         <field name="rate_id" string="Rate" invisible="1"/>
                                         <field name="total_amount" sum="Total Amount" invisible="1"/>
+                                        <field name="include_in_report"/>
                                     </tree>
                                 </field>
                             </page>
