@@ -596,7 +596,7 @@ class LabScanLine(models.Model):
     lab_result_id=fields.Many2one('lab.result.page',string='Lab Result')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
     unit=fields.Char(string='Unit')
-    include_in_report = fields.Boolean(string="Print", default=False)
+    include_in_report = fields.Boolean(string="Print", default=True)
 
     # @api.onchange('lab_department')
     # def _onchange_lab_department(self):
