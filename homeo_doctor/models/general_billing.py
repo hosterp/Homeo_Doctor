@@ -336,7 +336,7 @@ class GeneralBillLine(models.Model):
     particulars = fields.Many2one('general.dept.costing',string='Select particulars')
     rate = fields.Integer(string='Rate')
     tax = fields.Many2one('dept.tax', string='Tax(%)')
-    quantity = fields.Integer(string='Qty')
+    quantity = fields.Float(string='Qty')
     total_amt=fields.Integer(string='Amount',compute="_compute_total", store=True)
 
     @api.depends('rate', 'tax', 'quantity')
