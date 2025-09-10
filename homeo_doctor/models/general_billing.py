@@ -15,7 +15,7 @@ from datetime import datetime
 
 # from odoo.odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
-
+import pytz
 class GeneralBilling(models.Model):
     _name = 'general.billing'
     _description = 'General Billing'
@@ -28,7 +28,7 @@ class GeneralBilling(models.Model):
     age = fields.Integer(string='Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')])
     mobile = fields.Char(string='Mobile')
-    bill_date = fields.Datetime(string='Bill Date',default=lambda self: datetime.today())
+    bill_date = fields.Datetime(string='Bill Date',default=fields.Datetime.now)
     op_category = fields.Many2one('op.category', string='OP Category')
     doctor = fields.Many2one('doctor.profile', string='Doctor')
     department = fields.Many2one('general.department', string='Department')
@@ -1202,3 +1202,29 @@ class IPInsuranceBillLine(models.Model):
     def _rate_auto_fill(self):
         for rec in self:
             rec.rate= rec.particulars.amount
+
+
+class ReportGeneralBill(models.AbstractModel):
+    _name = 'report.homeo_doctor.report_general_bill'
+    _description = 'General Bill Report'
+
+    def _get_report_values(self, docids, data=None):
+        docs = self.env['general.billing'].browse(docids)
+        kolkata_tz = pytz.timezone('Asia/Kolkata')
+        formatted_bill_date = {}
+
+        for doc in docs:
+            if doc.bill_date:
+                # Convert from UTC → Asia/Kolkata
+                utc_dt = fields.Datetime.from_string(doc.bill_date)
+                local_dt = utc_dt.replace(tzinfo=pytz.UTC).astimezone(kolkata_tz)
+                formatted_bill_date[doc.id] = local_dt.strftime('%d/%m/%Y %I:%M:%S %p')
+            else:
+                formatted_bill_date[doc.id] = ''
+
+        return {
+            'doc_ids': docids,
+            'doc_model': 'general.billing',
+            'docs': docs,
+            'formatted_bill_date': formatted_bill_date,
+        }

@@ -1,5 +1,5 @@
 <odoo>
-    <template id="report_general_Bill">
+    <template id="report_general_bill">
         <t t-call="web.html_container">
             <t t-if="not request.env.context.get('no_auto_print')">
                 <script type="text/javascript">
@@ -109,7 +109,7 @@
                             </p>
                             <p>
                                 <p style="font-size: 25px;">
-                                    <strong  >Patient Name:</strong>
+                                    <strong>Patient Name:</strong>
                                     <t t-esc="o.patient_name"/>
                                     <span style="margin-left: 10px;">(
                                         <t t-esc="str(o.age) + '/' + dict(o._fields['gender'].selection).get(o.gender, '')"/>
@@ -119,7 +119,7 @@
 
                             </p>
                             <p style="font-size: 25px;">
-                                <strong  >Doctor:</strong>
+                                <strong>Doctor:</strong>
                                 <t t-esc="o.doctor.display_name"/>
                                 <t t-if="o.doctor and o.doctor.department_id">
                                     (
@@ -129,9 +129,9 @@
                             </p>
                         </div>
                         <div style="text-align: right;">
-                            <p  style="font-size: 25px; ">
+                            <p style="font-size: 25px; ">
                                 <strong>Date &amp; Time:</strong>
-                                <t t-esc="o.bill_date"/>
+                                <t t-esc="formatted_bill_date.get(o.id, '')"/>
                             </p>
                             <p style="font-size: 25px;">
                                 <strong>Mode of Payment:</strong>
@@ -230,8 +230,8 @@
             string="General Bill"
             model="general.billing"
             report_type="qweb-html"
-            name="homeo_doctor.report_general_Bill"
-            file="homeo_doctor.report_general_Bill"
+            name="homeo_doctor.report_general_bill"
+            file="homeo_doctor.report_general_bill"
             paperformat="homeo_doctor.paperformat_a3_landscape"
     />
 </odoo>
