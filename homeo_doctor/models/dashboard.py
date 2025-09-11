@@ -72,7 +72,7 @@ class DashboardModel(models.Model):
             rec.other_bills = rec.other_bills = 0.0
 
             if rec.name == 'Today OP Details':
-                consultations = self.env['patient.reg'].search([('time', '=', today),('status','=','paid'),('register_mode_payment','!=','credit')])
+                consultations = self.env['patient.reg'].search([('time', '>=', start_dt),('time', '<', end_dt),('status','=','paid'),('register_mode_payment','!=','credit')])
                 rec.consultation_count = len(consultations)
                 rec.consultation_amount = sum(
                     consultations.mapped('register_total_amount'))
@@ -119,7 +119,8 @@ class DashboardModel(models.Model):
                 rec.purchase_amount = sum(purchases.mapped('amount_total'))
             elif rec.name == 'Today Lab Billing':
                 lab = self.env['doctor.lab.report'].search([
-                    ('date', '=', today),
+                    ('date','>=', start_dt),
+                    ('date', '<', end_dt),
                     ('status', '=', 'paid'),
                     ('mode_of_payment', '!=', 'credit'),
                 ])
@@ -127,7 +128,8 @@ class DashboardModel(models.Model):
                 rec.lab_amount = sum(lab.mapped('total_bill_amount'))
             elif rec.name == 'Today Revisit Details':
                 revist = self.env['patient.appointment'].search([
-                    ('appointment_date', '=', today),
+                    ('appointment_date','>=', start_dt),
+                    ('appointment_date','<', end_dt),
                     ('status', '=', 'confirmed'),
                     ('register_mode_payment', '!=', 'credit')
                 ])
@@ -219,7 +221,7 @@ class DashboardModel(models.Model):
                 'res_model': 'patient.reg',
                 'view_mode': 'tree,form',
                 'target': 'current',
-                'domain': [('time', '=', today_str),('status','=','paid'),('register_mode_payment','!=','credit')],
+                'domain': [('time',  '>=', start_dt),('time',  '<', end_dt),('status','=','paid'),('register_mode_payment','!=','credit')],
             }
         elif self.name == 'Today Pharmacy Billing Details':
             return {
@@ -272,7 +274,7 @@ class DashboardModel(models.Model):
                 'res_model': 'patient.appointment',
                 'view_mode': 'tree,form',
                 'target': 'current',
-                'domain': [('appointment_date', '=', today_str),('status','=','confirmed'),('register_mode_payment','!=','credit') ]
+                'domain': [('appointment_date','>=', start_dt),('appointment_date','<', end_dt),('status','=','confirmed'),('register_mode_payment','!=','credit') ]
             }
         elif self.name == 'Today General Billing':
             return {
@@ -300,7 +302,7 @@ class DashboardModel(models.Model):
                 'res_model': 'doctor.lab.report',
                 'view_mode': 'tree,form',
                 'target': 'current',
-                'domain': [('date', '=', today_str),('status', '=', 'paid'), ('mode_of_payment', '!=', 'credit'), ]
+                'domain': [('date','>=', start_dt),('date', '<', end_dt),('status', '=', 'paid'), ('mode_of_payment', '!=', 'credit'), ]
             }
         elif self.name == 'Today IP Part Billing':
             return {
