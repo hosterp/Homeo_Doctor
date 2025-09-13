@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from datetime import datetime, timedelta
+import pytz
 
 
 class DashboardModel(models.Model):
@@ -52,9 +53,16 @@ class DashboardModel(models.Model):
 
     @api.depends('name','credit_bill.amount')
     def _compute_counts(self):
-        today = fields.Date.today()
+        user_tz = self.env.user.tz or 'UTC'
+        now = fields.Datetime.now()
+        today = now.astimezone(pytz.timezone(user_tz)).date()
+
         start_dt = datetime.combine(today, datetime.min.time())
-        end_dt = start_dt + timedelta(days=1)
+        end_dt = datetime.combine(today, datetime.max.time())
+
+        # Convert back to UTC for the domain
+        start_dt = pytz.timezone(user_tz).localize(start_dt).astimezone(pytz.UTC)
+        end_dt = pytz.timezone(user_tz).localize(end_dt).astimezone(pytz.UTC)
 
         for rec in self:
             # Reset counts and amounts
@@ -72,7 +80,7 @@ class DashboardModel(models.Model):
             rec.other_bills = rec.other_bills = 0.0
 
             if rec.name == 'Today OP Details':
-                consultations = self.env['patient.reg'].search([('time', '>=', start_dt),('time', '<', end_dt),('status','=','paid'),('register_mode_payment','!=','credit')])
+                consultations = self.env['patient.reg'].search([('time', '>=', start_dt),('time', '<=', end_dt),('status','!=','unpaid',),('register_mode_payment','!=','credit')])
                 rec.consultation_count = len(consultations)
                 rec.consultation_amount = sum(
                     consultations.mapped('register_total_amount'))
@@ -210,9 +218,16 @@ class DashboardModel(models.Model):
 
     def open_card_action(self):
         self.ensure_one()
-        today_str = fields.Date.today()
-        start_dt = datetime.combine(today_str, datetime.min.time())
-        end_dt = start_dt + timedelta(days=1)
+        user_tz = self.env.user.tz or 'UTC'
+        now = fields.Datetime.now()
+        today = now.astimezone(pytz.timezone(user_tz)).date()
+
+        start_dt = datetime.combine(today, datetime.min.time())
+        end_dt = datetime.combine(today, datetime.max.time())
+
+        # Convert back to UTC for the domain
+        start_dt = pytz.timezone(user_tz).localize(start_dt).astimezone(pytz.UTC)
+        end_dt = pytz.timezone(user_tz).localize(end_dt).astimezone(pytz.UTC)
 
         if self.name == 'Today OP Details':
             return {
@@ -221,7 +236,7 @@ class DashboardModel(models.Model):
                 'res_model': 'patient.reg',
                 'view_mode': 'tree,form',
                 'target': 'current',
-                'domain': [('time',  '>=', start_dt),('time',  '<', end_dt),('status','=','paid'),('register_mode_payment','!=','credit')],
+                'domain': [('time',  '>=', start_dt),('time',  '<', end_dt),('status','!=','unpaid'),('register_mode_payment','!=','credit')],
             }
         elif self.name == 'Today Pharmacy Billing Details':
             return {
