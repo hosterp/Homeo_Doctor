@@ -307,24 +307,24 @@
                                         </t>
 
                                         <!-- IP Bills (if any) -->
-                                        <t t-if="o.paid_ip_ids">
-                                            <t t-set="sl" t-value="sl + 1"/>
-                                            <tr style="height: 35px;">
-                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle;">
-                                                    <t t-esc="sl"/>
-                                                </td>
-                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">
-                                                    <strong style="font-size: 18px;">IP Bills</strong>
-                                                </td>
-                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                    <span t-esc="len(o.paid_ip_ids)"/>
-                                                </td>
-                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                    ₹
-                                                    <span t-esc="'{:,.2f}'.format(sum(o.paid_ip_ids.mapped('total_amount')) - sum(o.paid_ip_ids.mapped('room_rent_total')))"/>
-                                                </td>
-                                            </tr>
-                                        </t>
+<!--                                        <t t-if="o.paid_ip_ids">-->
+<!--                                            <t t-set="sl" t-value="sl + 1"/>-->
+<!--                                            <tr style="height: 35px;">-->
+<!--                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle;">-->
+<!--                                                    <t t-esc="sl"/>-->
+<!--                                                </td>-->
+<!--                                                <td style="padding: 8px; border: 2px solid #ddd; vertical-align: middle; font-size: 17px;">-->
+<!--                                                    <strong style="font-size: 18px;">IP Bills</strong>-->
+<!--                                                </td>-->
+<!--                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">-->
+<!--                                                    <span t-esc="len(o.paid_ip_ids)"/>-->
+<!--                                                </td>-->
+<!--                                                <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">-->
+<!--                                                    ₹-->
+<!--                                                    <span t-esc="'{:,.2f}'.format(sum(o.paid_ip_ids.mapped('total_amount')) - sum(o.paid_ip_ids.mapped('room_rent_total')))"/>-->
+<!--                                                </td>-->
+<!--                                            </tr>-->
+<!--                                        </t>-->
 
                                         <!-- General Bills (if any) -->
                                         <t t-if="o.unpaid_general_ids">

@@ -630,13 +630,13 @@ class PatientRegistration(models.Model):
             # Calculate service totals
             for general in rec.unpaid_general_ids:
                 total += general.total_amount or 0.0
-
+                print(total,'general..................................')
             for lab in rec.unpaid_lab_ids:
                 total += lab.total_bill_amount or 0.0
-
+                print(total, 'lab..................................')
             for pharmacy in rec.unpaid_pharmacy_ids:
                 total += pharmacy.total_amount or 0.0
-
+                print(total, 'pharmacy..................................')
             # Calculate rent only based on full days
             if rec.admitted_date and rec.discharge_date:
                 admitted = fields.Date.from_string(rec.admitted_date) if isinstance(rec.admitted_date,
@@ -649,12 +649,12 @@ class PatientRegistration(models.Model):
 
                 # Add full day rent (char to float)
                 rent_full_value = float(rec.rent_full or 0) if rec.rent_full and str(rec.rent_full).strip() else 0
-                total += (full_days * rent_full_value) - (rec.paid_room_rent or 0)
-
+                total += (full_days * rent_full_value)
+                print(total,'total1...............................................................')
             # Add other charges
             total += (rec.nurse_charge * full_days or 0) + (rec.doctor_visiting_charge * full_days or 0) + (
                         rec.service_charge * (full_days + 1) or 0)
-
+            print(total,'25/007768625/007768625/007768625/007768625/007768625/007768625/007768625/007768625/007768625/0077686')
             # Assign final values
             rec.admission_total_amount = total
             rec.room_rent = full_days * rent_full_value
