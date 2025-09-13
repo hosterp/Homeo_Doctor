@@ -42,6 +42,7 @@ class LabResultPage(models.Model):
         ondelete='cascade'
     )
     age=fields.Integer(string='Age')
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
 
 
     @api.model

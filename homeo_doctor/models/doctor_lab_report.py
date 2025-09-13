@@ -400,6 +400,7 @@ class DoctorLabReport(models.Model):
             'doctor': self.doctor_id.id,
             'status': 'paid',
             'age':self.age,
+            'gender':self.gender,
             'patient_phone': self.patient_phone,
             'sample_collected': fields.Datetime.now(),
             'lab_collection': fields.Datetime.now(),

@@ -116,7 +116,13 @@
                                                 <strong>Name:</strong>
                                             </td>
                                             <td>
-                                                <span t-field="o.user_ide.patient_id"/>
+                                                <t t-if="o.user_ide">
+                                                    <span t-esc="o.user_ide.patient_id"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span t-esc="o.patient_name"/>
+                                                </t>
+
                                             </td>
 
                                             <td>

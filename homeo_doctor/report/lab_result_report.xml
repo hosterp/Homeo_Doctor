@@ -119,9 +119,21 @@
                                                 <strong>Age/Gender:</strong>
                                             </td>
                                             <td style="padding: 4px 8px;">
-                                                <span t-field="o.patient_id.age"/>
+                                                <t t-if="o.patient_id">
+                                                    <span t-esc="o.patient_id.age"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span t-esc="o.age"/>
+                                                </t>
+
                                                 /
-                                                <span t-field="o.patient_id.gender"/>
+                                                <t t-if="o.patient_id">
+                                                    <span t-esc="o.patient_id.gender"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span t-esc="o.gender"/>
+                                                </t>
+
                                             </td>
                                         </tr>
                                         <tr>
@@ -194,7 +206,7 @@
 
                         <div class="mt-4">
                             <table
-                                   style="width: 100%; font-size: 20px; border-collapse: collapse;">
+                                    style="width: 100%; font-size: 20px; border-collapse: collapse;">
                                 <thead style="background-color: #f9f9f9; color: Black; width:100%; border-top:2px solid #000; border-bottom:2px solid #000; margin-bottom:10px;">
                                     <tr style="line-height: 1.6;">
                                         <th class="text-center" style="width: 5%;">No.</th>
