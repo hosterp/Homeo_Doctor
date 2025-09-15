@@ -49,6 +49,14 @@ class PharmacyDescription(models.Model):
     active = fields.Boolean(default=True)
     op_category=fields.Selection([('op','OP'),('ip','IP'),('others','OTHERS')])
     vssc_boolean=fields.Boolean(string='VSSC')
+
+    @api.onchange('payment_mathod')
+    def _onchange_mode_pay(self):
+        if self.payment_mathod == 'credit':
+            self.status = 'unpaid'
+        else:
+            pass
+
     @api.onchange('patient_type')
     def  _onchange_patient_type(self):
         for rec in self:
