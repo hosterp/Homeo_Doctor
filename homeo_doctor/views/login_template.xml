@@ -31,34 +31,4 @@
 </odoo>
 
 
-        <!--<?xml version="1.0" encoding="UTF-8"?>-->
-        <!--<odoo>-->
-        <!--    <template id="login_with_captcha" inherit_id="web.login" name="Login with Captcha">-->
-
-        <!--        &lt;!&ndash; Insert reCAPTCHA AFTER Password field &ndash;&gt;-->
-        <!--        <xpath expr="//input[@name='password']/.." position="after">-->
-        <!--            <div class="form-group captcha-wrapper text-center mt-3">-->
-        <!--                &lt;!&ndash; Google reCAPTCHA TEST SITE KEY (always passes locally) &ndash;&gt;-->
-        <!--                <div class="g-recaptcha" data-sitekey="6Le9BMorAAAAABM6ipyT4Fo7GMD4cTFbU-4gb7PX"></div>-->
-        <!--            </div>-->
-        <!--           <script src="https://www.google.com/recaptcha/api.js" async="async" defer="defer"></script>-->
-        <!--        </xpath>-->
-
-        <!--        &lt;!&ndash; Optional CSS to adjust width &ndash;&gt;-->
-        <!--        <xpath expr="//form[@class='oe_login_form']" position="before">-->
-        <!--            <style>-->
-        <!--                .captcha-wrapper {-->
-        <!--                    max-width: 100%;-->
-        <!--                    margin: 10px auto 18px;-->
-        <!--                }-->
-        <!--                .captcha-wrapper .g-recaptcha {-->
-        <!--                    transform: scale(0.77);-->
-        <!--                    transform-origin: 0 0;-->
-        <!--                    width: 304px;-->
-        <!--                    height: 78px;-->
-        <!--                }-->
-        <!--            </style>-->
-        <!--        </xpath>-->
-
-        <!--    </template>-->
-        <!--</odoo>-->
+      
