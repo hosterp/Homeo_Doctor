@@ -9,6 +9,7 @@
                 <field name="patient_id" string="UHID"/>
                 <field name="token_no"/>
                 <field name="patient_name"/>
+                <field name="phone_number"/>
                 <field name="differance_appointment_days"/>
                 <field name="vssc_boolean"/>
                 <field name="departments" widget="many2many_tags"/>
@@ -329,6 +330,7 @@
                 <field name="patient_id"/>
                 <field name="patient_name"/>
                 <field name="appointment_date"/>
+                <field name="phone_number"/>
             </search>
         </field>
     </record>

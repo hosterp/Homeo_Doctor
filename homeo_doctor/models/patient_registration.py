@@ -620,7 +620,7 @@ class PatientRegistration(models.Model):
     #         rec.admission_total_amount = total
     #         rec.room_rent = full_days * rent_full_value + (rent_half_value if remaining_hours > 0 else 0.0)
     @api.depends('unpaid_general_ids', 'unpaid_lab_ids', 'unpaid_pharmacy_ids', 'admitted_date', 'discharge_date',
-                 'rent_full')
+                 'rent_full','discount')
     def _compute_total_unpaid_amount(self):
         for rec in self:
             total = 0.0
@@ -656,6 +656,12 @@ class PatientRegistration(models.Model):
                         rec.service_charge * (full_days + 1) or 0)
             # print(total,'25/007768625/007768625/007768625/007768625/007768625/007768625/007768625/007768625/007768625/0077686')
             # Assign final values
+            if rec.discount and rec.discount > 0:
+                total -= rec.discount
+
+                # Prevent negative totals
+            if total < 0:
+                total = 0.0
             rec.admission_total_amount = total
             rec.room_rent = full_days * rent_full_value
 

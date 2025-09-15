@@ -196,12 +196,12 @@
                 <tree>
                     <field name="patient_id"/>
                     <field name="name"/>
-                    <field name="bystander_name"/>
-                    <field name="relation"/>
-                    <field name="bystander_mobile"/>
-                    <field name="room_category_new"/>
-                    <field name="new_block"/>
-                    <field name="bed_id"/>
+                    <field name="bystander_name" invisible="1"/>
+                    <field name="relation" invisible="1"/>
+                    <field name="bystander_mobile" string="mobile"/>
+                    <field name="room_category_new" invisible="1"/>
+                    <field name="new_block" invisible="1"/>
+                    <field name="bed_id" invisible="1"/>
                     <field name="op_category"/>
                     <field name="admitted_date"/>
                     <field name="discharge_date"/>

@@ -280,7 +280,7 @@ class DashboardModel(models.Model):
                 'res_model': 'stock.entry',
                 'view_mode': 'tree,form',
                 'target': 'current',
-                'domain': [('exp_date', '<', today_str),('quantity', '>', 0), ]
+                'domain': [('exp_date', '<', today),('quantity', '>', 0), ]
             }
         elif self.name == 'Today Revisit Details':
             return {
@@ -308,7 +308,7 @@ class DashboardModel(models.Model):
                 'res_model': 'account.move',
                 'view_mode': 'tree,form',
                 'target': 'current',
-                'domain': [('supplier_bill_date', '=', today_str),('state', '=', 'posted') ]
+                'domain': [('supplier_bill_date', '=', today),('state', '=', 'posted') ]
             }
         elif self.name == 'Today Lab Billing':
             return {
@@ -335,7 +335,7 @@ class DashboardModel(models.Model):
 
             # OP Credit
             op_records = self.env['patient.reg'].search([
-                ('date', '=', today_str),
+                ('date', '=', today),
                 ('register_mode_payment', '=', 'credit')
             ])
 
@@ -347,7 +347,7 @@ class DashboardModel(models.Model):
                     'amount': op_total,
                 })
             op_revisit_records = self.env['patient.appointment'].search([
-                ('appointment_date', '=', today_str),
+                ('appointment_date', '=', today),
                 ('register_mode_payment', '=', 'credit')
             ])
 
@@ -375,7 +375,7 @@ class DashboardModel(models.Model):
                 })
 
             lab_records = self.env['doctor.lab.report'].search([
-                ('date', '=', today_str),
+                ('date', '=', today),
                 ('mode_of_payment', '=', 'credit')
             ])
 

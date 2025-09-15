@@ -419,7 +419,7 @@
                                             <!--                                                              (sum(o.unpaid_general_ids.mapped('total_amount')) if o.unpaid_general_ids else 0) +-->
                                             <!--                                                              (sum(o.unpaid_lab_ids.mapped('total_bill_amount')) if o.unpaid_lab_ids else 0) +-->
                                             <!--                                                              (sum(o.unpaid_pharmacy_ids.mapped('total_amount')) if o.unpaid_pharmacy_ids else 0))"/>-->
-                                            <span t-field="o.temp_admission_total_amount"/>
+                                            <span t-esc="o.temp_admission_total_amount + o.discount"/>
                                         </th>
                                     </tr>
                                     <!--                                    </tfoot>-->
@@ -500,7 +500,7 @@
                                     </td>
                                     <td style="width: 33%; text-align: right; vertical-align: top; font-weight: bold;">
                                         Grand Total:
-                                        <span t-esc="o.temp_admission_total_amount - o.discount"/>
+                                        <span t-esc="o.temp_admission_total_amount"/>
                                     </td>
                                 </tr>
                             </table>

@@ -705,7 +705,7 @@
                                     </td>
                                     <td style="width: 33%; text-align: right; vertical-align: top; font-weight: bold;">
                                         Grand Total:
-                                        <span t-esc="o.temp_admission_total_amount - o.discount"/>
+                                        <span t-esc="o.temp_admission_total_amount"/>
                                     </td>
                                 </tr>
                             </table>
