@@ -74,6 +74,14 @@ class GeneralBilling(models.Model):
                           ('discharge','Discharge')
                           ], string="Status")
     vssc_boolean=fields.Boolean(string='VSSC')
+
+    @api.onchange('mode_pay')
+    def _onchange_mode_pay(self):
+        if self.mode_pay == 'credit':
+            self.status = 'unpaid'
+        else:
+            pass
+
     def action_observation(self):
         """Method to toggle observation field when Observation button is clicked"""
         self.observation = True
