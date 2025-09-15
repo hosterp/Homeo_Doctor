@@ -11,7 +11,8 @@
                         <!-- <button name="action_pay_button" type="object" attrs="{'invisible': [('mode_pay', '=', 'credit')]}" string="Pay" class="oe_highlight"/> -->
                         <button name="action_create_admission" type="object" string="Admit" class="oe_highlight"/>
                         <button name="action_observation" type="object" string="Observation" class="oe_highlight"/>
-                        <button name="action_observation_discharge" type="object" string="Discharge" class="oe_highlight"/>
+                        <button name="action_observation_discharge" type="object" string="Discharge"
+                                class="oe_highlight"/>
                     </header>
                     <sheet>
                         <div class="oe_title" style="display:none;">
@@ -114,7 +115,8 @@
                                 </div>
                                 <div class="col px-1" style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
-                                        <label for="department" class="col-md-5 col-form-label py-0 small">Department</label>
+                                        <label for="department" class="col-md-5 col-form-label py-0 small">Department
+                                        </label>
                                         <div class="col-md-7 field-container py-0">
                                             <field name="department"/>
                                         </div>
@@ -138,7 +140,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col px-1" attrs="{'invisible': [('observation', '=', False)]}" style="max-width: 14.28%;">
+                                <div class="col px-1" attrs="{'invisible': [('observation', '=', False)]}"
+                                     style="max-width: 14.28%;">
                                     <div class="form-group row my-1">
                                         <label for="rent" class="col-md-5 col-form-label py-0 small">Rent
                                         </label>
@@ -149,7 +152,9 @@
                                 </div>
                                 <div class="col px-1" style="max-width: 14.28%;" attrs="{'invisible': True}">
                                     <div class="form-group row my-1">
-                                        <label for="observation" class="col-md-5 col-form-label py-0 small">Observation</label>
+                                        <label for="observation" class="col-md-5 col-form-label py-0 small">
+                                            Observation
+                                        </label>
                                         <div class="col-md-7 field-container py-0">
                                             <field name="observation"/>
                                         </div>
@@ -261,9 +266,11 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                
+
                                                 <div class="col-md-8 field-container">
-                                                    <button name="action_pay_button" type="object" attrs="{'invisible': [('mode_pay', '=', 'credit')]}" string="Pay" class="oe_highlight"/>
+                                                    <button name="action_pay_button" type="object"
+                                                            attrs="{'invisible': [('mode_pay', '=', 'credit')]}"
+                                                            string="Pay" class="oe_highlight"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -298,8 +305,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        
+
+
                                         <div class="col-md-12" style="display:none;">
                                             <div class="form-group row">
                                                 <label for="net_amount" class="col-md-4 col-form-label">Net Bill
@@ -371,6 +378,7 @@
                     <field name="mrd_no"/>
                     <field name="patient_name"/>
                     <field name="gender"/>
+                    <field name="mobile"/>
                     <field name="vssc_boolean"/>
                     <field name="doctor"/>
                     <field name="total_amount"/>
@@ -379,10 +387,30 @@
             </field>
         </record>
 
+        <record id="view_general_billing_search" model="ir.ui.view">
+            <field name="name">general.billing.search</field>
+            <field name="model">general.billing</field>
+            <field name="arch" type="xml">
+                <search>
+                    <!-- Only existing fields -->
+                    <field name="patient_name" string="Patient Name"/>
+                    <field name="mrd_no" string="UHID"/>
+                    <field name="bill_number" string="Bill Number"/>
+                    <field name="mobile" string="Mobile Number"/>
+
+                    <!-- Optional predefined filters -->
+                    <filter string="Paid Bills" name="paid_bills" domain="[('status','=','paid')]"/>
+                    <filter string="Unpaid Bills" name="unpaid_bills" domain="[('status','=','unpaid')]"/>
+                </search>
+            </field>
+        </record>
+
+
         <record id="action_general_billing" model="ir.actions.act_window">
             <field name="name">General Billing</field>
             <field name="res_model">general.billing</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_general_billing_search"/>
         </record>
 
         <!--        <menuitem id="menu_general_billing_main_menu" name="General Billing" parent="menu_homeo_head" sequence="6"/>-->
