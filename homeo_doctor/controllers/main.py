@@ -7,6 +7,10 @@ from datetime import datetime, time
 from io import BytesIO
 from collections import defaultdict
 import base64
+from odoo.addons.web.controllers.main import Home
+import requests
+
+
 class PatientExcelReport(http.Controller):
 
     @http.route('/web/binary/download_patient_excel', type='http', auth="user")
@@ -663,3 +667,35 @@ class ExcelDownloadController(http.Controller):
             ('Content-Disposition', 'attachment; filename=Billing_Report.xlsx'),
         ]
         return request.make_response(decoded, headers)
+
+
+
+
+
+class CustomAuthLogin(Home):
+
+    @http.route('/web/login', type='http', auth="public", website=True, sitemap=False)
+    def web_login(self, redirect=None, **kw):
+        # Check if login form is submitted
+        if 'login' in kw and 'password' in kw:
+            recaptcha_response = kw.get('g-recaptcha-response')
+            if not recaptcha_response:
+                return request.render('web.login', {
+                    'error': "Captcha is required"
+                })
+
+            # Google reCAPTCHA Test Secret Key (always valid in local)
+            secret_key = "6Le9BMorAAAAAMLefEFXZimZjterxMBFpg5oecL3"
+            verify_url = "https://www.google.com/recaptcha/api/siteverify"
+            payload = {'secret': secret_key, 'response': recaptcha_response}
+            r = requests.post(verify_url, data=payload)
+            result = r.json()
+
+            if not result.get('success'):
+                return request.render('web.login', {
+                    'error': "Invalid captcha. Please try again."
+                })
+
+        # ✅ If captcha passed → call Odoo's original login
+        return super(CustomAuthLogin, self).web_login(redirect=redirect, **kw)
+
