@@ -138,7 +138,7 @@
                                         <div class="form-group row">
                                             <label for="user_ide" class="col-md-4 col-form-label">UHID</label>
                                             <div class="col-md-8 field-container">
-                                                <field name="user_ide"/>
+                                                <field name="user_ide" options="{'no_create': True, 'no_open': True}"/>
                                             </div>
                                         </div>
                                     </div>

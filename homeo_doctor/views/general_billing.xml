@@ -50,7 +50,7 @@
                                                 <label for="mrd_no" class="col-md-5 col-form-label py-0 small">UHID
                                                 </label>
                                                 <div class="col-md-7 field-container py-0">
-                                                    <field name="mrd_no"/>
+                                                    <field name="mrd_no" options="{'no_create': True, 'no_open': True}"/>
                                                 </div>
                                             </div>
                                         </div>
