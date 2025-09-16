@@ -209,9 +209,9 @@
                                     <tr style="font-size: 16px; font-weight: bold;">
 
                                         <td colspan="2" style="text-align: left; vertical-align: middle; padding: 8px;">
-                                            <strong>Amount in Words:</strong>
-                                            <span t-esc="o.amount_to_text_indian()"
-                                                  style="text-transform: capitalize;"/>
+                                            <!--                                            <strong>Amount in Words:</strong>-->
+                                            <!--                                            <span t-esc="o.amount_to_text_indian()"-->
+                                            <!--                                                  style="text-transform: capitalize;"/>-->
                                         </td>
 
 
@@ -220,23 +220,45 @@
                                             <strong>Total Amount:</strong>
                                             ₹
                                             <span t-esc="'%.2f' % sum(o.lab_billing_ids.mapped('total_amount'))"/>
+
                                         </td>
                                     </tr>
                                 </tbody>
 
                             </table>
+                            <div class="p-3" style="border: 2px solid #999; border-radius: 8px;">
+                                <table style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+                                    <!-- Row for Amount / Discount / Grand Total -->
+                                    <tr style="font-size: 16px; font-weight: bold;">
+                                        <td style="width:33%; text-align: left; padding: 8px;">
+                                            <strong>Amount in Words:</strong>
+                                            <span t-esc="o.amount_to_text_indian()"
+                                                  style="text-transform: capitalize;"/>
+                                        </td>
+                                        <td style="width:33%; text-align: center; padding: 8px;">
+                                            <strong>Discount:</strong>
+                                            <span t-esc="o.discount_amount"/>%
+                                        </td>
+                                        <td style="width:33%; text-align: right; padding: 8px;">
+                                            <strong>Grand Total:</strong>
+                                            ₹
+                                            <span t-esc="'%.2f' % o.total_bill_amount"/>
+                                        </td>
+                                    </tr>
 
-                        </div>
-
-
-                        <div class="row mt-5" style="font-size: 16px">
-                            <div class="col-6 text-left">
-                                <strong>Prepared By:</strong>
-                                <span t-field="o.staff_name"/>
+                                    <!-- Row for Prepared By / Checked By -->
+                                    <tr style="font-size: 16px; margin-top: 20px;">
+                                        <td colspan="2" style="text-align: left; padding: 8px;">
+                                            <strong>Prepared By:</strong>
+                                            <span t-field="o.staff_name"/>
+                                        </td>
+                                        <td style="text-align: right; padding: 8px;">
+                                            <strong>Checked By:</strong>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="col-6 text-right">
-                                <strong>Checked By:</strong>
-                            </div>
+
                         </div>
 
                     </div>

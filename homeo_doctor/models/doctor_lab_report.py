@@ -249,7 +249,8 @@ class DoctorLabReport(models.Model):
     def _onchange_lab_billing_ids(self):
         for rec in self:
             total = sum(rec.lab_billing_ids.mapped('total_amount'))
-            rec.total_bill_amount = total - (rec.discount_amount or 0)
+            discount = (rec.discount_amount or 0) / 100.0
+            rec.total_bill_amount = total * (1 - discount)
         # self.display_amount = self.total_bill_amount
 
     @api.depends('lab_line_ids')
