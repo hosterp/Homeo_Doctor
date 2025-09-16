@@ -214,6 +214,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="staff_boolean"
+                                                   class="col-md-5 col-form-label py-0 small text-nowrap">Staff
+                                            </label>
+                                            <div class="col-md-9 field-container py-0">
+                                                <field name="staff_boolean"/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>

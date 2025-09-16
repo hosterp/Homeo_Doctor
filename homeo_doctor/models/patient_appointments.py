@@ -27,7 +27,7 @@ class PatientAppointment(models.Model):
         default='draft', string="Status")
     notes = fields.Text(string="Appointment Notes")
     created_date = fields.Datetime(default=fields.Datetime.now, readonly=True)
-    consultation_fee = fields.Integer(string='Consultation Fee',compute='_compute_consultation_fee',readonly=False)
+    consultation_fee = fields.Integer(string='Consultation Fee',compute='_compute_consultation_fee',readonly=False,)
     address = fields.Text(related='patient_id.address',string='Address')
     age = fields.Integer(related='patient_id.age',string='Age')
     phone_number = fields.Char(related='patient_id.phone_number',string='Phone Number')
@@ -64,6 +64,8 @@ class PatientAppointment(models.Model):
     vssc_boolean = fields.Boolean(related='patient_id.vssc_boolean',string='VSSC')
     differance_appointment_days = fields.Integer("No of Days")
     spl_boolean = fields.Boolean(string='Spl Case',default=False)
+    staff_boolean = fields.Boolean(string='Staff',default=False)
+
     def amount_to_text_indian(self):
         """Convert amount to words in Indian format (Rupees and Paise)."""
         try:
@@ -387,13 +389,16 @@ class PatientAppointment(models.Model):
                             record.consultation_fee += consultation_fee
                             print(f"Regular fallback case. Adding consultation fee: {consultation_fee}")
 
-    @api.onchange('appointment_date')
+    @api.onchange('appointment_date','spl_boolean','staff_boolean')
     def _compute_consultation_fee(self):
         for record in self:
             record.consultation_fee = 0
             # print(f"Initial consultation_fee set to: {record.consultation_fee}")
             if record.spl_boolean:
                 record.consultation_fee = 0
+                continue
+            if record.staff_boolean:
+                record.consultation_fee = 150
                 continue
             for doctor in record.doctor_ids:
                 if record.patient_id and doctor and record.appointment_date:
