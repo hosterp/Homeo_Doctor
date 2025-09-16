@@ -601,6 +601,7 @@
             <field name="arch" type="xml">
                 <tree string="Pharmacy Description">
                     <field name="date"/>
+                    <field name="bill_number"/>
                     <field name="uhid_id" string='UHID'/>
                     <field name="name"/>
                     <!--                    <field name="date" string="Appointment Date"/>-->
@@ -622,9 +623,7 @@
                     <field name="name"/>
                     <field name="uhid_id"/>
                     <field name="phone_number"/>
-                    <filter string="Today" name="filter_today" domain="[('date', '=', context_today())]"/>
-                    <filter string="This Week" name="filter_week"
-                            domain="[('date', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())))]"/>
+                    <field name="bill_number"/>
                 </search>
             </field>
         </record>
