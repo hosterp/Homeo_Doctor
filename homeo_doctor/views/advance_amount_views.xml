@@ -1,0 +1,51 @@
+<odoo>
+    <!-- Tree view -->
+    <record id="view_advance_amount_tree" model="ir.ui.view">
+        <field name="name">advance.amount.tree</field>
+        <field name="model">advance.amount</field>
+        <field name="arch" type="xml">
+            <tree string="Advance Amounts">
+                <field name="date"/>
+                <field name="reference_no" string="UHID"/>
+                <field name="name"/>
+                <field name="advance_in_amount"/>
+
+                <!--                <field name="admission_id"/>-->
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="view_advance_amount_form" model="ir.ui.view">
+        <field name="name">advance.amount.form</field>
+        <field name="model">advance.amount</field>
+        <field name="arch" type="xml">
+            <form string="Advance Amount">
+                <sheet>
+                    <group>
+                        <field name="date"/>
+                        <field name="reference_no" string="UHID"/>
+                        <field name="name"/>
+                        <field name="advance_in_amount"/>
+
+                        <!--                        <field name="admission_id"/>-->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_advance_amount" model="ir.actions.act_window">
+        <field name="name">Advance Amounts</field>
+        <field name="res_model">advance.amount</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_my_patient_template_root" name="Patient Registration" parent="menu_homeo_head" sequence="2"/>
+
+    <menuitem id="menu_advance_amount"
+              name="Advance Amounts"
+              parent="menu_my_patient_template_root"
+              action="action_advance_amount"
+              sequence="10"/>
+
+
+</odoo>

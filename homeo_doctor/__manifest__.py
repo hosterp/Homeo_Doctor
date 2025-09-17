@@ -113,6 +113,7 @@
         "views/fast_moving_medicines.xml",
         "views/doctor_billing_report_wizard_view.xml",
         "views/login_template.xml",
+        "views/advance_amount_views.xml",
         "data/ir_sequence_data.xml",
 
     ],

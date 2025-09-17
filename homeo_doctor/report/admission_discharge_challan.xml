@@ -411,15 +411,15 @@
                                         </th>
                                         <th style="padding: 10px; border: 2px solid #ddd; text-align: right; font-size: 20px; color: black; vertical-align: middle;">
                                             ₹
-                                            <!--                                                <span t-esc="'{:,.2f}'.format((o.room_rent or 0) +-->
-                                            <!--                                                              (o.nurse_charge or 0) +-->
-                                            <!--                                                              (o.doctor_visiting_charge or 0) +-->
-                                            <!--                                                              (o.service_charge or 0) +-->
-                                            <!--                                                              ((sum(o.paid_ip_ids.mapped('total_amount')) - sum(o.paid_ip_ids.mapped('room_rent_total'))) if o.paid_ip_ids else 0) +-->
-                                            <!--                                                              (sum(o.unpaid_general_ids.mapped('total_amount')) if o.unpaid_general_ids else 0) +-->
-                                            <!--                                                              (sum(o.unpaid_lab_ids.mapped('total_bill_amount')) if o.unpaid_lab_ids else 0) +-->
-                                            <!--                                                              (sum(o.unpaid_pharmacy_ids.mapped('total_amount')) if o.unpaid_pharmacy_ids else 0))"/>-->
-                                            <span t-esc="o.temp_admission_total_amount + o.discount"/>
+                                                                                            <span t-esc="'{:,.2f}'.format((o.room_rent or 0) +
+                                                                                                          (o.nurse_charge or 0) +
+                                                                                                          (o.doctor_visiting_charge or 0) +
+                                                                                                          (o.service_charge or 0) +
+                                                                                                          ((sum(o.paid_ip_ids.mapped('total_amount')) - sum(o.paid_ip_ids.mapped('room_rent_total'))) if o.paid_ip_ids else 0) +
+                                                                                                          (sum(o.unpaid_general_ids.mapped('total_amount')) if o.unpaid_general_ids else 0) +
+                                                                                                          (sum(o.unpaid_lab_ids.mapped('total_bill_amount')) if o.unpaid_lab_ids else 0) +
+                                                                                                          (sum(o.unpaid_pharmacy_ids.mapped('total_amount')) if o.unpaid_pharmacy_ids else 0))"/>
+<!--                                            <span t-esc="o.temp_admission_total_amount + o.discount"/>-->
                                         </th>
                                     </tr>
                                     <!--                                    </tfoot>-->
