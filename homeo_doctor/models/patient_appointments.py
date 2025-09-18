@@ -419,21 +419,25 @@ class PatientAppointment(models.Model):
                     fee_to_apply = 400 if is_vssc else consultation_fee
                     last_fee_date = appt.appointment_date
                     if debug_mode:
-                        print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
+                        pass
+                        # print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
                 else:
                     delta_days = (appt.appointment_date.date() - last_fee_date.date()).days
                     if debug_mode:
-                        print(f"[{appt.appointment_date}] Days since last fee: {delta_days}")
+                        pass
+                        # print(f"[{appt.appointment_date}] Days since last fee: {delta_days}")
 
                     if delta_days <= consultation_fee_limit:
                         fee_to_apply = 0
                         if debug_mode:
-                            print(f" → Within {consultation_fee_limit} days → Fee {fee_to_apply}")
+                            pass
+                            # print(f" → Within {consultation_fee_limit} days → Fee {fee_to_apply}")
                     else:
                         fee_to_apply = 400 if is_vssc else consultation_fee
                         last_fee_date = appt.appointment_date  # 🔑 reset cycle
                         if debug_mode:
-                            print(f" → Beyond {consultation_fee_limit} days → Fee {fee_to_apply} (reset cycle)")
+                            pass
+                            # print(f" → Beyond {consultation_fee_limit} days → Fee {fee_to_apply} (reset cycle)")
 
                 # assign fee ONLY to the current record
                 if appt.id == record.id:
@@ -483,7 +487,7 @@ class PatientAppointment(models.Model):
                         if appt.id == record.id:
                             record.consultation_fee = fee_to_apply
                             record.differance_appointment_days = 0
-                            print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
+                            # print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
                     else:
                         delta_days = (appt.appointment_date.date() - last_fee_date.date()).days
                         if delta_days > consultation_fee_limit:
@@ -493,16 +497,16 @@ class PatientAppointment(models.Model):
                             if appt.id == record.id:
                                 record.consultation_fee = fee_to_apply
                                 record.differance_appointment_days = delta_days
-                                print(
-                                    f"[{appt.appointment_date}] Beyond limit ({consultation_fee_limit}) → Fee {fee_to_apply}, reset baseline")
+                                # print(
+                                #     f"[{appt.appointment_date}] Beyond limit ({consultation_fee_limit}) → Fee {fee_to_apply}, reset baseline")
                         else:
                             # Within limit → no fee
                             fee_to_apply = 0
                             if appt.id == record.id:
                                 record.consultation_fee = fee_to_apply
                                 record.differance_appointment_days = delta_days
-                                print(
-                                    f"[{appt.appointment_date}] Within limit ({consultation_fee_limit}) → Fee {fee_to_apply}, delta {delta_days}")                            # print(f"Regular fallback case. Adding consultation fee: {consultation_fee}")
+                                # print(
+                                #     f"[{appt.appointment_date}] Within limit ({consultation_fee_limit}) → Fee {fee_to_apply}, delta {delta_days}")                            # print(f"Regular fallback case. Adding consultation fee: {consultation_fee}")
     # @api.depends('doctor_ids', 'appointment_date', 'patient_id')
     # def _compute_consultation_fee(self):
     #     for record in self:
