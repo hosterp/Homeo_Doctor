@@ -23,7 +23,8 @@
                     <field name="vssc_check" string="VSSC"/>
                     <field name="register_visible" invisible="1"/>
                     <field name="total_bill_amount"/>
-                    <field name="status" string="Payment Status"/>
+<!--                    <field name="status" string="Payment Status"/>-->
+                    <field name="mode_of_payment" string="Payment Status"/>
                     <field name="sample_status" string="Sample Collected Status"/>
                     <field name="result_status" string="Lab Result Status"/>
                 </tree>
