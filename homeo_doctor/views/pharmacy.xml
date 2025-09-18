@@ -156,18 +156,32 @@
 
                                                 <!-- Row 2 -->
                                                 <div style="display: table-row;">
-                                                    <div style="display: table-cell; width: 33.33%; text-align: left; padding: 4px 8px;">
+                                                    <!-- Column 1: Age/Gender -->
+                                                    <div style="display: table-cell; width: 25%; text-align: left; padding: 4px 8px;">
+                                                        <span style="color: #333;">Age/Gender:</span>
+                                                        <span style="font-weight: bold; color: #333;">
+                                                            <t t-if="o.uhid_id">
+                                                                <t t-esc="'%s / %s' % (o.uhid_id.age or '', o.uhid_id.gender or '')"/>
+
+                                                            </t>
+                                                            <t t-else="">
+                                                                <t t-esc="(o.age or '') + ' / ' + (o.gender or '')"/>
+                                                            </t>
+                                                        </span>
+                                                    </div>
+
+                                                    <!-- Column 2: Phone -->
+                                                    <div style="display: table-cell; width: 25%; text-align: left; padding: 4px 8px;">
                                                         <span style="color: #333;">Phone:</span>
                                                         <span style="font-weight: bold; color: #333;"
                                                               t-field="o.phone_number"/>
                                                     </div>
-                                                    <div style="display: table-cell; width: 33.33%; text-align: center; padding: 4px 8px;">
+
+                                                    <!-- Column 3: Doctor -->
+                                                    <div style="display: table-cell; width: 25%; text-align: center; padding: 4px 8px;">
                                                         <span style="color: #333;">Doctor:</span>
-                                                        <!--                                                        <span style="font-weight: bold; color: #333;"-->
-                                                        <!--                                                              t-field="o.doctor_name"/>-->
                                                         <span style="font-weight: bold; color: #333;">
                                                             <t t-esc="o.doctor_name.display_name"/>
-
                                                             <t t-if="o.doctor_name and o.doctor_name.department_id">
                                                                 (
                                                                 <t t-esc="o.doctor_name.department_id.display_name"/>
@@ -175,12 +189,15 @@
                                                             </t>
                                                         </span>
                                                     </div>
-                                                    <div style="display: table-cell; width: 33.33%; text-align: right; padding: 4px 40px 4px 8px;">
+
+                                                    <!-- Column 4: Mode of Payment -->
+                                                    <div style="display: table-cell; width: 25%; text-align: right; padding: 4px 40px 4px 8px;">
                                                         <span style="color: #333;">Mode of Payment:</span>
                                                         <span style="font-weight: bold; color: #333;"
                                                               t-field="o.payment_mathod"/>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </td>
                                     </tr>
