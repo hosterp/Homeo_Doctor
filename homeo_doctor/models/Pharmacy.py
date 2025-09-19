@@ -50,6 +50,34 @@ class PharmacyDescription(models.Model):
     op_category=fields.Selection([('op','OP'),('ip','IP'),('others','OTHERS')])
     vssc_boolean=fields.Boolean(string='VSSC')
 
+    @api.onchange('uhid_id', 'date')
+    def _onchange_user_ide_set_doctor(self):
+        if self.uhid_id and self.date:
+            # Check for outpatient consultation
+            consultation = self.env['patient.registration'].search([
+                ('patient_id', '=', self.uhid_id.id),
+                ('appointment_date', '=', self.date),
+            ], limit=1)
+
+            if consultation:
+                self.patient_id = consultation.id
+                self.doctor_name = consultation.doctor.id if consultation.doctor else False
+            else:
+                # Check if patient is currently admitted (don't filter by admission_date)
+                admitted = self.env['hospital.admitted.patient'].search([
+                    ('patient_id', '=', self.uhid_id.id),
+                    ('status', '=', 'admitted'),
+                ], limit=1)
+
+                # if admitted:
+                #     self.patient_id = admitted.id
+                #     self.doctor_name = admitted.attending_doctor.id if admitted.attending_doctor else False
+                # else:
+                #     self.patient_id = False
+                #     self.doctor_name = False
+        else:
+            self.patient_id = False
+            self.doctor_name = False
     @api.onchange('payment_mathod')
     def _onchange_mode_pay(self):
         if self.payment_mathod == 'credit':

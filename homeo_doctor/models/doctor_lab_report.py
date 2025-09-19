@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 # from odoo.odoo.exceptions import UserError
 import logging
 
+
 class DoctorLabReport(models.Model):
     _name = 'doctor.lab.report'
     _description = 'Doctor Lab Report'
@@ -19,8 +20,15 @@ class DoctorLabReport(models.Model):
     patient_phone = fields.Char(related='patient_id.phone_number', string="Mobile No")
     reference_no = fields.Char(string="Reference No")
     report_reference = fields.Char(string="Report Reference", readonly=True, default=lambda self: _('New'))
-    date = fields.Datetime(string="Report Date",default=fields.Datetime.now)
-    doctor_id = fields.Many2one('doctor.profile', string="Doctor")
+    date = fields.Datetime(string="Report Date", default=fields.Datetime.now)
+    doctor_id = fields.Many2one(
+        'doctor.profile',
+        string="Doctor",
+        related='patient_id.doctor',
+        store=True,
+        readonly=False  # allow override if you want to change doctor manually
+    )
+
     report_details = fields.Text(string="Report Details")
     attachment = fields.Binary(string="Result")
     attachment_name = fields.Char(string="Result")
@@ -31,19 +39,19 @@ class DoctorLabReport(models.Model):
     lab_line_ids = fields.One2many('lab.scan.line', 'lab_id', string='Lab Lines')
     lab_billing_ids = fields.One2many('lab.billing.page', 'lab_billing_id', string='Lab billing Lines')
     vssc_check = fields.Boolean(string="VSSC")
-    admitted_check =  fields.Boolean(string="Admitted")
+    admitted_check = fields.Boolean(string="Admitted")
     bill_type = fields.Selection([
-        ('op','OP'),('admitted','Admitted Patient'),('others','Others')],string="Bill Type")
-    age=fields.Integer('Age')
+        ('op', 'OP'), ('admitted', 'Admitted Patient'), ('others', 'Others')], string="Bill Type")
+    age = fields.Integer('Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     remarks = fields.Text("Remarks")
-    staff_name = fields.Many2one('hr.employee',"Staff Name")
+    staff_name = fields.Many2one('hr.employee', "Staff Name")
     staff_pwd = fields.Char(string='Staff Password')
     o_c_percentage = fields.Char("OC%")
     o_c = fields.Char("OC")
     mode_of_payment = fields.Selection([('cash', 'Cash'),
                                         ('card', 'Card'),
-                                        ('upi', 'UPI'),('credit','Credit')], string='Payment Method',default='cash')
+                                        ('upi', 'UPI'), ('credit', 'Credit')], string='Payment Method', default='cash')
     staff_passwor = fields.Char("Staff Password")
     c_o = fields.Boolean("C/O")
     b_o = fields.Boolean("B/O")
@@ -66,18 +74,18 @@ class DoctorLabReport(models.Model):
     status = fields.Selection([
         ('unpaid', 'Unpaid'),
         ('paid', 'Paid'),
-        ('credit','Credit'),
+        ('credit', 'Credit'),
     ], string="Status", default="unpaid", tracking=True)
-    sample_status=fields.Selection([
+    sample_status = fields.Selection([
         ('sample_collected', 'Sample Collected'),
         ('pending', 'Pending'),
     ], string="Status", default="pending", tracking=True)
-    result_status=fields.Selection([
+    result_status = fields.Selection([
         ('result_ready', 'Result Ready'),
         ('pending', 'Result Pending'),
     ], string="Status", default="pending", tracking=True)
     grouped_lab_details = fields.Html(compute='_compute_grouped_lab_details', string="Lab Details", sanitize=False)
-    total_bill_amount = fields.Integer("Total Amount",compute="_onchange_lab_billing_ids")
+    total_bill_amount = fields.Integer("Total Amount", compute="_onchange_lab_billing_ids")
     # display_amount = fields.Integer('Bill Amount')
     amount_paid = fields.Integer(string='Amount Paid')
     balance = fields.Integer(string='Balance')
@@ -89,6 +97,25 @@ class DoctorLabReport(models.Model):
     ], string="Active Investigation Type", default='all')
     admitted_patient_id = fields.Many2one('hospital.admitted.patient', string="Admitted Patient")
     discount_amount = fields.Integer(string="Discount amount")
+
+    @api.onchange('user_ide', 'date')
+    def _onchange_user_ide_set_doctor(self):
+        if self.user_ide and self.date:
+            consultation = self.env['patient.registration'].search([
+                ('patient_id', '=', self.user_ide.id),
+                ('appointment_date', '=', self.date),  # match OP date with lab bill date
+            ], limit=1)
+
+            if consultation:
+                self.patient_id = consultation.id
+                self.doctor_id = consultation.doctor.id if consultation.doctor else False
+            else:
+                self.patient_id = False
+                self.doctor_id = False
+        else:
+            self.patient_id = False
+            self.doctor_id = False
+
     def amount_to_text_indian(self):
         """Convert amount to words in Indian format (Rupees and Paise)."""
         try:
@@ -114,8 +141,10 @@ class DoctorLabReport(models.Model):
             return self.currency_id.amount_to_text(self.total_bill_amount)
 
         return ""
+
     def action_print_lab_bill(self):
         return self.env.ref('homeo_doctor.action_report_lab_invoice').report_action(self)
+
     def filter_xray_investigations(self):
         """Button action to filter X-Ray investigations"""
         self.active_investigation_type = 'xray'
@@ -225,6 +254,7 @@ class DoctorLabReport(models.Model):
                         'lab_reference_range': test_result.referral_range,
                         'unit': test_result.unit,
                     })
+
     @api.onchange('amount_paid')
     def _onchage_amount_paid(self):
         for rec in self:
@@ -233,7 +263,7 @@ class DoctorLabReport(models.Model):
             elif (rec.amount_paid > rec.total_bill_amount and rec.amount_paid > 0):
                 rec.balance = rec.amount_paid - rec.total_bill_amount
             else:
-                rec.balance =0
+                rec.balance = 0
 
     def action_sample_collected(self):
 
@@ -244,8 +274,7 @@ class DoctorLabReport(models.Model):
             if lab_result:
                 lab_result.write({'sample_status': 'sample_collected'})
 
-
-    @api.depends('lab_billing_ids','discount_amount')
+    @api.depends('lab_billing_ids', 'discount_amount')
     def _onchange_lab_billing_ids(self):
         for rec in self:
             total = sum(rec.lab_billing_ids.mapped('total_amount'))
@@ -313,7 +342,6 @@ class DoctorLabReport(models.Model):
             html_content += "</table>"
 
             record.grouped_lab_details = html_content
-
 
     @api.onchange('user_ide')
     def _onchange_user_ide(self):
@@ -400,8 +428,8 @@ class DoctorLabReport(models.Model):
             'patient_name': self.patient_name,
             'doctor': self.doctor_id.id,
             'status': 'paid',
-            'age':self.age,
-            'gender':self.gender,
+            'age': self.age,
+            'gender': self.gender,
             'patient_phone': self.patient_phone,
             'sample_collected': fields.Datetime.now(),
             'lab_collection': fields.Datetime.now(),
@@ -413,7 +441,7 @@ class DoctorLabReport(models.Model):
         for lab_line in self.lab_line_ids:
             lab_lines.append((0, 0, {
                 'lab_result_id': lab_result_page.id,
-                'lab_type_id':lab_line.lab_type_id.id,
+                'lab_type_id': lab_line.lab_type_id.id,
                 'lab_test_name': lab_line.lab_test_name,
                 'lab_result': lab_line.lab_result,
                 'unit': lab_line.unit,
@@ -453,7 +481,6 @@ class DoctorLabReport(models.Model):
     @api.model
     def create(self, vals):
         if vals.get('report_reference', _('New')) == _('New'):
-
             seq_number = self.env['ir.sequence'].next_by_code('doctor.lab.report') or '0000'
 
             today = date.today()
@@ -462,7 +489,6 @@ class DoctorLabReport(models.Model):
             fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
 
             vals['report_reference'] = f"{seq_number}/{fiscal_suffix}"
-
 
         self._onchange_lab_billing_ids_generate_lines()
 
@@ -595,9 +621,9 @@ class LabScanLine(models.Model):
     total_amount = fields.Monetary(string="Total", compute='_compute_total_amount', store=True)
     lab_result = fields.Char('Result')
     lab_reference_range = fields.Char('Reference Range')
-    lab_result_id=fields.Many2one('lab.result.page',string='Lab Result')
+    lab_result_id = fields.Many2one('lab.result.page', string='Lab Result')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
-    unit=fields.Char(string='Unit')
+    unit = fields.Char(string='Unit')
     include_in_report = fields.Boolean(string="Print", default=True)
 
     # @api.onchange('lab_department')
