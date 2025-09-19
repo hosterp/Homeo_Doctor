@@ -180,6 +180,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col px-1" style="max-width: 25%;">
+                                        <div class="form-group row my-1">
+                                            <label for="consolidated_pdf"
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">consolidated_pdf
+                                            </label>
+                                            <div class="col-md-8 field-container py-0">
+                                                <field name="consolidated_pdf"/>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <field name="file_name" invisible="1"/>
                                 </div>
                             </div>

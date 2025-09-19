@@ -31,6 +31,8 @@ class DischargedPatientRecord(models.Model):
     op_category=fields.Many2one('op.category',string='OP Category')
     discharge_pdf = fields.Binary("Discharge Report")
     file_name = fields.Char("File Name")
+    consolidated_pdf = fields.Binary("Consolidated Bill PDF")
+    consolidated_file_name = fields.Char("Consolidated PDF Filename")
 
 class AdmittedAdvanceAmount(models.Model):
     _name = 'advance.patient.record'

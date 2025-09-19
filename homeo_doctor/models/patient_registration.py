@@ -817,6 +817,12 @@ class PatientRegistration(models.Model):
                     'discharge_pdf': pdf_base64,
                     'file_name': f"Discharge_{record.discharge_bill_number}.pdf"
                 })
+                consolidated_report = self.env.ref('homeo_doctor.action_report_consolidated_discharge_challan')
+                pdf_content2, _ = consolidated_report._render_qweb_pdf(record.id)
+                rec.write({
+                    'consolidated_pdf': base64.b64encode(pdf_content2),
+                    'consolidated_file_name': f"Consolidated_Bill_{record.discharge_bill_number}.pdf"
+                })
 
                 # ✅ Return PDF as usual
                 # return report.report_action(self)
@@ -1461,3 +1467,9 @@ class AdvanceAmount(models.Model):
     admission_id = fields.Many2one('patient.reg', string='Admission')  # link back to admission
     date = fields.Datetime(string='Date')
     admission_date = fields.Date(string="Admission Date")
+
+
+# class DischargedPatientReg(models.Model):
+#     _name = "discharged.patient.reg"
+#     _description = "Discharged Patients"
+#     _inherit = "patient.reg"

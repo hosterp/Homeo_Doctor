@@ -545,5 +545,40 @@
             </t>
             <!--            </t>-->
         </template>
+
+        <record id="view_discharged_patient_reg_tree" model="ir.ui.view">
+            <field name="name">patient.reg.discharged.tree</field>
+            <field name="model">patient.reg</field>
+            <field name="arch" type="xml">
+                <tree string="Discharged Patients">
+                    <field name="reference_no"/>
+                    <field name="patient_id"/>
+                    <field name="age"/>
+                    <field name="admitted_date"/>
+                    <field name="discharge_date"/>
+                    <field name="admission_total_amount"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- ✅ Update your action to use this tree view -->
+        <record id="action_discharged_patient_reg" model="ir.actions.act_window">
+            <field name="name">Discharge Patients</field>
+            <field name="res_model">patient.reg</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_discharged_patient_reg_tree"/>
+            <field name="domain">[('admission_boolean','=',True),
+                ('status','in',['proceed_discharge'])]
+            </field>
+        </record>
+
+        <menuitem id="menu_lab_reports_root_billing" name="Billing" parent="menu_homeo_head" sequence="0"/>
+        <menuitem id="menu_discharged_patient_reg"
+                  name="Discharge Bills"
+                  parent="menu_lab_reports_root_billing"
+                  action="action_discharged_patient_reg"
+                  sequence="3"/>
+
     </data>
 </odoo>
