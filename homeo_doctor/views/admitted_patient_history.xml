@@ -183,7 +183,8 @@
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
                                             <label for="consolidated_pdf"
-                                                   class="col-md-4 col-form-label py-0 small text-nowrap">consolidated_pdf
+                                                   class="col-md-4 col-form-label py-0 small text-nowrap">
+                                                consolidated_pdf
                                             </label>
                                             <div class="col-md-8 field-container py-0">
                                                 <field name="consolidated_pdf"/>
@@ -234,11 +235,44 @@
                 </tree>
             </field>
         </record>
+        <record id="view_discharged_patient_search" model="ir.ui.view">
+            <field name="name">discharged.patient.record.search</field>
+            <field name="model">discharged.patient.record</field>
+            <field name="arch" type="xml">
+                <search string="Discharged Patients">
+                    <!-- 🔍 Searchable fields -->
+                    <field name="patient_id"/>
+                    <field name="name"/>
+                    <field name="doctor"/>
+                    <field name="room_number"/>
+                    <field name="op_category"/>
+
+                    <!--                    &lt;!&ndash; 🔹 Filters &ndash;&gt;-->
+                    <!--                    <filter string="Today" name="today"-->
+                    <!--                            domain="[('discharge_date', '=', context_today())]"/>-->
+                    <!--                    <filter string="This Month" name="this_month"-->
+                    <!--                            domain="[('discharge_date', '>=', (context_today() - relativedelta(day=1)).strftime('%%Y-%%m-%%d')),-->
+                    <!--                        ('discharge_date', '<=', context_today())]"/>-->
+                    <!--                    <filter string="With Advance" name="with_advance"-->
+                    <!--                            domain="[('amount_in_advance', '>', 0)]"/>-->
+                    <!--                    <filter string="Without Advance" name="without_advance"-->
+                    <!--                            domain="[('amount_in_advance', '=', 0)]"/>-->
+
+                    <!--                    &lt;!&ndash; 🔹 Group By &ndash;&gt;-->
+                    <!--                    <group expand="0" string="Group By">-->
+                    <!--                        <filter string="Doctor" context="{'group_by':'doctor'}"/>-->
+                    <!--                        <filter string="Room" context="{'group_by':'room_number'}"/>-->
+                    <!--                        <filter string="Discharge Date" context="{'group_by':'discharge_date'}"/>-->
+                    <!--                    </group>-->
+                </search>
+            </field>
+        </record>
 
         <record id="action_discharged_patient_record" model="ir.actions.act_window">
             <field name="name">Discharged Patients</field>
             <field name="res_model">discharged.patient.record</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_discharged_patient_search"/>
         </record>
 
         <menuitem id="menu_discharged_patient_root" name="Discharged Patients History"
