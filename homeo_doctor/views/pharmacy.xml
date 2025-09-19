@@ -161,14 +161,14 @@
                                                         <span style="color: #333;">Age/Gender:</span>
                                                         <span style="font-weight: bold; color: #333;">
                                                             <t t-if="o.uhid_id">
-                                                                <t t-esc="'%s / %s' % (o.uhid_id.age or '', o.uhid_id.gender or '')"/>
-
-                                                            </t>
-                                                            <t t-else="">
-                                                                <t t-esc="(o.age or '') + ' / ' + (o.gender or '')"/>
+                                                                <t t-esc="o.uhid_id.age or ''"/>
+                                                                <t t-if="o.uhid_id.gender">/
+                                                                    <t t-esc="o.uhid_id.gender"/>
+                                                                </t>
                                                             </t>
                                                         </span>
                                                     </div>
+
 
                                                     <!-- Column 2: Phone -->
                                                     <div style="display: table-cell; width: 25%; text-align: left; padding: 4px 8px;">
