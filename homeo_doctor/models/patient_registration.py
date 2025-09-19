@@ -823,6 +823,12 @@ class PatientRegistration(models.Model):
                     'consolidated_pdf': base64.b64encode(pdf_content2),
                     'consolidated_file_name': f"Consolidated_Bill_{record.discharge_bill_number}.pdf"
                 })
+                insurance_report = self.env.ref('homeo_doctor.action_report_insurance_challan')
+                pdf_content2, _ = insurance_report._render_qweb_pdf(record.id)
+                rec.write({
+                    'insurance_pdf': base64.b64encode(pdf_content2),
+                    'insurance_file_name': f"insurance_Bill_{record.discharge_bill_number}.pdf"
+                })
 
                 # ✅ Return PDF as usual
                 # return report.report_action(self)

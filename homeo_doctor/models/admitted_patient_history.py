@@ -33,6 +33,8 @@ class DischargedPatientRecord(models.Model):
     file_name = fields.Char("File Name")
     consolidated_pdf = fields.Binary("Consolidated Bill PDF")
     consolidated_file_name = fields.Char("Consolidated PDF Filename")
+    insurance_pdf = fields.Binary("Insurance Bill PDF")
+    insurance_file_name = fields.Char("Insurance PDF Filename")
 
 class AdmittedAdvanceAmount(models.Model):
     _name = 'advance.patient.record'
