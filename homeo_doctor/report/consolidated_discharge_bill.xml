@@ -697,7 +697,7 @@
                                 <tr>
                                     <td style="width: 33%; text-align: left; vertical-align: top;">
                                         Advance:
-                                        <span t-esc="o.amount_in_advance"/>
+                                       <span t-esc="not o.advance_amount_bool and o.amount_in_advance or 0"/>
                                     </td>
                                     <td style="width: 33%; text-align: center; vertical-align: top;">
                                         Discount:
@@ -705,7 +705,7 @@
                                     </td>
                                     <td style="width: 33%; text-align: right; vertical-align: top; font-weight: bold;">
                                         Grand Total:
-                                        <span t-esc="o.temp_admission_total_amount"/>
+                                        <span t-esc="o.temp_admission_total_amount + (o.amount_in_advance if o.advance_amount_bool else 0)"/>
                                     </td>
                                 </tr>
                             </table>

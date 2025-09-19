@@ -168,7 +168,7 @@ class PatientRegistration(models.Model):
     tt = fields.Boolean('TT')
     discount = fields.Integer('Discount')
     insurance_boolean = fields.Boolean(string='Insurance')
-
+    advance_amount_bool=fields.Boolean(string='Apply Advance Amount')
 
     def _onchange_amount_advance(self):
         for rec in self:

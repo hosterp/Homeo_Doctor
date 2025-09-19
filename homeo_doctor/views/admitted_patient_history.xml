@@ -189,7 +189,7 @@
                                                 <field name="consolidated_pdf"/>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div class="col px-1" style="max-width: 25%;">
                                         <div class="form-group row my-1">
                                             <label for="insurance_pdf"

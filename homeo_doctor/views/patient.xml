@@ -638,9 +638,18 @@
                                                                 Advance Amount
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
-                                                                <field name="amount_in_advance" style="width:100%;"
+                                                                <field name="advance_amount_bool" style="width:100%;"
                                                                        attrs="{'required': [('admission_boolean', '=', True)]}"/>
                                                             </div>
+                                                            <div class="col-md-8 field-container py-0">
+                                                                <field name="amount_in_advance"
+                                                                       attrs="{
+                                                                           'required': [('admission_boolean', '=', True), ('advance_amount_bool', '=', True)],
+
+                                                                       }"
+                                                                />
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                     <!-- Keep empty columns to maintain the 5-column layout -->
@@ -722,7 +731,8 @@
                                                         <div class="text-center mt-1">
                                                             <button name="insurance_bill" string="Insurance Bill"
                                                                     type="object"
-                                                                    class="btn btn-primary btn-sm"  attrs="{'invisible': [('insurance_boolean','=',False)]}"/>
+                                                                    class="btn btn-primary btn-sm"
+                                                                    attrs="{'invisible': [('insurance_boolean','=',False)]}"/>
                                                         </div>
                                                     </div>
 
