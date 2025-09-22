@@ -383,7 +383,7 @@
                     <field name="doctor"/>
                     <field name="mode_pay" string="Payment Status"/>
                     <field name="total_amount"/>
-<!--                    <field name="status" string="Payment Status"/>-->
+                    <field name="status" string="Payment Status"/>
 
                 </tree>
             </field>
