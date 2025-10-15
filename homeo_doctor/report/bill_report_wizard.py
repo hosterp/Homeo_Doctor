@@ -119,7 +119,7 @@ class BillingReportWizard(models.TransientModel):
         sheet.merge_range('A2:D2', f"From: {self.from_date}   To: {self.to_date}", subtitle_format)
 
         # Table headers
-        headers = ['Bill No', 'Patient', 'Date', 'Amount']
+        headers = ['Bill No', 'Patient', 'Date', 'Amount','Discount','Total']
         row_offset = 4
         for col, header in enumerate(headers):
             sheet.write(row_offset, col, header, header_format)
@@ -133,7 +133,9 @@ class BillingReportWizard(models.TransientModel):
                 sheet.write(row, 1, rec.patient_name)
                 sheet.write(row, 2, str(rec.bill_date))
                 sheet.write(row, 3, rec.net_amount or 0)
-                total_amount += rec.net_amount or 0
+                sheet.write(row, 4, rec.discount or 0)
+                sheet.write(row, 5, rec.total_amount or 0)
+                total_amount += rec.total_amount or 0
             else:
                 sheet.write(row, 0, rec.patient_id or rec.id)
                 sheet.write(row, 1, rec.name)
@@ -144,8 +146,8 @@ class BillingReportWizard(models.TransientModel):
 
         # Total row
         total_row = row + 1
-        sheet.write(total_row, 2, "Total", total_format)
-        sheet.write(total_row, 3, total_amount, total_format)
+        sheet.write(total_row, 4, "Total", total_format)
+        sheet.write(total_row, 5, total_amount, total_format)
 
         # Auto column width
         sheet.set_column('A:D', 20)
