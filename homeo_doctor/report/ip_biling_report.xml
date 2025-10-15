@@ -79,6 +79,7 @@
                     </t>
 
                     <t t-set="total_amt" t-value="0"/>
+                    <t t-set="total_amount_grand" t-value="0.0"/>
                     <t t-foreach="range(0, len(docs), 500)" t-as="start">
                         <div class="page">
                             <table class="table table-sm">
@@ -88,6 +89,9 @@
                                         <th>Patient</th>
                                         <th>Date</th>
                                         <th>Amount</th>
+                                        <th>Discount</th>
+                                        <th>Total</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -100,19 +104,27 @@
                                                 <t t-esc="rec.patient_name"/>
                                             </td>
                                             <td>
-                                                <t t-esc="rec.bill_date"/>
+                                                <t t-esc="rec.bill_date and rec.bill_date.strftime('%d-%m-%Y')"/>
                                             </td>
                                             <td>
-                                                <t t-esc="rec.net_amount or 0"/>
-                                                <t t-set="total_amt" t-value="total_amt + (rec.net_amount or 0)"/>
+                                                <t t-esc="rec.total_amount + rec.discount"/>
+                                                <!--                                                <t t-set="total_amt" t-value="total_amt + (rec.net_amount or 0)"/>-->
                                             </td>
+                                            <td>
+                                                <t t-esc="rec.discount"/>
+                                                <td>
+                                                    <t t-esc="rec.total_amount"/>
+                                                </td>
+                                            </td>
+                                            <t t-set="total_amount_grand"
+                                               t-value="total_amount_grand + (rec.total_amount or 0.0)"/>
                                         </tr>
                                     </t>
                                     <!-- Total Row -->
                                     <tr>
-                                        <td colspan="3" style="text-align:right; font-weight:bold;">Total</td>
+                                        <td colspan="5" style="text-align:right; font-weight:bold;">Total</td>
                                         <td>
-                                            <t t-esc="total_amt"/>
+                                            <t t-esc="total_amount_grand"/>
                                         </td>
                                     </tr>
                                 </tbody>
