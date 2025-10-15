@@ -409,7 +409,7 @@ class IPPartBilling(models.Model):
     ], string="Status", default="unpaid", tracking=True)
 
     amount_in_words = fields.Char("Total in Words", compute="_compute_amount_in_words")
-    discount_amount = fields.Integer(string="Discount amount")
+    discount_amount = fields.Integer(string="Discount")
     rent = fields.Integer(string="Rent",Default=0)
     observation = fields.Boolean(string="Observation")
     observation_status = fields.Selection([
@@ -421,7 +421,27 @@ class IPPartBilling(models.Model):
     to_date = fields.Datetime('to Date')
     rent_full_day = fields.Float(string="Full Day Rent")
     rent_half_day = fields.Float(string="Half Day Rent")
+    base_total = fields.Float(string='Base Total', digits=(12, 2), help="Original total before discount")
 
+    @api.model
+    def create(self, vals):
+        total = vals.get('total_amount', 0.0)
+        discount = vals.get('discount', 0.0)
+        # Save base total separately for future edits
+        vals['base_total'] = total
+        if total and discount:
+            vals['total_amount'] = total - discount
+        return super(IPPartBilling, self).create(vals)
+
+    def write(self, vals):
+        for rec in self:
+            # Always start from the original (base) total
+            base_total = vals.get('base_total', rec.base_total or rec.total_amount)
+            discount = vals.get('discount', rec.discount)
+            vals['base_total'] = base_total  # keep it updated
+            if discount:
+                vals['total_amount'] = base_total - discount
+        return super(IPPartBilling, self).write(vals)
 
     def action_observation(self):
         """Method to toggle observation field when Observation button is clicked"""
@@ -435,19 +455,19 @@ class IPPartBilling(models.Model):
         if self.observation:
             self.observation_status = 'discharge'
 
-    @api.onchange('discount', 'discount_type', 'total_amount')
-    def _onchange_discount(self):
-        """Calculate discount amount and net payable amount based on discount"""
-        if self.total_amount:
-            if self.discount_type == 'percentage' and self.discount:
-                self.discount_amount = (self.total_amount * self.discount) / 100
-            elif self.discount_type == 'amount' and self.discount:
-                self.discount_amount = self.discount
-            else:
-                self.discount_amount = 0
-
-            # Calculate net amount (payable amount after discount)
-            self.net_amount = self.total_amount - self.discount_amount
+    # @api.onchange('discount', 'discount_type', 'total_amount')
+    # def _onchange_discount(self):
+    #     """Calculate discount amount and net payable amount based on discount"""
+    #     if self.total_amount:
+    #         if self.discount_type == 'percentage' and self.discount:
+    #             self.discount_amount = (self.total_amount * self.discount) / 100
+    #         elif self.discount_type == 'amount' and self.discount:
+    #             self.discount_amount = self.discount
+    #         else:
+    #             self.discount_amount = 0
+    #
+    #         # Calculate net amount (payable amount after discount)
+    #         self.net_amount = self.total_amount - self.discount_amount
 
     # def action_create_admission(self):
     #     admitted_any = False

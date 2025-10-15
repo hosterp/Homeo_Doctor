@@ -49,7 +49,8 @@
                                                 <label for="mrd_no" class="col-md-5 col-form-label py-0 small">UHID
                                                 </label>
                                                 <div class="col-md-7 field-container py-0">
-                                                    <field name="mrd_no" options="{'no_create': True, 'no_open': True}"/>
+                                                    <field name="mrd_no"
+                                                           options="{'no_create': True, 'no_open': True}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -231,14 +232,15 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <!--                                            <label for="total_item" class="col-md-4 col-form-label">Total Item</label>-->
+                                                <label for="discount" class="col-md-4 col-form-label">
+                                                    <b>Discount</b>
+                                                </label>
                                                 <div class="col-md-8 field-container">
-                                                    <p>
-                                                        <b>Discount</b>
-                                                    </p>
+                                                    <field name="discount"/>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="col-md-12">
                                             <div class="form-group row">
                                                 <label for="mode_pay" class="col-md-4 col-form-label">Payment Method
@@ -277,14 +279,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
+<!--                                        <div class="col-md-12">-->
+<!--                                            <div class="form-group row">-->
 
-                                                <div class="col-md-8 field-container">
-                                                    <field name="discount"/>
-                                                </div>
-                                            </div>
-                                        </div>
+<!--                                                <div class="col-md-8 field-container">-->
+<!--                                                    <field name="discount"/>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
                                         <div class="col-md-12">
                                             <div class="form-group row">
                                                 <label for="amount_paid" class="col-md-4 col-form-label">Amount Paid
@@ -310,13 +312,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <div class="col-md-8 field-container">
-                                                    <field name="net_amount"/>
-                                                </div>
-                                            </div>
-                                        </div>
+<!--                                        <div class="col-md-12">-->
+<!--                                            <div class="form-group row">-->
+<!--                                                <div class="col-md-8 field-container">-->
+<!--                                                    <field name="net_amount"/>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
                                         <div class="col-md-12">
                                             <div class="form-group row">
                                                 <label for="balance" class="col-md-4 col-form-label">Balance</label>
@@ -408,7 +410,7 @@
                     <field name="doctor"/>
                     <field name="mode_pay" string="Payment Status"/>
                     <field name="total_amount"/>
-<!--                    <field name="status" string="Payment Status"/>-->
+                    <!--                    <field name="status" string="Payment Status"/>-->
                 </tree>
             </field>
         </record>
