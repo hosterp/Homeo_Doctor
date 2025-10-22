@@ -1,6 +1,6 @@
 import logging
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError, _logger
@@ -17,7 +17,7 @@ class PharmacyDescription(models.Model):
     name = fields.Char(string="Patient Name")
     phone_number = fields.Char(string="Phone Number")
     # bill_amount=fields.Integer(string='Bill Amount')
-    doctor_name=fields.Many2one('doctor.profile',string='Doctor')
+    doctor_name=fields.Many2one('doctor.profile',string='Doctor',compute="_compute_doctor_name",readonly=False)
     date= fields.Datetime(string="Date",default=fields.Datetime.now)
     prescription_line_ids = fields.One2many('pharmacy.prescription.line', 'pharmacy_id', string="Prescriptions")
     bill_amount = fields.Float(string="Total Bill Amount", compute="_compute_bill_amount", store=True)
@@ -49,35 +49,155 @@ class PharmacyDescription(models.Model):
     active = fields.Boolean(default=True)
     op_category=fields.Selection([('op','OP'),('ip','IP'),('others','OTHERS')])
     vssc_boolean=fields.Boolean(string='VSSC')
+    age= fields.Integer(string='Age')
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
 
     @api.onchange('uhid_id', 'date')
-    def _onchange_user_ide_set_doctor(self):
-        if self.uhid_id and self.date:
-            # Check for outpatient consultation
-            consultation = self.env['patient.registration'].search([
-                ('patient_id', '=', self.uhid_id.id),
-                ('appointment_date', '=', self.date),
-            ], limit=1)
+    def _onchange_mrd_no_update_doctor(self):
+        for rec in self:
+            rec.doctor_name = False
 
-            if consultation:
-                self.patient_id = consultation.id
-                self.doctor_name = consultation.doctor.id if consultation.doctor else False
-            else:
-                # Check if patient is currently admitted (don't filter by admission_date)
-                admitted = self.env['hospital.admitted.patient'].search([
-                    ('patient_id', '=', self.uhid_id.id),
-                    ('status', '=', 'admitted'),
-                ], limit=1)
+            if not rec.uhid_id or not rec.date:
+                continue
 
-                # if admitted:
-                #     self.patient_id = admitted.id
-                #     self.doctor_name = admitted.attending_doctor.id if admitted.attending_doctor else False
-                # else:
-                #     self.patient_id = False
-                #     self.doctor_name = False
-        else:
-            self.patient_id = False
-            self.doctor_name = False
+            bill_date = rec.date
+            admitted_date = rec.uhid_id.admitted_date
+            discharge_date = rec.uhid_id.discharge_date  # add this field if it exists in patient model
+
+            # Normalize dates
+            if admitted_date and isinstance(admitted_date, datetime):
+                admitted_date = admitted_date.date()
+            if discharge_date and isinstance(discharge_date, datetime):
+                discharge_date = discharge_date.date()
+            if isinstance(bill_date, datetime):
+                bill_date = bill_date.date()
+
+            # 1️⃣ Use admitted doctor only if bill_date is between admission and discharge
+            if (
+                    rec.uhid_id.admission_boolean
+                    and admitted_date
+                    and admitted_date <= bill_date
+                    and (not discharge_date or bill_date <= discharge_date)
+            ):
+                if rec.uhid_id.doctor:
+                    rec.doctor_name = rec.uhid_id.doctor.id
+                    continue
+
+            # 2️⃣ After discharge → find latest doctor from patient.reg or appointment
+            latest_doc = False
+            latest_date = None
+
+            # Latest revisit (patient.reg)
+            reg = self.env['patient.reg'].search([
+                ('id', '=', rec.uhid_id.id if rec.uhid_id else rec.uhid_id.id),
+                ('time', '<=', bill_date)
+            ], order='time desc', limit=1)
+
+            if reg and reg.doc_name:
+                reg_date = reg.time.date() if isinstance(reg.time, datetime) else reg.time
+                latest_doc = reg.doc_name.id
+                latest_date = reg_date
+
+            # Latest confirmed appointment (patient.appointment)
+            appt = self.env['patient.appointment'].search([
+                ('patient_id', '=', rec.uhid_id.id),
+                ('appointment_date', '<=', bill_date),
+                ('status', '=', 'confirmed')
+            ], order='appointment_date desc', limit=1)
+
+            if appt and appt.doctor_ids:
+                appt_date = appt.appointment_date.date() if isinstance(appt.appointment_date,
+                                                                       datetime) else appt.appointment_date
+                # choose the most recent between revisit and appointment
+                if not latest_date or appt_date > latest_date:
+                    latest_doc = appt.doctor_ids[0].id
+                    latest_date = appt_date
+
+            rec.doctor_name = latest_doc
+
+    @api.depends('uhid_id', 'uhid_id.admission_boolean', 'uhid_id.admitted_date', 'uhid_id.doctor', 'date')
+    def _compute_doctor_name(self):
+        for rec in self:
+            doctor = False
+
+            if rec.uhid_id and rec.date:
+                bill_date = rec.date
+                admitted_date = rec.uhid_id.admitted_date
+
+                # ✅ Normalize admitted_date safely
+                if admitted_date:
+                    if isinstance(admitted_date, datetime):
+                        admitted_date_val = admitted_date.date()
+                    else:
+                        admitted_date_val = admitted_date  # already a date
+                else:
+                    admitted_date_val = None
+
+                # ✅ Normalize bill_date safely
+                if isinstance(bill_date, datetime):
+                    bill_date_val = bill_date.date()
+                else:
+                    bill_date_val = bill_date
+
+                # 1️⃣ Priority 1: Admitted doctor (if admitted and still within admission period)
+                if rec.uhid_id.admission_boolean and admitted_date_val and admitted_date_val <= bill_date_val:
+                    if rec.uhid_id.doctor:
+                        doctor = rec.uhid_id.doctor.id
+                        _logger.info('Admitted patient: using admitted doctor %s for record %s', doctor, rec.id)
+                    else:
+                        _logger.warning('Admitted patient has no doctor assigned! Record %s', rec.id)
+
+                # 2️⃣ Priority 2: Outpatient registration doctor
+                if not doctor:
+                    reg = self.env['patient.reg'].search([
+                        ('id', '=', rec.uhid_id.id),
+                        ('time', '<=', bill_date_val)
+                    ], limit=1)
+                    if reg and reg.doc_name:
+                        doctor = reg.doc_name.id
+                        _logger.info('Outpatient: using reg doctor %s for record %s', doctor, rec.id)
+
+                # 3️⃣ Priority 3: Fallback to latest confirmed appointment
+                if not doctor:
+                    revisit = self.env['patient.appointment'].search([
+                        ('patient_id', '=', rec.uhid_id.id),
+                        ('appointment_date', '<=', bill_date_val),
+                        ('status', '=', 'confirmed')
+                    ], limit=1)
+                    if revisit and revisit.doctor_ids:
+                        doctor = revisit.doctor_ids[0].id
+                        _logger.info('Fallback: using appointment doctor %s for record %s', doctor, rec.id)
+
+            rec.doctor_name = doctor
+
+    # @api.onchange('uhid_id', 'date')
+    # def _onchange_user_ide_set_doctor(self):
+    #     if self.uhid_id and self.date:
+    #         # Check for outpatient consultation
+    #         consultation = self.env['patient.registration'].search([
+    #             ('patient_id', '=', self.uhid_id.id),
+    #             ('appointment_date', '=', self.date),
+    #         ], limit=1)
+    #
+    #         if consultation:
+    #             self.patient_id = consultation.id
+    #             self.doctor_name = consultation.doctor.id if consultation.doctor else False
+    #         else:
+    #             # Check if patient is currently admitted (don't filter by admission_date)
+    #             admitted = self.env['hospital.admitted.patient'].search([
+    #                 ('patient_id', '=', self.uhid_id.id),
+    #                 ('status', '=', 'admitted'),
+    #             ], limit=1)
+    #
+    #             # if admitted:
+    #             #     self.patient_id = admitted.id
+    #             #     self.doctor_name = admitted.attending_doctor.id if admitted.attending_doctor else False
+    #             # else:
+    #             #     self.patient_id = False
+    #             #     self.doctor_name = False
+    #     else:
+    #         self.patient_id = False
+    #         self.doctor_name = False
     @api.onchange('payment_mathod')
     def _onchange_mode_pay(self):
         if self.payment_mathod == 'credit':
@@ -115,6 +235,8 @@ class PharmacyDescription(models.Model):
             self.name = self.uhid_id.patient_id
             self.phone_number = self.uhid_id.phone_number
             self.vssc_boolean = self.uhid_id.vssc_boolean
+            self.age = self.uhid_id.age
+            self.gender = self.uhid_id.gender
             # self.patient_age = self.uhid_id.age
             # self.patient_gender = self.uhid_id.gender
 

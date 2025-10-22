@@ -502,6 +502,14 @@
                                         <field name="name"/>
                                     </div>
                                     <div style="flex: 1; min-width: 180px;">
+                                        <span class="o_form_label" style="font-weight: bold;">Age</span>
+                                        <field name="age"/>
+                                    </div>
+                                    <div style="flex: 1; min-width: 180px;">
+                                        <span class="o_form_label" style="font-weight: bold;">gender</span>
+                                        <field name="gender"/>
+                                    </div>
+                                    <div style="flex: 1; min-width: 180px;">
                                         <span class="o_form_label" style="font-weight: bold;">Phone Number:</span>
                                         <field name="phone_number"/>
                                     </div>
