@@ -1,8 +1,8 @@
-from datetime import date
+from datetime import date, datetime
 from email.policy import default
 
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, _logger
 
 # from odoo.odoo.exceptions import UserError
 import logging
@@ -26,7 +26,8 @@ class DoctorLabReport(models.Model):
         string="Doctor",
         related='patient_id.doctor',
         store=True,
-        readonly=False  # allow override if you want to change doctor manually
+        readonly=False ,
+        compute='_compute_doctor_name'
     )
 
     report_details = fields.Text(string="Report Details")
@@ -99,22 +100,129 @@ class DoctorLabReport(models.Model):
     discount_amount = fields.Integer(string="Discount amount")
 
     @api.onchange('user_ide', 'date')
-    def _onchange_user_ide_set_doctor(self):
-        if self.user_ide and self.date:
-            consultation = self.env['patient.registration'].search([
-                ('patient_id', '=', self.user_ide.id),
-                ('appointment_date', '=', self.date),  # match OP date with lab bill date
-            ], limit=1)
+    def _onchange_mrd_no_update_doctor(self):
+        for rec in self:
+            rec.doctor_id = False
 
-            if consultation:
-                self.patient_id = consultation.id
-                self.doctor_id = consultation.doctor.id if consultation.doctor else False
-            else:
-                self.patient_id = False
-                self.doctor_id = False
-        else:
-            self.patient_id = False
-            self.doctor_id = False
+            if not rec.user_ide or not rec.date:
+                continue
+
+            bill_date = rec.date
+            admitted_date = rec.user_ide.admitted_date
+            discharge_date = rec.user_ide.discharge_date  # add this field if it exists in patient model
+
+            # Normalize dates
+            if admitted_date and isinstance(admitted_date, datetime):
+                admitted_date = admitted_date.date()
+            if discharge_date and isinstance(discharge_date, datetime):
+                discharge_date = discharge_date.date()
+            if isinstance(bill_date, datetime):
+                bill_date = bill_date.date()
+
+            # 1️⃣ Use admitted doctor only if bill_date is between admission and discharge
+            if (
+                    rec.user_ide.admission_boolean
+                    and admitted_date
+                    and admitted_date <= bill_date
+                    and (not discharge_date or bill_date <= discharge_date)
+            ):
+                if rec.user_ide.doctor:
+                    rec.doctor_id = rec.user_ide.doctor.id
+                    continue
+
+            # 2️⃣ After discharge → find latest doctor from patient.reg or appointment
+            latest_doc = False
+            latest_date = None
+
+            # Latest revisit (patient.reg)
+            reg = self.env['patient.reg'].search([
+                ('id', '=', rec.user_ide.id if rec.user_ide else rec.user_ide.id),
+                ('time', '<=', bill_date)
+            ], order='time desc', limit=1)
+
+            if reg and reg.doc_name:
+                reg_date = reg.time.date() if isinstance(reg.time, datetime) else reg.time
+                latest_doc = reg.doc_name.id
+                latest_date = reg_date
+
+            # Latest confirmed appointment (patient.appointment)
+            appt = self.env['patient.appointment'].search([
+                ('patient_id', '=', rec.user_ide.id),
+                ('appointment_date', '<=', bill_date),
+                ('status', '=', 'confirmed')
+            ], order='appointment_date desc', limit=1)
+
+            if appt and appt.doctor_ids:
+                appt_date = appt.appointment_date.date() if isinstance(appt.appointment_date,
+                                                                       datetime) else appt.appointment_date
+                # choose the most recent between revisit and appointment
+                if not latest_date or appt_date > latest_date:
+                    latest_doc = appt.doctor_ids[0].id
+                    latest_date = appt_date
+
+            rec.doctor_id = latest_doc
+
+    @api.depends('user_ide', 'user_ide.admission_boolean', 'user_ide.admitted_date', 'user_ide.doctor', 'date')
+    def _compute_doctor_name(self):
+        for rec in self:
+            doctor = False
+
+            if rec.user_ide and rec.date:
+                bill_date = rec.date
+                admitted_date = rec.user_ide.admitted_date
+
+                # Convert datetime → date if needed
+                if admitted_date and isinstance(admitted_date, datetime):
+                    admitted_date = admitted_date.date()
+
+                # 1️⃣ Priority 1: Admitted doctor
+                if rec.user_ide.admission_boolean and admitted_date and admitted_date <= bill_date:
+                    if rec.user_ide.doctor:
+                        doctor = rec.user_ide.doctor.id
+                        _logger.warning('Admitted patient: using admitted doctor %s for record %s', doctor, rec.id)
+                    else:
+                        _logger.warning('Admitted patient has no doctor assigned! Record %s', rec.id)
+
+                # 2️⃣ Priority 2: Outpatient reg doc_name (only if doctor not assigned yet)
+                if not doctor:
+                    reg = self.env['patient.reg'].search([
+                        ('id', '=', rec.user_ide.id),
+                        ('time', '<=', bill_date)
+                    ], limit=1)
+                    if reg and reg.doc_name:
+                        doctor_id = reg.doc_name.id
+                        _logger.warning('Outpatient: using reg doctor %s for record %s', doctor, rec.id)
+
+                # 3️⃣ Priority 3: Fallback to patient.appointment
+                if not doctor:
+                    revisit = self.env['patient.appointment'].search([
+                        ('patient_id', '=', rec.user_ide.id),
+                        ('appointment_date', '<=', date),
+                        ('status', '=', 'confirmed')
+                    ], limit=1)
+                    if revisit and revisit.doctor_ids:
+                        doctor = revisit.doctor_ids[0].id
+                        _logger.warning('Fallback: using appointment doctor %s for record %s', doctor, rec.id)
+
+            rec.doctor_id = doctor
+
+    # @api.onchange('user_ide', 'date')
+    # def _onchange_user_ide_set_doctor(self):
+    #     if self.user_ide and self.date:
+    #         consultation = self.env['patient.registration'].search([
+    #             ('patient_id', '=', self.user_ide.id),
+    #             ('appointment_date', '=', self.date),  # match OP date with lab bill date
+    #         ], limit=1)
+    #
+    #         if consultation:
+    #             self.patient_id = consultation.id
+    #             self.doctor_id = consultation.doctor.id if consultation.doctor else False
+    #         else:
+    #             self.patient_id = False
+    #             self.doctor_id = False
+    #     else:
+    #         self.patient_id = False
+    #         self.doctor_id = False
 
     def amount_to_text_indian(self):
         """Convert amount to words in Indian format (Rupees and Paise)."""
