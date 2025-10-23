@@ -1,6 +1,6 @@
 from odoo import api, fields, models, _
 import datetime
-from datetime import datetime, timedelta
+from datetime import datetime, date
 
 from dateutil.relativedelta import relativedelta
 
@@ -422,7 +422,15 @@ class PatientAppointment(models.Model):
                         pass
                         # print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
                 else:
-                    delta_days = (appt.appointment_date.date() - last_fee_date.date()).days
+                    if appt.appointment_date and last_fee_date:
+                        # Convert to date if they are datetime objects
+                        appt_date = appt.appointment_date.date() if isinstance(appt.appointment_date,
+                                                                               datetime) else appt.appointment_date
+                        last_date = last_fee_date.date() if isinstance(last_fee_date, datetime) else last_fee_date
+
+                        delta_days = (appt_date - last_date).days
+                    else:
+                        delta_days = 0
                     if debug_mode:
                         pass
                         # print(f"[{appt.appointment_date}] Days since last fee: {delta_days}")
@@ -489,7 +497,15 @@ class PatientAppointment(models.Model):
                             record.differance_appointment_days = 0
                             # print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
                     else:
-                        delta_days = (appt.appointment_date.date() - last_fee_date.date()).days
+                        if appt.appointment_date and last_fee_date:
+                            # Convert to date if they are datetime objects
+                            appt_date = appt.appointment_date.date() if isinstance(appt.appointment_date,
+                                                                                   datetime) else appt.appointment_date
+                            last_date = last_fee_date.date() if isinstance(last_fee_date, datetime) else last_fee_date
+
+                            delta_days = (appt_date - last_date).days
+                        else:
+                            delta_days = 0
                         if delta_days > consultation_fee_limit:
                             # Reset cycle → charge again
                             fee_to_apply = consultation_fee
