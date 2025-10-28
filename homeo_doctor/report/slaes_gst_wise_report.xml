@@ -46,9 +46,14 @@
                     <t t-set="domain" t-value="[
                 ('date', '&gt;=', docs.from_date),
                 ('date', '&lt;=', docs.to_date)]"/>
-                    <t t-if="docs.op_category">
+                    <t t-if="docs.op_category == 'op'">
+                        <!-- Show only IP -->
+                        <t t-set="domain" t-value="domain + [('op_category', 'not in', ['ip', 'others'])]"/>
+                    </t>
+                    <t t-else="">
                         <t t-set="domain" t-value="domain + [('op_category', '=', docs.op_category)]"/>
                     </t>
+                   
                     <t t-if="docs.payment_method">
                         <t t-set="domain" t-value="domain + [('payment_mathod', '=', docs.payment_method)]"/>
                     </t>
