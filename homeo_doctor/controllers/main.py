@@ -566,7 +566,9 @@ class BillGSTReportExcel(http.Controller):
             ('date', '>=', from_date_dt),
             ('date', '<=', to_date_dt),
         ]
-        if op_category:
+        if op_category == 'op':
+            domain.append(('op_category', 'not in', ['ip', 'others']))
+        else:
             domain.append(('op_category', '=', op_category))
         if payment_method:
             domain.append(('payment_mathod', '=', payment_method))
@@ -689,7 +691,9 @@ class HSNExcelReportController(http.Controller):
                 ('pharmacy_id.date', '>=', from_date_dt),
                 ('pharmacy_id.date', '<=', to_date_dt)
             ]
-            if op_category:
+            if op_category=='op':
+                domain.append(('pharmacy_id.op_category', 'not in', ['ip', 'others']))
+            else :
                 domain.append(('pharmacy_id.op_category', '=', op_category))
             if payment_method:
                 # Note: Field in PDF is `payment_mathod` (check model spelling)
