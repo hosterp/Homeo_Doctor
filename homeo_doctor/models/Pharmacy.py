@@ -47,7 +47,7 @@ class PharmacyDescription(models.Model):
     #     return super(PharmacyDescription, self).create(vals)
 
     active = fields.Boolean(default=True)
-    op_category=fields.Selection([('op','OP'),('ip','IP'),('others','OTHERS')])
+    op_category=fields.Selection([('op','OP'),('ip','IP'),('others','OTHERS')],default='op')
     vssc_boolean=fields.Boolean(string='VSSC')
     age= fields.Integer(string='Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
