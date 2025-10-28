@@ -99,9 +99,9 @@ class CombinedReportWizard(models.TransientModel):
             ])
 
             # Advance Amount Records
-            patient_recept = self.env['advance.patient.record'].search([
-                ('admitted_date', '>=', start_utc),
-                ('admitted_date', '<=', end_utc),
+            patient_recept = self.env['advance.amount'].search([
+                ('date', '>=', start_utc),
+                ('date', '<=', end_utc),
                 ('pay_mode', '=', code),
             ])
 
@@ -122,7 +122,7 @@ class CombinedReportWizard(models.TransientModel):
             for rec in ip_part:
                 add_amount('IP', code, rec.total_amount)
             for rec in patient_recept:
-                add_amount('Advance amt', code, rec.amount_in_advance)
+                add_amount('Advance amt', code, rec.advance_in_amount)
             for rec in billing:
                 add_amount('General Billing', code, rec.total_amount)
             for rec in lab:

@@ -168,57 +168,59 @@ class PatientRegistration(models.Model):
     tt = fields.Boolean('TT')
     discount = fields.Integer('Discount')
     insurance_boolean = fields.Boolean(string='Insurance')
-    advance_amount_bool=fields.Boolean(string='Apply Advance Amount')
+    advance_amount_bool = fields.Boolean(string='Apply Advance Amount')
+    add_done = fields.Boolean(string="Advance Added", default=False)
 
-    def _onchange_amount_advance(self):
+    def action_onchange_amount_advance(self):
         for rec in self:
             if rec.amount_in_advance > 0:
                 # Search existing advance record
                 advance_rec = self.env['advance.amount'].search([
                     ('admission_id', '=', rec.id)
                 ], limit=1)
-
-                if rec.status == 'discharged':
+                rec.add_done = True
+                if rec.status == 'admitted':
                     # Always create new record after discharge
                     self.env['advance.amount'].create({
-                        'reference_no': rec.reference_no,
+                        'reference_no': rec.id,
                         'name': rec.patient_id if rec.patient_id else False,
                         'advance_in_amount': rec.amount_in_advance,
                         'admission_id': rec.id,
                         'date': fields.Datetime.now(),
-                        'admission_date': rec.admitted_date,  # store admission date also
+                        'admission_date': fields.Date.today(),  # store admission date also
                     })
 
                 elif advance_rec and advance_rec.admission_date != rec.admitted_date:
                     # Admission date changed -> create new record
                     self.env['advance.amount'].create({
-                        'reference_no': rec.reference_no,
+                        'reference_no': rec.id,
                         'name': rec.patient_id if rec.patient_id else False,
                         'advance_in_amount': rec.amount_in_advance,
                         'admission_id': rec.id,
                         'date': fields.Datetime.now(),
-                        'admission_date': rec.admitted_date,
+                        'admission_date':fields.Date.today()
                     })
 
                 else:
                     # Otherwise update the existing one or create fresh
                     if advance_rec:
                         advance_rec.write({
-                            'reference_no': rec.reference_no,
+                            'reference_no': rec.id,
                             'name': rec.patient_id if rec.patient_id else False,
                             'advance_in_amount': rec.amount_in_advance,
                             'date': fields.Datetime.now(),
-                            'admission_date': rec.admitted_date,
+                            'admission_date': fields.Date.today(),
                         })
                     else:
                         self.env['advance.amount'].create({
-                            'reference_no': rec.reference_no,
+                            'reference_no': rec.id,
                             'name': rec.patient_id if rec.patient_id else False,
                             'advance_in_amount': rec.amount_in_advance,
                             'admission_id': rec.id,
                             'date': fields.Datetime.now(),
-                            'admission_date': rec.admitted_date,
+                            'admission_date':fields.Date.today(),
                         })
+
     def get_grouped_general_lines(self):
         grouped = defaultdict(lambda: {'quantity': 0, 'total_amt': 0})
         for line in self.unpaid_general_ids.mapped('general_bill_line_ids'):
@@ -521,6 +523,7 @@ class PatientRegistration(models.Model):
 
     def admit_reception(self):
         self.admission_boolean = True
+        self.add_done = False
         self.status = 'admitted'
 
     @api.onchange('register_amount_paid')
@@ -717,7 +720,6 @@ class PatientRegistration(models.Model):
             final_amount = total
             if rec.amount_in_advance and rec.amount_in_advance > 0:
                 final_amount = total - rec.amount_in_advance
-
 
             rec.admission_total_amount = final_amount
             rec.room_rent = full_days * rent_full_value
@@ -1045,7 +1047,6 @@ class PatientRegistration(models.Model):
         room_model = self.env['hospital.room']
         advance_model = self.env['advance.patient.record']
         for rec in self:
-            rec._onchange_amount_advance()
             rec.admission_total_amount = False
             patient = registration_model.search([('reference_no', '=', rec.reference_no)], limit=1)
             if not patient:
@@ -1160,6 +1161,14 @@ class PatientRegistration(models.Model):
                 record.no_days = (current_date - admitted_date).days + 1
             else:
                 record.no_days = 0
+
+            total_advance = 0.0
+            # Sum all advance records linked to this admission
+            advance_records = self.env['advance.amount'].search([
+                ('reference_no', '=', record.id)
+            ])
+            total_advance = sum(a.advance_in_amount for a in advance_records)
+            record.amount_in_advance = total_advance
 
     @api.onchange('no_days')
     def _admission_button_active(self):
@@ -1466,14 +1475,27 @@ class OpCategory(models.Model):
 class AdvanceAmount(models.Model):
     _name = 'advance.amount'
     _description = 'Advance Amount Record'
+    _order='date desc'
 
-    reference_no = fields.Char(string='Reference No')
+    reference_no = fields.Many2one('patient.reg', string='Reference No' ,required=True)
     name = fields.Char(string='Name')
     advance_in_amount = fields.Float(string='Advance Amount')
     admission_id = fields.Many2one('patient.reg', string='Admission')  # link back to admission
-    date = fields.Datetime(string='Date')
+    date = fields.Datetime(string='Date',required=True)
     admission_date = fields.Date(string="Admission Date")
+    pay_mode = fields.Selection([('cash', 'Cash'),
+                                 ('credit', 'Credit'),
+                                 ('card', 'Card'),
+                                 ('cheque', 'Cheque'),
+                                 ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
 
+
+
+    @api.onchange('reference_no')
+    def _onchange_reference_no(self):
+        for rec in self:
+            if rec.reference_no:
+                rec.name = rec.reference_no.patient_id
 
 # class DischargedPatientReg(models.Model):
 #     _name = "discharged.patient.reg"

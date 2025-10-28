@@ -22,11 +22,24 @@
         <field name="arch" type="xml">
             <form string="Advance Amount">
                 <sheet>
-                    <group>
-                        <field name="date"/>
-                        <field name="reference_no" string="UHID"/>
-                        <field name="name"/>
-                        <field name="advance_in_amount"/>
+                    <group col="4">
+                        <group>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="reference_no" string="UHID" options="{'no_create': True, 'no_edit': True,}"/>
+                        </group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="pay_mode"/>
+
+                        </group>
+                        <group>
+                            <field name="advance_in_amount"/>
+
+                        </group>
 
                         <!--                        <field name="admission_id"/>-->
                     </group>
@@ -39,6 +52,9 @@
         <field name="res_model">advance.amount</field>
         <field name="view_mode">tree,form</field>
     </record>
+
+
+
     <menuitem id="menu_my_patient_template_root" name="Patient Registration" parent="menu_homeo_head" sequence="2"/>
 
     <menuitem id="menu_advance_amount"

@@ -470,6 +470,8 @@ class PatientAdmissionReportController(http.Controller):
                 ('Content-Disposition', 'attachment; filename="Patient_Admission_Report.xlsx"')
             ]
         )
+
+
 class PatientReportController(http.Controller):
 
     @http.route('/patient/excel_report', type='http', auth='user')
@@ -532,30 +534,145 @@ class PatientReportController(http.Controller):
             ]
         )
 
-
-# class AuthLogin(http.Controller):
-#     @http.route('/web/login', type='http', auth="public", website=True)
-#     def web_login(self, redirect=None, **kw):
-#         recaptcha_response = kw.get('g-recaptcha-response')
-#         secret_key = ""
-#
-#         # Verify reCAPTCHA
-#         response = requests.post(
-#             'https://www.google.com/recaptcha/api/siteverify',
-#             data={'secret': secret_key, 'response': recaptcha_response}
-#         ).json()
-#
-#         if not response.get("success"):
-#             return request.render('web.login', {'error': 'Invalid reCAPTCHA. Try again.'})
-#
-#         return http.redirect_with_hash('/web')
-
-
+    # class AuthLogin(http.Controller):
+    #     @http.route('/web/login', type='http', auth="public", website=True)
+    #     def web_login(self, redirect=None, **kw):
+    #         recaptcha_response = kw.get('g-recaptcha-response')
+    #         secret_key = ""
+    #
+    #         # Verify reCAPTCHA
+    #         response = requests.post(
+    #             'https://www.google.com/recaptcha/api/siteverify',
+    #             data={'secret': secret_key, 'response': recaptcha_response}
+    #         ).json()
+    #
+    #         if not response.get("success"):
+    #             return request.render('web.login', {'error': 'Invalid reCAPTCHA. Try again.'})
+    #
+    #         return http.redirect_with_hash('/web')
 
 class BillGSTReportExcel(http.Controller):
 
     @http.route('/report/generate/bill_gst_excel', type='http', auth='user')
-    class HSNExcelReportController(http.Controller):
+    def generate_bill_gst_excel(self, from_date, to_date, **kwargs):
+        from_date_dt = datetime.combine(datetime.strptime(from_date, '%Y-%m-%d').date(), time.min)
+        to_date_dt = datetime.combine(datetime.strptime(to_date, '%Y-%m-%d').date(), time.max)
+
+        op_category = kwargs.get('op_category')
+        payment_method = kwargs.get('payment_method')
+
+        # Domain for pharmacy.description
+        domain = [
+            ('date', '>=', from_date_dt),
+            ('date', '<=', to_date_dt),
+        ]
+        if op_category:
+            domain.append(('op_category', '=', op_category))
+        if payment_method:
+            domain.append(('payment_mathod', '=', payment_method))
+
+        bills = request.env['pharmacy.description'].sudo().search(domain)
+
+        # Create Excel
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output)
+        worksheet = workbook.add_worksheet('GST Summary')
+
+        bold = workbook.add_format({'bold': True})
+        money = workbook.add_format({'num_format': '#,##0.00'})
+
+        # Title
+        worksheet.merge_range('A1:P1', 'GST Summary Report', workbook.add_format({'bold': True, 'align': 'center', 'font_size': 14}))
+        filter_text = f"From {from_date} to {to_date}"
+        if op_category:
+            filter_text += f" | Type: {op_category.upper()}"
+        if payment_method:
+            filter_text += f" | Payment: {payment_method.capitalize()}"
+        worksheet.merge_range('A2:P2', filter_text, workbook.add_format({'align': 'center', 'italic': True}))
+
+        # Headers
+        headers = [
+            'Sl No', 'Bill No', 'Bill Date', 'Patient', 'Non Taxable',
+            'GST 5%', 'CGST 2.5%', 'SGST 2.5%', 'GST 12%', 'CGST 6%',
+            'SGST 6%', 'GST 18%', 'CGST 9%', 'SGST 9%',
+            'Payment Method', 'Total Amount'
+        ]
+        for col, header in enumerate(headers):
+            worksheet.write(3, col, header, bold)
+
+        row = 4
+        # Totals
+        total_non_taxable = total_gst_5 = total_cgst_25 = total_sgst_25 = 0.0
+        total_gst_12 = total_cgst_6 = total_sgst_6 = 0.0
+        total_gst_18 = total_cgst_9 = total_sgst_9 = total_amount = 0.0
+
+        for sl, bill in enumerate(bills, start=1):
+            non_taxable = sum(line.rate for line in bill.prescription_line_ids if not line.gst)
+            gst_5 = sum(line.rate for line in bill.prescription_line_ids if line.gst == 5)
+            cgst_25 = sgst_25 = round(gst_5 * 0.025, 2)
+            gst_12 = sum(line.rate for line in bill.prescription_line_ids if line.gst == 12)
+            cgst_6 = sgst_6 = round(gst_12 * 0.06, 2)
+            gst_18 = sum(line.rate for line in bill.prescription_line_ids if line.gst == 18)
+            cgst_9 = sgst_9 = round(gst_18 * 0.09, 2)
+
+            worksheet.write(row, 0, sl)
+            worksheet.write(row, 1, bill.bill_number or '')
+            worksheet.write(row, 2, str(bill.date) or '')
+            worksheet.write(row, 3, bill.name or '')
+            worksheet.write_number(row, 4, non_taxable, money)
+            worksheet.write_number(row, 5, gst_5, money)
+            worksheet.write_number(row, 6, cgst_25, money)
+            worksheet.write_number(row, 7, sgst_25, money)
+            worksheet.write_number(row, 8, gst_12, money)
+            worksheet.write_number(row, 9, cgst_6, money)
+            worksheet.write_number(row, 10, sgst_6, money)
+            worksheet.write_number(row, 11, gst_18, money)
+            worksheet.write_number(row, 12, cgst_9, money)
+            worksheet.write_number(row, 13, sgst_9, money)
+            worksheet.write(row, 14, bill.payment_mathod or '')
+            worksheet.write_number(row, 15, bill.total_amount or 0.0, money)
+
+            # Add to totals
+            total_non_taxable += non_taxable
+            total_gst_5 += gst_5
+            total_cgst_25 += cgst_25
+            total_sgst_25 += sgst_25
+            total_gst_12 += gst_12
+            total_cgst_6 += cgst_6
+            total_sgst_6 += sgst_6
+            total_gst_18 += gst_18
+            total_cgst_9 += cgst_9
+            total_sgst_9 += sgst_9
+            total_amount += bill.total_amount or 0.0
+
+            row += 1
+
+        # Totals row
+        worksheet.write(row, 3, 'Total', bold)
+        worksheet.write_number(row, 4, total_non_taxable, bold)
+        worksheet.write_number(row, 5, total_gst_5, bold)
+        worksheet.write_number(row, 6, total_cgst_25, bold)
+        worksheet.write_number(row, 7, total_sgst_25, bold)
+        worksheet.write_number(row, 8, total_gst_12, bold)
+        worksheet.write_number(row, 9, total_cgst_6, bold)
+        worksheet.write_number(row, 10, total_sgst_6, bold)
+        worksheet.write_number(row, 11, total_gst_18, bold)
+        worksheet.write_number(row, 12, total_cgst_9, bold)
+        worksheet.write_number(row, 13, total_sgst_9, bold)
+        worksheet.write_number(row, 15, total_amount, bold)
+
+        workbook.close()
+        output.seek(0)
+
+        filename = f"GST_Report_{from_date}_to_{to_date}.xlsx"
+        return request.make_response(
+            output.read(),
+            headers=[
+                ('Content-Disposition', f'attachment; filename={filename}'),
+                ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            ]
+        )
+class HSNExcelReportController(http.Controller):
 
         @http.route(['/report/excel/hsn_gst_summary'], type='http', auth='user')
         def generate_hsn_excel(self, from_date, to_date, **kwargs):
@@ -667,9 +784,6 @@ class ExcelDownloadController(http.Controller):
             ('Content-Disposition', 'attachment; filename=Billing_Report.xlsx'),
         ]
         return request.make_response(decoded, headers)
-
-
-
 
 
 class CustomAuthLogin(Home):

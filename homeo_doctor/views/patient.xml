@@ -11,7 +11,7 @@
                                 class="oe_stat_button" invisible="1">
                             <field name="lab_report_count" widget="statinfo"/>
                         </button>
-                        <button name="admit_reception" type="object" string="Proceed to Admit"/>
+                        <button name="admit_reception" type="object" string="Proceed to Admit" />
                         <button name="action_discharged_patient_reg" type="object" string="Discharged"/>
                         <button name="cancel_appointment" type="object" string="Cancel Appointment"/>
                         <button name="action_view_consultations" type="object" string="View All  Consultations"
@@ -615,7 +615,7 @@
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
                                                                 <field name="rent_half" style="width:100%;"
-                                                                       attrs="{'required': [('admission_boolean', '=', True)]}"/>
+                                                                      />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -627,7 +627,7 @@
                                                             </label>
                                                             <div class="col-md-8 field-container py-0">
                                                                 <field name="rent_full" style="width:100%;"
-                                                                       attrs="{'required': [('admission_boolean', '=', True)]}"/>
+                                                                       />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -649,7 +649,13 @@
                                                                        }"
                                                                 />
                                                             </div>
-
+                                                            <div>
+                                                                <button name="action_onchange_amount_advance"
+                                                                        type="object"
+                                                                        string="ADD"
+                                                                        class="btn btn-primary btn-sm" attrs="{'invisible': [('add_done', '=', True)]}"/>
+                                                            </div>
+                                                            <field name="add_done" invisible="1"/>
                                                         </div>
                                                     </div>
                                                     <!-- Keep empty columns to maintain the 5-column layout -->
