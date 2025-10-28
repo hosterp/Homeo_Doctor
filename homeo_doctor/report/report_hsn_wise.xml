@@ -1,30 +1,41 @@
 <odoo>
-        <template id="report_hsn_gst_summary">
+    <template id="report_hsn_gst_summary">
         <t t-call="web.basic_layout">
             <div class="page">
                 <!-- Header -->
                 <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-family: Arial, sans-serif;">
                     <img t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
-                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;" />
+                         style="width: 70px; height: 70px; border-radius: 50%; margin-right: 15px;"/>
                     <div style="text-align: center;">
-                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI SPECIALITY HOSPITAL</h1>
-                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO, THIRUVANANTHAPURAM - 695 564</p>
-                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No: 8590203321<br/>dpmshospital@gmail.com</p>
+                        <h1 style="font-size: 25px; margin: 0; font-weight: bold; color: #2c3e50;">Dr. PRIYA'S MULTI
+                            SPECIALITY HOSPITAL
+                        </h1>
+                        <p style="margin: 5px 0; font-size: 16px; color: #555;">EANIKKARA, KARAKULAM PO,
+                            THIRUVANANTHAPURAM - 695 564
+                        </p>
+                        <p style="margin: 5px 0; font-size: 16px; color: #555;">Phone: 0471-2373004, Mobile No:
+                            8590203321<br/>dpmshospital@gmail.com
+                        </p>
                     </div>
                 </div>
 
                 <!-- Title & Filters -->
                 <h3 style="text-align: center;">HSN Wise GST Report</h3>
                 <p style="text-align: center;">
-                    From <t t-esc="docs.from_date"/> to <t t-esc="docs.to_date"/>
+                    From
+                    <t t-esc="docs.from_date"/>
+                    to
+                    <t t-esc="docs.to_date"/>
                     <t t-if="docs.op_category">
-                        - <strong>Type:</strong>
+                        -
+                        <strong>Type:</strong>
                         <t t-if="docs.op_category == 'op'">OP</t>
                         <t t-if="docs.op_category == 'ip'">IP</t>
                         <t t-if="docs.op_category == 'others'">OTHERS</t>
                     </t>
                     <t t-if="docs.payment_method">
-                        - <strong>Payment:</strong>
+                        -
+                        <strong>Payment:</strong>
                         <t t-if="docs.payment_method == 'cash'">Cash</t>
                         <t t-if="docs.payment_method == 'card'">Card</t>
                         <t t-if="docs.payment_method == 'upi'">UPI</t>
@@ -37,7 +48,11 @@
                     ('pharmacy_id.date', '&gt;=', docs.from_date),
                     ('pharmacy_id.date', '&lt;=', docs.to_date)
                 ]"/>
-                <t t-if="docs.op_category">
+                <t t-if="docs.op_category == 'op'">
+                    <!-- Show only IP -->
+                    <t t-set="domain" t-value="domain + [('pharmacy_id.op_category', 'not in', ['ip', 'others'])]"/>
+                </t>
+                <t t-else="">
                     <t t-set="domain" t-value="domain + [('pharmacy_id.op_category', '=', docs.op_category)]"/>
                 </t>
                 <t t-if="docs.payment_method">
@@ -77,16 +92,35 @@
 
                             <t t-foreach="lines" t-as="line">
                                 <tr>
-                                    <td><t t-esc="sl"/></td>
-                                    <td><t t-esc="line.hsn or ''"/></td>
-                                    <td><t t-esc="line.product_id.name"/></td>
-                                    <td><t t-esc="line.pharmacy_id.op_category"/></td>
-                                    <td><t t-esc="line.qty"/></td>
-                                    <td><t t-esc="line.gst"/>%</td>
-                                    <td><t t-esc="line.rate"/></td>
-                                    <td><t t-esc="'%.2f' % (line.taxable or 0.0)"/></td>
-                                    <td><t t-esc="'%.2f' % (line.cgst or 0.0)"/></td>
-                                    <td><t t-esc="'%.2f' % (line.sgst or 0.0)"/></td>
+                                    <td>
+                                        <t t-esc="sl"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.hsn or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.product_id.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.pharmacy_id.op_category"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.qty"/>
+                                    </td>
+                                    <td><t t-esc="line.gst"/>%
+                                    </td>
+                                    <td>
+                                        <t t-esc="line.rate"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="'%.2f' % (line.taxable or 0.0)"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="'%.2f' % (line.cgst or 0.0)"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="'%.2f' % (line.sgst or 0.0)"/>
+                                    </td>
                                 </tr>
 
                                 <!-- Totals -->
@@ -101,12 +135,22 @@
                             <!-- Totals Row -->
                             <tr style="font-weight: bold; background: #f0f0f0;">
                                 <td colspan="4" style="text-align:right;">Total</td>
-                                <td><t t-esc="total_qty"/></td>
+                                <td>
+                                    <t t-esc="total_qty"/>
+                                </td>
                                 <td></td>
-                                <td><t t-esc="'%.2f' % total_rate"/></td>
-                                <td><t t-esc="'%.2f' % total_taxable"/></td>
-                                <td><t t-esc="'%.2f' % total_cgst"/></td>
-                                <td><t t-esc="'%.2f' % total_sgst"/></td>
+                                <td>
+                                    <t t-esc="'%.2f' % total_rate"/>
+                                </td>
+                                <td>
+                                    <t t-esc="'%.2f' % total_taxable"/>
+                                </td>
+                                <td>
+                                    <t t-esc="'%.2f' % total_cgst"/>
+                                </td>
+                                <td>
+                                    <t t-esc="'%.2f' % total_sgst"/>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
