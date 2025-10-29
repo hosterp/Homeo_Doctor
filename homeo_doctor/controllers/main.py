@@ -701,7 +701,7 @@ class HSNExcelReportController(http.Controller):
 
             # Fetch lines based on domain
             lines = request.env['pharmacy.prescription.line'].sudo().search(domain)
-            print("LINES COUNT:", len(lines))
+            # print("LINES COUNT:", len(lines))
 
             # Create Excel file in memory
             output = io.BytesIO()
