@@ -234,7 +234,14 @@
                                         </tr>
                                         <!--                                        </t>-->
 
-                                        <!-- Nursing Charge (if exists) -->
+                                        <t t-set="admit_date" t-value="o.admitted_date"/>
+                                        <t t-set="discharge_date" t-value="o.discharge_date"/>
+
+                                        <!-- 🧮 Base room days calculation -->
+                                        <t t-set="room_days_calc"
+                                           t-value="(discharge_date - admit_date).days if admit_date and discharge_date else 0"/>
+
+                                        <!-- Nursing Charge -->
                                         <t t-if="o.nurse_charge and o.nurse_charge > 0">
                                             <t t-set="sl" t-value="sl + 1"/>
                                             <tr style="height: 35px;">
@@ -245,20 +252,17 @@
                                                     Nursing Charge
                                                 </td>
                                                 <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                    <t t-set="room_days_calc"
-                                                       t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
-                                                    <t t-set="room_count"
-                                                       t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
+                                                    <t t-set="room_count" t-value="room_days_calc"/>
                                                     <span t-esc="room_count"/>
                                                 </td>
                                                 <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
-                                                    <span t-esc="'{:,.2f}'.format(o.nurse_charge * room_count)"/>
+                                                    <span t-esc="'{:,.2f}'.format((o.nurse_charge or 0) * room_count)"/>
                                                 </td>
                                             </tr>
                                         </t>
 
-                                        <!-- Doctor Visiting Charge (if exists) -->
+                                        <!-- Doctor Visiting Charge -->
                                         <t t-if="o.doctor_visiting_charge and o.doctor_visiting_charge > 0">
                                             <t t-set="sl" t-value="sl + 1"/>
                                             <tr style="height: 35px;">
@@ -269,20 +273,17 @@
                                                     Doctor Consultation &amp; Visits
                                                 </td>
                                                 <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                    <t t-set="room_days_calc"
-                                                       t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
-                                                    <t t-set="room_count"
-                                                       t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
+                                                    <t t-set="room_count" t-value="room_days_calc"/>
                                                     <span t-esc="room_count"/>
                                                 </td>
                                                 <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
-                                                    <span t-esc="'{:,.2f}'.format(o.doctor_visiting_charge * room_count)"/>
+                                                    <span t-esc="'{:,.2f}'.format((o.doctor_visiting_charge or 0) * room_count)"/>
                                                 </td>
                                             </tr>
                                         </t>
 
-                                        <!-- Service Charge (if exists) -->
+                                        <!-- Service Charge (+1 Day) -->
                                         <t t-if="o.service_charge and o.service_charge > 0">
                                             <t t-set="sl" t-value="sl + 1"/>
                                             <tr style="height: 35px;">
@@ -293,15 +294,12 @@
                                                     Services Charge
                                                 </td>
                                                 <td style="padding: 8px; border: 2px solid #ddd; text-align: center; font-weight: bold; vertical-align: middle; font-size: 17px;">
-                                                    <t t-set="room_days_calc"
-                                                       t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
-                                                    <t t-set="room_count"
-                                                       t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)+1"/>
+                                                    <t t-set="room_count" t-value="room_days_calc + 1"/>
                                                     <span t-esc="room_count"/>
                                                 </td>
                                                 <td style="padding: 8px; border: 2px solid #ddd; text-align: right; font-weight: bold; vertical-align: middle; font-size: 17px;">
                                                     ₹
-                                                    <span t-esc="'{:,.2f}'.format(o.service_charge * room_count)"/>
+                                                    <span t-esc="'{:,.2f}'.format((o.service_charge or 0) * room_count)"/>
                                                 </td>
                                             </tr>
                                         </t>

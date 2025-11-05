@@ -96,7 +96,7 @@
                                 <!-- Right Column -->
                                 <td style="width:33.3%; text-align:right; vertical-align:middle; font-size:16px; font-weight:bold; padding:5px 0;">
                                     Bill No:
-                                                                        <span t-field="o.discharge_bill_number"/>
+                                    <span t-field="o.discharge_bill_number"/>
                                 </td>
                             </tr>
                         </table>
@@ -301,86 +301,73 @@
                                         </t>
 
                                         <!-- Nursing Charge (if exists) -->
-                                        <t t-if="o.nurse_charge and o.nurse_charge > 0">
+                                        <t t-set="admit_date" t-value="o.admitted_date"/>
+                                        <t t-set="discharge_date" t-value="o.discharge_date"/>
+
+                                        <!-- 🧮 Calculate number of days between admit and discharge -->
+                                        <t t-set="room_days_calc"
+                                           t-value="(discharge_date - admit_date).days if admit_date and discharge_date else 0"/>
+
+                                        <!-- Nursing Charge -->
+                                        <t t-if="o.nurse_charge > 0">
                                             <t t-set="sl" t-value="sl + 1"/>
                                             <tr style="height: 35px;">
                                                 <td style="text-align:center;">
                                                     <t t-esc="sl"/>
                                                 </td>
+                                                <td style="text-align:center;">Nursing Charge</td>
                                                 <td style="text-align:center;">
-                                                    Nursing Charge
+                                                    <t t-set="room_count" t-value="room_days_calc"/>
+                                                      <strong><span t-esc="room_count"/>  </strong>
                                                 </td>
-                                                <td style="text-align:center;">
-                                                    <t t-set="room_days_calc"
-                                                       t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
-                                                    <t t-set="room_count"
-                                                       t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
-                                                    <span t-esc="room_count"/>
-                                                </td>
-                                                <td style="text-align:center;">
-                                                    ₹
-                                                    <!--                                                    <span t-esc="'{:,.2f}'.format(o.nurse_charge * room_count)"/>-->
+                                                <td style="text-align:center;">₹
                                                     <t t-set="nursing_amount"
                                                        t-value="(o.nurse_charge or 0) * (room_count or 0)"/>
-                                                    <span t-esc="'{:,.2f}'.format(nursing_amount)"/>
+                                                     <strong> <span t-esc="'{:,.2f}'.format(nursing_amount)"/>  </strong>
                                                 </td>
                                             </tr>
                                         </t>
 
-                                        <!-- Doctor Visiting Charge (if exists) -->
-                                        <t t-if="o.doctor_visiting_charge and o.doctor_visiting_charge > 0">
+                                        <!-- Doctor Visiting Charge -->
+                                        <t t-if="o.doctor_visiting_charge > 0">
                                             <t t-set="sl" t-value="sl + 1"/>
                                             <tr style="height: 35px;">
                                                 <td style="text-align:center;">
                                                     <t t-esc="sl"/>
                                                 </td>
+                                                <td style="text-align:center;">Doctor Consultation &amp; Visits</td>
                                                 <td style="text-align:center;">
-                                                    Doctor Consultation &amp; Visits
+                                                    <t t-set="room_count" t-value="room_days_calc"/>
+                                                    <strong>  <span t-esc="room_count"/>  </strong>
                                                 </td>
-                                                <td style="text-align:center;">
-                                                    <t t-set="room_days_calc"
-                                                       t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
-                                                    <t t-set="room_count"
-                                                       t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)"/>
-                                                    <span t-esc="room_count"/>
-                                                </td>
-                                                <td style="text-align:center;">
-                                                    ₹
-                                                    <!--                                                    <span t-esc="'{:,.2f}'.format(o.doctor_visiting_charge * room_count)"/>-->
+                                                <td style="text-align:center;">₹
                                                     <t t-set="doctor_amount"
                                                        t-value="(o.doctor_visiting_charge or 0) * (room_count or 0)"/>
-                                                    <span t-esc="'{:,.2f}'.format(doctor_amount)"/>
+                                                    <strong>  <span t-esc="'{:,.2f}'.format(doctor_amount)"/>  </strong>
                                                 </td>
                                             </tr>
                                         </t>
 
-                                        <!-- Service Charge (if exists) -->
+                                        <!-- ✅ Service Charge -->
                                         <t t-if="o.service_charge and o.service_charge > 0">
                                             <t t-set="sl" t-value="sl + 1"/>
                                             <tr style="height: 35px;">
                                                 <td style="text-align:center;">
                                                     <t t-esc="sl"/>
                                                 </td>
+                                                <td style="text-align:center;">Service Charge</td>
                                                 <td style="text-align:center;">
-                                                    Services Charge
+                                                    <!-- ➕ Add 1 day if service charge exists -->
+                                                    <t t-set="room_count" t-value="room_days_calc + 1"/>
+                                                     <strong> <span t-esc="room_count"/>  </strong>
                                                 </td>
-                                                <td style="text-align:center;">
-                                                    <t t-set="room_days_calc"
-                                                       t-value="o.room_rent / float(o.rent_full) if o.rent_full and float(o.rent_full) > 0 else 0"/>
-                                                    <t t-set="room_count"
-                                                       t-value="int(room_days_calc) + (0.5 if (room_days_calc % 1) > 0 else 0)+1"/>
-                                                    <span t-esc="room_count"/>
-                                                </td>
-                                                <td style="text-align:center;">
-                                                    ₹
+                                                <td style="text-align:center;">₹
                                                     <t t-set="service_amount"
                                                        t-value="(o.service_charge or 0) * (room_count or 0)"/>
-                                                    <span t-esc="'{:,.2f}'.format(service_amount)"/>
-
+                                                    <strong>  <span t-esc="'{:,.2f}'.format(service_amount)"/></strong>
                                                 </td>
                                             </tr>
                                         </t>
-
                                         <!-- IP Bills (if any) -->
                                         <t t-if="o.paid_ip_ids">
                                             <t t-set="sl" t-value="sl + 1"/>
@@ -697,7 +684,7 @@
                                 <tr>
                                     <td style="width: 33%; text-align: left; vertical-align: top;">
                                         Advance:
-                                       <span t-esc="not o.advance_amount_bool and o.amount_in_advance or 0"/>
+                                        <span t-esc="not o.advance_amount_bool and o.amount_in_advance or 0"/>
                                     </td>
                                     <td style="width: 33%; text-align: center; vertical-align: top;">
                                         Discount:
