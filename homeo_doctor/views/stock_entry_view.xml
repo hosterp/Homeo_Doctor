@@ -16,6 +16,7 @@
                 <field name="manf_date"/>
                 <field name="exp_date"/>
                 <field name="batch"/>
+                <field name="hsn"/>
                 <field name="rate"/>
                 <field name="supplier_mrp" string="MRP"/>
                 <field name="pup" string="PUP"/>
