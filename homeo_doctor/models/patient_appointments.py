@@ -272,6 +272,128 @@ class PatientAppointment(models.Model):
                 'domain': {'doctor_ids': []}
             }
 
+    fee_applied = fields.Boolean(string="Fee Applied", default=False, store=True)
+    @api.depends('appointment_date', 'doctor_ids', 'patient_id','spl_boolean')
+    def _compute_consultation_fee(self):
+        debug_mode = True
+
+        for record in self:
+            record.consultation_fee = 0
+            record.differance_appointment_days = 0
+            if record.spl_boolean:
+                record.consultation_fee = 0
+                continue
+            if not record.doctor_ids or not record.patient_id or not record.appointment_date:
+                continue
+
+            doctor = record.doctor_ids[0]
+            fee_value = doctor.consultation_fee_doctor or 0
+            fee_limit = int(doctor.consultation_fee_limit or 7)
+            is_vssc = record.patient_id.vssc_boolean
+
+            # Normalize appointment date
+            appt_date = record.appointment_date.date() if hasattr(record.appointment_date,
+                                                                  'date') else record.appointment_date
+            current_doctor = doctor
+
+            # --- Get last registration ---
+            last_reg = self.env['patient.reg'].search(
+                [('reference_no', '=', record.patient_id.reference_no)],
+                order='time desc', limit=1
+            )
+            last_reg_date = last_reg.time.date() if last_reg and hasattr(last_reg.time, 'date') else (
+                last_reg.time if last_reg else None
+            )
+
+            # Extract doctor from registration (Many2one or Char)
+            last_doctor = None
+            if last_reg:
+                if hasattr(last_reg, 'doc_name') and hasattr(last_reg.doc_name, 'id'):
+                    last_doctor = last_reg.doc_name
+                elif hasattr(last_reg, 'doctor_id') and hasattr(last_reg.doctor_id, 'id'):
+                    last_doctor = last_reg.doctor_id
+                else:
+                    last_doctor = last_reg.doc_name  # Char
+
+            # --- Find last paid consultation for SAME doctor ---
+            domain_same_doc = [
+                ('patient_id', '=', record.patient_id.id),
+                ('fee_applied', '=', True),
+                ('appointment_date', '<', record.appointment_date),
+            ]
+            if record.id and isinstance(record.id, int):
+                domain_same_doc.append(('id', '!=', record.id))
+
+            # Filter by same doctor id
+            domain_same_doc.append(('doctor_ids', 'in', [current_doctor.id]))
+            last_same_doc_consult = self.env['patient.appointment'].search(domain_same_doc,
+                                                                           order='appointment_date desc', limit=1)
+
+            # --- If not found, fallback to ANY previous paid consult ---
+            if last_same_doc_consult:
+                base_date = last_same_doc_consult.appointment_date.date() if hasattr(
+                    last_same_doc_consult.appointment_date, 'date') else last_same_doc_consult.appointment_date
+                base_source = "same doctor consult"
+            else:
+                # fallback to last registration date
+                base_date = last_reg_date
+                base_source = "registration"
+
+            # --- Compute day difference ---
+            day_diff = (appt_date - base_date).days if base_date else 0
+            if day_diff < 0:
+                day_diff = 0
+            record.differance_appointment_days = day_diff
+
+            # --- FEE DECISION LOGIC ---
+            apply_fee = False
+            reason = ""
+
+            # Case 1: No base date
+            if not base_date:
+                apply_fee = True
+                reason = "no base date"
+
+            # Case 2: Found last same-doctor consult
+            elif last_same_doc_consult:
+                if day_diff > fee_limit:
+                    apply_fee = True
+                    reason = "beyond limit (same doctor)"
+                else:
+                    apply_fee = False
+                    reason = "within limit (same doctor)"
+
+            # Case 3: No same-doctor consult, fallback to registration
+            elif last_reg:
+                last_doc_name = ""
+                curr_doc_name = current_doctor.name.strip().lower() if current_doctor.name else ""
+                if last_doctor and hasattr(last_doctor, "name"):
+                    last_doc_name = last_doctor.name.strip().lower()
+                elif isinstance(last_doctor, str):
+                    last_doc_name = last_doctor.strip().lower()
+                same_doctor = (last_doc_name == curr_doc_name)
+
+                if not same_doctor:
+                    apply_fee = True
+                    reason = "different doctor (from registration)"
+                elif day_diff > fee_limit:
+                    apply_fee = True
+                    reason = "beyond limit (from registration)"
+                else:
+                    apply_fee = False
+                    reason = "within limit (from registration)"
+
+            # --- Apply fee ---
+            final_fee = 400 if is_vssc else fee_value
+            record.consultation_fee = final_fee if apply_fee else 0
+
+            # --- Persist fee_applied flag ---
+            fee_flag = bool(record.consultation_fee and record.consultation_fee > 0)
+            if record.id and isinstance(record.id, int):
+                if record.fee_applied != fee_flag:
+                    record.sudo().write({'fee_applied': fee_flag})
+            else:
+                record.fee_applied = fee_flag
     # @api.depends('doctor_ids', 'spl_boolean')
     # def _compute_consultation_fee(self):
     #     for record in self:
@@ -388,139 +510,139 @@ class PatientAppointment(models.Model):
     #                     else:
     #                         record.consultation_fee += consultation_fee
     #                         print(f"Regular fallback case. Adding consultation fee: {consultation_fee}")
-    @api.depends('appointment_date', 'doctor_ids', 'patient_id')
-    def _compute_consultation_fee(self):
-        debug_mode = True  # 🔑 toggle this for debugging
+        # @api.depends('appointment_date', 'doctor_ids', 'patient_id')
+        # def _compute_consultation_fee(self):
+        #     debug_mode = True  # 🔑 toggle this for debugging
+        #
+        #     for record in self:
+        #         record.consultation_fee = 0
+        #         record.differance_appointment_days = 0
+        #
+        #         if not record.doctor_ids or not record.patient_id or not record.appointment_date:
+        #             continue
+        #
+        #         doctor = record.doctor_ids[0]  # assume single doctor
+        #         consultation_fee = doctor.consultation_fee_doctor or 0
+        #         consultation_fee_limit = doctor.consultation_fee_limit or 7
+        #         is_vssc = record.patient_id.vssc_boolean
+        #
+        #         # fetch ALL appointments of this patient with this doctor (ordered oldest → newest)
+        #         all_appts = self.env['patient.appointment'].search([
+        #             ('patient_id', '=', record.patient_id.id),
+        #             ('doctor_ids', '=', doctor.id),
+        #         ], order='appointment_date asc')
+        #
+        #         last_fee_date = None
+        #         fee_to_apply = 0
+        #
+        #         for appt in all_appts:
+        #             if not last_fee_date:
+        #                 # First appointment → charge consultation fee
+        #                 fee_to_apply = 400 if is_vssc else consultation_fee
+        #                 last_fee_date = appt.appointment_date
+        #                 if debug_mode:
+        #                     pass
+        #                     # print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
+        #             else:
+        #                 if appt.appointment_date and last_fee_date:
+        #                     # Convert to date if they are datetime objects
+        #                     appt_date = appt.appointment_date.date() if isinstance(appt.appointment_date,
+        #                                                                            datetime) else appt.appointment_date
+        #                     last_date = last_fee_date.date() if isinstance(last_fee_date, datetime) else last_fee_date
+        #
+        #                     delta_days = (appt_date - last_date).days
+        #                 else:
+        #                     delta_days = 0
+        #                 if debug_mode:
+        #                     pass
+        #                     # print(f"[{appt.appointment_date}] Days since last fee: {delta_days}")
+        #
+        #                 if delta_days <= consultation_fee_limit:
+        #                     fee_to_apply = 0
+        #                     if debug_mode:
+        #                         pass
+        #                         # print(f" → Within {consultation_fee_limit} days → Fee {fee_to_apply}")
+        #                 else:
+        #                     fee_to_apply = 400 if is_vssc else consultation_fee
+        #                     last_fee_date = appt.appointment_date  # 🔑 reset cycle
+        #                     if debug_mode:
+        #                         pass
+        #                         # print(f" → Beyond {consultation_fee_limit} days → Fee {fee_to_apply} (reset cycle)")
+        #
+        #             # assign fee ONLY to the current record
+        #             if appt.id == record.id:
+        #                 record.consultation_fee = fee_to_apply
+        #                 record.differance_appointment_days = (
+        #                             appt.appointment_date.date() - last_fee_date.date()).days if last_fee_date else 0
+        #                 if debug_mode:
+        #                     print(f" ✔ Applied to current record {record.id} → Fee {fee_to_apply}")
 
-        for record in self:
-            record.consultation_fee = 0
-            record.differance_appointment_days = 0
-
-            if not record.doctor_ids or not record.patient_id or not record.appointment_date:
-                continue
-
-            doctor = record.doctor_ids[0]  # assume single doctor
-            consultation_fee = doctor.consultation_fee_doctor or 0
-            consultation_fee_limit = doctor.consultation_fee_limit or 7
-            is_vssc = record.patient_id.vssc_boolean
-
-            # fetch ALL appointments of this patient with this doctor (ordered oldest → newest)
-            all_appts = self.env['patient.appointment'].search([
-                ('patient_id', '=', record.patient_id.id),
-                ('doctor_ids', '=', doctor.id),
-            ], order='appointment_date asc')
-
-            last_fee_date = None
-            fee_to_apply = 0
-
-            for appt in all_appts:
-                if not last_fee_date:
-                    # First appointment → charge consultation fee
-                    fee_to_apply = 400 if is_vssc else consultation_fee
-                    last_fee_date = appt.appointment_date
-                    if debug_mode:
-                        pass
-                        # print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
-                else:
-                    if appt.appointment_date and last_fee_date:
-                        # Convert to date if they are datetime objects
-                        appt_date = appt.appointment_date.date() if isinstance(appt.appointment_date,
-                                                                               datetime) else appt.appointment_date
-                        last_date = last_fee_date.date() if isinstance(last_fee_date, datetime) else last_fee_date
-
-                        delta_days = (appt_date - last_date).days
-                    else:
-                        delta_days = 0
-                    if debug_mode:
-                        pass
-                        # print(f"[{appt.appointment_date}] Days since last fee: {delta_days}")
-
-                    if delta_days <= consultation_fee_limit:
-                        fee_to_apply = 0
-                        if debug_mode:
-                            pass
-                            # print(f" → Within {consultation_fee_limit} days → Fee {fee_to_apply}")
-                    else:
-                        fee_to_apply = 400 if is_vssc else consultation_fee
-                        last_fee_date = appt.appointment_date  # 🔑 reset cycle
-                        if debug_mode:
-                            pass
-                            # print(f" → Beyond {consultation_fee_limit} days → Fee {fee_to_apply} (reset cycle)")
-
-                # assign fee ONLY to the current record
-                if appt.id == record.id:
-                    record.consultation_fee = fee_to_apply
-                    record.differance_appointment_days = (
-                                appt.appointment_date.date() - last_fee_date.date()).days if last_fee_date else 0
-                    if debug_mode:
-                        print(f" ✔ Applied to current record {record.id} → Fee {fee_to_apply}")
-
-    @api.onchange('appointment_date', 'spl_boolean', 'staff_boolean')
-    def _compute_consultation_fee(self):
-        for record in self:
-            record.consultation_fee = 0
-            record.differance_appointment_days = 0
-
-            if record.spl_boolean:
-                record.consultation_fee = 0
-                continue
-            if record.staff_boolean:
-                record.consultation_fee = 150
-                continue
-
-            for doctor in record.doctor_ids:
-                if not (record.patient_id and doctor and record.appointment_date):
-                    continue
-
-                # Check if VSSC is enabled
-                is_vssc = record.patient_id.vssc_boolean
-                consultation_fee_limit = doctor.consultation_fee_limit or 7
-                consultation_fee = 400 if is_vssc else (doctor.consultation_fee_doctor or 0)
-
-                # Fetch all past appointments (including current one in order)
-                all_appts = self.env['patient.appointment'].search([
-                    ('patient_id', '=', record.patient_id.id),
-                    ('doctor_ids', '=', doctor.id),
-                ], order='appointment_date asc')
-
-                last_fee_date = None
-                fee_to_apply = 0
-                delta_days = 0
-
-                for appt in all_appts:
-                    if not last_fee_date:
-                        # First ever appointment → apply fee
-                        fee_to_apply = consultation_fee
-                        last_fee_date = appt.appointment_date
-                        if appt.id == record.id:
-                            record.consultation_fee = fee_to_apply
-                            record.differance_appointment_days = 0
-                            # print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
-                    else:
-                        if appt.appointment_date and last_fee_date:
-                            # Convert to date if they are datetime objects
-                            appt_date = appt.appointment_date.date() if isinstance(appt.appointment_date,
-                                                                                   datetime) else appt.appointment_date
-                            last_date = last_fee_date.date() if isinstance(last_fee_date, datetime) else last_fee_date
-
-                            delta_days = (appt_date - last_date).days
-                        else:
-                            delta_days = 0
-                        if delta_days > consultation_fee_limit:
-                            # Reset cycle → charge again
-                            fee_to_apply = consultation_fee
-                            last_fee_date = appt.appointment_date
-                            if appt.id == record.id:
-                                record.consultation_fee = fee_to_apply
-                                record.differance_appointment_days = delta_days
-                                # print(
-                                #     f"[{appt.appointment_date}] Beyond limit ({consultation_fee_limit}) → Fee {fee_to_apply}, reset baseline")
-                        else:
-                            # Within limit → no fee
-                            fee_to_apply = 0
-                            if appt.id == record.id:
-                                record.consultation_fee = fee_to_apply
-                                record.differance_appointment_days = delta_days
+    # @api.onchange('appointment_date', 'spl_boolean', 'staff_boolean')
+    # def _compute_consultation_fee(self):
+    #     for record in self:
+    #         record.consultation_fee = 0
+    #         record.differance_appointment_days = 0
+    #
+    #         if record.spl_boolean:
+    #             record.consultation_fee = 0
+    #             continue
+    #         if record.staff_boolean:
+    #             record.consultation_fee = 150
+    #             continue
+    #
+    #         for doctor in record.doctor_ids:
+    #             if not (record.patient_id and doctor and record.appointment_date):
+    #                 continue
+    #
+    #             # Check if VSSC is enabled
+    #             is_vssc = record.patient_id.vssc_boolean
+    #             consultation_fee_limit = doctor.consultation_fee_limit or 7
+    #             consultation_fee = 400 if is_vssc else (doctor.consultation_fee_doctor or 0)
+    #
+    #             # Fetch all past appointments (including current one in order)
+    #             all_appts = self.env['patient.appointment'].search([
+    #                 ('patient_id', '=', record.patient_id.id),
+    #                 ('doctor_ids', '=', doctor.id),
+    #             ], order='appointment_date asc')
+    #
+    #             last_fee_date = None
+    #             fee_to_apply = 0
+    #             delta_days = 0
+    #
+    #             for appt in all_appts:
+    #                 if not last_fee_date:
+    #                     # First ever appointment → apply fee
+    #                     fee_to_apply = consultation_fee
+    #                     last_fee_date = appt.appointment_date
+    #                     if appt.id == record.id:
+    #                         record.consultation_fee = fee_to_apply
+    #                         record.differance_appointment_days = 0
+    #                         # print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
+    #                 else:
+    #                     if appt.appointment_date and last_fee_date:
+    #                         # Convert to date if they are datetime objects
+    #                         appt_date = appt.appointment_date.date() if isinstance(appt.appointment_date,
+    #                                                                                datetime) else appt.appointment_date
+    #                         last_date = last_fee_date.date() if isinstance(last_fee_date, datetime) else last_fee_date
+    #
+    #                         delta_days = (appt_date - last_date).days
+    #                     else:
+    #                         delta_days = 0
+    #                     if delta_days > consultation_fee_limit:
+    #                         # Reset cycle → charge again
+    #                         fee_to_apply = consultation_fee
+    #                         last_fee_date = appt.appointment_date
+    #                         if appt.id == record.id:
+    #                             record.consultation_fee = fee_to_apply
+    #                             record.differance_appointment_days = delta_days
+    #                             # print(
+    #                             #     f"[{appt.appointment_date}] Beyond limit ({consultation_fee_limit}) → Fee {fee_to_apply}, reset baseline")
+    #                     else:
+    #                         # Within limit → no fee
+    #                         fee_to_apply = 0
+    #                         if appt.id == record.id:
+    #                             record.consultation_fee = fee_to_apply
+    #                             record.differance_appointment_days = delta_days
                                 # print(
                                 #     f"[{appt.appointment_date}] Within limit ({consultation_fee_limit}) → Fee {fee_to_apply}, delta {delta_days}")                            # print(f"Regular fallback case. Adding consultation fee: {consultation_fee}")
     # @api.depends('doctor_ids', 'appointment_date', 'patient_id')
