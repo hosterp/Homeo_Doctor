@@ -115,7 +115,7 @@
                                                 Department
                                             </label>
                                             <div class="col-md-9 field-container py-0">
-                                                <field name="departments" widget="many2many_tags"/>
+                                                <field name="departments" widget="many2many_tags" required="1"/>
                                             </div>
                                         </div>
                                     </div>
@@ -125,7 +125,7 @@
                                                    class="col-md-5 col-form-label py-0 small text-nowrap">Doctor
                                             </label>
                                             <div class="col-md-9 field-container py-0">
-                                                <field name="doctor_ids" widget="many2many_tags"/>
+                                                <field name="doctor_ids" widget="many2many_tags" required="1"/>
                                             </div>
                                         </div>
                                     </div>
@@ -141,7 +141,7 @@
                                                 Date
                                             </label>
                                             <div class="col-md-9 field-container py-0">
-                                                <field name="appointment_date"/>
+                                                <field name="appointment_date" required="1"/>
                                             </div>
                                         </div>
                                     </div>
