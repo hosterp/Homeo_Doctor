@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 from odoo.addons.test_convert.tests.test_env import record
 import logging
 
+
 class PatientAppointment(models.Model):
     _name = 'patient.appointment'
     _description = 'Patient Appointment'
@@ -16,22 +17,22 @@ class PatientAppointment(models.Model):
     appointment_reference = fields.Char(string="Appointment No", readonly=True)
     token_no = fields.Char("Token No")
     patient_id = fields.Many2one('patient.reg', string='UHID', required=True)
-    patient_name= fields.Char(related='patient_id.patient_id', string='Patient Name', required=True)
+    patient_name = fields.Char(related='patient_id.patient_id', string='Patient Name', required=True)
     appointment_date = fields.Datetime(string="Appointment Date")
     doctor_id = fields.Many2one('doctor.profile', string='Doctor')
-    department=fields.Many2one('doctor.department',string='Department')
-    departments=fields.Many2many('doctor.department',string='Departments')
+    department = fields.Many2one('doctor.department', string='Department')
+    departments = fields.Many2many('doctor.department', string='Departments')
     reason = fields.Text(string="Reason for Appointment")
     status = fields.Selection(
         [('draft', 'Draft'), ('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')],
         default='draft', string="Status")
     notes = fields.Text(string="Appointment Notes")
     created_date = fields.Datetime(default=fields.Datetime.now, readonly=True)
-    consultation_fee = fields.Integer(string='Consultation Fee',compute='_compute_consultation_fee',readonly=False,)
-    address = fields.Text(related='patient_id.address',string='Address')
-    age = fields.Integer(related='patient_id.age',string='Age')
-    phone_number = fields.Char(related='patient_id.phone_number',string='Phone Number')
-    gender = fields.Selection(related='patient_id.gender',string='Gender')
+    consultation_fee = fields.Integer(string='Consultation Fee', compute='_compute_consultation_fee', readonly=False, )
+    address = fields.Text(related='patient_id.address', string='Address')
+    age = fields.Integer(related='patient_id.age', string='Age')
+    phone_number = fields.Char(related='patient_id.phone_number', string='Phone Number')
+    gender = fields.Selection(related='patient_id.gender', string='Gender')
     button_visible = fields.Boolean(default=True)
     doctor_ids = fields.Many2many('doctor.profile', string='Doctors')
     consultation_fee_ids = fields.One2many('appointment.fee', 'appointment_id', string='Consultation Fees')
@@ -43,28 +44,28 @@ class PatientAppointment(models.Model):
         [('draft', 'Draft'), ('confirmed', 'Confirmed'), ('completed', 'Completed'), ('cancelled', 'Cancelled')],
         default='draft', string="Status")
     payment_method = fields.Selection([
-    ('cash', 'Cash'),
-    ('upi', 'UPI'),
-    ('card', 'Card')
+        ('cash', 'Cash'),
+        ('upi', 'UPI'),
+        ('card', 'Card')
     ], string='Payment Method')
     payment_reference = fields.Char(string='Payment Reference')
 
     register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")
     register_amount_paid = fields.Integer(string="Amount Paid")
     register_balance = fields.Integer(string="Balance")
-    register_staff_name = fields.Many2one('hr.employee',"Staff Name")
+    register_staff_name = fields.Many2one('hr.employee', "Staff Name")
     register_staff_password = fields.Char("Password")
     register_mode_payment = fields.Selection([('cash', 'Cash'),
                                               ('card', 'Card'),
                                               ('cheque', 'Cheque'),
-                                              ('credit','Credit'),
+                                              ('credit', 'Credit'),
                                               ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
     register_card_no = fields.Char(string="Card No")
     register_bank_name = fields.Char(string="Bank")
-    vssc_boolean = fields.Boolean(related='patient_id.vssc_boolean',string='VSSC')
+    vssc_boolean = fields.Boolean(related='patient_id.vssc_boolean', string='VSSC')
     differance_appointment_days = fields.Integer("No of Days")
-    spl_boolean = fields.Boolean(string='Spl Case',default=False)
-    staff_boolean = fields.Boolean(string='Staff',default=False)
+    spl_boolean = fields.Boolean(string='Spl Case', default=False)
+    staff_boolean = fields.Boolean(string='Staff', default=False)
 
     def amount_to_text_indian(self):
         """Convert amount to words in Indian format (Rupees and Paise)."""
@@ -91,6 +92,7 @@ class PatientAppointment(models.Model):
             return self.currency_id.amount_to_text(self.register_total_amount)
 
         return ""
+
     def cancel_appointment(self):
 
         for appointment in self:
@@ -140,6 +142,7 @@ class PatientAppointment(models.Model):
         copy=False,
         default='/',
     )
+
     def action_confirm_payment(self):
         for appointment in self:
             if not appointment.payment_receipt_number or appointment.payment_receipt_number == '/':
@@ -195,7 +198,7 @@ class PatientAppointment(models.Model):
                     })
 
                 registration_model.create(registration_vals)
-        return self.env.ref('homeo_doctor.action_report_patient_appointment').report_action(appointment)
+        return self.env.ref('homeo_doctor.action_report_patient_appointment').report_action(self)
 
         # return {'type': 'ir.actions.act_window_close'}
 
@@ -250,8 +253,6 @@ class PatientAppointment(models.Model):
                 record.registration_fee = 0
                 # print("no id")
 
-
-
     def action_cancel(self):
         for record in self:
             record.status = 'cancelled'
@@ -273,7 +274,8 @@ class PatientAppointment(models.Model):
             }
 
     fee_applied = fields.Boolean(string="Fee Applied", default=False, store=True)
-    @api.depends('appointment_date', 'doctor_ids', 'patient_id','spl_boolean')
+
+    @api.depends('appointment_date', 'doctor_ids', 'patient_id', 'spl_boolean')
     def _compute_consultation_fee(self):
         debug_mode = True
 
@@ -394,6 +396,7 @@ class PatientAppointment(models.Model):
                     record.sudo().write({'fee_applied': fee_flag})
             else:
                 record.fee_applied = fee_flag
+
     # @api.depends('doctor_ids', 'spl_boolean')
     # def _compute_consultation_fee(self):
     #     for record in self:
@@ -510,72 +513,72 @@ class PatientAppointment(models.Model):
     #                     else:
     #                         record.consultation_fee += consultation_fee
     #                         print(f"Regular fallback case. Adding consultation fee: {consultation_fee}")
-        # @api.depends('appointment_date', 'doctor_ids', 'patient_id')
-        # def _compute_consultation_fee(self):
-        #     debug_mode = True  # 🔑 toggle this for debugging
-        #
-        #     for record in self:
-        #         record.consultation_fee = 0
-        #         record.differance_appointment_days = 0
-        #
-        #         if not record.doctor_ids or not record.patient_id or not record.appointment_date:
-        #             continue
-        #
-        #         doctor = record.doctor_ids[0]  # assume single doctor
-        #         consultation_fee = doctor.consultation_fee_doctor or 0
-        #         consultation_fee_limit = doctor.consultation_fee_limit or 7
-        #         is_vssc = record.patient_id.vssc_boolean
-        #
-        #         # fetch ALL appointments of this patient with this doctor (ordered oldest → newest)
-        #         all_appts = self.env['patient.appointment'].search([
-        #             ('patient_id', '=', record.patient_id.id),
-        #             ('doctor_ids', '=', doctor.id),
-        #         ], order='appointment_date asc')
-        #
-        #         last_fee_date = None
-        #         fee_to_apply = 0
-        #
-        #         for appt in all_appts:
-        #             if not last_fee_date:
-        #                 # First appointment → charge consultation fee
-        #                 fee_to_apply = 400 if is_vssc else consultation_fee
-        #                 last_fee_date = appt.appointment_date
-        #                 if debug_mode:
-        #                     pass
-        #                     # print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
-        #             else:
-        #                 if appt.appointment_date and last_fee_date:
-        #                     # Convert to date if they are datetime objects
-        #                     appt_date = appt.appointment_date.date() if isinstance(appt.appointment_date,
-        #                                                                            datetime) else appt.appointment_date
-        #                     last_date = last_fee_date.date() if isinstance(last_fee_date, datetime) else last_fee_date
-        #
-        #                     delta_days = (appt_date - last_date).days
-        #                 else:
-        #                     delta_days = 0
-        #                 if debug_mode:
-        #                     pass
-        #                     # print(f"[{appt.appointment_date}] Days since last fee: {delta_days}")
-        #
-        #                 if delta_days <= consultation_fee_limit:
-        #                     fee_to_apply = 0
-        #                     if debug_mode:
-        #                         pass
-        #                         # print(f" → Within {consultation_fee_limit} days → Fee {fee_to_apply}")
-        #                 else:
-        #                     fee_to_apply = 400 if is_vssc else consultation_fee
-        #                     last_fee_date = appt.appointment_date  # 🔑 reset cycle
-        #                     if debug_mode:
-        #                         pass
-        #                         # print(f" → Beyond {consultation_fee_limit} days → Fee {fee_to_apply} (reset cycle)")
-        #
-        #             # assign fee ONLY to the current record
-        #             if appt.id == record.id:
-        #                 record.consultation_fee = fee_to_apply
-        #                 record.differance_appointment_days = (
-        #                             appt.appointment_date.date() - last_fee_date.date()).days if last_fee_date else 0
-        #                 if debug_mode:
-        #                     print(f" ✔ Applied to current record {record.id} → Fee {fee_to_apply}")
+    # @api.depends('appointment_date', 'doctor_ids', 'patient_id')
+    # def _compute_consultation_fee(self):
+    #     debug_mode = True  # 🔑 toggle this for debugging
+    #
+    #     for record in self:
+    #         record.consultation_fee = 0
+    #         record.differance_appointment_days = 0
+    #
+    #         if not record.doctor_ids or not record.patient_id or not record.appointment_date:
+    #             continue
+    #
+    #         doctor = record.doctor_ids[0]  # assume single doctor
+    #         consultation_fee = doctor.consultation_fee_doctor or 0
+    #         consultation_fee_limit = doctor.consultation_fee_limit or 7
+    #         is_vssc = record.patient_id.vssc_boolean
+    #
+    #         # fetch ALL appointments of this patient with this doctor (ordered oldest → newest)
+    #         all_appts = self.env['patient.appointment'].search([
+    #             ('patient_id', '=', record.patient_id.id),
+    #             ('doctor_ids', '=', doctor.id),
+    #         ], order='appointment_date asc')
+    #
+    #         last_fee_date = None
+    #         fee_to_apply = 0
+    #
+    #         for appt in all_appts:
+    #             if not last_fee_date:
+    #                 # First appointment → charge consultation fee
+    #                 fee_to_apply = 400 if is_vssc else consultation_fee
+    #                 last_fee_date = appt.appointment_date
+    #                 if debug_mode:
+    #                     pass
+    #                     # print(f"[{appt.appointment_date}] First visit → Fee {fee_to_apply}")
+    #             else:
+    #                 if appt.appointment_date and last_fee_date:
+    #                     # Convert to date if they are datetime objects
+    #                     appt_date = appt.appointment_date.date() if isinstance(appt.appointment_date,
+    #                                                                            datetime) else appt.appointment_date
+    #                     last_date = last_fee_date.date() if isinstance(last_fee_date, datetime) else last_fee_date
+    #
+    #                     delta_days = (appt_date - last_date).days
+    #                 else:
+    #                     delta_days = 0
+    #                 if debug_mode:
+    #                     pass
+    #                     # print(f"[{appt.appointment_date}] Days since last fee: {delta_days}")
+    #
+    #                 if delta_days <= consultation_fee_limit:
+    #                     fee_to_apply = 0
+    #                     if debug_mode:
+    #                         pass
+    #                         # print(f" → Within {consultation_fee_limit} days → Fee {fee_to_apply}")
+    #                 else:
+    #                     fee_to_apply = 400 if is_vssc else consultation_fee
+    #                     last_fee_date = appt.appointment_date  # 🔑 reset cycle
+    #                     if debug_mode:
+    #                         pass
+    #                         # print(f" → Beyond {consultation_fee_limit} days → Fee {fee_to_apply} (reset cycle)")
+    #
+    #             # assign fee ONLY to the current record
+    #             if appt.id == record.id:
+    #                 record.consultation_fee = fee_to_apply
+    #                 record.differance_appointment_days = (
+    #                             appt.appointment_date.date() - last_fee_date.date()).days if last_fee_date else 0
+    #                 if debug_mode:
+    #                     print(f" ✔ Applied to current record {record.id} → Fee {fee_to_apply}")
 
     # @api.onchange('appointment_date', 'spl_boolean', 'staff_boolean')
     # def _compute_consultation_fee(self):
@@ -643,8 +646,8 @@ class PatientAppointment(models.Model):
     #                         if appt.id == record.id:
     #                             record.consultation_fee = fee_to_apply
     #                             record.differance_appointment_days = delta_days
-                                # print(
-                                #     f"[{appt.appointment_date}] Within limit ({consultation_fee_limit}) → Fee {fee_to_apply}, delta {delta_days}")                            # print(f"Regular fallback case. Adding consultation fee: {consultation_fee}")
+    # print(
+    #     f"[{appt.appointment_date}] Within limit ({consultation_fee_limit}) → Fee {fee_to_apply}, delta {delta_days}")                            # print(f"Regular fallback case. Adding consultation fee: {consultation_fee}")
     # @api.depends('doctor_ids', 'appointment_date', 'patient_id')
     # def _compute_consultation_fee(self):
     #     for record in self:
@@ -767,17 +770,18 @@ class PatientAppointment(models.Model):
             'target': 'new',
             'context': {'active_id': self.id}
         }
-            # return {
-            #     'type': 'ir.actions.act_window',
-            #     'name': 'Patient Registration',
-            #     'res_model': 'patient.registration',
-            #     'view_mode': 'form',
-            #     'res_id': patient_registration.id,
-            #     'target': 'new',
-            # }
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'name': 'Patient Registration',
+        #     'res_model': 'patient.registration',
+        #     'view_mode': 'form',
+        #     'res_id': patient_registration.id,
+        #     'target': 'new',
+        # }
+
     @api.model
     def create(self, vals):
-        # Automatically compute the consultation fee before saving
+
         if 'doctor_ids' in vals and 'patient_id' in vals and 'appointment_date' in vals:
             doctor = self.env['doctor.profile'].browse(vals['doctor_id'])
             consultation_fee_limit = doctor.consultation_fee_limit or 0
@@ -823,6 +827,7 @@ class PatientAppointment(models.Model):
 
     @api.model
     def create(self, vals):
+
         if vals.get('appointment_reference', 'New') == 'New':
             appointment_ref = self.env['ir.sequence'].next_by_code('patient.appointment.sequence')
             vals['appointment_reference'] = appointment_ref or 'New'
@@ -846,14 +851,15 @@ class PatientAppointment(models.Model):
             if token_numbers:
                 vals['token_no'] = ", ".join(token_numbers)
 
-        return super(PatientAppointment, self).create(vals)
+        appointment= super(PatientAppointment, self).create(vals)
+        appointment.action_confirm_payment()
 
-
+        # 5️⃣ Finally, return the created record
+        return appointment
     @api.model
     def search_appointments_by_patient(self, patient_id):
 
         return self.search([('patient_id', '=', patient_id)])
-
 
 
 class AppointmentFee(models.Model):
