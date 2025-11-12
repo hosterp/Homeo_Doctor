@@ -181,7 +181,7 @@
                                                            class="col-md-5 col-form-label py-0 small text-nowrap">Dept
                                                     </label>
                                                     <div class="col-md-9 field-container py-0">
-                                                        <field name="department_id"/>
+                                                        <field name="department_id" required="1"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,7 +193,7 @@
                                                            class="col-md-5 col-form-label py-0 small text-nowrap">Doctor
                                                     </label>
                                                     <div class="col-md-9 field-container py-0">
-                                                        <field name="doc_name"/>
+                                                        <field name="doc_name" required="1"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -205,7 +205,7 @@
                                                            class="col-md col-form-label py-0 small text-nowrap">Date
                                                     </label>
                                                     <div class="col-md-9 field-container py-0">
-                                                        <field name="time"/>
+                                                        <field name="time" required="1"/>
                                                     </div>
                                                 </div>
                                             </div>
