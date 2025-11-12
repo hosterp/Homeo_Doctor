@@ -1303,7 +1303,7 @@ class PatientRegistration(models.Model):
                 'doctor': record.doc_name.id,
                 'appointment_date': record.time,
             })
-
+        record.action_register_pay()
         return record
 
     @api.depends('date', 'time')
