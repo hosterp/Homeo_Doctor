@@ -1014,8 +1014,8 @@ class PatientRegistration(models.Model):
         if self.vssc_boolean and self.consultation_fee != 400:
             self.consultation_fee = 400
 
-        self.register_staff_name = False
-        self.register_staff_password = False
+        # self.register_staff_name = False
+        # self.register_staff_password = False
 
         return self.env.ref('homeo_doctor.report_patient_challan_action').report_action(self)
 
