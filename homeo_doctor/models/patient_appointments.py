@@ -275,7 +275,7 @@ class PatientAppointment(models.Model):
 
     fee_applied = fields.Boolean(string="Fee Applied", default=False, store=True)
 
-    @api.depends('appointment_date', 'doctor_ids', 'patient_id', 'spl_boolean')
+    @api.depends('appointment_date', 'doctor_ids', 'patient_id', 'spl_boolean','staff_boolean')
     def _compute_consultation_fee(self):
         debug_mode = True
 
@@ -284,6 +284,9 @@ class PatientAppointment(models.Model):
             record.differance_appointment_days = 0
             if record.spl_boolean:
                 record.consultation_fee = 0
+                continue
+            if record.staff_boolean:
+                record.consultation_fee = 150
                 continue
             if not record.doctor_ids or not record.patient_id or not record.appointment_date:
                 continue
