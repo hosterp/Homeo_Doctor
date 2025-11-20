@@ -736,6 +736,8 @@ class PharmacyReturn(models.Model):
                     'exp_date': line.exp_date,
                     'batch': line.batch,
                     'hsn': line.hsn,
+                    'rate': line.supplier_rate,
+                    'gst': line.gst,
                 }))
             self.return_line_ids = lines
 
@@ -781,7 +783,11 @@ class PharmacyReturn(models.Model):
                     StockEntry.create({
                         'product_id': line.product_id.id,
                         'quantity': line.quantity,
-                        'rate': line.unit_price,
+                        'qty': line.quantity,
+                        'pup': line.unit_price,
+                        'supplier_mrp': line.unit_price,
+                        'rate': line.rate,
+                        'gst': line.gst,
                         'manf_date': line.manf_date,
                         'exp_date': line.exp_date,
                         'batch': line.batch,
@@ -802,14 +808,15 @@ class PharmacyReturnLine(models.Model):
     product_id = fields.Many2one('product.product', string="Product")
     return_quantity = fields.Float(string="Quantity")
     quantity = fields.Float(string="Returned Quantity")
-    unit_price = fields.Float(string="Unit Price")
+    unit_price = fields.Float(string="MRP")
     manf_date = fields.Date(string='M.Date')
     exp_date = fields.Date(string='Exp. Date')
     batch = fields.Char(string='Batch Number')
     hsn = fields.Char(string='HSN')
     subtotal = fields.Float(string="Subtotal", compute="_compute_subtotal", store=True)
     return_id = fields.Many2one('pharmacy.return', string="Return")
-
+    rate = fields.Float(string="Rate")
+    gst = fields.Integer(string="GST")
     @api.depends('quantity', 'unit_price')
     def _compute_subtotal(self):
         for line in self:
@@ -830,6 +837,8 @@ class PharmacyReturnLine(models.Model):
             self.exp_date = line.exp_date
             self.batch = line.batch
             self.hsn = line.hsn
+            self.rate = line.supplier_rate
+            self.gst = line.gst
         else:
             self.unit_price = 0.0
             self.quantity = 0.0
@@ -837,6 +846,8 @@ class PharmacyReturnLine(models.Model):
             self.exp_date = False
             self.batch = False
             self.hsn = False
+            self.gst = 0.0
+            self.rate = False
 class BillStatusWizard(models.TransientModel):
     _name = 'bill.status.wizard'
     _description = 'Bill Status Wizard'

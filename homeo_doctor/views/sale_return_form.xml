@@ -376,7 +376,9 @@
                                 <field name="batch"/>
                                 <field name="return_quantity"/>
                                 <field name="quantity"/>
+                                <field name="rate"/>
                                 <field name="unit_price"/>
+                                <field name="gst"/>
                                 <field name="subtotal" readonly="1"/>
                             </tree>
                         </field>
