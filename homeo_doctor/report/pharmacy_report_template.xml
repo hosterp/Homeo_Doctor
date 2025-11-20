@@ -39,8 +39,10 @@
                     <thead>
                         <tr>
                             <th>Date</th>
+                            <th>Bill Number</th>
+                            <th>Staff Name</th>
                             <th
-                                    t-attf-style="{{ 'display: none; border: 1px solid #000;' if not docs.with_patient_name else 'border: 1px solid #000;' }}">
+                                   t-if="docs.with_patient_name">
                                 Patient Name
                             </th>
                             <th>Medicine</th>
@@ -54,8 +56,14 @@
                                 <td>
                                     <t t-esc="line.pharmacy_id.date"/>
                                 </td>
+                                <td>
+                                    <t t-esc="line.pharmacy_id.bill_number"/>
+                                </td>
+                                <td>
+                                    <t t-esc="line.pharmacy_id.staff_name.display_name"/>
+                                </td>
                                 <td
-                                        t-attf-style="{{ 'display: none;' if not docs.with_patient_name else 'border: 1px solid #000;' }}">
+                                      t-if="docs.with_patient_name">
                                     <t t-esc="line.pharmacy_id.name"/>
                                 </td>
                                 <td>
