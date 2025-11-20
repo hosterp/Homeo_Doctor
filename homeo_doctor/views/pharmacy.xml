@@ -635,8 +635,9 @@
                     <field name="doctor_name"/>
                     <field name="payment_mathod"/>
                     <field name="total_amount"/>
-                    <field name="status"/>
-                    <field name="status_admitted"/>
+                    <field name="staff_name"/>
+                    <field name="status" invisible="1"/>
+                    <field name="status_admitted" invisible="1"/>
                 </tree>
             </field>
         </record>
