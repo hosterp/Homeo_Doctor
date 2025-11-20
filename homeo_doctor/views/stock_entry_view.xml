@@ -47,6 +47,7 @@
         <field name="name">Stock Entries</field>
         <field name="res_model">stock.entry</field>
         <field name="view_mode">tree</field>
+        <field name="domain">[('quantity', '>', 0)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_sm">No stock entries yet.</p>
         </field>
@@ -54,7 +55,7 @@
     </record>
 
     <menuitem id="stock_entry_menu" name="Stock" sequence="41"/>
-     <menuitem id="menu_pharmacy_root" name="Pharmacy" sequence="5" parent="menu_homeo_head"/>
+    <menuitem id="menu_pharmacy_root" name="Pharmacy" sequence="5" parent="menu_homeo_head"/>
     <menuitem id="menu_stock_entry_action" name="Stock"
               parent="menu_pharmacy_root" action="action_stock_entry"/>
 
