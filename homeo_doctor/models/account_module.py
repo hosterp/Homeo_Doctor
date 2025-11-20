@@ -237,6 +237,7 @@ class AccountMove(models.Model):
                         'pack': line.pack,
                         'pup': line.pup,
                         'supplier_mrp': line.supplier_mrp,
+                        'supplier_name': self.supplier_name.name,
                         'gst': line.gst,
                         'state': 'confirmed',
                     })
@@ -575,7 +576,7 @@ class StockEntry(models.Model):
     ], string="Status", default="draft", tracking=True)
 
     is_expired = fields.Boolean(string="Is Expired", compute="_compute_is_expired")
-
+    supplier_name=fields.Char(string='Supplier Name')
     @api.depends('exp_date')
     def _compute_is_expired(self):
         today = fields.Date.today()

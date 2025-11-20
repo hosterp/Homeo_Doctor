@@ -18,10 +18,11 @@
                 <field name="batch"/>
                 <field name="hsn"/>
                 <field name="rate"/>
+                <field name="supplier_name"/>
                 <field name="supplier_mrp" string="MRP"/>
                 <field name="pup" string="PUP"/>
                 <field name="gst" string="GST"/>
-                <field name="rack"/>
+                <field name="rack" invisible="1"/>
                 <field name="uom_id" invisible="1"/>
                 <field name="state" invisible="1"/>
                 <field name="is_expired" invisible="1"/>
