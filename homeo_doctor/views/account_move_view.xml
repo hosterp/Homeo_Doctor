@@ -122,11 +122,11 @@
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
                 <field name="ord_qty"
-                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
+                       invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='line_ids']/tree/field[@name='quantity']" position="before">
-                <field name="ord_qty"
-                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>
+                <field name="ord_qty" invisible="1" />
+<!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
             </xpath>
             <!--            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="after">-->
             <!--                <field name="to_be_received"-->
@@ -208,7 +208,7 @@
                 <attribute name="class">wide-column</attribute>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="attributes">
-                <attribute name="string">Received Qty</attribute>
+                <attribute name="string">Quantity</attribute>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="attributes">
                 <attribute name="string">Rate</attribute>

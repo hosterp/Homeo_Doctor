@@ -225,7 +225,7 @@ class AccountMove(models.Model):
                         'invoice_id': move.id,
                         'product_id': line.product_id.id,
                         'quantity': line.total_pack_qty,  # now correctly includes free qty
-                        'qty': (line.quantity or 0) + (line.free_qty or 0),
+                        'qty': line.total_pack_qty,
                         'hsn': line.hsn,
                         'company': line.manufacturing_company,
                         'manf_date': line.manufacturing_date,
