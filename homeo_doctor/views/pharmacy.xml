@@ -216,6 +216,7 @@
                                         <col style="width: 8%;"/>
                                         <col style="width: 10%;"/>
                                         <col style="width: 10%;"/>
+                                        <col style="width: 10%;"/>
                                         <col style="width: 12%;"/>
                                         <col style="width: 8%;"/>
                                         <col style="width: 8%;"/>
@@ -236,6 +237,9 @@
                                             </th>
                                             <th style="text-align: center; font-size: 17px; ">
                                                 Batch
+                                            </th>
+                                            <th style="text-align: center; font-size: 17px; ">
+                                                HSN
                                             </th>
                                             <!--                                            <th style="text-align: center; border: 1px solid black;">Manf Date</th>-->
                                             <th style="text-align: center;font-size: 17px; ">
@@ -259,7 +263,7 @@
                                         </tr>
                                     </thead>
                                     <tr>
-                                        <td colspan="10" style="border-top: 2px solid #000; padding: 0;"></td>
+                                        <td colspan="11" style="border-top: 2px solid #000; padding: 0;"></td>
                                     </tr>
                                     <tbody>
                                         <t t-set="counter" t-value="1"/>
@@ -277,6 +281,9 @@
                                                 </td>
                                                 <td style="text-align: center; padding: 8px; font-size: 17px; ">
                                                     <span t-field="medicine.batch"/>
+                                                </td>
+                                                <td style="text-align: center; padding: 8px; font-size: 17px; ">
+                                                    <span t-field="medicine.hsn"/>
                                                 </td>
                                                 <!--                                                <td style="text-align: center; padding: 8px; border: 1px solid black;">-->
                                                 <!--                                                    <span t-field="medicine.manf_date"-->
@@ -306,7 +313,7 @@
                                         </t>
 
                                         <tr>
-                                            <td colspan="10" style="border-top: 2px solid #000; padding: 0;"></td>
+                                            <td colspan="11" style="border-top: 2px solid #000; padding: 0;"></td>
                                         </tr>
                                         <tr>
                                             <!-- colspan should equal the number of columns in your table (10 in your case) -->
@@ -329,7 +336,7 @@
                                             </td>
                                         </tr>
                                         <tr style="page-break-inside: avoid;">
-                                            <td colspan="10" style="padding: 12px 8px 0; border-top: 1px solid #bbb;">
+                                            <td colspan="11" style="padding: 12px 8px 0; border-top: 1px solid #bbb;">
                                                 <div style="display: flex; justify-content: space-between; font-size: 17px;">
                                                     <!-- Col 1: Prepared By -->
                                                     <div style="flex: 1;">
@@ -442,8 +449,8 @@
             <field name="orientation">Landscape</field>
             <field name="margin_top">5</field>         <!-- in mm -->
             <field name="margin_bottom">5</field>
-            <field name="margin_left">7</field>
-            <field name="margin_right">7</field>
+            <field name="margin_left">6</field>
+            <field name="margin_right">6</field>
             <field name="header_line" eval="False"/>
             <field name="header_spacing">10</field>
             <field name="dpi">90</field>
