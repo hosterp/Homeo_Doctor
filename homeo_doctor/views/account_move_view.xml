@@ -43,7 +43,7 @@
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
                         <field name="address"
                                attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}"/>
-                         <field name="pay_mode"/>
+                        <field name="pay_mode"/>
 
                     </group>
                     <group>
@@ -125,8 +125,8 @@
                        invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='line_ids']/tree/field[@name='quantity']" position="before">
-                <field name="ord_qty" invisible="1" />
-<!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
+                <field name="ord_qty" invisible="1"/>
+                <!--                       invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"/>-->
             </xpath>
             <!--            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="after">-->
             <!--                <field name="to_be_received"-->
@@ -249,9 +249,9 @@
             <xpath expr="//field[@name='date_maturity']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-             <field name="amount_residual" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </field>
+            <field name="amount_residual" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
 
         </field>
     </record>
@@ -270,6 +270,26 @@
             </xpath>
         </field>
     </record>
+    <record id="invoice_search_custom_fields" model="ir.ui.view">
+        <field name="name">account.move.search.custom.fields</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+
+            <!-- Add searchable fields -->
+            <xpath expr="//search" position="inside">
+                <field name="supplier_bill_date"/>
+                <field name="supplier_invoice"/>
+                <field name="supplier_name"/>
+            </xpath>
+
+        </field>
+    </record>
+    <record id="account.action_move_in_invoice_type" model="ir.actions.act_window">
+        <field name="search_view_id" ref="homeo_doctor.invoice_search_custom_fields"/>
+    </record>
+
+
     <record id="view_in_invoice_tree" model="ir.ui.view">
         <field name="name">account.out.invoice.tree.inherit</field>
         <field name="model">account.move</field>
