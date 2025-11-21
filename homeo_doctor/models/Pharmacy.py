@@ -820,7 +820,8 @@ class PharmacyReturnLine(models.Model):
     @api.depends('quantity', 'unit_price')
     def _compute_subtotal(self):
         for line in self:
-            line.subtotal = line.quantity * line.unit_price
+            product = line.quantity * line.unit_price
+            line.subtotal = math.ceil(product)
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
