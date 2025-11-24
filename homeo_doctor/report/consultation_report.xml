@@ -48,7 +48,9 @@
                     <table class="table table-condensed">
                         <thead>
                             <tr>
-                                <th>Reference</th>
+                                <th>Sl No</th>
+                                <th>Bill Number</th>
+                                <th>UHID</th>
                                 <th>Date</th>
                                 <th>Name</th>
                                 <th>Age</th>
