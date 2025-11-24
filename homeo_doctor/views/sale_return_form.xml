@@ -847,6 +847,7 @@
             <field name="model">pharmacy.return</field>
             <field name="arch" type="xml">
                 <tree string="Pharmacy Returns">
+                    <field name="return_number" string="Bill Number"/>
                     <field name="return_date"/>
                     <field name="original_sale_id" invisible="1"/>
                     <field name="patient_id"/>
