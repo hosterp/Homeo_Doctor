@@ -76,6 +76,7 @@ class PatientReportWizard(models.TransientModel):
                 'phone': patient.phone_number,
                 'doctor_name': patient.doc_name.name,
                 'consultation_fee': patient.register_total_amount,
+                'bill_number': patient.bill_number,
             })
 
         # 4️⃣ Append patient.appointment data
@@ -90,6 +91,7 @@ class PatientReportWizard(models.TransientModel):
                 'phone': app.phone_number,
                 'doctor_name': app.doctor_ids.name if app.doctor_ids else '',
                 'consultation_fee': app.register_total_amount,
+                'bill_number': app.appointment_reference,
             })
         total_fee = sum(item.get('consultation_fee', 0) for item in report_data)
         report_data.sort(key=lambda x: x['date'])

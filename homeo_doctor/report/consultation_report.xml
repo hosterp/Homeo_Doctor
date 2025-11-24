@@ -60,8 +60,16 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <t t-set="sl" t-value="1"/>
                             <t t-foreach="report_data['report_data']" t-as="patient">
                                 <tr>
+                                    <td>
+                                        <t t-esc="sl"/>
+                                        <t t-set="sl" t-value="sl + 1"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="patient['bill_number'] "/>
+                                    </td>
                                     <td>
                                         <t t-esc="patient['reference_no'] "/>
                                     </td>
@@ -94,8 +102,8 @@
 
                             </t>
                             <tr>
-                                <td colspan="7" style="text-align: right; font-weight: bold;">
-                                    Total Consultation Fee:
+                                <td colspan="9" style="text-align: right; font-weight: bold;">
+                                    Total:
                                 </td>
                                 <td style="font-weight: bold;">
                                     <span t-esc="total_fee"/>
