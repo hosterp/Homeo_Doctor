@@ -505,6 +505,7 @@ class PatientReportController(http.Controller):
                 'phone': p.phone_number,
                 'doctor': p.doc_name.name,
                 'consultation_fee': p.register_total_amount or 0,
+                'bill_number': p.bill_number,
             })
 
         # ---------------------------------------
@@ -530,6 +531,7 @@ class PatientReportController(http.Controller):
                 'phone': a.phone_number,
                 'doctor': a.doctor_ids.name if a.doctor_ids else '',
                 'consultation_fee': a.register_total_amount or 0,
+                'bill_number': a.appointment_reference,
             })
 
         # --------------------------------
@@ -542,6 +544,8 @@ class PatientReportController(http.Controller):
         bold = workbook.add_format({'bold': True})
 
         headers = [
+            'SL No',
+            'Bill Number',
             'UHID',
             'Appointment Date',
             'Patient Name',
@@ -560,27 +564,31 @@ class PatientReportController(http.Controller):
         # 4️⃣ Fill Data
         # -------------------------------
         row = 1
+        sl_no = 1
         total_fee = 0
         report_data = sorted(report_data, key=lambda x: x['date'])
 
         for rec in report_data:
-            sheet.write(row, 0, rec['reference_no'])
-            sheet.write(row, 1, rec['date'].strftime('%Y-%m-%d') if rec['date'] else '')
-            sheet.write(row, 2, rec['patient_name'])
-            sheet.write(row, 3, rec['age'])
-            sheet.write(row, 4, rec['gender'])
-            sheet.write(row, 5, rec['phone'])
-            sheet.write(row, 6, rec['doctor'])
-            sheet.write(row, 7, rec['consultation_fee'])
+            sheet.write(row, 0, sl_no)
+            sheet.write(row, 1, rec['bill_number'])
+            sheet.write(row, 2, rec['reference_no'])
+            sheet.write(row, 3, rec['date'].strftime('%Y-%m-%d') if rec['date'] else '')
+            sheet.write(row, 4, rec['patient_name'])
+            sheet.write(row, 5, rec['age'])
+            sheet.write(row, 6, rec['gender'])
+            sheet.write(row, 7, rec['phone'])
+            sheet.write(row, 8, rec['doctor'])
+            sheet.write(row, 9, rec['consultation_fee'])
 
             total_fee += rec['consultation_fee']
             row += 1
+            sl_no += 1
 
         # -------------------------------
         # 5️⃣ Total Row
         # -------------------------------
-        sheet.write(row, 6, 'Total', bold)
-        sheet.write(row, 7, total_fee, bold)
+        sheet.write(row, 8, 'Total', bold)
+        sheet.write(row, 9, total_fee, bold)
 
         workbook.close()
         output.seek(0)
