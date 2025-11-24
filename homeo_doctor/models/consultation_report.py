@@ -34,35 +34,70 @@ class PatientReportWizard(models.TransientModel):
         report_data = self._get_report_data()  # Call a method to get the report data
         return self.env.ref('homeo_doctor.patient_pdf_report_action').report_action(self, data={
             'report_data': report_data,
+            'total_fee': report_data['total_fee'],
             'date_from': self.date_from,
             'date_to': self.date_to,
         })
 
     def _get_report_data(self):
-        # Logic to get the data to be included in the report
-        # This should return the report data in the format required
-        patients = self.env['patient.registration'].search([
-            ('date', '>=', self.date_from),
-            ('date', '<=', self.date_to),
-            ('doctor', '=', self.doctor_id.id),
 
-        ])
+        # Common domain for both models
+        domain = [
+            ('time', '>=', self.date_from),
+            ('time', '<=', self.date_to),
+        ]
+        domain2 = [
+                ('appointment_date', '>=', self.date_from),
+                ('appointment_date', '<=', self.date_to),
+            ]
+
+        # Add doctor filter only when selected
+        if self.doctor_id:
+            domain.append(('doc_name', '=', self.doctor_id.id))
+            domain2.append(('doctor_ids', '=', self.doctor_id.id))
+
+        # 1️⃣ Fetch from patient.reg
+        patients_reg = self.env['patient.reg'].search(domain)
+
+        # 2️⃣ Fetch from patient.appointment
+        patients_app = self.env['patient.appointment'].search(domain2)
+
         report_data = []
-        for patient in patients:
+
+        # 3️⃣ Append patient.reg data
+        for patient in patients_reg:
             report_data.append({
-                'reference_no': patient.patient_id.display_name,
-                'date': patient.appointment_date,
-                'patient_name': patient.patient_name,
+                'source': 'Registration',
+                'reference_no': patient.reference_no,
+                'date': patient.time,
+                'patient_name': patient.patient_id,
                 'age': patient.age,
                 'gender': patient.gender,
                 'phone': patient.phone_number,
-                'doctor_name': patient.doctor.name,
-                'consultation_fee': patient.consultation_fee,
-                'diagnosis': patient.professional_diagnosis,
+                'doctor_name': patient.doc_name.name,
+                'consultation_fee': patient.register_total_amount,
             })
-            print(report_data,'report_datareport_datareport_datareport_datareport_datareport_datareport_datareport_datareport_datareport_datareport_data')
-        return report_data
 
+        # 4️⃣ Append patient.appointment data
+        for app in patients_app:
+            report_data.append({
+                'source': 'Appointment',
+                'reference_no': app.patient_id.reference_no,
+                'date': app.appointment_date,
+                'patient_name': app.patient_name,
+                'age': app.age,
+                'gender': app.gender,
+                'phone': app.phone_number,
+                'doctor_name': app.doctor_ids.name if app.doctor_ids else '',
+                'consultation_fee': app.register_total_amount,
+            })
+        total_fee = sum(item.get('consultation_fee', 0) for item in report_data)
+        report_data.sort(key=lambda x: x['date'])
+
+        return {
+            'report_data': report_data,
+            'total_fee': total_fee,
+        }
     def print_excel(self):
         base_url = '/patient/excel_report'
         params = '?date_from=%s&date_to=%s&doctor_id=%s' % (

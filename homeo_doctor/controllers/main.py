@@ -480,52 +480,113 @@ class PatientReportController(http.Controller):
         date_to = kwargs.get('date_to')
         doctor_id = kwargs.get('doctor_id')
 
-        domain = []
+        report_data = []
+
+        # -------------------------------
+        # 1️⃣ Build domain for patient.reg
+        # -------------------------------
+        domain_reg = []
         if date_from:
-            domain.append(('date', '>=', date_from))
+            domain_reg.append(('time', '>=', date_from))
         if date_to:
-            domain.append(('date', '<=', date_to))
+            domain_reg.append(('time', '<=', date_to))
         if doctor_id:
-            domain.append(('doctor', '=', int(doctor_id)))
+            domain_reg.append(('doc_name', '=', int(doctor_id)))
 
-        patients = request.env['patient.registration'].sudo().search(domain)
+        patients_reg = request.env['patient.reg'].sudo().search(domain_reg)
 
-        # Generate Excel file in memory
+        for p in patients_reg:
+            report_data.append({
+                'reference_no': p.reference_no,
+                'date': p.time,
+                'patient_name': p.patient_id,
+                'age': p.age,
+                'gender': p.gender,
+                'phone': p.phone_number,
+                'doctor': p.doc_name.name,
+                'consultation_fee': p.register_total_amount or 0,
+            })
+
+        # ---------------------------------------
+        # 2️⃣ Build domain for patient.appointment
+        # ---------------------------------------
+        domain_app = []
+        if date_from:
+            domain_app.append(('appointment_date', '>=', date_from))
+        if date_to:
+            domain_app.append(('appointment_date', '<=', date_to))
+        if doctor_id:
+            domain_app.append(('doctor_ids', '=', int(doctor_id)))
+
+        patients_app = request.env['patient.appointment'].sudo().search(domain_app)
+
+        for a in patients_app:
+            report_data.append({
+                'reference_no': a.patient_id.reference_no,
+                'date': a.appointment_date,
+                'patient_name': a.patient_name,
+                'age': a.age,
+                'gender': a.gender,
+                'phone': a.phone_number,
+                'doctor': a.doctor_ids.name if a.doctor_ids else '',
+                'consultation_fee': a.register_total_amount or 0,
+            })
+
+        # --------------------------------
+        # 3️⃣ Generate Excel in memory
+        # --------------------------------
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         sheet = workbook.add_worksheet('Patient Report')
 
         bold = workbook.add_format({'bold': True})
-        headers = ['UHID', 'Appointment Date', 'Patient Name', 'Age', 'Gender', 'Mobile', 'Doctor', 'Consultation Fee']
+
+        headers = [
+            'UHID',
+            'Appointment Date',
+            'Patient Name',
+            'Age',
+            'Gender',
+            'Mobile',
+            'Doctor',
+            'Total'
+        ]
+
+        # Write headers
         for col, header in enumerate(headers):
             sheet.write(0, col, header, bold)
 
+        # -------------------------------
+        # 4️⃣ Fill Data
+        # -------------------------------
         row = 1
-        total_fee = 0  # To calculate total consultation fee
+        total_fee = 0
+        report_data = sorted(report_data, key=lambda x: x['date'])
 
-        for rec in patients:
-            sheet.write(row, 0, rec.reference_no)
-            sheet.write(row, 1, rec.date.strftime('%Y-%m-%d') if rec.date else '')
-            sheet.write(row, 2, rec.patient_name)
-            sheet.write(row, 3, rec.age)
-            sheet.write(row, 4, rec.gender)
-            sheet.write(row, 5, rec.phone_number)
-            sheet.write(row, 6, rec.doctor.name if rec.doctor else '')
-            sheet.write(row, 7, rec.consultation_fee or 0)
+        for rec in report_data:
+            sheet.write(row, 0, rec['reference_no'])
+            sheet.write(row, 1, rec['date'].strftime('%Y-%m-%d') if rec['date'] else '')
+            sheet.write(row, 2, rec['patient_name'])
+            sheet.write(row, 3, rec['age'])
+            sheet.write(row, 4, rec['gender'])
+            sheet.write(row, 5, rec['phone'])
+            sheet.write(row, 6, rec['doctor'])
+            sheet.write(row, 7, rec['consultation_fee'])
 
-            # Add to total
-            total_fee += rec.consultation_fee or 0
-
+            total_fee += rec['consultation_fee']
             row += 1
 
-        # Write Total row
-        sheet.write(row, 6, 'Total', bold)  # Label in Doctor column
-        sheet.write(row, 7, total_fee, bold)  # Total in Consultation Fee column
+        # -------------------------------
+        # 5️⃣ Total Row
+        # -------------------------------
+        sheet.write(row, 6, 'Total', bold)
+        sheet.write(row, 7, total_fee, bold)
 
         workbook.close()
         output.seek(0)
 
         filename = f"Patient_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+
         return request.make_response(
             output.read(),
             headers=[
