@@ -1,4 +1,6 @@
 # controllers/main.py
+import pytz
+
 from odoo import http
 from odoo.http import request
 import io
@@ -481,15 +483,30 @@ class PatientReportController(http.Controller):
         doctor_id = kwargs.get('doctor_id')
 
         report_data = []
+        user_tz = pytz.timezone(request.env.user.tz or 'Asia/Kolkata')
 
+        date_from_dt = None
+        date_to_dt = None
+
+        if date_from:
+            # make 00:00:00 time → localize → convert to UTC
+            date_from_dt = user_tz.localize(
+                datetime.combine(datetime.strptime(date_from, '%Y-%m-%d').date(), time.min)
+            ).astimezone(pytz.utc)
+
+        if date_to:
+            # make 23:59:59 time → localize → convert to UTC
+            date_to_dt = user_tz.localize(
+                datetime.combine(datetime.strptime(date_to, '%Y-%m-%d').date(), time.max)
+            ).astimezone(pytz.utc)
         # -------------------------------
         # 1️⃣ Build domain for patient.reg
         # -------------------------------
         domain_reg = []
         if date_from:
-            domain_reg.append(('time', '>=', date_from))
+            domain_reg.append(('time', '>=', date_from_dt))
         if date_to:
-            domain_reg.append(('time', '<=', date_to))
+            domain_reg.append(('time', '<=', date_to_dt))
         if doctor_id:
             domain_reg.append(('doc_name', '=', int(doctor_id)))
 
@@ -513,9 +530,9 @@ class PatientReportController(http.Controller):
         # ---------------------------------------
         domain_app = []
         if date_from:
-            domain_app.append(('appointment_date', '>=', date_from))
+            domain_app.append(('appointment_date', '>=', date_from_dt))
         if date_to:
-            domain_app.append(('appointment_date', '<=', date_to))
+            domain_app.append(('appointment_date', '<=', date_to_dt))
         if doctor_id:
             domain_app.append(('doctor_ids', '=', int(doctor_id)))
 

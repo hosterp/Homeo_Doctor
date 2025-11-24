@@ -1,4 +1,7 @@
+import pytz
+
 from odoo import api, fields, models
+from datetime import datetime, time
 
 class PatientReportWizard(models.TransientModel):
     _name = 'patient.report.wizard'
@@ -41,14 +44,18 @@ class PatientReportWizard(models.TransientModel):
 
     def _get_report_data(self):
 
-        # Common domain for both models
+        user_tz = pytz.timezone(self.env.user.tz or 'Asia/Kolkata')
+
+        # Convert user selected dates into datetime with timezone first
+        date_from_dt = user_tz.localize(datetime.combine(self.date_from, time.min)).astimezone(pytz.utc)
+        date_to_dt = user_tz.localize(datetime.combine(self.date_to, time.max)).astimezone(pytz.utc)
         domain = [
-            ('time', '>=', self.date_from),
-            ('time', '<=', self.date_to),
+            ('time', '>=', date_from_dt),
+            ('time', '<=', date_to_dt),
         ]
         domain2 = [
-                ('appointment_date', '>=', self.date_from),
-                ('appointment_date', '<=', self.date_to),
+                ('appointment_date', '>=', date_from_dt),
+                ('appointment_date', '<=', date_to_dt),
             ]
 
         # Add doctor filter only when selected
