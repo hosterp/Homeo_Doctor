@@ -804,6 +804,8 @@
                                 <field name="manf_date"/>
                                 <field name="exp_date"/>
                                 <field name="batch"/>
+                                <field name="hsn"/>
+                                <field name="mfc"/>
                                 <field name="return_quantity"/>
                                 <field name="quantity"/>
                                 <field name="rate"/>

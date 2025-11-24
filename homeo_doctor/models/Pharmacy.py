@@ -736,6 +736,7 @@ class PharmacyReturn(models.Model):
                     'exp_date': line.exp_date,
                     'batch': line.batch,
                     'hsn': line.hsn,
+                    'mfc': line.mfc,
                     'rate': line.supplier_rate,
                     'gst': line.gst,
                     'actual_total': line.rate,
@@ -793,6 +794,7 @@ class PharmacyReturn(models.Model):
                         'exp_date': line.exp_date,
                         'batch': line.batch,
                         'hsn': line.hsn,
+                        'company': line.mfc,
                         'rack': 'Returned',  # optional: mark returned rack
                         'date': fields.Date.today(),
                         'uom_id': line.product_id.uom_id.id if line.product_id.uom_id else False,
@@ -839,6 +841,7 @@ class PharmacyReturnLine(models.Model):
     exp_date = fields.Date(string='Exp. Date')
     batch = fields.Char(string='Batch Number')
     hsn = fields.Char(string='HSN')
+    mfc = fields.Char(string='Mfc')
     subtotal = fields.Float(string="Subtotal", compute="_compute_subtotal", store=True)
     return_id = fields.Many2one('pharmacy.return', string="Return")
     rate = fields.Float(string="Rate")
