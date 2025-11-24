@@ -500,7 +500,7 @@
                                     </tr>
                                     <tbody>
                                         <t t-set="valid_lines"
-                                           t-value="o.return_line_ids.filtered(lambda l: l.quantity &lt;= 0)"/>
+                                           t-value="o.return_line_ids.filtered(lambda l: l.total_quantity > 0)"/>
 
                                         <t t-set="counter" t-value="1"/>
                                         <t t-foreach="valid_lines" t-as="medicine">
@@ -513,7 +513,7 @@
                                                     <strong t-field="medicine.product_id.display_name"/>
                                                 </td>
                                                 <td style="text-align: center; padding: 8px; font-size: 17px; ">
-                                                    <span t-field="medicine.return_quantity"/>
+                                                    <span t-field="medicine.total_quantity"/>
                                                 </td>
                                                 <td style="text-align: center; padding: 8px; font-size: 17px; ">
                                                     <span t-field="medicine.batch"/>
@@ -542,8 +542,9 @@
                                                     <span t-field="medicine.gst"/>
                                                 </td>
                                                 <td style="text-align: right; padding: 8px;font-size: 17px; ">
-                                                    <span t-field="medicine.actual_total"
+                                                    <span t-field="medicine.balance_total"
                                                           t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
+
                                                 </td>
                                             </tr>
                                         </t>
@@ -565,7 +566,7 @@
                                                     <!-- Right side -->
                                                     <div style="text-align: right;">
                                                         <strong>Subtotal:</strong>
-                                                        <span t-esc="sum(valid_lines.mapped('actual_total'))"
+                                                        <span t-esc="sum(valid_lines.mapped('balance_total'))"
                                                               t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>
 
                                                     </div>
@@ -808,6 +809,7 @@
                                 <field name="mfc"/>
                                 <field name="return_quantity"/>
                                 <field name="quantity"/>
+                                <field name="total_quantity"/>
                                 <field name="rate"/>
                                 <field name="unit_price"/>
                                 <field name="gst"/>

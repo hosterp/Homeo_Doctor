@@ -3,8 +3,9 @@ from collections import defaultdict
 from datetime import date, datetime
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError, _logger
+from odoo.exceptions import ValidationError, _logger, UserError
 import math
+from math import ceil
 class PharmacyDescription(models.Model):
     _name = 'pharmacy.description'
     _description = 'Pharmacy Description'
@@ -847,12 +848,26 @@ class PharmacyReturnLine(models.Model):
     rate = fields.Float(string="Rate")
     actual_total = fields.Float(string="Total")
     gst = fields.Integer(string="GST")
+    total_quantity=fields.Integer(string='Total Quantity')
 
-    @api.depends('quantity', 'unit_price')
+    @api.depends('quantity', 'unit_price','return_quantity')
     def _compute_subtotal(self):
         for line in self:
             product = line.quantity * line.unit_price
             line.subtotal = math.ceil(product)
+            if line.return_quantity < line.quantity:
+                raise UserError("Return quantity cannot be greater than issued quantity!")
+
+            line.total_quantity = line.return_quantity
+            line.total_quantity =  (line.return_quantity or 0)-(line.quantity or 0)
+
+    balance_total = fields.Float(string="Balance Total", compute="_compute_balance_total")
+
+    @api.depends('total_quantity', 'unit_price')
+    def _compute_balance_total(self):
+        for line in self:
+            value = (line.total_quantity or 0) * (line.unit_price or 0)
+            line.balance_total = ceil(value)
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
