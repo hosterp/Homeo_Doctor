@@ -64,7 +64,7 @@
                                         <strong style="color: #333; font-size: 16px;">Return Information</strong>
                                         <span style="float: right; color: #777; font-size: 12px;">
                                             <i class="fa fa-calendar mr-1"></i>Return Date:
-                                            <t t-esc="o.return_date.strftime('%d %b, %Y %H:%M') if o.return_date else ''"/>
+                                            <t t-esc="o.return_date.strftime('%d %b, %Y') if o.return_date else ''"/>
                                         </span>
                                     </div>
                                     <div class="row p-3">
@@ -352,7 +352,7 @@
                                             <strong style="color: #333; font-size: 16px;">DEPARTMENT : PHARMACY</strong>
                                             <strong style="color: #333; font-size: 16px;">
                                                 <span/>
-<!--                                                Bill-->
+                                                <!--                                                Bill-->
 
                                             </strong>
                                             <strong style="color: #333; font-size: 16px;">
@@ -572,54 +572,54 @@
                                                 </div>
                                             </td>
                                         </tr>
-<!--                                        <tr style="page-break-inside: avoid;">-->
-<!--                                            <td colspan="11" style="padding: 12px 8px 0; border-top: 1px solid #bbb;">-->
-<!--                                                <div style="display: flex; justify-content: space-between; font-size: 17px;">-->
-<!--                                                    &lt;!&ndash; Col 1: Prepared By &ndash;&gt;-->
-<!--                                                    <div style="flex: 1;">-->
-<!--                                                        <p style="margin: 0; font-weight: bold;">-->
-<!--                                                            Prepared By:-->
-<!--                                                            &lt;!&ndash;                                                            <span t-field="o.staff_name"/>&ndash;&gt;-->
-<!--                                                        </p>-->
-<!--                                                    </div>-->
-<!--                                                    <div style="flex: 1;">-->
-<!--                                                        <p style="margin: 0;">-->
-<!--                                                            Total Quantity:-->
-<!--                                                            <span t-esc="sum(o.return_line_ids.mapped('return_quantity'))"/>-->
-<!--                                                        </p>-->
-<!--                                                    </div>-->
-<!--                                                    &lt;!&ndash; Col 2: Total Items & Quantity &ndash;&gt;-->
-<!--                                                    <div style="flex: 1; text-align: center;">-->
-<!--                                                        <table class="table table-sm table-borderless mb-0"-->
-<!--                                                               style="width: auto; margin: 0 auto;">-->
-<!--                                                            <tr>-->
-<!--                                                                <td style="padding: 2px 6px;">Total Items:</td>-->
-<!--                                                                <td style="font-weight: bold; padding: 2px 6px;">-->
-<!--                                                                    <span t-esc="len(o.return_line_ids)"/>-->
-<!--                                                                </td>-->
-<!--                                                            </tr>-->
-<!--                                                        </table>-->
-<!--                                                    </div>-->
-<!--                                                    &lt;!&ndash; Col 3: Total Amount &ndash;&gt;-->
-<!--                                                    <div style="flex: 1; text-align: right;">-->
-<!--                                                        <table class="table table-sm table-borderless mb-0"-->
-<!--                                                               style="width: auto; margin: 0;">-->
-<!--                                                            <tr>-->
-<!--                                                                <td style="padding: 2px 6px;">-->
-<!--                                                                    <strong>Total Amount:</strong>-->
-<!--                                                                </td>-->
-<!--                                                                <td style="padding: 2px 6px; font-weight: bold;">-->
-<!--                                                                    <strong>₹-->
-<!--                                                                        <span t-esc="sum(o.return_line_ids.mapped('actual_total'))"-->
-<!--                                                                              t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>-->
-<!--                                                                    </strong>-->
-<!--                                                                </td>-->
-<!--                                                            </tr>-->
-<!--                                                        </table>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </td>-->
-<!--                                        </tr>-->
+                                        <!--                                        <tr style="page-break-inside: avoid;">-->
+                                        <!--                                            <td colspan="11" style="padding: 12px 8px 0; border-top: 1px solid #bbb;">-->
+                                        <!--                                                <div style="display: flex; justify-content: space-between; font-size: 17px;">-->
+                                        <!--                                                    &lt;!&ndash; Col 1: Prepared By &ndash;&gt;-->
+                                        <!--                                                    <div style="flex: 1;">-->
+                                        <!--                                                        <p style="margin: 0; font-weight: bold;">-->
+                                        <!--                                                            Prepared By:-->
+                                        <!--                                                            &lt;!&ndash;                                                            <span t-field="o.staff_name"/>&ndash;&gt;-->
+                                        <!--                                                        </p>-->
+                                        <!--                                                    </div>-->
+                                        <!--                                                    <div style="flex: 1;">-->
+                                        <!--                                                        <p style="margin: 0;">-->
+                                        <!--                                                            Total Quantity:-->
+                                        <!--                                                            <span t-esc="sum(o.return_line_ids.mapped('return_quantity'))"/>-->
+                                        <!--                                                        </p>-->
+                                        <!--                                                    </div>-->
+                                        <!--                                                    &lt;!&ndash; Col 2: Total Items & Quantity &ndash;&gt;-->
+                                        <!--                                                    <div style="flex: 1; text-align: center;">-->
+                                        <!--                                                        <table class="table table-sm table-borderless mb-0"-->
+                                        <!--                                                               style="width: auto; margin: 0 auto;">-->
+                                        <!--                                                            <tr>-->
+                                        <!--                                                                <td style="padding: 2px 6px;">Total Items:</td>-->
+                                        <!--                                                                <td style="font-weight: bold; padding: 2px 6px;">-->
+                                        <!--                                                                    <span t-esc="len(o.return_line_ids)"/>-->
+                                        <!--                                                                </td>-->
+                                        <!--                                                            </tr>-->
+                                        <!--                                                        </table>-->
+                                        <!--                                                    </div>-->
+                                        <!--                                                    &lt;!&ndash; Col 3: Total Amount &ndash;&gt;-->
+                                        <!--                                                    <div style="flex: 1; text-align: right;">-->
+                                        <!--                                                        <table class="table table-sm table-borderless mb-0"-->
+                                        <!--                                                               style="width: auto; margin: 0;">-->
+                                        <!--                                                            <tr>-->
+                                        <!--                                                                <td style="padding: 2px 6px;">-->
+                                        <!--                                                                    <strong>Total Amount:</strong>-->
+                                        <!--                                                                </td>-->
+                                        <!--                                                                <td style="padding: 2px 6px; font-weight: bold;">-->
+                                        <!--                                                                    <strong>₹-->
+                                        <!--                                                                        <span t-esc="sum(o.return_line_ids.mapped('actual_total'))"-->
+                                        <!--                                                                              t-options='{"widget": "monetary", "display_currency": user.company_id.currency_id}'/>-->
+                                        <!--                                                                    </strong>-->
+                                        <!--                                                                </td>-->
+                                        <!--                                                            </tr>-->
+                                        <!--                                                        </table>-->
+                                        <!--                                                    </div>-->
+                                        <!--                                                </div>-->
+                                        <!--                                            </td>-->
+                                        <!--                                        </tr>-->
                                     </tbody>
                                 </table>
                             </div>
