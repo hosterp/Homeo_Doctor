@@ -34,8 +34,10 @@
                         <thead>
                             <tr>
                                 <th>SL No</th>
-                                <th>Patient Name</th>
                                 <th>UHID</th>
+                                <th>Bill No</th>
+                                <th>Patient Name</th>
+                                <th>Date</th>
                                 <th>Amount</th>
                             </tr>
                         </thead>
@@ -50,10 +52,16 @@
                                             <t t-set="counter" t-value="counter + 1"/>
                                         </td>
                                         <td>
-                                            <t t-esc="data['patient_name']"/>
+                                            <t t-esc="data['mrd_op_no']"/>
                                         </td>
                                         <td>
-                                            <t t-esc="data['mrd_op_no']"/>
+                                            <t t-esc="data['bill_no']"/>
+                                        </td>
+                                         <td>
+                                            <t t-esc="data['patient_name']"/>
+                                        </td>
+                                         <td>
+                                            <t t-esc="data['date']"/>
                                         </td>
                                         <td>
                                             <t t-esc="data['total_bill_amount']"/>
@@ -64,7 +72,7 @@
                             </t>
 
                             <tr>
-                                <td colspan="3" style="text-align: right;">
+                                <td colspan="5" style="text-align: right;">
                                     <strong>Total</strong>
                                 </td>
                                 <td>
