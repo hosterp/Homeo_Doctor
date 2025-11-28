@@ -96,7 +96,8 @@ class PatientReportWizard(models.TransientModel):
                 'age': app.age,
                 'gender': app.gender,
                 'phone': app.phone_number,
-                'doctor_name': app.doctor_ids.name if app.doctor_ids else '',
+                # 'doctor_name': app.doctor_ids.name if app.doctor_ids else '',
+                'doctor_name': ', '.join(app.doctor_ids.mapped('name')) if app.doctor_ids else '',
                 'consultation_fee': app.register_total_amount,
                 'bill_number': app.appointment_reference,
             })

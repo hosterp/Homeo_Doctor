@@ -546,7 +546,8 @@ class PatientReportController(http.Controller):
                 'age': a.age,
                 'gender': a.gender,
                 'phone': a.phone_number,
-                'doctor': a.doctor_ids.name if a.doctor_ids else '',
+                # 'doctor': a.doctor_ids.name if a.doctor_ids else '',
+                'doctor': ', '.join(a.doctor_ids.mapped('name')) if a.doctor_ids else '',
                 'consultation_fee': a.register_total_amount or 0,
                 'bill_number': a.appointment_reference,
             })
