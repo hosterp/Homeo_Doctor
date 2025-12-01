@@ -197,16 +197,18 @@ class DoctorLabReportController(http.Controller):
         if bill_type:
             domain.append(('bill_type', '=', bill_type))
 
-        # Search records with applied filters
-        lab_reports = request.env['doctor.lab.report'].sudo().search(domain)
+        lab_reports = request.env['doctor.lab.report'].sudo().search(
+            domain,
+            order='date asc'
+        )
 
         # Create an in-memory output file
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('Lab Reports')
-
+        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
         # Define the headers
-        headers = ['SL No', 'Patient Name', 'MRD/OP No', 'Total Bill Amount']
+        headers = ['SL No','Date','Bill Number', 'Patient Name', 'MRD/OP No','Doctor', 'Total Bill Amount']
         for col_num, header in enumerate(headers):
             worksheet.write(0, col_num, header)
 
@@ -217,9 +219,12 @@ class DoctorLabReportController(http.Controller):
 
         for report in lab_reports:
             worksheet.write(row, 0, sl_no)  # Serial number
-            worksheet.write(row, 1, report.patient_name or '')
-            worksheet.write(row, 2, report.user_ide.display_name or '')
-            worksheet.write(row, 3, report.total_bill_amount or 0.0)
+            worksheet.write(row, 1, report.date,date_format)  # Serial number
+            worksheet.write(row, 2, report.report_reference)  # Serial number
+            worksheet.write(row, 3, report.patient_name or '')
+            worksheet.write(row, 4, report.user_ide.display_name or '')
+            worksheet.write(row, 5, report.doctor_id.display_name or 0.0)
+            worksheet.write(row, 6, report.total_bill_amount or 0.0)
 
             # Add to total
             total_amount += report.total_bill_amount or 0.0
@@ -228,8 +233,8 @@ class DoctorLabReportController(http.Controller):
             sl_no += 1
 
         # Write Total at the end
-        worksheet.write(row, 2, 'Total')  # Label in column 3
-        worksheet.write(row, 3, total_amount)  # Total value in column 4
+        worksheet.write(row, 5, 'Total')  # Label in column 3
+        worksheet.write(row, 6, total_amount)  # Total value in column 4
 
         workbook.close()
         output.seek(0)
