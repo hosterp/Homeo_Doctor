@@ -779,16 +779,22 @@ class HSNExcelReportController(http.Controller):
             payment_method = kwargs.get('payment_method')  # e.g., 'cash', 'card', 'upi', 'credit'
 
             # Build domain filters
+            # Build domain filters
             domain = [
                 ('pharmacy_id.date', '>=', from_date_dt),
                 ('pharmacy_id.date', '<=', to_date_dt)
             ]
-            if op_category=='op':
-                domain.append(('pharmacy_id.op_category', 'not in', ['ip', 'others']))
-            else :
-                domain.append(('pharmacy_id.op_category', '=', op_category))
+
+            # Category filter applied only if selected
+            if op_category:
+                if op_category == 'op':
+                    domain.append(('pharmacy_id.op_category', 'not in', ['ip', 'others']))
+                else:
+                    domain.append(('pharmacy_id.op_category', '=', op_category))
+
+            # Payment method filter applied only if selected
+
             if payment_method:
-                # Note: Field in PDF is `payment_mathod` (check model spelling)
                 domain.append(('pharmacy_id.payment_mathod', '=', payment_method))
 
             # Fetch lines based on domain
