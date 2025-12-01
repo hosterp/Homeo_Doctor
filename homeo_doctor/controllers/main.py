@@ -658,13 +658,17 @@ class BillGSTReportExcel(http.Controller):
             ('date', '>=', from_date_dt),
             ('date', '<=', to_date_dt),
         ]
-        if op_category == 'op':
-            domain.append(('op_category', 'not in', ['ip', 'others']))
-        else:
-            domain.append(('op_category', '=', op_category))
+        if op_category:
+            if op_category == 'op':
+                domain.append(('op_category', 'not in', ['ip', 'others']))
+            else:
+                domain.append(('op_category', '=', op_category))
+
+        # Apply payment method only if selected
         if payment_method:
             domain.append(('payment_mathod', '=', payment_method))
 
+        # Fetch records
         bills = request.env['pharmacy.description'].sudo().search(domain)
 
         # Create Excel
