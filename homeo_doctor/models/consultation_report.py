@@ -52,10 +52,12 @@ class PatientReportWizard(models.TransientModel):
         domain = [
             ('time', '>=', date_from_dt),
             ('time', '<=', date_to_dt),
+            ('status','!=','cancelled')
         ]
         domain2 = [
                 ('appointment_date', '>=', date_from_dt),
                 ('appointment_date', '<=', date_to_dt),
+                ('status', '!=', 'cancelled')
             ]
 
         # Add doctor filter only when selected
@@ -99,7 +101,7 @@ class PatientReportWizard(models.TransientModel):
                 # 'doctor_name': app.doctor_ids.name if app.doctor_ids else '',
                 'doctor_name': ', '.join(app.doctor_ids.mapped('name')) if app.doctor_ids else '',
                 'consultation_fee': app.register_total_amount,
-                'bill_number': app.appointment_reference,
+                'bill_number': app.payment_receipt_number,
             })
         total_fee = sum(item.get('consultation_fee', 0) for item in report_data)
         report_data.sort(key=lambda x: x['date'])
