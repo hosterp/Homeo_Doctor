@@ -46,7 +46,8 @@
                 <!-- Filter Domain -->
                 <t t-set="domain" t-value="[
                     ('pharmacy_id.date', '&gt;=', docs.from_date),
-                    ('pharmacy_id.date', '&lt;=', docs.to_date)
+                    ('pharmacy_id.date', '&lt;=', docs.to_date),
+                    ('pharmacy_id.status', '!=', 'cancelled'),
                 ]"/>
                 <t t-if="docs.op_category == 'op'">
                     <!-- Show only IP -->

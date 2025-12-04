@@ -45,7 +45,9 @@
 
                     <t t-set="domain" t-value="[
                 ('date', '&gt;=', docs.from_date),
-                ('date', '&lt;=', docs.to_date)]"/>
+                ('date', '&lt;=', docs.to_date),
+                ('status', '!=', 'cancelled'),
+                ]"/>
                     <t t-if="docs.op_category == 'op'">
                         <!-- Show only IP -->
                         <t t-set="domain" t-value="domain + [('op_category', 'not in', ['ip', 'others'])]"/>
