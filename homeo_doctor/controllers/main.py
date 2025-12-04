@@ -812,10 +812,21 @@ class HSNExcelReportController(http.Controller):
         @http.route(['/report/excel/hsn_gst_summary'], type='http', auth='user')
         def generate_hsn_excel(self, from_date, to_date, **kwargs):
             # Convert dates to datetime
-            from_date_dt = datetime.combine(datetime.strptime(from_date, '%Y-%m-%d').date(), time.min)
-            to_date_dt = datetime.combine(datetime.strptime(to_date, '%Y-%m-%d').date(), time.max)
+            user_tz = pytz.timezone(request.env.user.tz or 'Asia/Kolkata')
 
-            # Extract optional filters from kwargs (same as PDF)
+            from_date_dt = None
+            to_date_dt = None
+
+            if from_date:
+                from_date_dt = user_tz.localize(
+                    datetime.combine(datetime.strptime(from_date, '%Y-%m-%d').date(), time.min)
+                ).astimezone(pytz.utc)
+
+            if to_date:
+                to_date_dt = user_tz.localize(
+                    datetime.combine(datetime.strptime(to_date, '%Y-%m-%d').date(), time.max)
+                ).astimezone(pytz.utc)
+
             op_category = kwargs.get('op_category')  # e.g., 'op', 'ip', 'others'
             payment_method = kwargs.get('payment_method')  # e.g., 'cash', 'card', 'upi', 'credit'
 
