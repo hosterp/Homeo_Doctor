@@ -514,6 +514,7 @@ class PatientReportController(http.Controller):
             domain_reg.append(('time', '<=', date_to_dt))
         if doctor_id:
             domain_reg.append(('doc_name', '=', int(doctor_id)))
+        domain_reg.append(('status', '!=', 'cancelled'))
 
         patients_reg = request.env['patient.reg'].sudo().search(domain_reg)
 
@@ -540,7 +541,7 @@ class PatientReportController(http.Controller):
             domain_app.append(('appointment_date', '<=', date_to_dt))
         if doctor_id:
             domain_app.append(('doctor_ids', '=', int(doctor_id)))
-
+        domain_app.append(('status', '!=', 'cancelled'))
         patients_app = request.env['patient.appointment'].sudo().search(domain_app)
 
         for a in patients_app:
@@ -554,7 +555,7 @@ class PatientReportController(http.Controller):
                 # 'doctor': a.doctor_ids.name if a.doctor_ids else '',
                 'doctor': ', '.join(a.doctor_ids.mapped('name')) if a.doctor_ids else '',
                 'consultation_fee': a.register_total_amount or 0,
-                'bill_number': a.appointment_reference,
+                'bill_number': a.payment_receipt_number,
             })
 
         # --------------------------------
@@ -691,7 +692,7 @@ class BillGSTReportExcel(http.Controller):
         # Apply payment method only if selected
         if payment_method:
             domain.append(('payment_mathod', '=', payment_method))
-
+        domain.append(('status', '!=', 'cancelled'))
         # Fetch records
         bills = request.env['pharmacy.description'].sudo().search(domain)
 
@@ -849,6 +850,7 @@ class HSNExcelReportController(http.Controller):
             if payment_method:
                 domain.append(('pharmacy_id.payment_mathod', '=', payment_method))
 
+            domain.append(('pharmacy_id.status', '!=', 'cancelled'))
             # Fetch lines based on domain
             lines = request.env['pharmacy.prescription.line'].sudo().search(domain)
             # print("LINES COUNT:", len(lines))
