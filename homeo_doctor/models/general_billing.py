@@ -390,9 +390,22 @@ class GeneralBilling(models.Model):
     def create(self, vals):
         """Generate a unique billing number in the format: 000001/24-25"""
         if vals.get('bill_number', 'New') == 'New':
-            current_year = datetime.now().year
-            next_year = current_year + 1
-            year_range = f"{str(current_year)[-2:]}-{str(next_year)[-2:]}"
+            # current_year = datetime.now().year
+            # next_year = current_year + 1
+            # year_range = f"{str(current_year)[-2:]}-{str(next_year)[-2:]}"
+
+            #james
+            today = datetime.now()  # keep as datetime object
+
+            # Indian Fiscal Year calculation (April 1 – March 31)
+            if today.month >= 4:  # April–December
+                start_year = today.year
+                end_year = today.year + 1
+            else:  # January–March
+                start_year = today.year - 1
+                end_year = today.year
+
+            fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
             # Get the next sequence number
             sequence_number = self.env['ir.sequence'].next_by_code('general.billing')
@@ -401,7 +414,7 @@ class GeneralBilling(models.Model):
             if not sequence_number:
                 sequence_number = '1'
             formatted_seq = str(sequence_number).zfill(4)
-            vals['bill_number'] = f"{formatted_seq}/{year_range}"
+            vals['bill_number'] = f"{formatted_seq}/{fiscal_suffix}"
 
         return super(GeneralBilling, self).create(vals)
 
