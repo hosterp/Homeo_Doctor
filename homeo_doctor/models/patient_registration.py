@@ -743,10 +743,27 @@ class PatientRegistration(models.Model):
         padded_seq = str(raw_seq).zfill(4)
 
         # if admitted_date is empty, use today's date
+        # today = admitted_date or date.today()
+        # year_start = today.year % 100
+        # year_end = (today.year + 1) % 100
+        # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+        #
+        # return f"{padded_seq}/{fiscal_suffix}"
+
+        #james
+
+        # if admitted_date is empty, use today's date
         today = admitted_date or date.today()
-        year_start = today.year % 100
-        year_end = (today.year + 1) % 100
-        fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+        # Indian Fiscal Year calculation (April 1 – March 31)
+        if today.month >= 4:  # April–December
+            start_year = today.year
+            end_year = today.year + 1
+        else:  # January–March
+            start_year = today.year - 1
+            end_year = today.year
+
+        fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
         return f"{padded_seq}/{fiscal_suffix}"
 
@@ -778,15 +795,30 @@ class PatientRegistration(models.Model):
                 # a) grab next sequence (must exist in Settings → Technical → Sequences)
                 raw_seq = self.env['ir.sequence'].next_by_code('discharge.bill') or '0'
                 padded_seq = str(raw_seq).zfill(4)
+                #
+                # # b) compute fiscal year suffix: e.g. if today is July 2025 ⇒ "25-26"
+                # today = date.today()
+                # year_start = today.year % 100
+                # year_end = (today.year + 1) % 100
+                # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+                #
+                # # c) assign it
+                # record.discharge_bill_number = f"{padded_seq}/{fiscal_suffix}"
+                #james
 
-                # b) compute fiscal year suffix: e.g. if today is July 2025 ⇒ "25-26"
                 today = date.today()
-                year_start = today.year % 100
-                year_end = (today.year + 1) % 100
-                fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+                if today.month >= 4:  # April–December
+                    start_year = today.year
+                    end_year = today.year + 1
+                else:  # January–March
+                    start_year = today.year - 1
+                    end_year = today.year
+
+                fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
                 # c) assign it
                 record.discharge_bill_number = f"{padded_seq}/{fiscal_suffix}"
+
             if admitted_patient:
                 admitted_patient.status = 'discharged'
                 rec = self.env['discharged.patient.record'].create({
@@ -1001,10 +1033,23 @@ class PatientRegistration(models.Model):
             raw_seq = self.env['ir.sequence'].next_by_code('patient.bill') or '0'
             padded_seq = str(raw_seq).zfill(4)
 
+            # today = date.today()
+            # year_start = today.year % 100
+            # year_end = (today.year + 1) % 100
+            # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+            #
+            # self.bill_number = f"{padded_seq}/{fiscal_suffix}"
+            #james
+
             today = date.today()
-            year_start = today.year % 100
-            year_end = (today.year + 1) % 100
-            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+            if today.month >= 4:  # April–December
+                start_year = today.year
+                end_year = today.year + 1
+            else:  # January–March
+                start_year = today.year - 1
+                end_year = today.year
+
+            fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
             self.bill_number = f"{padded_seq}/{fiscal_suffix}"
 
@@ -1036,12 +1081,26 @@ class PatientRegistration(models.Model):
             raw_seq = self.env['ir.sequence'].next_by_code('admitted.bill') or '0'
             padded_seq = str(raw_seq).zfill(4)
 
-            today = date.today()
-            year_start = today.year % 100
-            year_end = (today.year + 1) % 100
-            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+            # today = date.today()
+            # year_start = today.year % 100
+            # year_end = (today.year + 1) % 100
+            # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
 
+            today = date.today()
+
+            # Indian Fiscal Year calculation (April 1 – March 31)
+            if today.month >= 4:  # April–December
+                start_year = today.year
+                end_year = today.year + 1
+            else:  # January–March
+                start_year = today.year - 1
+                end_year = today.year
+
+            fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
+
+            # self.admitted_bill_number = f"{padded_seq}/{fiscal_suffix}"
             self.admitted_bill_number = f"{padded_seq}/{fiscal_suffix}"
+
         admission_model = self.env['hospital.admitted.patient']
         registration_model = self.env['patient.reg']
         room_model = self.env['hospital.room']
