@@ -963,9 +963,20 @@ class IPPartBilling(models.Model):
     def create(self, vals):
         """Generate a unique billing number in the format: 0001/24-25"""
         if vals.get('bill_number', 'New') == 'New':
-            current_year = datetime.now().year
-            next_year = current_year + 1
-            year_range = f"{str(current_year)[-2:]}-{str(next_year)[-2:]}"
+            # current_year = datetime.now().year
+            # next_year = current_year + 1
+            # year_range = f"{str(current_year)[-2:]}-{str(next_year)[-2:]}"
+
+            today = datetime.now()  # keep as datetime object
+
+            if today.month >= 4:  # April–December
+                start_year = today.year
+                end_year = today.year + 1
+            else:  # January–March
+                start_year = today.year - 1
+                end_year = today.year
+
+            year_range = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
             # Get the next sequence number
             sequence_number = self.env['ir.sequence'].next_by_code('ip.part.billing')
