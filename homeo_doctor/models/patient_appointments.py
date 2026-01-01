@@ -151,11 +151,24 @@ class PatientAppointment(models.Model):
                 # Zero-pad to 4 digits
                 padded_seq = str(raw_seq).zfill(4)
 
-                # Compute fiscal year suffix (e.g. if today is June 2025 → "25-26")
+                # # Compute fiscal year suffix (e.g. if today is June 2025 → "25-26")
+                # today = datetime.today().date()
+                # year_start = today.year % 100
+                # year_end = (today.year + 1) % 100
+                # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+                #
+                # appointment.payment_receipt_number = f"{padded_seq}/{fiscal_suffix}"
+
+                #james
                 today = datetime.today().date()
-                year_start = today.year % 100
-                year_end = (today.year + 1) % 100
-                fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+                if today.month >= 4:  # April–December
+                    start_year = today.year
+                    end_year = today.year + 1
+                else:  # January–March
+                    start_year = today.year - 1
+                    end_year = today.year
+
+                fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
                 appointment.payment_receipt_number = f"{padded_seq}/{fiscal_suffix}"
 
