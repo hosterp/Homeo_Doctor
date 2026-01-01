@@ -591,10 +591,22 @@ class DoctorLabReport(models.Model):
         if vals.get('report_reference', _('New')) == _('New'):
             seq_number = self.env['ir.sequence'].next_by_code('doctor.lab.report') or '0000'
 
+            # today = date.today()
+            # year_start = today.year % 100
+            # year_end = (today.year + 1) % 100
+            # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+            #james
             today = date.today()
-            year_start = today.year % 100
-            year_end = (today.year + 1) % 100
-            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+            if today.month >= 4:  # April–December
+                start_year = today.year
+                end_year = today.year + 1
+            else:  # January–March
+                start_year = today.year - 1
+                end_year = today.year
+
+            fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
             vals['report_reference'] = f"{seq_number}/{fiscal_suffix}"
 
