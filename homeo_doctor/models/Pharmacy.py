@@ -25,7 +25,7 @@ class PharmacyDescription(models.Model):
     partner_id = fields.Many2one('res.partner', string="Related Partner")
     total_item=fields.Integer(string='Total Item', compute="_compute_totals")
     total_qty=fields.Integer(string='Total Qty', compute="_compute_totals")
-    total_amount=fields.Integer(string='Total Amount', compute="_compute_totals")
+    total_amount=fields.Integer(string='Total Amount', compute="_compute_totals",)
     payment_mathod=fields.Selection([('cash', 'Cash'), ('card', 'Card'), ('upi', 'UPI'),('credit','Credit')],string='Payment Method',default='cash')
     paid_amount = fields.Integer(string='Paid Amount')
     balance = fields.Integer(string='Balance Amount')
@@ -258,12 +258,29 @@ class PharmacyDescription(models.Model):
     def create(self, vals):
         if vals.get('bill_number', 'New') == 'New':
             seq_number = self.env['ir.sequence'].next_by_code('pharmacy.description') or '0000'
+            # today = date.today()
+            # year_start = today.year % 100
+            # year_end = (today.year + 1) % 100
+            # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+            #
+            # vals['bill_number'] = f"{seq_number}/{fiscal_suffix}"
+
+            #james
+
             today = date.today()
-            year_start = today.year % 100
-            year_end = (today.year + 1) % 100
-            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+
+            # Indian Fiscal Year calculation (April 1 – March 31)
+            if today.month >= 4:  # April–December
+                start_year = today.year
+                end_year = today.year + 1
+            else:  # January–March
+                start_year = today.year - 1
+                end_year = today.year
+
+            fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
             vals['bill_number'] = f"{seq_number}/{fiscal_suffix}"
+
         res = super(PharmacyDescription, self).create(vals)
         res._process_payment()
 
