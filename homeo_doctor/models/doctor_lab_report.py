@@ -46,7 +46,7 @@ class DoctorLabReport(models.Model):
     age = fields.Integer('Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     remarks = fields.Text("Remarks")
-    staff_name = fields.Many2one('hr.employee', "Staff Name")
+    staff_name = fields.Many2one('hr.employee', "Staff Name",default=lambda self: self._default_staff(), required=True)
     staff_pwd = fields.Char(string='Staff Password')
     o_c_percentage = fields.Char("OC%")
     o_c = fields.Char("OC")
@@ -98,6 +98,12 @@ class DoctorLabReport(models.Model):
     ], string="Active Investigation Type", default='all')
     admitted_patient_id = fields.Many2one('hospital.admitted.patient', string="Admitted Patient")
     discount_amount = fields.Integer(string="Discount amount")
+
+    def _default_staff(self):
+        employee = self.env['hr.employee'].sudo().search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+        return employee.id
 
     @api.onchange('user_ide', 'date')
     def _onchange_mrd_no_update_doctor(self):
@@ -504,7 +510,7 @@ class DoctorLabReport(models.Model):
 
     def action_confirm_payment(self):
         if self.staff_name and self.staff_pwd:
-            employee = self.staff_name
+            employee = self.staff_name.sudo()
 
             if not employee.staff_password_hash:
                 raise ValidationError("This staff has no password set.")
