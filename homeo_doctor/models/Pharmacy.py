@@ -789,12 +789,12 @@ class PharmacyReturn(models.Model):
             rec.total_return_amount = sum(line.subtotal for line in rec.return_line_ids)
 
     def action_validate_return(self):
-        StockEntry = self.env['stock.entry']
-        for rec in self:
+        StockEntry = self.sudo().env['stock.entry']
+        for rec in self.sudo():
             if rec.original_sale_id:
                 original = rec.original_sale_id
                 original.bill_amount -= rec.total_return_amount
-                original.write({'bill_amount': original.bill_amount})
+                original.sudo().write({'bill_amount': original.bill_amount})
 
                 # Create Stock Entry for each returned line
                 for line in rec.return_line_ids:
@@ -820,7 +820,7 @@ class PharmacyReturn(models.Model):
                         'uom_id': line.product_id.uom_id.id if line.product_id.uom_id else False,
                         'state': 'confirmed',
                     })
-        return self.env.ref('homeo_doctor.action_pharmacy_return_report').report_action(self)
+        return self.sudo().env.ref('homeo_doctor.action_pharmacy_return_report').report_action(self)
 
     def amount_to_text_indian(self):
         """Convert amount to words in Indian format (Rupees and Paise)."""
@@ -1075,7 +1075,7 @@ class IPReturn(models.Model):
             if rec.original_bill_id:
                 original = rec.original_bill_id
                 original.bill_amount -= rec.total_return_amount
-                original.write({'bill_amount': original.bill_amount})
+                original.sudo().write({'bill_amount': original.bill_amount})
 
             # Create Stock Entry for each returned line
             for line in rec.return_line_ids:
@@ -1095,7 +1095,7 @@ class IPReturn(models.Model):
                     'uom_id': line.medicine_id.uom_id.id if line.medicine_id.uom_id else False,
                     'state': 'confirmed',
                 })
-            rec.write({'state': 'returned'})
+            rec.sudo().write({'state': 'returned'})
 
 
 class IPReturnLine(models.Model):
