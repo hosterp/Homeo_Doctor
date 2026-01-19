@@ -370,7 +370,9 @@ class PharmacyDescription(models.Model):
                             remaining_qty -= entry.quantity
                             entry.quantity = 0
                     line.stock_in_hand = sum(stock_entries.mapped('quantity'))
-            record.status = 'paid'
+            self.sudo().write({
+                'status': 'paid',
+            })
 
         # return {
         #     'type': 'ir.actions.client',
@@ -383,7 +385,7 @@ class PharmacyDescription(models.Model):
         #     }
         # }
 
-        return self.env.ref('homeo_doctor.action_pharmacy_report').report_action(self)
+        return self.sudo().env.ref('homeo_doctor.action_pharmacy_report').report_action(self)
         # partner = False
         # if self.patient_id and hasattr(self.patient_id, 'partner_id') and self.patient_id.partner_id:
         #     partner = self.patient_id.partner_id.id
