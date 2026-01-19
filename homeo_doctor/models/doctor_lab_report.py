@@ -520,7 +520,7 @@ class DoctorLabReport(models.Model):
         else:
             raise ValidationError("Please enter both staff name and password.")
 
-        for rec in self:
+        for rec in self.sudo():
             # Determine status based on vssc_check and mode_of_payment
             if rec.vssc_check:
                 rec.status = 'paid'
@@ -564,7 +564,7 @@ class DoctorLabReport(models.Model):
 
         # Add the lab lines to the result page
         if lab_lines:
-            lab_result_page.write({'lab_line_ids': lab_lines})
+            lab_result_page.sudo().write({'lab_line_ids': lab_lines})
 
         # Return a notification message instead of opening a wizard
         return {

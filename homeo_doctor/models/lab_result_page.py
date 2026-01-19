@@ -1,6 +1,5 @@
 from odoo import api, fields, models, _
-
-
+from odoo.odoo.exceptions import AccessError
 
 
 class LabResultPage(models.Model):
@@ -88,18 +87,31 @@ class LabResultPage(models.Model):
     def action_sample_collected(self):
         """Change status to 'Sample Collected' and update billing."""
         for record in self:
-            record.sample_status = 'sample_collected'
+
+
+            record.sudo().write({
+                'sample_status': 'sample_collected',
+                'sample_collected': fields.Datetime.now(),
+            })
+
             if record.bill_number:
-                record.bill_number.sample_status = 'sample_collected'
-                record.sample_collected = fields.Datetime.now()
+                record.bill_number.sudo().write({
+                    'sample_status': 'sample_collected',
+                })
 
     def action_result_ready(self):
         """Change status to 'Result Ready' and update billing."""
         for record in self:
-            record.result_status = 'result_ready'
+
+            record.sudo().write({
+                'result_status': 'result_ready',
+                'test_on': fields.Datetime.now(),
+            })
+
             if record.bill_number:
-                record.bill_number.result_status = 'result_ready'
-                record.test_on = fields.Datetime.now()
+                record.bill_number.sudo().write({
+                    'result_status': 'result_ready',
+                })
 
     @api.onchange('from_date', 'to_date')
     def _onchange_date_filter(self):
