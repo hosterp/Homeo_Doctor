@@ -1,5 +1,6 @@
 from odoo import api, fields, models, _
-from odoo.odoo.exceptions import AccessError
+from odoo.exceptions import AccessError
+
 
 
 class LabResultPage(models.Model):
