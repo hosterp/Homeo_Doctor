@@ -606,7 +606,7 @@
                                         <field name="staff_name"/>
                                     </group>
                                     <group>
-                                        <field name="staff_pwd"/>
+                                        <field name="staff_pwd" password="True"/>
                                     </group>
                                     <group>
                                         <field name="remarks"/>
