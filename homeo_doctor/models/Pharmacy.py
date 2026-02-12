@@ -261,8 +261,31 @@ class PharmacyDescription(models.Model):
             rec.total_qty = sum(line.qty for line in rec.prescription_line_ids)
             rec.total_amount = sum(line.rate for line in rec.prescription_line_ids)
 
+    def password_validation(self):
+        if self.staff_name and self.staff_pwd:
+            employee = self.staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
+
+
     @api.model
     def create(self, vals):
+        # if self.staff_name and self.staff_pwd:
+        #     employee = self.staff_name
+        #
+        #     if not employee.staff_password_hash:
+        #         raise ValidationError("This staff has no password set.")
+        #
+        #     if self.staff_pwd != employee.staff_password_hash:
+        #         raise ValidationError("The password does not match.")
+        # else:
+        #     raise ValidationError("Please enter both staff name and password.")
         if vals.get('bill_number', 'New') == 'New':
             seq_number = self.env['ir.sequence'].next_by_code('pharmacy.description') or '0000'
             # today = date.today()
@@ -289,6 +312,7 @@ class PharmacyDescription(models.Model):
             vals['bill_number'] = f"{seq_number}/{fiscal_suffix}"
 
         res = super(PharmacyDescription, self).create(vals)
+        res.password_validation()
         res._process_payment()
 
         # # Ensure partner creation is only done if necessary
@@ -349,7 +373,7 @@ class PharmacyDescription(models.Model):
 
     def action_register_payment(self):
         if self.staff_name and self.staff_pwd:
-            employee = self.staff_name.sudo()
+            employee = self.staff_name
 
             if not employee.staff_password_hash:
                 raise ValidationError("This staff has no password set.")
