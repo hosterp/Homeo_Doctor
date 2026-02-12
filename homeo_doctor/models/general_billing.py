@@ -55,7 +55,7 @@ class GeneralBilling(models.Model):
     bill_by=fields.Char(string='Bill By')
     remarks =fields.Char(string='Remarks')
     staff_pwd=fields.Char(string='Staff Password')
-    staff_name=fields.Many2one('hr.employee',string='Staff Name')
+    staff_name = fields.Many2one('hr.employee', "Staff Name", default=lambda self: self._default_staff(), required=True)
     amount_paid = fields.Integer(string="Amount Paid")
     balance = fields.Integer(string="Balance")
     status = fields.Selection([
@@ -74,6 +74,12 @@ class GeneralBilling(models.Model):
                           ('discharge','Discharge')
                           ], string="Status")
     vssc_boolean=fields.Boolean(string='VSSC')
+
+    def _default_staff(self):
+        employee = self.env['hr.employee'].sudo().search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+        return employee.id
 
     @api.onchange('mrd_no', 'bill_date')
     def _onchange_mrd_no_update_doctor(self):
@@ -386,6 +392,18 @@ class GeneralBilling(models.Model):
             self.doctor = self.mrd_no.doc_name
             self.vssc_boolean = self.mrd_no.vssc_boolean
 
+    def password_validation(self):
+        if self.staff_name and self.staff_pwd:
+            employee = self.staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
+
     @api.model
     def create(self, vals):
         """Generate a unique billing number in the format: 000001/24-25"""
@@ -416,7 +434,9 @@ class GeneralBilling(models.Model):
             formatted_seq = str(sequence_number).zfill(4)
             vals['bill_number'] = f"{formatted_seq}/{fiscal_suffix}"
 
-        return super(GeneralBilling, self).create(vals)
+        res = super(GeneralBilling, self).create(vals)
+        res.password_validation()
+        return res
 
     @api.onchange('department')
     def _onchange_department(self):
