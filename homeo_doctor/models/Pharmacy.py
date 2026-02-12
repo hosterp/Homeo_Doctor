@@ -34,7 +34,8 @@ class PharmacyDescription(models.Model):
     bill_by = fields.Char(string='Bill By')
     remarks = fields.Char(string='Remarks')
     staff_pwd = fields.Char(string='Staff Password')
-    staff_name = fields.Many2one('hr.employee',string='Staff Name')
+    # staff_name = fields.Many2one('hr.employee',string='Staff Name')
+    staff_name = fields.Many2one('hr.employee', "Staff Name", default=lambda self: self._default_staff(), required=True)
     description_line_ids = fields.One2many('pharmacy.prescription.line', 'description_id', string="Lines")
     bill_number = fields.Char(string="Bill Number", readonly=True, copy=False, default='New')
     admitted_boolean=fields.Boolean('Admitted')
@@ -52,6 +53,12 @@ class PharmacyDescription(models.Model):
     vssc_boolean=fields.Boolean(string='VSSC')
     age= fields.Integer(string='Age')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
+
+    def _default_staff(self):
+        employee = self.env['hr.employee'].sudo().search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+        return employee.id
 
     @api.onchange('uhid_id', 'date')
     def _onchange_mrd_no_update_doctor(self):
@@ -342,7 +349,7 @@ class PharmacyDescription(models.Model):
 
     def action_register_payment(self):
         if self.staff_name and self.staff_pwd:
-            employee = self.staff_name
+            employee = self.staff_name.sudo()
 
             if not employee.staff_password_hash:
                 raise ValidationError("This staff has no password set.")
