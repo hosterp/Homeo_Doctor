@@ -35,6 +35,7 @@ odoo.define('homeo_doctor.title', function (require) {
     const RESTRICTED_MODELS = [
         'stock.transfer',
         'doctor.lab.report',
+        'general.billing',
 
     ];
 
