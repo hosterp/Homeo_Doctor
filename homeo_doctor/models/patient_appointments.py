@@ -1,7 +1,7 @@
 from odoo import api, fields, models, _
 import datetime
 from datetime import datetime, date
-
+from odoo.exceptions import ValidationError
 from dateutil.relativedelta import relativedelta
 
 from odoo.addons.test_convert.tests.test_env import record
@@ -53,7 +53,7 @@ class PatientAppointment(models.Model):
     register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")
     register_amount_paid = fields.Integer(string="Amount Paid")
     register_balance = fields.Integer(string="Balance")
-    register_staff_name = fields.Many2one('hr.employee', "Staff Name")
+    register_staff_name = fields.Many2one('hr.employee', "Staff Name",default=lambda self: self._default_staff(), required=True)
     register_staff_password = fields.Char("Password")
     register_mode_payment = fields.Selection([('cash', 'Cash'),
                                               ('card', 'Card'),
@@ -66,6 +66,12 @@ class PatientAppointment(models.Model):
     differance_appointment_days = fields.Integer("No of Days")
     spl_boolean = fields.Boolean(string='Spl Case', default=False)
     staff_boolean = fields.Boolean(string='Staff', default=False)
+
+    def _default_staff(self):
+        employee = self.env['hr.employee'].sudo().search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+        return employee.id
 
     def amount_to_text_indian(self):
         """Convert amount to words in Indian format (Rupees and Paise)."""
@@ -144,6 +150,16 @@ class PatientAppointment(models.Model):
     )
 
     def action_confirm_payment(self):
+        if self.register_staff_name and self.register_staff_password:
+            employee = self.register_staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.register_staff_password != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
         for appointment in self:
             if not appointment.payment_receipt_number or appointment.payment_receipt_number == '/':
                 # Fetch next from sequence 'payment.receipt'
@@ -794,6 +810,17 @@ class PatientAppointment(models.Model):
         #     'res_id': patient_registration.id,
         #     'target': 'new',
         # }
+    def password_validation(self):
+        if self.register_staff_name and self.register_staff_password:
+            employee = self.register_staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.register_staff_password != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
 
     @api.model
     def create(self, vals):
@@ -825,7 +852,9 @@ class PatientAppointment(models.Model):
                 # No previous appointment found; apply the default consultation fee
                 vals['consultation_fee'] = consultation_fee
 
-        return super(PatientAppointment, self).create(vals)
+        res= super(PatientAppointment, self).create(vals)
+        res.password_validation()
+        return res
 
     @api.onchange('department')
     def _onchange_department_id(self):

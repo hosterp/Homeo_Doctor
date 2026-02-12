@@ -38,6 +38,8 @@ odoo.define('homeo_doctor.title', function (require) {
         'general.billing',
         'ip.part.billing',
         'ip.insurance.billing',
+        'advance.amount',
+        'patient.appointment',
 
     ];
 
