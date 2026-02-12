@@ -36,6 +36,7 @@ odoo.define('homeo_doctor.title', function (require) {
         'stock.transfer',
         'doctor.lab.report',
         'general.billing',
+        'ip.part.billing',
 
     ];
 
