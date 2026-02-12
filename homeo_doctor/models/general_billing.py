@@ -1122,7 +1122,7 @@ class IPInsuranceBilling(models.Model):
     bill_by=fields.Char(string='Bill By')
     remarks =fields.Char(string='Remarks')
     staff_pwd=fields.Char(string='Staff Password')
-    staff_name=fields.Many2one('hr.employee',string='Staff Name')
+    staff_name = fields.Many2one('hr.employee', "Staff Name", default=lambda self: self._default_staff(), required=True)
     amount_paid = fields.Integer(string="Amount Paid")
     balance = fields.Integer(string="Balance")
     status = fields.Selection([
@@ -1143,6 +1143,12 @@ class IPInsuranceBilling(models.Model):
     to_date = fields.Datetime('to Date')
     rent_full_day = fields.Float(string="Full Day Rent")
     rent_half_day = fields.Float(string="Half Day Rent")
+
+    def _default_staff(self):
+        employee = self.env['hr.employee'].sudo().search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+        return employee.id
 
 
     def action_observation(self):
@@ -1434,6 +1440,18 @@ class IPInsuranceBilling(models.Model):
                     lines = [(2, line.id) for line in rent_lines]
                     rec.general_bill_line_ids = lines
 
+    def password_validation(self):
+        if self.staff_name and self.staff_pwd:
+            employee = self.staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
+
     @api.model
     def create(self, vals):
         """Generate a unique billing number in the format: 0001/24-25"""
@@ -1451,6 +1469,7 @@ class IPInsuranceBilling(models.Model):
             vals['bill_number'] = f"{sequence_number}/{year_range}"
 
         record= super(IPInsuranceBilling, self).create(vals)
+        record.password_validation()
         if record.mrd_no:  # assuming you have a Many2one to patient.reg
             patient = record.mrd_no
             if not patient.insurance_boolean:

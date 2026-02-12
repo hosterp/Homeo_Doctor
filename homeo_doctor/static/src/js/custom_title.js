@@ -37,6 +37,7 @@ odoo.define('homeo_doctor.title', function (require) {
         'doctor.lab.report',
         'general.billing',
         'ip.part.billing',
+        'ip.insurance.billing',
 
     ];
 
