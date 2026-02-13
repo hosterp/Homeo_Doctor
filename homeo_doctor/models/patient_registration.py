@@ -107,7 +107,7 @@ class PatientRegistration(models.Model):
     temp_admission_total_amount = fields.Integer("Total Amount")
     admission_amount_paid = fields.Integer(string="Amount Paid")
     admission_balance = fields.Integer(string="Balance")
-    Staff_name = fields.Many2one('hr.employee', "Staff Name")
+    Staff_name = fields.Many2one('hr.employee', "Staff Name",default=lambda self: self._default_staff())
     staff_password = fields.Char("Password")
     admit_card_no = fields.Char(string="Card No")
     admit_bank = fields.Char(string="Bank")
@@ -746,26 +746,7 @@ class PatientRegistration(models.Model):
         default='/'
     )
 
-    # def write(self, vals):
-    #     # Avoid recursion by checking if 'Staff_name' is already in the vals or if it's already set
-    #     employee = self.env['hr.employee'].sudo().search([
-    #         ('user_id', '=', self.env.uid)
-    #     ], limit=1)
-    #
-    #     if employee:
-    #         self.Staff_name = employee.id
-    #     # Call the original write method to apply changes
-    #     res = super(PatientRegistration, self).write(vals)
-    #
-    #     # Add logic for other fields, like discharge_bill_number
-    #     if 'admitted_date' in vals and vals.get('admitted_date'):
-    #         for record in self:
-    #             record.discharge_bill_number = record._generate_bill_number(record.admitted_date)
-    #
-    #     return res
-
     def write(self, vals):
-        # Check if the status is 'proceed_discharge'
         if vals.get('status') == 'proceed_discharge':
             # Avoid recursion by checking if 'Staff_name' is already in vals or if it's already set
             if 'Staff_name' not in vals and not self.Staff_name:
@@ -775,21 +756,15 @@ class PatientRegistration(models.Model):
                 ], limit=1)
 
                 if employee:
-                    vals['Staff_name'] = employee.id  # Set the Staff_name in vals, not directly on the model
-
-        # Debugging: Print vals to see if 'Staff_name' is being passed
-        print(f"Vals before write: {vals}")
-
-        # Call the original write method to apply changes
+                    vals['Staff_name'] = employee.id
         res = super(PatientRegistration, self).write(vals)
 
-        # Add logic for other fields, like discharge_bill_number
-        if 'admitted_date' in vals and vals.get('admitted_date'):
-            for record in self:
+        for record in self:
+            if 'admitted_date' in vals and vals.get('admitted_date'):
                 record.discharge_bill_number = record._generate_bill_number(record.admitted_date)
 
-        return res
 
+        return res
 
     def _generate_bill_number(self, admitted_date):
         raw_seq = self.env['ir.sequence'].next_by_code('discharge.bill') or '0'

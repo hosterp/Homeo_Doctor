@@ -40,7 +40,8 @@ odoo.define('homeo_doctor.title', function (require) {
         'ip.insurance.billing',
         'advance.amount',
         'patient.appointment',
-        'hospital.admitted.patient'
+        'hospital.admitted.patient',
+        'discharged.patient.record',
 
     ];
 
