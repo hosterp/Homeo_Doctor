@@ -1156,7 +1156,7 @@ class PatientRegistration(models.Model):
 
             })
             self.Staff_name = False
-            self.staff_password = False 
+            self.staff_password = False
 
             if rec.room_number_new:
                 room = room_model.browse(rec.room_number_new.id)
