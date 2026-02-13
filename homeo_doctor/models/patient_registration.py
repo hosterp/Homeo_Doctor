@@ -867,6 +867,7 @@ class PatientRegistration(models.Model):
                     'bystander_mobile': record.bystander_mobile,
                     'alternate_no': record.alternate_no,
                     'op_category': record.op_category.id,
+                    'pay_mode': record.advance_mode_payment,
                     'Staff_name': record.Staff_name.id,
 
                 })
