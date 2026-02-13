@@ -40,6 +40,7 @@ class AdmittedPatient(models.Model):
         ('emergency', 'Emergency'),
         ('icu', 'ICU'),
     ], string="Admission Status")
+    staff_name = fields.Many2one('hr.employee', string="Staff Name")
 
 
     current_diagnosis = fields.Text(string="Current Diagnosis")

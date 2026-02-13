@@ -539,6 +539,7 @@ class PatientRegistration(models.Model):
         self.add_done = False
         self.status = 'admitted'
 
+
     @api.onchange('register_amount_paid')
     def _onchange_register_amount_paid(self):
         for rec in self:
@@ -1131,6 +1132,7 @@ class PatientRegistration(models.Model):
                 'room_category_new': rec.room_category_new.id,
                 'bed_id': rec.bed_id.id,
                 'attending_doctor': rec.doctor.id,
+                'staff_name': rec.Staff_name.id,
             })
             advance_model.create({
                 'patient_id': rec.reference_no,
@@ -1153,6 +1155,8 @@ class PatientRegistration(models.Model):
                 'pay_mode': rec.advance_mode_payment,
 
             })
+            self.Staff_name = False
+            self.staff_password = False 
 
             if rec.room_number_new:
                 room = room_model.browse(rec.room_number_new.id)
