@@ -231,6 +231,7 @@
                     <field name="pay_mode"/>
                     <field name="amount_in_advance"/>
                     <field name="total_amount"/>
+                    <field name="Staff_name"/>
                     <field name="discharge_pdf" invisible="1"/>
                 </tree>
             </field>

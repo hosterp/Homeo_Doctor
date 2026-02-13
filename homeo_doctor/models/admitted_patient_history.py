@@ -35,6 +35,8 @@ class DischargedPatientRecord(models.Model):
     consolidated_file_name = fields.Char("Consolidated PDF Filename")
     insurance_pdf = fields.Binary("Insurance Bill PDF")
     insurance_file_name = fields.Char("Insurance PDF Filename")
+    Staff_name = fields.Many2one('hr.employee', string="Staff Name")
+
 
 class AdmittedAdvanceAmount(models.Model):
     _name = 'advance.patient.record'
