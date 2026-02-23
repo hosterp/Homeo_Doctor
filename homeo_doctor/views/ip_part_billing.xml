@@ -373,7 +373,7 @@
                                 <div class="form-group row">
                                     <label for="staff_pwd" class="col-md-4 col-form-label">Staff Password</label>
                                     <div class="col-md-8 field-container">
-                                        <field name="staff_pwd"/>
+                                        <field name="staff_pwd" password="True"/>
                                     </div>
                                 </div>
                             </div>

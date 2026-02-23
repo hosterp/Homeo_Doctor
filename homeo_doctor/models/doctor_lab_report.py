@@ -592,6 +592,18 @@ class DoctorLabReport(models.Model):
     #     })
     #     return record
 
+    def password_validation(self):
+        if self.staff_name and self.staff_pwd:
+            employee = self.staff_name
+
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+
+            if self.staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
+
     @api.model
     def create(self, vals):
         if vals.get('report_reference', _('New')) == _('New'):
@@ -637,7 +649,10 @@ class DoctorLabReport(models.Model):
             self.env['patient.reg'].create(patient_reg_vals)
 
         # Create the lab report
-        return super(DoctorLabReport, self).create(vals)
+        # return super(DoctorLabReport, self).create(vals)
+        res = super(DoctorLabReport, self).create(vals)
+        res.password_validation()
+        return res
 
     @api.model
     def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):

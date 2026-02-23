@@ -115,6 +115,7 @@
         "views/login_template.xml",
         "views/advance_amount_views.xml",
         "data/ir_sequence_data.xml",
+        'security/groups.xml',
 
     ],
     'assets': {

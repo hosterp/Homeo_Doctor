@@ -107,7 +107,7 @@ class PatientRegistration(models.Model):
     temp_admission_total_amount = fields.Integer("Total Amount")
     admission_amount_paid = fields.Integer(string="Amount Paid")
     admission_balance = fields.Integer(string="Balance")
-    Staff_name = fields.Many2one('hr.employee', "Staff Name")
+    Staff_name = fields.Many2one('hr.employee', "Staff Name",default=lambda self: self._default_staff())
     staff_password = fields.Char("Password")
     admit_card_no = fields.Char(string="Card No")
     admit_bank = fields.Char(string="Bank")
@@ -170,6 +170,7 @@ class PatientRegistration(models.Model):
     insurance_boolean = fields.Boolean(string='Insurance')
     advance_amount_bool = fields.Boolean(string='Apply Advance Amount')
     add_done = fields.Boolean(string="Advance Added", default=False)
+
 
     def action_onchange_amount_advance(self):
         for rec in self:
@@ -501,7 +502,7 @@ class PatientRegistration(models.Model):
     register_total_amount = fields.Integer(string="Total Amount", compute="_compute_register_total")
     register_amount_paid = fields.Integer(string="Amount Paid")
     register_balance = fields.Integer(string="Balance")
-    register_staff_name = fields.Many2one('hr.employee', "Staff Name")
+    register_staff_name = fields.Many2one('hr.employee', "Staff Name", default=lambda self: self._default_staff())
     register_staff_password = fields.Char("Password")
     register_mode_payment = fields.Selection([('cash', 'Cash'),
                                               ('card', 'Card'),
@@ -510,6 +511,12 @@ class PatientRegistration(models.Model):
                                               ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
     register_card_no = fields.Char(string="Card No")
     register_bank_name = fields.Char(string="Bank")
+
+    def _default_staff(self):
+        employee = self.env['hr.employee'].sudo().search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+        return employee.id
 
     # @api.onchange('doctor_visiting_charge','service_charge','nurse_charge')
     # def charges_add(self):
@@ -523,8 +530,16 @@ class PatientRegistration(models.Model):
 
     def admit_reception(self):
         self.admission_boolean = True
+        employee = self.env['hr.employee'].sudo().search([
+            ('user_id', '=', self.env.uid)
+        ], limit=1)
+
+        if employee:
+            self.Staff_name = employee.id
         self.add_done = False
         self.status = 'admitted'
+
+
 
     @api.onchange('register_amount_paid')
     def _onchange_register_amount_paid(self):
@@ -732,10 +747,23 @@ class PatientRegistration(models.Model):
     )
 
     def write(self, vals):
+        if vals.get('status') == 'proceed_discharge':
+            # Avoid recursion by checking if 'Staff_name' is already in vals or if it's already set
+            if 'Staff_name' not in vals and not self.Staff_name:
+                # Get the employee record for the logged-in user
+                employee = self.env['hr.employee'].sudo().search([
+                    ('user_id', '=', self.env.uid)
+                ], limit=1)
+
+                if employee:
+                    vals['Staff_name'] = employee.id
         res = super(PatientRegistration, self).write(vals)
+
         for record in self:
             if 'admitted_date' in vals and vals.get('admitted_date'):
                 record.discharge_bill_number = record._generate_bill_number(record.admitted_date)
+
+
         return res
 
     def _generate_bill_number(self, admitted_date):
@@ -840,6 +868,7 @@ class PatientRegistration(models.Model):
                     'alternate_no': record.alternate_no,
                     'op_category': record.op_category.id,
                     'pay_mode': record.advance_mode_payment,
+                    'Staff_name': record.Staff_name.id,
 
                 })
 
@@ -1060,7 +1089,7 @@ class PatientRegistration(models.Model):
             self.consultation_fee = 400
 
         # self.register_staff_name = False
-        # self.register_staff_password = False
+        #self.register_staff_password = False
 
         return self.env.ref('homeo_doctor.report_patient_challan_action').report_action(self)
 
@@ -1118,6 +1147,7 @@ class PatientRegistration(models.Model):
                 'room_category_new': rec.room_category_new.id,
                 'bed_id': rec.bed_id.id,
                 'attending_doctor': rec.doctor.id,
+                'staff_name': rec.Staff_name.id,
             })
             advance_model.create({
                 'patient_id': rec.reference_no,
@@ -1140,6 +1170,8 @@ class PatientRegistration(models.Model):
                 'pay_mode': rec.advance_mode_payment,
 
             })
+            self.Staff_name = False
+            self.staff_password = False
 
             if rec.room_number_new:
                 room = room_model.browse(rec.room_number_new.id)

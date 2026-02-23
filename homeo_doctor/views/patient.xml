@@ -384,7 +384,7 @@
                                                            class="col-md-5 col-form-label small">Password
                                                     </label>
                                                     <div class="col-md-7 field-container py-0">
-                                                        <field name="register_staff_password"/>
+                                                        <field name="register_staff_password" password="True"/>
                                                     </div>
                                                 </div>
                                                 <field name="register_bool" invisible="1"/>
@@ -856,7 +856,7 @@
                                                         Password
                                                     </label>
                                                     <div class="col-md-7 field-container py-0">
-                                                        <field name="staff_password"/>
+                                                        <field name="staff_password" password="True"/>
                                                     </div>
                                                 </div>
 

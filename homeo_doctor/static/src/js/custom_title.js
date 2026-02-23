@@ -3,6 +3,9 @@ odoo.define('homeo_doctor.title', function (require) {
 
     var WebClient = require('web.WebClient');
 
+    var FormController = require('web.FormController');
+    var session = require('web.session');
+
     WebClient.include({
         set_title_part: function (part, title) {
             var parts = this.get('title_part');
@@ -28,5 +31,45 @@ odoo.define('homeo_doctor.title', function (require) {
             }.bind(this));
             document.title = title || '';  // Set title to form/menu name only
         }
+    });
+    const RESTRICTED_MODELS = [
+        'stock.transfer',
+        'doctor.lab.report',
+        'general.billing',
+        'ip.part.billing',
+        'ip.insurance.billing',
+        'advance.amount',
+        'patient.appointment',
+        'hospital.admitted.patient',
+        'discharged.patient.record',
+
+    ];
+
+    FormController.include({
+        renderButtons: function () {
+            this._super.apply(this, arguments);
+
+            if (!this.$buttons || !this.modelName) {
+                return;
+            }
+
+            // Apply only to selected models
+            if (!RESTRICTED_MODELS.includes(this.modelName)) {
+                return;
+            }
+
+            Promise.all([
+                session.user_has_group('base.group_system'), // Admin
+                session.user_has_group('homeo_doctor.group_allowed_edit'), // Allowed users
+            ]).then((results) => {
+                const isAdmin = results[0];
+                const hasAllowedGroup = results[1];
+
+                // Hide Edit button if NOT admin and NOT allowed group
+                if (!isAdmin && !hasAllowedGroup) {
+                    this.$buttons.find('.o_form_button_edit').hide();
+                }
+            });
+        },
     });
 });
