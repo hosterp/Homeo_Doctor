@@ -7,5 +7,12 @@
             <field name="padding">6</field>
             <field name="number_increment">1</field>
         </record>
+        <record id="seq_doctor_lab_report" model="ir.sequence">
+            <field name="name">Doctor Lab Report Sequence</field>
+            <field name="code">doctor.lab.report</field>
+            <field name="prefix"></field>
+            <field name="padding">6</field>
+            <field name="number_increment">1</field>
+        </record>
     </data>
 </odoo>

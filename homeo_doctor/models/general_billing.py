@@ -407,12 +407,21 @@ class GeneralBilling(models.Model):
     @api.model
     def create(self, vals):
         """Generate a unique billing number in the format: 000001/24-25"""
-        if vals.get('bill_number', 'New') == 'New':
-            # current_year = datetime.now().year
-            # next_year = current_year + 1
-            # year_range = f"{str(current_year)[-2:]}-{str(next_year)[-2:]}"
+        # Validate password FIRST before consuming a sequence number.
+        # If validation fails here, the sequence counter is NOT incremented,
+        # so no bill numbers are skipped/lost.
+        staff_name_id = vals.get('staff_name')
+        staff_pwd = vals.get('staff_pwd')
+        if staff_name_id and staff_pwd:
+            employee = self.env['hr.employee'].browse(staff_name_id)
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+            if staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
 
-            #james
+        if vals.get('bill_number', 'New') == 'New':
             today = datetime.now()  # keep as datetime object
 
             # Indian Fiscal Year calculation (April 1 – March 31)
@@ -425,7 +434,7 @@ class GeneralBilling(models.Model):
 
             fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
-            # Get the next sequence number
+            # Get the next sequence number ONLY after password is validated
             sequence_number = self.env['ir.sequence'].next_by_code('general.billing')
 
             # Ensure sequence exists
@@ -435,7 +444,6 @@ class GeneralBilling(models.Model):
             vals['bill_number'] = f"{formatted_seq}/{fiscal_suffix}"
 
         res = super(GeneralBilling, self).create(vals)
-        res.password_validation()
         return res
 
     @api.onchange('department')
