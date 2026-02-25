@@ -1008,11 +1008,21 @@ class IPPartBilling(models.Model):
     @api.model
     def create(self, vals):
         """Generate a unique billing number in the format: 0001/24-25"""
-        if vals.get('bill_number', 'New') == 'New':
-            # current_year = datetime.now().year
-            # next_year = current_year + 1
-            # year_range = f"{str(current_year)[-2:]}-{str(next_year)[-2:]}"
+        # Validate password FIRST before consuming a sequence number.
+        # If validation fails here, the sequence counter is NOT incremented,
+        # so no bill numbers are skipped/lost.
+        staff_name_id = vals.get('staff_name')
+        staff_pwd = vals.get('staff_pwd')
+        if staff_name_id and staff_pwd:
+            employee = self.env['hr.employee'].browse(staff_name_id)
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+            if staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
 
+        if vals.get('bill_number', 'New') == 'New':
             today = datetime.now()  # keep as datetime object
 
             if today.month >= 4:  # April–December
@@ -1024,16 +1034,15 @@ class IPPartBilling(models.Model):
 
             year_range = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
-            # Get the next sequence number
+            # Get the next sequence number ONLY after password is validated
             sequence_number = self.env['ir.sequence'].next_by_code('ip.part.billing')
 
             if not sequence_number:
-                raise ValueError("Sequence 'ip.part.billing' is not defined.")
+                raise ValidationError("Sequence 'ip.part.billing' is not defined. Please contact your administrator.")
 
             vals['bill_number'] = f"{sequence_number}/{year_range}"
 
         res = super(IPPartBilling, self).create(vals)
-        res.password_validation()
         return res
 
     @api.onchange('department')
@@ -1463,21 +1472,40 @@ class IPInsuranceBilling(models.Model):
     @api.model
     def create(self, vals):
         """Generate a unique billing number in the format: 0001/24-25"""
-        if vals.get('bill_number', 'New') == 'New':
-            current_year = datetime.now().year
-            next_year = current_year + 1
-            year_range = f"{str(current_year)[-2:]}-{str(next_year)[-2:]}"
+        # Validate password FIRST before consuming a sequence number.
+        # If validation fails here, the sequence counter is NOT incremented,
+        # so no bill numbers are skipped/lost.
+        staff_name_id = vals.get('staff_name')
+        staff_pwd = vals.get('staff_pwd')
+        if staff_name_id and staff_pwd:
+            employee = self.env['hr.employee'].browse(staff_name_id)
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+            if staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
 
-            # Get the next sequence number
+        if vals.get('bill_number', 'New') == 'New':
+            today = datetime.now()
+            if today.month >= 4:  # April–December (Indian Fiscal Year)
+                start_year = today.year
+                end_year = today.year + 1
+            else:  # January–March
+                start_year = today.year - 1
+                end_year = today.year
+
+            year_range = f"{start_year % 100:02d}-{end_year % 100:02d}"
+
+            # Get the next sequence number ONLY after password is validated
             sequence_number = self.env['ir.sequence'].next_by_code('ip.insurance.billing')
 
             if not sequence_number:
-                raise ValueError("Sequence 'ip.part.billing' is not defined.")
+                raise ValidationError("Sequence 'ip.insurance.billing' is not defined. Please contact your administrator.")
 
             vals['bill_number'] = f"{sequence_number}/{year_range}"
 
-        record= super(IPInsuranceBilling, self).create(vals)
-        record.password_validation()
+        record = super(IPInsuranceBilling, self).create(vals)
         if record.mrd_no:  # assuming you have a Many2one to patient.reg
             patient = record.mrd_no
             if not patient.insurance_boolean:
