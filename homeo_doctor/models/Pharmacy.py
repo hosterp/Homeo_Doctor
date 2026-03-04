@@ -276,26 +276,22 @@ class PharmacyDescription(models.Model):
 
     @api.model
     def create(self, vals):
-        # if self.staff_name and self.staff_pwd:
-        #     employee = self.staff_name
-        #
-        #     if not employee.staff_password_hash:
-        #         raise ValidationError("This staff has no password set.")
-        #
-        #     if self.staff_pwd != employee.staff_password_hash:
-        #         raise ValidationError("The password does not match.")
-        # else:
-        #     raise ValidationError("Please enter both staff name and password.")
-        if vals.get('bill_number', 'New') == 'New':
-            seq_number = self.env['ir.sequence'].next_by_code('pharmacy.description') or '0000'
-            # today = date.today()
-            # year_start = today.year % 100
-            # year_end = (today.year + 1) % 100
-            # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
-            #
-            # vals['bill_number'] = f"{seq_number}/{fiscal_suffix}"
+        # Validate password FIRST before consuming a sequence number.
+        # If validation fails here, the sequence counter is NOT incremented,
+        # so no bill numbers are skipped/lost.
+        staff_name_id = vals.get('staff_name')
+        staff_pwd = vals.get('staff_pwd')
+        if staff_name_id and staff_pwd:
+            employee = self.env['hr.employee'].browse(staff_name_id)
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+            if staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
 
-            #james
+        if vals.get('bill_number', 'New') == 'New':
+            seq_number = self.env['ir.sequence'].next_by_code('pharmacy.description') or '000001'
 
             today = date.today()
 
@@ -312,24 +308,8 @@ class PharmacyDescription(models.Model):
             vals['bill_number'] = f"{seq_number}/{fiscal_suffix}"
 
         res = super(PharmacyDescription, self).create(vals)
-        res.password_validation()
         res._process_payment()
 
-        # # Ensure partner creation is only done if necessary
-        # if not res.partner_id and res.name:
-        #     partner = self.env['res.partner'].search([
-        #         ('name', '=', res.name),
-        #         # Add other fields to match if needed
-        #     ], limit=1)
-        #
-        #     if not partner:
-        #         partner = self.env['res.partner'].create({
-        #             'name': res.name,
-        #             # Add other values as needed
-        #         })
-        #
-        #     res.partner_id = partner.id
-        #
         return res
 
     def write(self, vals):

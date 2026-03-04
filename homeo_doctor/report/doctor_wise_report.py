@@ -62,6 +62,16 @@ class DoctorBillingReportWizard(models.TransientModel):
             set_result(doctor, 'general_amount', rec.total_amount)
 
         # 4. Lab Billing
+        discharge = self.env['discharged.patient.record'].search([
+            ('discharge_date', '>=', from_date),
+            ('discharge_date', '<=', to_date),
+
+
+        ])
+        for rec in discharge:
+            doctor = rec.doctor.name if rec.doctor else 'Unknown'
+            set_result(doctor, 'discharge_amount', rec.total_amount)
+
         labs = self.env['doctor.lab.report'].search([
             ('date', '>=', from_date),
             ('date', '<=', to_date),
@@ -116,6 +126,7 @@ class DoctorBillingReport(models.AbstractModel):
             'lab_amount': 0.0,
             'pharmacy_amount': 0.0,
             'ip_part_amount': 0.0,
+            'discharge_amount': 0.0,
         }
 
         # Loop through each doctor's values and add to column totals

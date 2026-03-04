@@ -606,15 +606,23 @@ class DoctorLabReport(models.Model):
 
     @api.model
     def create(self, vals):
+        # Validate password FIRST before consuming a sequence number.
+        # If validation fails here, the sequence counter is NOT incremented,
+        # so no report reference numbers are skipped/lost.
+        staff_name_id = vals.get('staff_name')
+        staff_pwd = vals.get('staff_pwd')
+        if staff_name_id and staff_pwd:
+            employee = self.env['hr.employee'].browse(staff_name_id).sudo()
+            if not employee.staff_password_hash:
+                raise ValidationError("This staff has no password set.")
+            if staff_pwd != employee.staff_password_hash:
+                raise ValidationError("The password does not match.")
+        else:
+            raise ValidationError("Please enter both staff name and password.")
+
         if vals.get('report_reference', _('New')) == _('New'):
-            seq_number = self.env['ir.sequence'].next_by_code('doctor.lab.report') or '0000'
+            seq_number = self.env['ir.sequence'].next_by_code('doctor.lab.report') or '000001'
 
-            # today = date.today()
-            # year_start = today.year % 100
-            # year_end = (today.year + 1) % 100
-            # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
-
-            #james
             today = date.today()
 
             if today.month >= 4:  # April–December
@@ -649,9 +657,7 @@ class DoctorLabReport(models.Model):
             self.env['patient.reg'].create(patient_reg_vals)
 
         # Create the lab report
-        # return super(DoctorLabReport, self).create(vals)
         res = super(DoctorLabReport, self).create(vals)
-        res.password_validation()
         return res
 
     @api.model

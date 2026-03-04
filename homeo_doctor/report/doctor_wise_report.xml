@@ -45,6 +45,7 @@
                                     <th class="text-right">Lab</th>
                                     <th class="text-right">Pharmacy</th>
                                     <th class="text-right">IP Part</th>
+                                    <th class="text-right">Discharge</th>
                                     <th class="text-right">Total</th>
                                 </tr>
                             </thead>
@@ -53,11 +54,12 @@
                                 <t t-foreach="report_data.items()" t-as="line">
                                     <t t-set="row_total"
                                        t-value="(line[1].get('consultation_amount', 0.0) or 0.0)
-                + (line[1].get('revisit_amount', 0.0) or 0.0)
-                + (line[1].get('general_amount', 0.0) or 0.0)
-                + (line[1].get('lab_amount', 0.0) or 0.0)
-                + (line[1].get('pharmacy_amount', 0.0) or 0.0)
-                + (line[1].get('ip_part_amount', 0.0) or 0.0)"/>
+                                    + (line[1].get('revisit_amount', 0.0) or 0.0)
+                                    + (line[1].get('general_amount', 0.0) or 0.0)
+                                    + (line[1].get('lab_amount', 0.0) or 0.0)
+                                    + (line[1].get('pharmacy_amount', 0.0) or 0.0)
+                                    + (line[1].get('ip_part_amount', 0.0) or 0.0)
+                                    + (line[1].get('discharge_amount', 0.0) or 0.0)"/>
 
                                     <tr>
                                         <td>
@@ -80,6 +82,9 @@
                                         </td>
                                         <td class="text-right">
                                             <t t-esc="line[1].get('ip_part_amount', 0.0)"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-esc="line[1].get('discharge_amount', 0.0)"/>
                                         </td>
                                         <td class="text-right" style="font-weight:bold;">
                                             <t t-esc="row_total"/>
@@ -107,6 +112,9 @@
                                     </td>
                                     <td class="text-right">
                                         <t t-esc="total.get('ip_part_amount', 0.0)"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="total.get('discharge_amount', 0.0)"/>
                                     </td>
                                     <td class="text-right">
                                         <t t-esc="total.get('row_total', 0.0)"/>
