@@ -371,6 +371,9 @@ class PharmacyDescription(models.Model):
 
                     line.stock_in_hand = sum(stock_entries.mapped('quantity'))
 
+    def action_print_pharmacy_bill(self):
+        return self.sudo().env.ref('homeo_doctor.action_pharmacy_report').report_action(self)
+
     def action_register_payment(self):
         if self.staff_name and self.staff_pwd:
             employee = self.staff_name
