@@ -36,8 +36,9 @@
             <field name="model">doctor.lab.report</field>
             <field name="arch" type="xml">
                 <search string="Search Lab Reports">
-                    <field name="patient_name"/>
+                    <field name="report_reference" string="Bill Number"/>
                     <field name="user_ide"/>
+                    <field name="patient_name"/>
                     <field name="patient_phone"/>
                     <field name="doctor_id"/>
                     <field name="date" filter_domain="[('date', '>=', self)]"/>
