@@ -103,6 +103,13 @@ class DoctorLabReport(models.Model):
     bill_sequence = fields.Integer(string="Bill Sequence", compute="_compute_bill_parts", store=True)
     fiscal_year_end = fields.Integer(string="Fiscal Year End", compute="_compute_bill_parts", store=True)
 
+    @api.onchange('mode_of_payment')
+    def _onchange_mode_pay(self):
+        if self.mode_of_payment == 'credit':
+            self.status = 'unpaid'
+        else:
+            pass
+
     @api.depends('report_reference')
     def _compute_bill_parts(self):
         for rec in self:
