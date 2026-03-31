@@ -176,7 +176,9 @@ class PatientAppointment(models.Model):
                 # appointment.payment_receipt_number = f"{padded_seq}/{fiscal_suffix}"
 
                 #james
-                today = datetime.today().date()
+                # today = datetime.today().date()
+                today = fields.Date.context_today(self)
+
                 if today.month >= 4:  # April–December
                     start_year = today.year
                     end_year = today.year + 1
