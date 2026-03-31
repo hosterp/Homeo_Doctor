@@ -293,7 +293,8 @@ class PharmacyDescription(models.Model):
         if vals.get('bill_number', 'New') == 'New':
             seq_number = self.env['ir.sequence'].next_by_code('pharmacy.description') or '000001'
 
-            today = date.today()
+            # today = date.today()
+            today = fields.Date.context_today(self)
 
             # Indian Fiscal Year calculation (April 1 – March 31)
             if today.month >= 4:  # April–December
