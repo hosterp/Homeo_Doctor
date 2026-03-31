@@ -1554,7 +1554,10 @@ class IPInsuranceBilling(models.Model):
             year_range = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
             # Get the next sequence number ONLY after password is validated
-            sequence_number = self.env['ir.sequence'].next_by_code('ip.insurance.billing')
+            # sequence_number = self.env['ir.sequence'].next_by_code('ip.insurance.billing')
+            sequence_number = self.env['ir.sequence'].with_context(
+                ir_sequence_date=today
+            ).next_by_code('ip.insurance.billing')
 
             if not sequence_number:
                 raise ValidationError("Sequence 'ip.insurance.billing' is not defined. Please contact your administrator.")
