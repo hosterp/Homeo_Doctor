@@ -532,7 +532,8 @@ class IPPartBilling(models.Model):
     _name = 'ip.part.billing'
     _description = 'IP Part Billing'
     _rec_name = 'mrd_no'
-    _order = 'bill_number desc'
+    # _order = 'bill_number desc'
+    _order = "fiscal_year_end desc, bill_sequence desc"
 
     bill_number = fields.Char(string='Bill Number',  copy=False, default='New')
     mrd_no = fields.Many2one('patient.reg', string='UHID')
@@ -589,6 +590,22 @@ class IPPartBilling(models.Model):
     rent_full_day = fields.Float(string="Full Day Rent")
     rent_half_day = fields.Float(string="Half Day Rent")
     base_total = fields.Float(string='Base Total', digits=(12, 2), help="Original total before discount")
+
+    bill_sequence = fields.Integer(string="Bill Sequence", compute="_compute_bill_parts", store=True)
+    fiscal_year_end = fields.Integer(string="Fiscal Year End", compute="_compute_bill_parts", store=True)
+
+    @api.depends('bill_number')
+    def _compute_bill_parts(self):
+        for rec in self:
+            if rec.bill_number and '/' in rec.bill_number:
+                seq, fy = rec.bill_number.split('/')
+                rec.bill_sequence = int(seq)
+
+                # fy example: 25-26 → take 26
+                rec.fiscal_year_end = int(fy.split('-')[1])
+            else:
+                rec.bill_sequence = 0
+                rec.fiscal_year_end = 0
 
     def _default_staff(self):
         employee = self.env['hr.employee'].sudo().search([
@@ -1042,7 +1059,8 @@ class IPPartBilling(models.Model):
             raise ValidationError("Please enter both staff name and password.")
 
         if vals.get('bill_number', 'New') == 'New':
-            today = datetime.now()  # keep as datetime object
+            # today = datetime.now()  # keep as datetime object
+            today = fields.Date.context_today(self)
 
             if today.month >= 4:  # April–December
                 start_year = today.year
@@ -1123,7 +1141,8 @@ class IPInsuranceBilling(models.Model):
     _name = 'ip.insurance.billing'
     _description = 'IP Insurance Billing'
     _rec_name = 'mrd_no'
-    _order = 'bill_number desc'
+    # _order = 'bill_number desc'
+    _order = "fiscal_year_end desc, bill_sequence desc"
 
     bill_number = fields.Char(string='Bill Number',  copy=False, default='New')
     mrd_no = fields.Many2one('patient.reg', string='UHID')
@@ -1179,6 +1198,22 @@ class IPInsuranceBilling(models.Model):
     to_date = fields.Datetime('to Date')
     rent_full_day = fields.Float(string="Full Day Rent")
     rent_half_day = fields.Float(string="Half Day Rent")
+
+    bill_sequence = fields.Integer(string="Bill Sequence", compute="_compute_bill_parts", store=True)
+    fiscal_year_end = fields.Integer(string="Fiscal Year End", compute="_compute_bill_parts", store=True)
+
+    @api.depends('bill_number')
+    def _compute_bill_parts(self):
+        for rec in self:
+            if rec.bill_number and '/' in rec.bill_number:
+                seq, fy = rec.bill_number.split('/')
+                rec.bill_sequence = int(seq)
+
+                # fy example: 25-26 → take 26
+                rec.fiscal_year_end = int(fy.split('-')[1])
+            else:
+                rec.bill_sequence = 0
+                rec.fiscal_year_end = 0
 
     def _default_staff(self):
         employee = self.env['hr.employee'].sudo().search([
@@ -1506,7 +1541,9 @@ class IPInsuranceBilling(models.Model):
             raise ValidationError("Please enter both staff name and password.")
 
         if vals.get('bill_number', 'New') == 'New':
-            today = datetime.now()
+            # today = datetime.now()
+            today = fields.Date.context_today(self)
+
             if today.month >= 4:  # April–December (Indian Fiscal Year)
                 start_year = today.year
                 end_year = today.year + 1
