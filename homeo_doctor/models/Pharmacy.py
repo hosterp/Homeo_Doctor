@@ -291,10 +291,11 @@ class PharmacyDescription(models.Model):
             raise ValidationError("Please enter both staff name and password.")
 
         if vals.get('bill_number', 'New') == 'New':
-            seq_number = self.env['ir.sequence'].next_by_code('pharmacy.description') or '000001'
-
-            # today = date.today()
             today = fields.Date.context_today(self)
+            # seq_number = self.env['ir.sequence'].next_by_code('pharmacy.description') or '000001'
+            seq_number = self.env['ir.sequence'].with_context(ir_sequence_date=today).next_by_code('pharmacy.description')
+            # today = date.today()
+            # today = fields.Date.context_today(self)
 
             # Indian Fiscal Year calculation (April 1 – March 31)
             if today.month >= 4:  # April–December
