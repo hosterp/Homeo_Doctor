@@ -1059,7 +1059,10 @@ class PatientRegistration(models.Model):
             raise ValidationError("Please enter both staff name and password.")
 
         if not self.bill_number or self.bill_number == '/':
-            raw_seq = self.env['ir.sequence'].next_by_code('patient.bill') or '0'
+            today = fields.Date.context_today(self)
+            raw_seq = self.env['ir.sequence'].with_context(ir_sequence_date=today).next_by_code(
+                'patient.bill')
+            # raw_seq = self.env['ir.sequence'].next_by_code('patient.bill') or '0'
             padded_seq = str(raw_seq).zfill(4)
 
             # today = date.today()
@@ -1071,7 +1074,7 @@ class PatientRegistration(models.Model):
             #james
 
             # today = date.today()
-            today = fields.Date.context_today(self)
+            # today = fields.Date.context_today(self)
             if today.month >= 4:  # April–December
                 start_year = today.year
                 end_year = today.year + 1
