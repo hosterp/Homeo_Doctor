@@ -1111,25 +1111,28 @@ class PatientRegistration(models.Model):
         else:
             raise ValidationError("Please enter both staff name and password.")
         if not self.admitted_bill_number or self.admitted_bill_number == '/':
-            raw_seq = self.env['ir.sequence'].next_by_code('admitted.bill') or '0'
+            today = fields.Date.context_today(self)
+            raw_seq = self.env['ir.sequence'].with_context(ir_sequence_date=today).next_by_code(
+                'admitted.bill')
+            # raw_seq = self.env['ir.sequence'].next_by_code('admitted.bill') or '0'
             padded_seq = str(raw_seq).zfill(4)
 
-            today = date.today()
-            year_start = today.year % 100
-            year_end = (today.year + 1) % 100
-            fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+            # today = date.today()
+            # year_start = today.year % 100
+            # year_end = (today.year + 1) % 100
+            # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
 
             # today = date.today()
 
             # Indian Fiscal Year calculation (April 1 – March 31)
-            # if today.month >= 4:  # April–December
-            #     start_year = today.year
-            #     end_year = today.year + 1
-            # else:  # January–March
-            #     start_year = today.year - 1
-            #     end_year = today.year
+            if today.month >= 4:  # April–December
+                start_year = today.year
+                end_year = today.year + 1
+            else:  # January–March
+                start_year = today.year - 1
+                end_year = today.year
 
-            # fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
+            fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
             # self.admitted_bill_number = f"{padded_seq}/{fiscal_suffix}"
             self.admitted_bill_number = f"{padded_seq}/{fiscal_suffix}"
