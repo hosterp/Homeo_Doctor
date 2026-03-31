@@ -20,7 +20,8 @@ class GeneralBilling(models.Model):
     _name = 'general.billing'
     _description = 'General Billing'
     _rec_name = 'bill_number'
-    _order = 'bill_number desc'
+    # _order = 'bill_number desc'
+    _order = "fiscal_year_end desc, bill_sequence desc"
 
     bill_number = fields.Char(string='Bill Number',  copy=False, default='New')
     mrd_no = fields.Many2one('patient.reg', string='UHID')
@@ -74,6 +75,22 @@ class GeneralBilling(models.Model):
                           ('discharge','Discharge')
                           ], string="Status")
     vssc_boolean=fields.Boolean(string='VSSC')
+
+    bill_sequence = fields.Integer(string="Bill Sequence", compute="_compute_bill_parts", store=True)
+    fiscal_year_end = fields.Integer(string="Fiscal Year End", compute="_compute_bill_parts", store=True)
+
+    @api.depends('bill_number')
+    def _compute_bill_parts(self):
+        for rec in self:
+            if rec.bill_number and '/' in rec.bill_number:
+                seq, fy = rec.bill_number.split('/')
+                rec.bill_sequence = int(seq)
+
+                # fy example: 25-26 → take 26
+                rec.fiscal_year_end = int(fy.split('-')[1])
+            else:
+                rec.bill_sequence = 0
+                rec.fiscal_year_end = 0
 
     def _default_staff(self):
         employee = self.env['hr.employee'].sudo().search([
@@ -422,7 +439,9 @@ class GeneralBilling(models.Model):
             raise ValidationError("Please enter both staff name and password.")
 
         if vals.get('bill_number', 'New') == 'New':
-            today = datetime.now()  # keep as datetime object
+            # today = datetime.now()  # keep as datetime object
+
+            today = fields.Date.context_today(self)
 
             # Indian Fiscal Year calculation (April 1 – March 31)
             if today.month >= 4:  # April–December
