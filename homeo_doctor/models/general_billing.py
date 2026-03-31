@@ -454,7 +454,8 @@ class GeneralBilling(models.Model):
             fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
             # Get the next sequence number ONLY after password is validated
-            sequence_number = self.env['ir.sequence'].next_by_code('general.billing')
+            # sequence_number = self.env['ir.sequence'].next_by_code('general.billing')
+            sequence_number = self.env['ir.sequence'].with_context(ir_sequence_date=today).next_by_code('general.billing')
 
             # Ensure sequence exists
             if not sequence_number:
