@@ -107,7 +107,7 @@ class PatientRegistration(models.Model):
     temp_admission_total_amount = fields.Integer("Total Amount")
     admission_amount_paid = fields.Integer(string="Amount Paid")
     admission_balance = fields.Integer(string="Balance")
-    Staff_name = fields.Many2one('hr.employee', "Staff Name",default=lambda self: self._default_staff())
+    Staff_name = fields.Many2one('hr.employee', "Staff Name", default=lambda self: self._default_staff())
     staff_password = fields.Char("Password")
     admit_card_no = fields.Char(string="Card No")
     admit_bank = fields.Char(string="Bank")
@@ -171,7 +171,6 @@ class PatientRegistration(models.Model):
     advance_amount_bool = fields.Boolean(string='Apply Advance Amount')
     add_done = fields.Boolean(string="Advance Added", default=False)
 
-
     def action_onchange_amount_advance(self):
         for rec in self:
             if rec.amount_in_advance > 0:
@@ -199,7 +198,7 @@ class PatientRegistration(models.Model):
                         'advance_in_amount': rec.amount_in_advance,
                         'admission_id': rec.id,
                         'date': fields.Datetime.now(),
-                        'admission_date':fields.Date.today()
+                        'admission_date': fields.Date.today()
                     })
 
                 else:
@@ -219,7 +218,7 @@ class PatientRegistration(models.Model):
                             'advance_in_amount': rec.amount_in_advance,
                             'admission_id': rec.id,
                             'date': fields.Datetime.now(),
-                            'admission_date':fields.Date.today(),
+                            'admission_date': fields.Date.today(),
                         })
 
     def get_grouped_general_lines(self):
@@ -539,8 +538,6 @@ class PatientRegistration(models.Model):
         self.add_done = False
         self.status = 'admitted'
 
-
-
     @api.onchange('register_amount_paid')
     def _onchange_register_amount_paid(self):
         for rec in self:
@@ -764,7 +761,6 @@ class PatientRegistration(models.Model):
         #         record.discharge_bill_number = record._generate_bill_number(record.admitted_date)
         #         print()
 
-
         return res
 
     def _generate_bill_number(self, admitted_date):
@@ -781,7 +777,7 @@ class PatientRegistration(models.Model):
         #
         # return f"{padded_seq}/{fiscal_suffix}"
 
-        #james
+        # james
 
         # if admitted_date is empty, use today's date
         # today = admitted_date or date.today()
@@ -822,36 +818,61 @@ class PatientRegistration(models.Model):
                 record.room_number_new.is_available = False
 
             admitted_patient = self.env['hospital.admitted.patient'].search([('patient_id', '=', record.id)], limit=1)
-            if not record.discharge_bill_number or record.discharge_bill_number == '/':
-                # a) grab next sequence (must exist in Settings → Technical → Sequences)
-                # raw_seq = self.env['ir.sequence'].next_by_code('discharge.bill') or '0'
-                today = fields.Date.context_today(self)
-                raw_seq = self.env['ir.sequence'].with_context(ir_sequence_date=today).next_by_code('discharge.bill')
 
-                padded_seq = str(raw_seq).zfill(4)
-                #
-                # # b) compute fiscal year suffix: e.g. if today is July 2025 ⇒ "25-26"
-                # today = date.today()
-                # year_start = today.year % 100
-                # year_end = (today.year + 1) % 100
-                # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+            # if not record.discharge_bill_number or record.discharge_bill_number == '/':
+            #     # a) grab next sequence (must exist in Settings → Technical → Sequences)
+            #     # raw_seq = self.env['ir.sequence'].next_by_code('discharge.bill') or '0'
+            #     today = fields.Date.context_today(self)
+            #     raw_seq = self.env['ir.sequence'].with_context(ir_sequence_date=today).next_by_code('discharge.bill')
+            #
+            #     padded_seq = str(raw_seq).zfill(4)
+            #     #
+            #     # # b) compute fiscal year suffix: e.g. if today is July 2025 ⇒ "25-26"
+            #     # today = date.today()
+            #     # year_start = today.year % 100
+            #     # year_end = (today.year + 1) % 100
+            #     # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
+            #
+            #     # # c) assign it
+            #     # record.discharge_bill_number = f"{padded_seq}/{fiscal_suffix}"
+            #     #james
+            #
+            #     # today = date.today()
+            #     if today.month >= 4:  # April–December
+            #         start_year = today.year
+            #         end_year = today.year + 1
+            #     else:  # January–March
+            #         start_year = today.year - 1
+            #         end_year = today.year
+            #
+            #     fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
+            #
+            #     # c) assign it
+            #     record.discharge_bill_number = f"{padded_seq}/{fiscal_suffix}"
 
-                # # c) assign it
-                # record.discharge_bill_number = f"{padded_seq}/{fiscal_suffix}"
-                #james
+            # Remove the condition, always generate fresh
+            today = fields.Date.context_today(self)
+            raw_seq = self.env['ir.sequence'].with_context(
+                ir_sequence_date=today
+            ).next_by_code('discharge.bill')
 
-                # today = date.today()
-                if today.month >= 4:  # April–December
-                    start_year = today.year
-                    end_year = today.year + 1
-                else:  # January–March
-                    start_year = today.year - 1
-                    end_year = today.year
+            if not raw_seq:
+                raise ValidationError(
+                    "Discharge bill sequence not found. "
+                    "Please check sequence config for current fiscal year."
+                )
 
-                fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
+            padded_seq = str(raw_seq).zfill(4)
 
-                # c) assign it
-                record.discharge_bill_number = f"{padded_seq}/{fiscal_suffix}"
+            if today.month >= 4:
+                start_year = today.year
+                end_year = today.year + 1
+            else:
+                start_year = today.year - 1
+                end_year = today.year
+
+            fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
+            record.discharge_bill_number = f"{padded_seq}/{fiscal_suffix}"
 
             if admitted_patient:
                 admitted_patient.status = 'discharged'
@@ -1077,7 +1098,7 @@ class PatientRegistration(models.Model):
             # fiscal_suffix = f"{year_start:02d}-{year_end:02d}"
             #
             # self.bill_number = f"{padded_seq}/{fiscal_suffix}"
-            #james
+            # james
 
             # today = date.today()
             # today = fields.Date.context_today(self)
@@ -1099,7 +1120,7 @@ class PatientRegistration(models.Model):
             self.consultation_fee = 400
 
         # self.register_staff_name = False
-        #self.register_staff_password = False
+        # self.register_staff_password = False
 
         return self.env.ref('homeo_doctor.report_patient_challan_action').report_action(self)
 
@@ -1121,7 +1142,7 @@ class PatientRegistration(models.Model):
             raw_seq = self.env['ir.sequence'].with_context(ir_sequence_date=today).next_by_code(
                 'admitted.bill')
             # raw_seq = self.env['ir.sequence'].next_by_code('admitted.bill') or '0'
-            padded_seq = str(raw_seq).zfill(4)
+            # padded_seq = str(raw_seq).zfill(4)
 
             # today = date.today()
             # year_start = today.year % 100
@@ -1141,7 +1162,7 @@ class PatientRegistration(models.Model):
             fiscal_suffix = f"{start_year % 100:02d}-{end_year % 100:02d}"
 
             # self.admitted_bill_number = f"{padded_seq}/{fiscal_suffix}"
-            self.admitted_bill_number = f"{padded_seq}/{fiscal_suffix}"
+            self.admitted_bill_number = f"{raw_seq}/{fiscal_suffix}"
 
         admission_model = self.env['hospital.admitted.patient']
         registration_model = self.env['patient.reg']
@@ -1579,21 +1600,19 @@ class OpCategory(models.Model):
 class AdvanceAmount(models.Model):
     _name = 'advance.amount'
     _description = 'Advance Amount Record'
-    _order='date desc'
+    _order = 'date desc'
 
-    reference_no = fields.Many2one('patient.reg', string='Reference No' ,required=True)
+    reference_no = fields.Many2one('patient.reg', string='Reference No', required=True)
     name = fields.Char(string='Name')
     advance_in_amount = fields.Float(string='Advance Amount')
     admission_id = fields.Many2one('patient.reg', string='Admission')  # link back to admission
-    date = fields.Datetime(string='Date',required=True)
+    date = fields.Datetime(string='Date', required=True)
     admission_date = fields.Date(string="Admission Date")
     pay_mode = fields.Selection([('cash', 'Cash'),
                                  ('credit', 'Credit'),
                                  ('card', 'Card'),
                                  ('cheque', 'Cheque'),
                                  ('upi', 'Mobile Pay'), ], string='Payment Method', default='cash')
-
-
 
     @api.onchange('reference_no')
     def _onchange_reference_no(self):
