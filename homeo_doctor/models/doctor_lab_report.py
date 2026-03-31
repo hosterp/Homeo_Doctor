@@ -12,7 +12,8 @@ class DoctorLabReport(models.Model):
     _name = 'doctor.lab.report'
     _description = 'Doctor Lab Report'
     _rec_name = 'report_reference'
-    _order = 'report_reference desc'
+    # _order = 'report_reference desc'
+    _order = "fiscal_year_end desc, bill_sequence desc"
 
     user_ide = fields.Many2one('patient.reg', string="UHID")
     patient_id = fields.Many2one('patient.registration', string="Consultation ID")
@@ -98,6 +99,22 @@ class DoctorLabReport(models.Model):
     ], string="Active Investigation Type", default='all')
     admitted_patient_id = fields.Many2one('hospital.admitted.patient', string="Admitted Patient")
     discount_amount = fields.Integer(string="Discount amount")
+
+    bill_sequence = fields.Integer(string="Bill Sequence", compute="_compute_bill_parts", store=True)
+    fiscal_year_end = fields.Integer(string="Fiscal Year End", compute="_compute_bill_parts", store=True)
+
+    @api.depends('report_reference')
+    def _compute_bill_parts(self):
+        for rec in self:
+            if rec.report_reference and '/' in rec.report_reference:
+                seq, fy = rec.report_reference.split('/')
+                rec.bill_sequence = int(seq)
+
+                # fy example: 25-26 → take 26
+                rec.fiscal_year_end = int(fy.split('-')[1])
+            else:
+                rec.bill_sequence = 0
+                rec.fiscal_year_end = 0
 
     def _default_staff(self):
         employee = self.env['hr.employee'].sudo().search([
@@ -623,7 +640,8 @@ class DoctorLabReport(models.Model):
         if vals.get('report_reference', _('New')) == _('New'):
             seq_number = self.env['ir.sequence'].next_by_code('doctor.lab.report') or '000001'
 
-            today = date.today()
+            # today = date.today()
+            today = fields.Date.context_today(self)
 
             if today.month >= 4:  # April–December
                 start_year = today.year
