@@ -162,8 +162,12 @@ class PatientAppointment(models.Model):
             raise ValidationError("Please enter both staff name and password.")
         for appointment in self:
             if not appointment.payment_receipt_number or appointment.payment_receipt_number == '/':
+                today = fields.Date.context_today(self)
+
                 # Fetch next from sequence 'payment.receipt'
-                raw_seq = self.env['ir.sequence'].next_by_code('payment.receipt') or '0'
+                raw_seq = self.env['ir.sequence'].with_context(ir_sequence_date=today).next_by_code(
+                    'payment.receipt')
+                # raw_seq = self.env['ir.sequence'].next_by_code('payment.receipt') or '0'
                 # Zero-pad to 4 digits
                 padded_seq = str(raw_seq).zfill(4)
 
@@ -177,7 +181,7 @@ class PatientAppointment(models.Model):
 
                 #james
                 # today = datetime.today().date()
-                today = fields.Date.context_today(self)
+                # today = fields.Date.context_today(self)
 
                 if today.month >= 4:  # April–December
                     start_year = today.year
