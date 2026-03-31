@@ -638,10 +638,12 @@ class DoctorLabReport(models.Model):
             raise ValidationError("Please enter both staff name and password.")
 
         if vals.get('report_reference', _('New')) == _('New'):
-            seq_number = self.env['ir.sequence'].next_by_code('doctor.lab.report') or '000001'
+            today = fields.Date.context_today(self)
+            seq_number = self.env['ir.sequence'].with_context(ir_sequence_date=today).next_by_code('doctor.lab.report')
+            # seq_number = self.env['ir.sequence'].next_by_code('doctor.lab.report') or '000001'
 
             # today = date.today()
-            today = fields.Date.context_today(self)
+            # today = fields.Date.context_today(self)
 
             if today.month >= 4:  # April–December
                 start_year = today.year
