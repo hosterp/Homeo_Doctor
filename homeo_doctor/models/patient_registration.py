@@ -1070,7 +1070,8 @@ class PatientRegistration(models.Model):
             # self.bill_number = f"{padded_seq}/{fiscal_suffix}"
             #james
 
-            today = date.today()
+            # today = date.today()
+            today = fields.Date.context_today(self)
             if today.month >= 4:  # April–December
                 start_year = today.year
                 end_year = today.year + 1
