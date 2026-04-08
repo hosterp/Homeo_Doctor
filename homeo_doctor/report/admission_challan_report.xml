@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="col-6 text-right">
                                     <strong>Date:</strong>
-                                    <span t-field="o.create_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    <span t-field="o.admitted_date" t-options='{"format": "dd/MM/yyyy"}'/>
                                 </div>
                             </div>
 
