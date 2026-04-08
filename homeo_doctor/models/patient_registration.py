@@ -1620,6 +1620,9 @@ class AdvanceAmount(models.Model):
             if rec.reference_no:
                 rec.name = rec.reference_no.patient_id
 
+    def action_print_advance_amount(self):
+        return self.env.ref('homeo_doctor.action_report_advance_challan').report_action(self)
+
 # class DischargedPatientReg(models.Model):
 #     _name = "discharged.patient.reg"
 #     _description = "Discharged Patients"
