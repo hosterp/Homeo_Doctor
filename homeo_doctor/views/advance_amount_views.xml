@@ -60,20 +60,37 @@
 
     <menuitem id="menu_my_patient_template_root" name="Patient Registration" parent="menu_homeo_head" sequence="2"/>
 
-    <menuitem id="menu_advance_amount"
-              name="Advance Amounts"
-              parent="menu_my_patient_template_root"
-              action="action_advance_amount"
-              sequence="10"/>
+   <!-- Paper Format -->
+<record id="paperformat_advance_challan" model="report.paperformat">
+    <field name="name">Advance Challan Format</field>
+    <field name="default" eval="False"/>
+    <field name="format">A4</field>
+    <field name="orientation"><Landscape></Landscape></field>
+    <field name="margin_top">10</field>
+    <field name="margin_bottom">10</field>
+    <field name="margin_left">7</field>
+    <field name="margin_right">7</field>
+    <field name="header_line" eval="False"/>
+</record>
 
-    <record id="action_report_advance_challan" model="ir.actions.report">
-        <field name="name">Admission Challan</field>
-        <field name="model">advance.amount</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">homeo_doctor.report_advance_amount</field>
-        <field name="report_file">homeo_doctor.report_advance_amount</field>
-    </record>
+<!-- Menu Item -->
+<menuitem id="menu_advance_amount"
+          name="Advance Amounts"
+          parent="menu_my_patient_template_root"
+          action="action_advance_amount"
+          sequence="10"/>
 
+<!-- Report Action -->
+<record id="action_report_advance_challan" model="ir.actions.report">
+    <field name="name">Advance Challan</field>
+    <field name="model">advance.amount</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">homeo_doctor.report_advance_amount</field>
+    <field name="report_file">homeo_doctor.report_advance_amount</field>
+    <field name="binding_model_id" ref="model_advance_amount"/>
+    <field name="binding_type">report</field>
+    <field name="paperformat_id" ref="homeo_doctor.paperformat_advance_challan"/>
+</record>
 
 
     <!-- Report template -->
@@ -190,6 +207,8 @@
                 </t>
             </t>
         </t>
+
+
     </template>
 
 
