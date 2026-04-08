@@ -65,7 +65,7 @@
     <field name="name">Advance Challan Format</field>
     <field name="default" eval="False"/>
     <field name="format">A4</field>
-    <field name="orientation"><Landscape></Landscape></field>
+    <field name="orientation">Landscape</field>
     <field name="margin_top">10</field>
     <field name="margin_bottom">10</field>
     <field name="margin_left">7</field>
