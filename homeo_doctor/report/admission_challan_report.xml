@@ -58,7 +58,15 @@
                                 </div>
                                 <div class="col-6 text-right">
                                     <strong>Date:</strong>
-                                    <span t-field="o.admitted_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    <t t-set="advance_domain" t-value="[('admission_id','=',o.id)]"/>
+                                    <t t-if="o.admitted_date" t-set="advance_domain" t-value="advance_domain + [('date', '>=', o.admitted_date)]"/>
+                                    <t t-if="o.discharge_date" t-set="advance_domain" t-value="advance_domain + [('date', '&lt;=', o.discharge_date)]"/>
+                                    <t t-set="advance_rec"
+                                       t-value="env['advance.amount'].search(advance_domain, order='date desc', limit=1)"/>
+
+                                    <t t-if="advance_rec and advance_rec.date">
+                                        <span t-field="advance_rec.date" t-options='{"widget": "date"}'/>
+                                    </t>
                                 </div>
                             </div>
 
@@ -114,7 +122,22 @@
                                                 <span t-field="o.advance_mode_payment"/>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <t t-set="advance_domain" t-value="[('admission_id','=',o.id)]"/>
+                                        <t t-if="o.admitted_date" t-set="advance_domain" t-value="advance_domain + [('date', '>=', o.admitted_date)]"/>
+                                        <t t-if="o.discharge_date" t-set="advance_domain" t-value="advance_domain + [('date', '&lt;=', o.discharge_date)]"/>
+                                        <t t-set="advances"
+                                           t-value="env['advance.amount'].search(advance_domain, order='date asc')"/>
+                                        <t t-foreach="advances" t-as="adv">
+                                            <tr>
+                                                <td>
+                                                    <strong>Advance Amount (<span t-field="adv.date" t-options='{"widget": "date"}'/>):</strong>
+                                                </td>
+                                                <td>
+                                                    <span t-field="adv.advance_in_amount"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr t-if="not advances">
                                             <td>
                                                 <strong>Advance Amount:</strong>
                                             </td>
