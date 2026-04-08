@@ -24,7 +24,7 @@
                 <header> <button name="action_print_advance_amount"
                             string="Print"
                             type="object"
-                            class="btn-primary"/></header>
+                            class="btn-primary" invisible="1"/></header>
                 <sheet>
                     <group col="4">
                         <group>
