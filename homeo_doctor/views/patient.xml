@@ -789,7 +789,7 @@
                                             <div class="col-md-6 left_column" style="padding-left: 25px;">
                                                 <div class="form-group row mb-1">
                                                     <label for="admission_total_amount"
-                                                           class="col-md-5 col-form-label small">Adv Amount
+                                                           class="col-md-5 col-form-label small">Final Balance
                                                     </label>
                                                     <div class="col-md-7 field-container py-0">
                                                         <field name="admission_total_amount"/>

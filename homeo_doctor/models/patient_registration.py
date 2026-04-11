@@ -95,7 +95,7 @@ class PatientRegistration(models.Model):
     transferred_room_category = fields.Many2one('room.category', string='Room Category')
     transferred_room_number = fields.Integer(string='Room No')
     transferred_bed_number = fields.Integer(string='Bed Number')
-    amount_in_advance = fields.Integer(string="Advance Amount")
+    amount_in_advance = fields.Float(string="Advance Amount", compute='_compute_no_days', store=True)
     advance_mode_payment = fields.Selection([('cash', 'Cash'),
                                              ('credit', 'Credit'),
                                              ('card', 'Card'),
@@ -152,6 +152,7 @@ class PatientRegistration(models.Model):
         string="Unpaid Insurance Total",
         compute="_compute_all_totals",
         store=False)
+    advance_ids = fields.One2many('advance.amount', 'reference_no', string="Advances")
     unpaid_pharmacy_ids = fields.One2many(
         'pharmacy.description', 'uhid_id', string="Unpaid Pharmacy Bills", compute='_compute_all_totals',
         store=False)
@@ -179,7 +180,7 @@ class PatientRegistration(models.Model):
                     ('admission_id', '=', rec.id)
                 ], limit=1)
                 rec.add_done = True
-                if rec.status == 'admitted':
+                if rec.status == 'admitted' or rec.status == 'proceed_discharege':
                     # Always create new record after discharge
                     self.env['advance.amount'].create({
                         'reference_no': rec.id,
@@ -1279,20 +1280,31 @@ class PatientRegistration(models.Model):
     @api.depends('discharge_date', 'admitted_date')
     def _compute_no_days(self):
         for record in self:
+            # 1. Calculate Number of Days
             if record.admitted_date:
-                admitted_date = fields.Datetime.to_datetime(record.admitted_date).date()
-                current_date = fields.Datetime.to_datetime(
-                    record.discharge_date).date() if record.discharge_date else fields.Date.today()
-                record.no_days = (current_date - admitted_date).days + 1
+                admitted_date = fields.Date.to_date(record.admitted_date)
+                discharge_date = fields.Date.to_date(record.discharge_date) if record.discharge_date else fields.Date.today()
+                record.no_days = (discharge_date - admitted_date).days + 1
             else:
                 record.no_days = 0
 
+            # 2. Calculate Total Advance Amount (between admitted and discharge dates)
             total_advance = 0.0
-            # Sum all advance records linked to this admission
-            advance_records = self.env['advance.amount'].search([
-                ('reference_no', '=', record.id)
-            ])
-            total_advance = sum(a.advance_in_amount for a in advance_records)
+            if record.admitted_date:
+                # Search for advances linked to this admission
+                # Note: We use the payment date ('date') for the range calculation
+                search_domain = [('reference_no', '=', record.id)]
+                advance_records = self.env['advance.amount'].search(search_domain)
+                
+                start_date = fields.Date.to_date(record.admitted_date)
+                end_date = fields.Date.to_date(record.discharge_date) if record.discharge_date else fields.Date.today()
+                
+                for adv in advance_records:
+                    if adv.date:
+                        payment_date = fields.Date.to_date(adv.date)
+                        if start_date <= payment_date <= end_date:
+                            total_advance += adv.advance_in_amount or 0.0
+            
             record.amount_in_advance = total_advance
 
     @api.onchange('no_days')
