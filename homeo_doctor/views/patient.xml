@@ -646,7 +646,7 @@
                                                                        attrs="{
                                                                            'required': [('admission_boolean', '=', True), ('advance_amount_bool', '=', True)],
 
-                                                                       }"
+                                                                       }" readonly="0"
                                                                 />
                                                             </div>
                                                             <div>
