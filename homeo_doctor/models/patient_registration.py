@@ -974,6 +974,7 @@ class PatientRegistration(models.Model):
                 'Staff_name': False,
                 'staff_password': False,
                 'insurance_boolean': False,
+                'discount': False,
 
             })
 
