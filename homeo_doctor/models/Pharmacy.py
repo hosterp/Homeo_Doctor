@@ -491,7 +491,7 @@ class PharmacyPrescriptionLine(models.Model):
 
     pharmacy_id = fields.Many2one('pharmacy.description', string="Pharmacy")
     admission_id=fields.Many2one('patient.reg',string='Patient Registration')
-    product_id = fields.Many2one('product.product', string="Medicine")
+    product_id = fields.Many2one('product.product', string="Medicine",)
     total_med = fields.Integer("Total Medicine")
     per_ped = fields.Float("Per Medicine")
     morn = fields.Integer("Morning")
@@ -513,7 +513,17 @@ class PharmacyPrescriptionLine(models.Model):
     # rate = fields.Float(string='Rate', store=True)
     description_id = fields.Many2one('pharmacy.description', string="Sale Reference")
 
+    @api.onchange('product_id')
+    def _onchange_product_domain(self):
+        stock_products = self.env['stock.entry'].search([
+            ('quantity', '>', 0)
+        ]).mapped('product_id').ids  # medicine_name = Many2one to product.product
 
+        return {
+            'domain': {
+                'product_id': [('id', 'in', stock_products)]
+            }
+        }
     @api.depends('rate', 'gst')
     def _compute_tax_components(self):
         for rec in self:
