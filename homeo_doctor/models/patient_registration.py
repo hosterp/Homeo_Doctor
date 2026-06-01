@@ -811,8 +811,9 @@ class PatientRegistration(models.Model):
             record.status = 'discharged'
             # record.admission_boolean = False
             record.temp_admission_total_amount = record.admission_total_amount
-            record.temp_admitted_date = record.admitted_date
-            record.temp_discharge_date = record.discharge_date
+            record.temp_admitted_date = record.temp_admitted_date or fields.Datetime.to_datetime(record.admitted_date)
+            record.temp_discharge_date = fields.Datetime.now()
+            record.discharge_date = fields.Date.today()
 
             # Mark the room as available
             if record.room_number_new:
@@ -975,6 +976,8 @@ class PatientRegistration(models.Model):
                 'staff_password': False,
                 'insurance_boolean': False,
                 'discount': False,
+                'temp_admitted_date': False,
+                'temp_discharge_date': False,
 
             })
 
@@ -1185,6 +1188,10 @@ class PatientRegistration(models.Model):
                 'attending_doctor': rec.doctor.id,
                 'staff_name': rec.Staff_name.id,
             })
+            rec.write({
+                'temp_admitted_date': fields.Datetime.now(),
+                'admitted_date': fields.Date.today(),
+            })
             advance_model.create({
                 'patient_id': rec.reference_no,
                 'name': rec.patient_id,
@@ -1293,17 +1300,22 @@ class PatientRegistration(models.Model):
             total_advance = 0.0
             if record.admitted_date:
                 # Search for advances linked to this admission
-                # Note: We use the payment date ('date') for the range calculation
                 search_domain = [('reference_no', '=', record.id)]
                 advance_records = self.env['advance.amount'].search(search_domain)
                 
-                start_date = fields.Date.to_date(record.admitted_date)
-                end_date = fields.Date.to_date(record.discharge_date) if record.discharge_date else fields.Date.today()
+                # Use Datetime for comparison to handle same-day readmission
+                start_datetime = record.temp_admitted_date or fields.Datetime.to_datetime(record.admitted_date)
+                end_datetime = record.temp_discharge_date or (fields.Datetime.to_datetime(record.discharge_date) if record.discharge_date else fields.Datetime.now())
                 
+                # If discharge_date is set but not temp_discharge_date (manual entry), use end of day
+                if not record.temp_discharge_date and record.discharge_date:
+                    from datetime import time
+                    end_datetime = datetime.combine(record.discharge_date, time.max)
+
                 for adv in advance_records:
                     if adv.date:
-                        payment_date = fields.Date.to_date(adv.date)
-                        if start_date <= payment_date <= end_date:
+                        # Compare datetimes directly
+                        if start_datetime <= adv.date <= end_datetime:
                             total_advance += adv.advance_in_amount or 0.0
             
             record.amount_in_advance = total_advance

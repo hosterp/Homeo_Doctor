@@ -235,7 +235,10 @@ class PatientRegistration(models.Model):
         if admission_record.admission_boolean:
             admission_record.status = 'admitted'
             admission_record.doctor= self.doctor.id
-            admission_record.write({'admitted_date': fields.Datetime.now()})
+            admission_record.write({
+                'admitted_date': fields.Date.today(),
+                'temp_admitted_date': fields.Datetime.now(),
+            })
 
         else:
             admission_record.status = False
